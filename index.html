@@ -8,7 +8,7 @@
     <style>
         /* General Body Styling */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'calibri';
             margin: 0;
             padding: 0;
             background-color: #f0f8ff; /* Light sky blue background */
@@ -17,46 +17,47 @@
         }
 
         /* Header Styling */
-        header {
-            background: linear-gradient(90deg, #87cefa, #4682b4);
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+header {
+    background: linear-gradient(90deg, #87cefa, #4682b4);
+    color: white;
+    padding: 15px 0; /* Reduced padding */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 3rem;
-            font-weight: bold;
-        }
+header h1 {
+    margin: 0;
+    font-size: 2.5rem; /* Reduced font size */
+    font-weight: bold;
+}
 
-        header p {
-            margin: 5px 0 0;
-            font-size: 1.2rem;
-        }
-  /* Navigation Bar */
-  nav {
-            background: #4682b4;
-            color: white;
-            display: flex;
-            justify-content: center;
-            padding: 10px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+header p {
+    margin: -5px 0 0;
+    font-size: 1rem; /* Reduced font size */
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+/* Navigation Bar */
+nav {
+    background: #4682b4;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 8px 0; /* Reduced padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-        nav a:hover {
-            color: #d0eaff;
-        }
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px; /* Reduced spacing */
+    font-size: 1.1rem; /* Slightly smaller font */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #d0eaff;
+}
         /* Game Section */
         .game-section {
             padding: 50px 20px;
@@ -259,13 +260,15 @@
                 <option value="" disabled selected>Choose a question</option>
                 <option value="is this a male artist?">Is this a male artist?</option>
                 <option value="are they retired?">Are they retired?</option>
+                <option value="are they still alive?">Are they still alive?</option>
                 <option value="are they over 30 years old?">Are they over 30 years old?</option>
                 <option value="are they over 40 years old?">Are they over 40 years old?</option>
                 <option value="are they over 50 years old?">Are they over 50 years old?</option>
-                <option value="are they still alive?">Are they still alive?</option>
                 <option value="are they from north america?">Are they from North America?</option>
                 <option value="are they from the united states?">Are they from the United States?</option>
                 <option value="are they from europe?">Are they from Europe?</option>
+                <option value="do they go by their birth name?">Do they go by their birth name?</option>
+                <option value="do they go by one word?">Do they go by one word?</option>
                 <option value="do they perform pop music?">Do they perform pop music?</option>
                 <option value="do they perform rap music?">Do they perform rap music?</option>
                 <option value="do they perform R&B music?">Do they perform R&B music?</option>
@@ -344,9 +347,11 @@
             "are they over 30 years old?": "Yes!",
             "are they over 40 years old?": "Yes!",
             "are they over 50 years old?": "No!",
+            "do they go by their birth name?": "Yes!",
             "are they still alive?": "Yes!",
             "are they from north america?": "Yes!",
             "are they from the united states?": "Yes!",
+            "do they go by one word?": "Yes!",
             "are they from europe?": "No!",
             "do they perform pop music?": "Yes!",
             "do they perform rap music?": "No!",

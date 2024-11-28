@@ -6,122 +6,123 @@
     <title>About | Guess The Daily Music Artist</title>
     <style>
         /* General Body Styling */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f8ff; /* Light sky blue background */
-            color: #333;
-            line-height: 1.6;
-        }
+       /* General Body Styling */
+body {
+    font-family: 'calibri';
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff; /* Light sky blue background */
+    color: #333;
+    line-height: 1.6;
+}
 
-        /* Header Styling */
-        header {
-            background: linear-gradient(90deg, #87cefa, #4682b4);
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+/* Header Styling */
+header {
+    background: linear-gradient(90deg, #87cefa, #4682b4);
+    color: white;
+    padding: 15px 0; /* Reduced padding */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 3rem;
-            font-weight: bold;
-        }
+header h1 {
+    margin: 0;
+    font-size: 2.5rem; /* Reduced font size */
+    font-weight: bold;
+}
 
-        header p {
-            margin: 5px 0 0;
-            font-size: 1.2rem;
-        }
+header p {
+    margin: -5px 0 0;
+    font-size: 1rem; /* Reduced font size */
+}
 
-        /* Navigation Bar */
-        nav {
-            background: #4682b4;
-            color: white;
-            display: flex;
-            justify-content: center;
-            padding: 10px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+/* Navigation Bar */
+nav {
+    background: #4682b4;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 8px 0; /* Reduced padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px; /* Reduced spacing */
+    font-size: 1.1rem; /* Slightly smaller font */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
 
-        nav a:hover {
-            color: #d0eaff;
-        }
+nav a:hover {
+    color: #d0eaff;
+}
 
-        /* About Section */
-        .about-section {
-            padding: 50px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
+/* About Section */
+.about-section {
+    max-width: 800px;
+    margin: 20px auto; /* Reduced margin for tighter spacing */
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 
-        .about-section h2 {
-            font-size: 2.5rem;
-            color: #4682b4;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+.about-section h2 {
+    font-size: 2rem; /* Reduced font size */
+    color: #4682b4;
+    padding: 30px; /* Reduced margin */
+    margin-bottom: -30px;
+    text-align: center;
+}
 
-        .about-section p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            text-align: justify;
-        }
+.about-section p {
+    font-size: 1.1rem; /* Slightly smaller font */
+    margin: 10px 20px; /* Reduced margin */
+    text-align: justify;
+    padding: 20px; /* Reduced padding */
+}
 
-        .about-section .creator {
-            text-align: center;
-            margin-top: 30px;
-        }
+.about-section .creator {
+    text-align: center;
+}
 
-        .about-section img {
-            max-width: 150px;
-            border-radius: 50%;
-            margin: 10px auto;
-            display: block;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+.about-section img {
+    max-width: 120px; /* Reduced image size */
+    border-radius: 50%;
+    margin: 10px auto;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
-        .about-section .creator h3 {
-            font-size: 1.8rem;
-            color: #4682b4;
-            margin-top: 15px;
-        }
+.about-section .creator h3 {
+    font-size: 1.5rem; /* Reduced font size */
+    color: #4682b4;
+}
 
-        .about-section .creator p {
-            font-size: 1.1rem;
-            color: #333;
-        }
+.about-section .creator p {
+    font-size: 1rem; /* Reduced font size */
+    color: #333;
+}
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 20px;
-        }
+.social-links {
+    display: flex;
+    justify-content: center;
+    padding: 35px; /* Reduced margin */
+    gap: 15px; /* Reduced gap */
+}
 
-        .social-links a {
-            color: #4682b4;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
+.social-links a {
+    color: #4682b4;
+    text-decoration: none;
+    font-size: 1.3rem; /* Slightly smaller font */
+    transition: color 0.3s ease;
+}
 
-        .social-links a:hover {
-            color: #315f85;
-        }
+.social-links a:hover {
+    color: #315f85;
+}
+
     </style>
 </head>
 <body>
@@ -135,27 +136,15 @@
         <a href="about.html">About</a>
     </nav>
     <section class="about-section">
-        <h2>What is "Guess The Daily Music Artist"?</h2>
+        <h2>About Me</h2>
         <p>
-            "Guess The Daily Music Artist" is a fun and engaging game where players use logic and deduction to guess the daily featured artist. 
-            Ask questions, make guesses, and see if you can figure out the artist before the clock runs out. Whether you’re a casual music listener 
-            or a dedicated fan, this game is designed to challenge your musical knowledge in an interactive and exciting way!
+            Hi! I'm Colby! After guessing favorite music artists of over 100 strangers, I noticed how many people enjoy playing along with me in the comments. So, I wanted to create a daily guessing game, and to celebrate the holiday season, for every day you participate from now until Christmas, you'll be entered to win a prize!
         </p>
-        <p>
-            Every day, a new artist is featured. Players can participate in raffles and win amazing prizes by completing challenges and solving 
-            the puzzle. Hover over the calendar dates on the Prizes page to uncover daily mystery rewards!
-        </p>
-        <h2>About the Creator</h2>
         <div class="creator">
-            <img src="https://via.placeholder.com/150" alt="Colby Martel">
+            <img src="OliviaRodrigo.jpg" alt="Colby Martel">
             <h3>Colby Martel</h3>
             <p>
-                Colby Martel is a creator, innovator, and music enthusiast passionate about connecting people through games and challenges. 
-                From creating engaging YouTube content to building interactive games like "Guess The Daily Music Artist," Colby strives to inspire 
-                and entertain people worldwide.
-            </p>
-            <p>
-                His motto, "Constantly Connecting," reflects his mission to foster meaningful connections through fun and creativity. 
+                Colby Martel is a video creator who is passionate about connecting people through games and challenges. His motto, "Constantly Connecting," reflects his mission to foster meaningful connections through fun and creativity. 
                 Follow Colby on his journey as he continues to explore new ways to engage and connect with his audience.
             </p>
             <div class="social-links">
@@ -164,7 +153,6 @@
                 <a href="https://www.tiktok.com/@colbymartel" target="_blank">TikTok</a>
             </div>
         </div>
-        <span id="siteseal"><script async type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=YA1S7ujREazhMPsZus3nLMLslp26ZxERdcvhzwaIAOOvI2GlKxDpDk6v9dhH"></script></span>
     </section>
 </body>
 </html>
