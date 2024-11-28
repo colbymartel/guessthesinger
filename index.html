@@ -298,8 +298,8 @@
     <!-- Countdown Popup -->
     <div class="countdown-popup" id="countdown-popup">
         <div class="countdown-content">
-            <h2>Next Puzzle Countdown</h2>
-            <p>Time until the next puzzle:</p>
+            <h2>Next Singer Countdown</h2>
+            <p>Time until the next singer:</p>
             <div class="countdown-timer" id="countdown-timer">
                 <div class="time-block" id="hours">
                     00<span>Hrs</span>
@@ -331,7 +331,7 @@
         const countdownMinutes = document.getElementById("minutes");
         const countdownSeconds = document.getElementById("seconds");
 
-        const correctAnswer = "KSI"; // Correct artist name
+        const correctAnswer = "Beyonce"; // Correct artist name
         let questionCount = 0;
         let guessCount = 0;
         let hintCount = 0; // Track the number of hints used
@@ -339,23 +339,23 @@
 
         // Predefined answers for dropdown questions
         const predefinedAnswers = {
-            "is this a male artist?": "Yes!",
+            "is this a male artist?": "No!",
             "are they retired?": "No!",
             "are they over 30 years old?": "Yes!",
-            "are they over 40 years old?": "No!",
+            "are they over 40 years old?": "Yes!",
             "are they over 50 years old?": "No!",
             "are they still alive?": "Yes!",
-            "are they from north america?": "No!",
-            "are they from the united states?": "No!",
-            "are they from europe?": "Yes!",
-            "do they perform pop music?": "No!",
-            "do they perform rap music?": "Yes!",
+            "are they from north america?": "Yes!",
+            "are they from the united states?": "Yes!",
+            "are they from europe?": "No!",
+            "do they perform pop music?": "Yes!",
+            "do they perform rap music?": "No!",
             "do they perform R&B music?": "Yes!",
             "do they perform rock music?": "No!",
-            "do they perform country music?": "No!",
+            "do they perform country music?": "Sometimes!",
             "do they perform sad music?": "Sometimes!",
-            "do they have more than 20M listeners?": "No!",
-            "are they in a band?": "No!",
+            "do they have more than 20M listeners?": "Yes!",
+            "are they in a band?": "Yes!",
         };
 
         // Handle question submission
@@ -408,7 +408,7 @@
         // Handle hint action
         hintButton.addEventListener("click", () => {
             hintCount++;
-            guessResponse.textContent = "Hint: His stage name has three letters.";
+            guessResponse.textContent = "Hint: She is married to a billionaire.";
             guessResponse.className = "response yes";
         });
 
