@@ -485,38 +485,10 @@ const submitRaffle = document.getElementById("submit-raffle");
 
 // Show the raffle container when the "Enter Raffle" button is clicked
 raffleButton.addEventListener("click", () => {
-    raffleContainer.style.display = "block"; // Display the raffle container
+    window.open("https://forms.gle/PuYc421AKN3r5Us26", "_blank"); // Replace with your Google Form URL
 });
 
-// Handle raffle submission
-submitRaffle.addEventListener("click", () => {
-    const name = raffleName.value.trim();
-    const email = raffleEmail.value.trim();
+</script>
 
-    if (!name || !email) {
-        alert("Please enter both your name and email to join the raffle.");
-        return;
-    }
-
-    if (!validateEmail(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
-
-    // Simulate submitting the form (e.g., send to a server)
-    alert(`Thank you, ${name}! You've successfully entered the raffle. Good luck!`);
-    raffleContainer.style.display = "none"; // Hide the raffle container after submission
-
-    // Clear the input fields
-    raffleName.value = "";
-    raffleEmail.value = "";
-});
-
-// Helper function to validate email format
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-    </script>
 </body>
 </html>
