@@ -34,8 +34,9 @@
             margin: 5px 0 0;
             font-size: 1.2rem;
         }
-  /* Navigation Bar */
-  nav {
+
+        /* Navigation Bar */
+        nav {
             background: #4682b4;
             color: white;
             display: flex;
@@ -56,6 +57,7 @@
         nav a:hover {
             color: #d0eaff;
         }
+
         /* Calendar Section */
         .calendar-section {
             padding: 50px 20px;
@@ -93,7 +95,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            position: relative;
             text-align: center;
             transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
@@ -104,29 +105,18 @@
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .calendar-day span.day {
-            display: block;
-        }
-
-        .calendar-day span.prize {
-            display: none;
-            font-size: 1.1rem;
+        .prize-display {
+            margin-top: 30px;
+            font-size: 1.5rem;
             font-weight: bold;
-        }
-
-        .calendar-day:hover span.day {
-            display: none;
-        }
-
-        .calendar-day:hover span.prize {
-            display: block;
+            color: #4682b4;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>December Prize Calendar</h1>
-        <p>Hover over a date to reveal the mystery prize of the day!</p>
+        <p>Click on a date to reveal the mystery prize of the day!</p>
     </header>
     <nav>
         <a href="index.html">Play</a>
@@ -138,108 +128,46 @@
             <h2>Prizes for December</h2>
             <div class="calendar">
                 <!-- Dates for December 1st to 25th -->
-                <div class="calendar-day">
-                    <span class="day">1</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">2</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">3</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">4</span>
-                    <span class="prize">🎧 AirPods Max</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">5</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">6</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">7</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">8</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">9</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">10</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">11</span>
-                    <span class="prize">📸 Camera</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">12</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">13</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">14</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">15</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">16</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">17</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">18</span>
-                    <span class="prize">🎤 Concert Tickets</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">19</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">20</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">21</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">22</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">23</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">24</span>
-                    <span class="prize">🎁 Gift Card</span>
-                </div>
-                <div class="calendar-day">
-                    <span class="day">25</span>
-                    <span class="prize">🎅 PS5</span>
-                </div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">1</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">2</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">3</div>
+                <div class="calendar-day" data-prize="🎧 AirPods Max">4</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">5</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">6</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">7</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">8</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">9</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">10</div>
+                <div class="calendar-day" data-prize="📸 Camera">11</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">12</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">13</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">14</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">15</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">16</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">17</div>
+                <div class="calendar-day" data-prize="🎤 Concert Tickets">18</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">19</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">20</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">21</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">22</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">23</div>
+                <div class="calendar-day" data-prize="🎁 Gift Card">24</div>
+                <div class="calendar-day" data-prize="🎅 PS5">25</div>
             </div>
+            <div class="prize-display" id="prize-display">Click a date to see the prize!</div>
         </div>
     </section>
+
+    <script>
+        const calendarDays = document.querySelectorAll('.calendar-day');
+        const prizeDisplay = document.getElementById('prize-display');
+
+        calendarDays.forEach(day => {
+            day.addEventListener('click', () => {
+                const prize = day.getAttribute('data-prize');
+                prizeDisplay.textContent = `🎉 Prize: ${prize}`;
+            });
+        });
+    </script>
 </body>
 </html>

@@ -161,6 +161,14 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        .raffle-container {
+    margin-top: 20px; /* Adds spacing between the raffle container and other elements */
+}
+
+.raffle-container input {
+    margin-bottom: 10px; /* Adds spacing between the input fields */
+}
+
         .share-container button:hover {
             background: #ff5c33;
             transform: translateY(-3px);
@@ -279,6 +287,11 @@
                 <button id="share-button">Share Your Result</button>
                 <button id="raffle-button" class="raffle-button">Enter Raffle</button>
             </div>
+            <div class="raffle-container" id="raffle-container" style="display: none;">
+                <input type="text" id="raffle-name" placeholder="Your Name" />
+                <input type="email" id="raffle-email" placeholder="Your Email" />
+                <button id="submit-raffle">Submit</button>
+            </div>
         </div>
     </section>
 
@@ -318,7 +331,7 @@
         const countdownMinutes = document.getElementById("minutes");
         const countdownSeconds = document.getElementById("seconds");
 
-        const correctAnswer = "Madison Beer"; // Correct artist name
+        const correctAnswer = "KSI"; // Correct artist name
         let questionCount = 0;
         let guessCount = 0;
         let hintCount = 0; // Track the number of hints used
@@ -326,21 +339,21 @@
 
         // Predefined answers for dropdown questions
         const predefinedAnswers = {
-            "is this a male artist?": "No!",
+            "is this a male artist?": "Yes!",
             "are they retired?": "No!",
-            "are they over 30 years old?": "No!",
+            "are they over 30 years old?": "Yes!",
             "are they over 40 years old?": "No!",
             "are they over 50 years old?": "No!",
             "are they still alive?": "Yes!",
-            "are they from north america?": "Yes!",
-            "are they from the united states?": "Yes!",
-            "are they from europe?": "No!",
-            "do they perform pop music?": "Yes!",
-            "do they perform rap music?": "No!",
-            "do they perform R&B music?": "No!",
+            "are they from north america?": "No!",
+            "are they from the united states?": "No!",
+            "are they from europe?": "Yes!",
+            "do they perform pop music?": "No!",
+            "do they perform rap music?": "Yes!",
+            "do they perform R&B music?": "Yes!",
             "do they perform rock music?": "No!",
             "do they perform country music?": "No!",
-            "do they perform sad music?": "Yes!",
+            "do they perform sad music?": "Sometimes!",
             "do they have more than 20M listeners?": "No!",
             "are they in a band?": "No!",
         };
@@ -395,7 +408,7 @@
         // Handle hint action
         hintButton.addEventListener("click", () => {
             hintCount++;
-            guessResponse.textContent = "Hint: Her name starts with M.";
+            guessResponse.textContent = "Hint: His stage name has three letters.";
             guessResponse.className = "response yes";
         });
 
@@ -464,11 +477,46 @@
             updateCountdown();
             setInterval(updateCountdown, 1000);
         }
+        // Get the raffle container and its elements
+const raffleContainer = document.getElementById("raffle-container");
+const raffleName = document.getElementById("raffle-name");
+const raffleEmail = document.getElementById("raffle-email");
+const submitRaffle = document.getElementById("submit-raffle");
 
-        // Raffle functionality
-        raffleButton.addEventListener("click", () => {
-            alert("You've entered the raffle! Good luck!");
-        });
+// Show the raffle container when the "Enter Raffle" button is clicked
+raffleButton.addEventListener("click", () => {
+    raffleContainer.style.display = "block"; // Display the raffle container
+});
+
+// Handle raffle submission
+submitRaffle.addEventListener("click", () => {
+    const name = raffleName.value.trim();
+    const email = raffleEmail.value.trim();
+
+    if (!name || !email) {
+        alert("Please enter both your name and email to join the raffle.");
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    // Simulate submitting the form (e.g., send to a server)
+    alert(`Thank you, ${name}! You've successfully entered the raffle. Good luck!`);
+    raffleContainer.style.display = "none"; // Hide the raffle container after submission
+
+    // Clear the input fields
+    raffleName.value = "";
+    raffleEmail.value = "";
+});
+
+// Helper function to validate email format
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
     </script>
 </body>
 </html>
