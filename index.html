@@ -372,6 +372,7 @@ nav a:hover {
                 <option value="do they perform R&B music?">Do they perform R&B music?</option>
                 <option value="do they perform rock music?">Do they perform rock music?</option>
                 <option value="do they perform country music?">Do they perform country music?</option>
+                <option value="do they perform jazz music?">Do they perform jazz music?</option>
                 <option value="do they perform sad music?">Do they perform sad music?</option>
                 <option value="are they also an actor?">Are they also an actor?</option>
                 <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
@@ -395,7 +396,6 @@ nav a:hover {
             </div>
         </div>
     </section>
-    <div class="snowfall"></div>
 
 <!-- Rules Popup -->
 <div class="rules-popup" id="rules-popup">
@@ -474,43 +474,13 @@ nav a:hover {
             "do they perform R&B music?": "No!",
             "do they perform rock music?": "No!",
             "do they perform country music?": "No!",
+            "do they perform jazz music?": "Yes!",
             "do they perform sad music?": "Sometimes!",
             "do they have more than 20M listeners?": "Yes!",
             "are they also an actor?": "Yes!",
             "are they in a band?": "No!",
         };
-        function createSnowflakes() {
-    const snowfallContainer = document.querySelector('.snowfall');
-    const snowflakeCount = 50; // Number of snowflakes
 
-    for (let i = 0; i < snowflakeCount; i++) {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.textContent = '❄'; // Snowflake symbol
-        snowflake.style.left = `${Math.random() * 100}vw`; // Random horizontal position
-        snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random fall duration
-        snowflake.style.animationDelay = `${Math.random() * 5}s`; // Random start delay
-        snowflake.style.fontSize = `${Math.random() * 1.5 + 0.5}em`; // Random size
-        snowfallContainer.appendChild(snowflake);
-
-        // Remove the snowflake after animation ends to avoid DOM overload
-        snowflake.addEventListener('animationend', () => {
-            snowflake.remove();
-        });
-    }
-}
-
-// Function to clear all snowflakes periodically
-function clearSnowflakes() {
-    const snowfallContainer = document.querySelector('.snowfall');
-    snowfallContainer.innerHTML = ''; // Clear all snowflakes
-}
-
-// Initialize snowfall on page load
-window.addEventListener('load', () => {
-    setInterval(createSnowflakes, 1000); // Generate snowflakes every second
-    setInterval(clearSnowflakes, 10000); // Clear snowflakes every 10 seconds
-});
 
         // Handle question submission
         submitQuestion.addEventListener("click", () => {
