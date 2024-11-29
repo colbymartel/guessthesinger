@@ -390,6 +390,14 @@ nav a:hover {
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
     color: green; /* Optional: Different color for hints to distinguish */
 }
+.guess-response.incorrect {
+    color: red; /* Display text in red */
+    font-weight: bold;
+}
+.guess-response.correct {
+    color: green; /* Display text in green */
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
@@ -575,27 +583,29 @@ nav a:hover {
 
         // Handle artist guess submission
         submitGuess.addEventListener("click", () => {
-            const guess = artistGuess.value.trim().toLowerCase();
+    const guess = artistGuess.value.trim().toLowerCase();
 
-            if (!guess) {
-                guessResponse.textContent = "Please enter a guess!";
-                return;
-            }
+    if (!guess) {
+        guessResponse.textContent = "Please enter a guess!";
+        guessResponse.className = "response guess-response"; // Default styling
+        return;
+    }
 
-            guessCount++;
-            updateProgress(); // Update progress after question submission
+    guessCount++;
+    updateProgress(); // Update progress after question submission
 
-            if (guess === correctAnswer.toLowerCase()) {
-                guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
-                hasGuessedCorrectly = true;
-                shareContainer.style.display = "block";
-            } else {
-                guessResponse.textContent = "Incorrect! Keep trying.";
-            }
+    if (guess === correctAnswer.toLowerCase()) {
+        guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
+        guessResponse.className = "response guess-response correct"; // Add correct styling
+        hasGuessedCorrectly = true;
+        shareContainer.style.display = "block";
+    } else {
+        guessResponse.textContent = "Incorrect! Keep trying.";
+        guessResponse.className = "response guess-response incorrect"; // Add incorrect styling
+    }
 
-            artistGuess.value = "";
-        });
-
+    artistGuess.value = ""; // Clear input
+});
      // Array of hints
      const hints = [
     "Hint: This is my grandpa's favorite artist.",
@@ -627,37 +637,38 @@ hintButton.addEventListener("click", () => {
 
         // Share functionality
         shareButton.addEventListener("click", () => {
-            const shareText = `Congrats! You guessed today's music artist in 
+    const shareText = `Congrats! You guessed today's music artist in 
 ${questionCount} ${questionCount === 1 ? "question" : "questions"}, 
 ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and 
 ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
 
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(shareText).then(() => {
-                    alert("Result copied to clipboard! Share it with your friends.");
-                    showCountdownPopup();
-                }).catch(err => {
-                    console.error("Clipboard API failed: ", err);
-                    alert("Failed to copy text. Please try again.");
-                });
-            } else {
-                const tempInput = document.createElement("textarea");
-                tempInput.value = shareText;
-                tempInput.style.position = "absolute";
-                tempInput.style.left = "-9999px";
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                try {
-                    document.execCommand("copy");
-                    alert("Result copied to clipboard! Share it with your friends.");
-                    showCountdownPopup();
-                } catch (err) {
-                    console.error("Fallback copy method failed: ", err);
-                    alert("Failed to copy text. Please try again.");
-                }
-                document.body.removeChild(tempInput);
-            }
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert("Result copied to clipboard! Share it with your friends.");
+            showCountdownPopup(); // Show the countdown popup after copying
+        }).catch(err => {
+            console.error("Clipboard API failed: ", err);
+            alert("Failed to copy text. Please try again.");
         });
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = shareText;
+        tempInput.style.position = "absolute";
+        tempInput.style.left = "-9999px";
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+            document.execCommand("copy");
+            alert("Result copied to clipboard! Share it with your friends.");
+            showCountdownPopup(); // Show the countdown popup after copying
+        } catch (err) {
+            console.error("Fallback copy method failed: ", err);
+            alert("Failed to copy text. Please try again.");
+        }
+        document.body.removeChild(tempInput);
+    }
+});
+
 
         // Show countdown popup
         function showCountdownPopup() {
