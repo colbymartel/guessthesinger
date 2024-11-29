@@ -90,15 +90,14 @@ nav a:hover {
         }
 
         .game-container {
-            padding: 30px;
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
+        padding: 30px;
+          max-width: 600px;
+          margin: 0 auto 5px auto; /* Reduce the bottom margin to 5px */
+          background: white;
+          border-radius: 15px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+          text-align: center;
+}
         .game-container select,
         .game-container input {
             padding: 12px 15px;
@@ -340,6 +339,34 @@ nav a:hover {
 .response.no {
     color: red;
 }
+/* Progress Container */
+.progress-container {
+    margin-top: 5px; /* Reduce the margin between the containers */
+    padding: 10px 20px;
+    background-color: #f8f9fa; /* Light gray background */
+    border: 2px solid #4682b4;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: #333;
+    display: flex; /* Use flexbox */
+    justify-content: space-around; /* Space between each item */
+    align-items: center; /* Vertically center items */
+}
+
+.progress-container p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.progress-container strong {
+    color: #4682b4;
+}
+
+
     </style>
 </head>
 <body>
@@ -396,7 +423,15 @@ nav a:hover {
             </div>
         </div>
     </section>
-
+    <section class="game-section">
+    
+        <div class="progress-container">
+            <p><strong>Questions:</strong> <span id="questions-used">0</span></p>
+            <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
+            <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
+        </div>
+        
+    
 <!-- Rules Popup -->
 <div class="rules-popup" id="rules-popup">
     <div class="rules-content">
@@ -481,7 +516,11 @@ nav a:hover {
             "are they in a band?": "No!",
         };
 
-
+        function updateProgress() {
+    document.getElementById("questions-used").textContent = questionCount;
+    document.getElementById("hints-used").textContent = hintCount;
+    document.getElementById("guesses-made").textContent = guessCount;
+}
         // Handle question submission
         submitQuestion.addEventListener("click", () => {
             const selectedQuestion = questionDropdown.value;
@@ -493,7 +532,10 @@ nav a:hover {
             }
 
             questionCount++;
-            questionResponse.textContent = ""; // Clear response for 0.2 seconds
+            updateProgress(); // Update progress after question submission
+            questionResponse.textContent = ""; 
+            
+            // Clear response for 0.2 seconds
 
             setTimeout(() => {
                 const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
@@ -506,6 +548,7 @@ nav a:hover {
                 selectedOption.style.color = "white";
             }, 200);
         });
+        
 
         // Handle artist guess submission
         submitGuess.addEventListener("click", () => {
@@ -517,6 +560,7 @@ nav a:hover {
             }
 
             guessCount++;
+            updateProgress(); // Update progress after question submission
 
             if (guess === correctAnswer.toLowerCase()) {
                 guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
@@ -532,7 +576,7 @@ nav a:hover {
      // Array of hints
      const hints = [
     "Hint: This is my grandpa's favorite artist.",
-    "Hint: His name starts with F.", 
+    "Hint: His name starts with F.",
     "Hint: He sang 'My Way'"
 ];
 
@@ -541,17 +585,30 @@ let currentHintIndex = 0; // Track which hint to display
 // Handle hint action
 hintButton.addEventListener("click", () => {
     if (currentHintIndex < hints.length) {
-        // Display the current hint
-        guessResponse.textContent = hints[currentHintIndex];
-        guessResponse.className = "response yes";
+        // Clear the hint text for 0.2 seconds
+        guessResponse.textContent = "";
+        guessResponse.className = ""; // Remove any previous classes
 
-        // Move to the next hint for subsequent clicks
-        currentHintIndex++;
-        hintCount++;
+        setTimeout(() => {
+            // Display the current hint after 0.2 seconds
+            guessResponse.textContent = hints[currentHintIndex];
+            guessResponse.className = "response yes";
+
+            // Move to the next hint for subsequent clicks
+            currentHintIndex++;
+            hintCount++;
+            updateProgress(); // Update progress after question submission
+        }, 200); // 0.2-second delay
     } else {
-        // If all hints are shown, display a message in red
-        guessResponse.textContent = "No more hints available!";
-        guessResponse.className = "response no"; // Apply the 'no' class for red text
+        // Clear the hint text for 0.2 seconds
+        guessResponse.textContent = "";
+        guessResponse.className = ""; // Remove any previous classes
+
+        setTimeout(() => {
+            // Display the "no more hints" message in red after 0.2 seconds
+            guessResponse.textContent = "No more hints available!";
+            guessResponse.className = "response no"; // Apply the 'no' class for red text
+        }, 200); // 0.2-second delay
     }
 });
 
