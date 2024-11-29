@@ -336,6 +336,45 @@ nav a:hover {
 .close-countdown:hover {
     color: #ff4d4d;
 }
+/* Snowfall Effect */
+.snowfall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Snow does not interfere with clicks */
+    z-index: 9999; /* Ensure it's above other content */
+    overflow: hidden;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    opacity: 0.8;
+    animation: fall linear infinite, sway linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes sway {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+}
+
     </style>
 </head>
 <body>
@@ -391,6 +430,8 @@ nav a:hover {
             </div>
         </div>
     </section>
+    <div class="snowfall"></div>
+
 <!-- Rules Popup -->
 <div class="rules-popup" id="rules-popup">
     <div class="rules-content">
@@ -400,8 +441,8 @@ nav a:hover {
         <ul>
             <li>Select yes/no questions to figure out the mystery artist.</li>
             <li>Use hints wisely – they count towards your total attempts.</li>
-            <li>Each player has only one attempt per day to guess correctly.</li>
-            <li>Have fun and share your results!</li>
+            <li>Everyday until Christmas will feature a new artist to guess.</li>
+            <li>Have fun, share your results with friends, and enter to win prizes!</li>
         </ul>
     </div>
 </div>
@@ -473,7 +514,31 @@ nav a:hover {
             "do they have more than 20M listeners?": "Yes!",
             "are they in a band?": "Yes!",
         };
+        function createSnowflakes() {
+    const snowfallContainer = document.querySelector('.snowfall');
+    const snowflakeCount = 50; // Number of snowflakes
 
+    for (let i = 0; i < snowflakeCount; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.textContent = '❄'; // Snowflake symbol
+        snowflake.style.left = `${Math.random() * 100}vw`; // Random horizontal position
+        snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random fall duration
+        snowflake.style.animationDelay = `${Math.random() * 5}s`; // Random start delay
+        snowflake.style.fontSize = `${Math.random() * 1.5 + 0.5}em`; // Random size
+        snowfallContainer.appendChild(snowflake);
+
+        // Remove the snowflake after animation ends to avoid DOM overload
+        snowflake.addEventListener('animationend', () => {
+            snowflake.remove();
+        });
+    }
+}
+
+// Initialize snowfall on page load
+window.addEventListener('load', () => {
+    setInterval(createSnowflakes, 1000); // Generate snowflakes every second
+});
         // Handle question submission
         submitQuestion.addEventListener("click", () => {
             const selectedQuestion = questionDropdown.value;
