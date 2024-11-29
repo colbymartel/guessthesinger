@@ -535,10 +535,18 @@ nav a:hover {
     }
 }
 
+// Function to clear all snowflakes periodically
+function clearSnowflakes() {
+    const snowfallContainer = document.querySelector('.snowfall');
+    snowfallContainer.innerHTML = ''; // Clear all snowflakes
+}
+
 // Initialize snowfall on page load
 window.addEventListener('load', () => {
     setInterval(createSnowflakes, 1000); // Generate snowflakes every second
+    setInterval(clearSnowflakes, 10000); // Clear snowflakes every 10 seconds
 });
+
         // Handle question submission
         submitQuestion.addEventListener("click", () => {
             const selectedQuestion = questionDropdown.value;
