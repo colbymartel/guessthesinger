@@ -138,13 +138,6 @@ nav a:hover {
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .game-container .give-up {
-            background: #ff4d4d;
-        }
-
-        .game-container .give-up:hover {
-            background: #cc0000;
-        }
 
         .response {
             margin-top: 10px;
@@ -386,7 +379,6 @@ nav a:hover {
             <input type="text" id="artist-guess" placeholder="Type your artist guess here..." />
             <button id="submit-guess">Submit Guess</button>
             <button id="hint" class="hint">Hint</button>
-            <button id="give-up" class="give-up">Give Up</button>
             <div class="response" id="guess-response">Guess the artist's name!</div>
             <div class="share-container" id="share-container" style="display: none;">
                 <button id="share-button">Share Your Result</button>
@@ -444,7 +436,6 @@ nav a:hover {
         const hintButton = document.getElementById("hint");
         const artistGuess = document.getElementById("artist-guess");
         const submitGuess = document.getElementById("submit-guess");
-        const giveUp = document.getElementById("give-up");
         const guessResponse = document.getElementById("guess-response");
         const shareContainer = document.getElementById("share-container");
         const shareButton = document.getElementById("share-button");
@@ -530,18 +521,30 @@ nav a:hover {
             artistGuess.value = "";
         });
 
-        // Handle hint action
-        hintButton.addEventListener("click", () => {
-            hintCount++;
-            guessResponse.textContent = "Hint: She is married to a billionaire.";
-            guessResponse.className = "response yes";
-        });
+     // Array of hints
+const hints = [
+    "Hint: She is married to a billionaire.",
+    "Hint: Her name starts with the letter 'B'.",
+    "Hint: 'If you liked it, then you shoulda put a ring on it!'"
+];
 
-        // Handle give-up action
-        giveUp.addEventListener("click", () => {
-            guessResponse.textContent = `Sorry, the correct answer is ${correctAnswer}. Better luck next time!`;
-            guessResponse.className = "response no";
-        });
+let currentHintIndex = 0; // Track which hint to display
+
+// Handle hint action
+hintButton.addEventListener("click", () => {
+    if (currentHintIndex < hints.length) {
+        // Display the current hint
+        guessResponse.textContent = hints[currentHintIndex];
+        guessResponse.className = "response yes";
+
+        // Move to the next hint for subsequent clicks
+        currentHintIndex++;
+        hintCount++;
+    } else {
+        // If all hints are shown, display a message
+        guessResponse.textContent = "No more hints available!";
+    }
+});
 
         // Share functionality
         shareButton.addEventListener("click", () => {
@@ -633,6 +636,7 @@ closeCountdown.addEventListener("click", () => {
     const countdownPopup = document.getElementById("countdown-popup");
     countdownPopup.style.display = "none";
 });
+
 </script>
 </body>
 </html>
