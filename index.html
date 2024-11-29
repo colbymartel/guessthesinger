@@ -90,11 +90,11 @@ nav a:hover {
         }
 
         .game-container {
-        padding: 30px;
+        padding: 35px;
           max-width: 600px;
-          margin: 0 auto -40px auto; /* Reduce the bottom margin to 5px */
+          margin: 0 auto -40px auto; 
           background: white;
-          border-radius: 15px;
+          border-radius: 10px;
           box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
           text-align: center;
 }
@@ -137,21 +137,40 @@ nav a:hover {
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
+/* Question Response Styling */
+.question-response {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 1.3rem; /* Slightly smaller text for question response */
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Standard black for guesses */
+}
 
-        .response {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
+/* Guess Response Styling */
+.guess-response {
+    margin-top: 20px;
+    margin-bottom: -10px;
+    font-size: 1.3rem; /* Larger text for guess prompt */
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Standard black for guesses */
+}
         .response.yes {
             color: green;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem; /* Larger text for guess prompt */
+
         }
 
         .response.no {
             color: red;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem; /* Larger text for guess prompt */
         }
 
         .share-container {
@@ -338,7 +357,12 @@ nav a:hover {
 
 .response.no {
     color: red;
+    font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem; /* Larger text for guess prompt */
 }
+
 /* Progress Container */
 .progress-container {
     position: relative;
@@ -406,12 +430,12 @@ nav a:hover {
                 <option value="are they in a band?">Are/were they in a band?</option>
             </select>
             <button id="submit-question">Submit Question</button>
-            <div class="response" id="question-response">Select a question to start.</div>
+            <div class="response question-response" id="question-response">Select a question to start.</div>
 
             <input type="text" id="artist-guess" placeholder="Type your artist guess here..." />
             <button id="submit-guess">Submit Guess</button>
             <button id="hint" class="hint">Hint</button>
-            <div class="response" id="guess-response">Guess the artist's name!</div>
+            <div class="response guess-response" id="guess-response">Guess the artist's name!</div>
             <div class="share-container" id="share-container" style="display: none;">
                 <button id="share-button">Share Your Result</button>
                 <button id="raffle-button" class="raffle-button">Enter Raffle</button>
