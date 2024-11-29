@@ -357,12 +357,7 @@ nav a:hover {
 
 .response.no {
     color: red;
-    font-weight: bold;
-            margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 1.3rem; /* Larger text for guess prompt */
 }
-
 /* Progress Container */
 .progress-container {
     position: relative;
@@ -390,7 +385,11 @@ nav a:hover {
     color: #4682b4;
 }
 
-
+.guess-response.hint {
+    margin-bottom: 5px; /* Reduce margin below hints */
+    font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
+    color: green; /* Optional: Different color for hints to distinguish */
+}
     </style>
 </head>
 <body>
@@ -609,24 +608,14 @@ let currentHintIndex = 0; // Track which hint to display
 // Handle hint action
 hintButton.addEventListener("click", () => {
     if (currentHintIndex < hints.length) {
-        // Clear the hint text for 0.2 seconds
-        guessResponse.textContent = "";
-        guessResponse.className = ""; // Remove any previous classes
-
-        setTimeout(() => {
-            // Display the current hint after 0.2 seconds
-            guessResponse.textContent = hints[currentHintIndex];
-            guessResponse.className = "response yes";
-
-            // Move to the next hint for subsequent clicks
-            currentHintIndex++;
-            hintCount++;
-            updateProgress(); // Update progress after question submission
-        }, 200); // 0.2-second delay
+        guessResponse.className = "response guess-response hint"; // Add hint-specific class
+        guessResponse.textContent = hints[currentHintIndex];
+        currentHintIndex++;
+        hintCount++;
+        updateProgress(); // Update progress after using a hint
     } else {
-        // Clear the hint text for 0.2 seconds
-        guessResponse.textContent = "";
-        guessResponse.className = ""; // Remove any previous classes
+        guessResponse.className = "response no"; // Remove hint-specific class for 'no hints' case
+        guessResponse.textContent = "No more hints available!";
 
         setTimeout(() => {
             // Display the "no more hints" message in red after 0.2 seconds
