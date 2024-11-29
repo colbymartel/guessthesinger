@@ -336,44 +336,7 @@ nav a:hover {
 .close-countdown:hover {
     color: #ff4d4d;
 }
-/* Snowfall Effect */
-.snowfall {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* Snow does not interfere with clicks */
-    z-index: 9999; /* Ensure it's above other content */
-    overflow: hidden;
-}
 
-.snowflake {
-    position: absolute;
-    top: -10px;
-    color: white;
-    font-size: 1em;
-    opacity: 0.8;
-    animation: fall linear infinite, sway linear infinite;
-}
-
-@keyframes fall {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(100vh);
-    }
-}
-
-@keyframes sway {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(20px);
-    }
-}
 .response.no {
     color: red;
 }
@@ -598,7 +561,7 @@ window.addEventListener('load', () => {
 
      // Array of hints
      const hints = [
-    "Hint: He was one of the most popular entertainers of the 20th century.",
+    "Hint: This is my grandpa's favorite artist.",
     "Hint: His name starts with F.", 
     "Hint: He sang 'My Way'"
 ];
