@@ -162,10 +162,36 @@ nav a:hover {
     <script>
         const calendarDays = document.querySelectorAll('.calendar-day');
         const prizeDisplay = document.getElementById('prize-display');
-
+    
         calendarDays.forEach(day => {
             day.addEventListener('click', () => {
                 const prize = day.getAttribute('data-prize');
+                const dayNumber = day.textContent.trim(); // Get the day number
+     // Check if it's day 1 and redirect to day2.html
+     if (dayNumber === "1") {
+                    window.location.href = "day1.html";
+                    return; // Exit the function to prevent further actions
+                }
+    
+                // Check if it's day 2 and redirect to day2.html
+                if (dayNumber === "2") {
+                    window.location.href = "day2.html";
+                    return; // Exit the function to prevent further actions
+                }
+                if (dayNumber === "3") {
+                    window.location.href = "day3.html";
+                    return; // Exit the function to prevent further actions
+                }
+                if (dayNumber === "4") {
+                    window.location.href = "day4.html";
+                    return; // Exit the function to prevent further actions
+                }
+                if (dayNumber === "5") {
+                    window.location.href = "day5.html";
+                    return; // Exit the function to prevent further actions
+                }
+    
+                // For all other days, just display the prize
                 prizeDisplay.textContent = `🎉 Prize: ${prize}`;
             });
         });
