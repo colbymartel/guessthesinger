@@ -83,22 +83,21 @@ nav a:hover {
         }
 
         .game-section h3 {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             margin-bottom: 20px;
             margin-top: -20px;
             color: #4682b4;
         }
 
         .game-container {
-            padding: 30px;
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
+        padding: 35px;
+          max-width: 600px;
+          margin: 0 auto -40px auto; 
+          background: white;
+          border-radius: 10px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+          text-align: center;
+}
         .game-container select,
         .game-container input {
             padding: 12px 15px;
@@ -138,21 +137,40 @@ nav a:hover {
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
+/* Question Response Styling */
+.question-response {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 1.3rem; /* Slightly smaller text for question response */
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Standard black for guesses */
+}
 
-        .response {
-            margin-top: 10px;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
+/* Guess Response Styling */
+.guess-response {
+    margin-top: 20px;
+    margin-bottom: -10px;
+    font-size: 1.3rem; /* Larger text for guess prompt */
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Standard black for guesses */
+}
         .response.yes {
             color: green;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem; /* Larger text for guess prompt */
+
         }
 
         .response.no {
             color: red;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem; /* Larger text for guess prompt */
         }
 
         .share-container {
@@ -336,46 +354,49 @@ nav a:hover {
 .close-countdown:hover {
     color: #ff4d4d;
 }
-/* Snowfall Effect */
-.snowfall {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* Snow does not interfere with clicks */
-    z-index: 9999; /* Ensure it's above other content */
-    overflow: hidden;
-}
 
-.snowflake {
-    position: absolute;
-    top: -10px;
-    color: white;
-    font-size: 1em;
-    opacity: 0.8;
-    animation: fall linear infinite, sway linear infinite;
-}
-
-@keyframes fall {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(100vh);
-    }
-}
-
-@keyframes sway {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(20px);
-    }
-}
 .response.no {
     color: red;
+}
+/* Progress Container */
+.progress-container {
+    position: relative;
+    top: -20px; /* Move upwards by 20px */
+    padding: 10px 30px;
+    border: 2px solid #4682b4;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: #333;
+    display: flex; /* Use flexbox */
+    justify-content: space-around; /* Space between each item */
+    align-items: center; /* Vertically center items */
+}
+
+.progress-container p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.progress-container strong {
+    color: #4682b4;
+}
+
+.guess-response.hint {
+    margin-bottom: 5px; /* Reduce margin below hints */
+    font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
+    color: green; /* Optional: Different color for hints to distinguish */
+}
+.guess-response.incorrect {
+    color: red; /* Display text in red */
+    font-weight: bold;
+}
+.guess-response.correct {
+    color: green; /* Display text in green */
+    font-weight: bold;
 }
     </style>
 </head>
@@ -390,7 +411,7 @@ nav a:hover {
         <a href="about.html">About</a>
     </nav>
     <section class="game-section">
-        <h3>Start Guessing</h3>
+        <h3>Game #1</h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Choose a question</option>
@@ -409,18 +430,19 @@ nav a:hover {
                 <option value="do they perform R&B music?">Do they perform R&B music?</option>
                 <option value="do they perform rock music?">Do they perform rock music?</option>
                 <option value="do they perform country music?">Do they perform country music?</option>
+                <option value="do they perform jazz music?">Do they perform jazz music?</option>
                 <option value="do they perform sad music?">Do they perform sad music?</option>
                 <option value="are they also an actor?">Are they also an actor?</option>
                 <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
                 <option value="are they in a band?">Are/were they in a band?</option>
             </select>
             <button id="submit-question">Submit Question</button>
-            <div class="response" id="question-response">Select a question to start.</div>
+            <div class="response question-response" id="question-response">Select a question to start.</div>
 
             <input type="text" id="artist-guess" placeholder="Type your artist guess here..." />
             <button id="submit-guess">Submit Guess</button>
             <button id="hint" class="hint">Hint</button>
-            <div class="response" id="guess-response">Guess the artist's name!</div>
+            <div class="response guess-response" id="guess-response">Guess the artist's name!</div>
             <div class="share-container" id="share-container" style="display: none;">
                 <button id="share-button">Share Your Result</button>
                 <button id="raffle-button" class="raffle-button">Enter Raffle</button>
@@ -432,8 +454,15 @@ nav a:hover {
             </div>
         </div>
     </section>
-    <div class="snowfall"></div>
-
+    <section class="game-section">
+    
+        <div class="progress-container">
+            <p><strong>Questions:</strong> <span id="questions-used">0</span></p>
+            <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
+            <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
+        </div>
+        
+    
 <!-- Rules Popup -->
 <div class="rules-popup" id="rules-popup">
     <div class="rules-content">
@@ -511,44 +540,18 @@ nav a:hover {
             "do they perform R&B music?": "No!",
             "do they perform rock music?": "No!",
             "do they perform country music?": "No!",
+            "do they perform jazz music?": "Yes!",
             "do they perform sad music?": "Sometimes!",
             "do they have more than 20M listeners?": "Yes!",
             "are they also an actor?": "Yes!",
             "are they in a band?": "No!",
         };
-        function createSnowflakes() {
-    const snowfallContainer = document.querySelector('.snowfall');
-    const snowflakeCount = 50; // Number of snowflakes
 
-    for (let i = 0; i < snowflakeCount; i++) {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.textContent = '❄'; // Snowflake symbol
-        snowflake.style.left = `${Math.random() * 100}vw`; // Random horizontal position
-        snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`; // Random fall duration
-        snowflake.style.animationDelay = `${Math.random() * 5}s`; // Random start delay
-        snowflake.style.fontSize = `${Math.random() * 1.5 + 0.5}em`; // Random size
-        snowfallContainer.appendChild(snowflake);
-
-        // Remove the snowflake after animation ends to avoid DOM overload
-        snowflake.addEventListener('animationend', () => {
-            snowflake.remove();
-        });
-    }
+        function updateProgress() {
+    document.getElementById("questions-used").textContent = questionCount;
+    document.getElementById("hints-used").textContent = hintCount;
+    document.getElementById("guesses-made").textContent = guessCount;
 }
-
-// Function to clear all snowflakes periodically
-function clearSnowflakes() {
-    const snowfallContainer = document.querySelector('.snowfall');
-    snowfallContainer.innerHTML = ''; // Clear all snowflakes
-}
-
-// Initialize snowfall on page load
-window.addEventListener('load', () => {
-    setInterval(createSnowflakes, 1000); // Generate snowflakes every second
-    setInterval(clearSnowflakes, 10000); // Clear snowflakes every 10 seconds
-});
-
         // Handle question submission
         submitQuestion.addEventListener("click", () => {
             const selectedQuestion = questionDropdown.value;
@@ -560,7 +563,10 @@ window.addEventListener('load', () => {
             }
 
             questionCount++;
-            questionResponse.textContent = ""; // Clear response for 0.2 seconds
+            updateProgress(); // Update progress after question submission
+            questionResponse.textContent = ""; 
+            
+            // Clear response for 0.2 seconds
 
             setTimeout(() => {
                 const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
@@ -573,33 +579,37 @@ window.addEventListener('load', () => {
                 selectedOption.style.color = "white";
             }, 200);
         });
+        
 
         // Handle artist guess submission
         submitGuess.addEventListener("click", () => {
-            const guess = artistGuess.value.trim().toLowerCase();
+    const guess = artistGuess.value.trim().toLowerCase();
 
-            if (!guess) {
-                guessResponse.textContent = "Please enter a guess!";
-                return;
-            }
+    if (!guess) {
+        guessResponse.textContent = "Please enter a guess!";
+        guessResponse.className = "response guess-response"; // Default styling
+        return;
+    }
 
-            guessCount++;
+    guessCount++;
+    updateProgress(); // Update progress after question submission
 
-            if (guess === correctAnswer.toLowerCase()) {
-                guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
-                hasGuessedCorrectly = true;
-                shareContainer.style.display = "block";
-            } else {
-                guessResponse.textContent = "Incorrect! Keep trying.";
-            }
+    if (guess === correctAnswer.toLowerCase()) {
+        guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
+        guessResponse.className = "response guess-response correct"; // Add correct styling
+        hasGuessedCorrectly = true;
+        shareContainer.style.display = "block";
+    } else {
+        guessResponse.textContent = "Incorrect! Keep trying.";
+        guessResponse.className = "response guess-response incorrect"; // Add incorrect styling
+    }
 
-            artistGuess.value = "";
-        });
-
+    artistGuess.value = ""; // Clear input
+});
      // Array of hints
      const hints = [
-    "Hint: He was one of the most popular entertainers of the 20th century.",
-    "Hint: His name starts with F.", 
+    "Hint: This is my grandpa's favorite artist.",
+    "Hint: His name starts with F.",
     "Hint: He sang 'My Way'"
 ];
 
@@ -608,50 +618,57 @@ let currentHintIndex = 0; // Track which hint to display
 // Handle hint action
 hintButton.addEventListener("click", () => {
     if (currentHintIndex < hints.length) {
-        // Display the current hint
+        guessResponse.className = "response guess-response hint"; // Add hint-specific class
         guessResponse.textContent = hints[currentHintIndex];
-        guessResponse.className = "response yes";
-
-        // Move to the next hint for subsequent clicks
         currentHintIndex++;
         hintCount++;
+        updateProgress(); // Update progress after using a hint
     } else {
-        // If all hints are shown, display a message in red
+        guessResponse.className = "response no"; // Remove hint-specific class for 'no hints' case
         guessResponse.textContent = "No more hints available!";
-        guessResponse.className = "response no"; // Apply the 'no' class for red text
+
+        setTimeout(() => {
+            // Display the "no more hints" message in red after 0.2 seconds
+            guessResponse.textContent = "No more hints available!";
+            guessResponse.className = "response no"; // Apply the 'no' class for red text
+        }, 200); // 0.2-second delay
     }
 });
 
         // Share functionality
         shareButton.addEventListener("click", () => {
-            const shareText = `Congrats! You guessed today's music artist in ${questionCount} questions, ${guessCount} guesses, and ${hintCount} hints! 🌟 Try at guessthesinger.com`;
+    const shareText = `Congrats! You guessed today's music artist in 
+${questionCount} ${questionCount === 1 ? "question" : "questions"}, 
+${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and 
+${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
 
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(shareText).then(() => {
-                    alert("Result copied to clipboard! Share it with your friends.");
-                    showCountdownPopup();
-                }).catch(err => {
-                    console.error("Clipboard API failed: ", err);
-                    alert("Failed to copy text. Please try again.");
-                });
-            } else {
-                const tempInput = document.createElement("textarea");
-                tempInput.value = shareText;
-                tempInput.style.position = "absolute";
-                tempInput.style.left = "-9999px";
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                try {
-                    document.execCommand("copy");
-                    alert("Result copied to clipboard! Share it with your friends.");
-                    showCountdownPopup();
-                } catch (err) {
-                    console.error("Fallback copy method failed: ", err);
-                    alert("Failed to copy text. Please try again.");
-                }
-                document.body.removeChild(tempInput);
-            }
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert("Result copied to clipboard! Share it with your friends.");
+            showCountdownPopup(); // Show the countdown popup after copying
+        }).catch(err => {
+            console.error("Clipboard API failed: ", err);
+            alert("Failed to copy text. Please try again.");
         });
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = shareText;
+        tempInput.style.position = "absolute";
+        tempInput.style.left = "-9999px";
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+            document.execCommand("copy");
+            alert("Result copied to clipboard! Share it with your friends.");
+            showCountdownPopup(); // Show the countdown popup after copying
+        } catch (err) {
+            console.error("Fallback copy method failed: ", err);
+            alert("Failed to copy text. Please try again.");
+        }
+        document.body.removeChild(tempInput);
+    }
+});
+
 
         // Show countdown popup
         function showCountdownPopup() {
