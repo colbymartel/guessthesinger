@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game History</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Light sky blue background */
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styling */
+        header {
+            background: linear-gradient(90deg, #87cefa, #4682b4);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        header p {
+            margin: -5px 0 0;
+            font-size: 1rem;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: #4682b4;
+            color: white;
+            display: flex;
+            justify-content: center;
+            padding: 8px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #d0eaff;
+        }
+
+        /* Calendar Section */
+        .calendar-section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .calendar-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+
+        .calendar-container h2 {
+            font-size: 2.2rem;
+            color: #4682b4;
+            margin-bottom: 20px;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .calendar-day.locked {
+            background-color: #d3d3d3; /* Grey background for locked days */
+            color: #777; /* Light grey text for locked days */
+            cursor: default; /* No pointer cursor for locked days */
+        }
+
+        .calendar-day.unlocked {
+            background-color: #87cefa; /* Blue background for unlocked day */
+            color: white;
+        }
+
+        .calendar-day.unlocked:hover {
+            background-color: #315f85;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .prize-display {
+            margin-top: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4682b4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Game History</h1>
+    </header>
+    <nav>
+        <a href="index.html">Play</a>
+        <a href="calendar.html">History</a>
+        <a href="about.html">About</a>
+    </nav>
+    <section class="calendar-section">
+        <div class="calendar-container">
+            <h2>December</h2>
+            <div class="calendar">
+                <!-- Dates for December 1st to 25th -->
+                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">1</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day locked">🔒</div>
+            </div>
+            <div class="prize-display" id="prize-display">Click a date to guess the daily artist!</div>
+        </div>
+    </section>
+
+    <script>
+        const calendarDays = document.querySelectorAll('.calendar-day');
+    
+        calendarDays.forEach(day => {
+            day.addEventListener('click', () => {
+                if (day.textContent.trim() === "1") {
+                    // Redirect to index.html when Day 1 is clicked
+                    window.location.href = "index.html";
+                }
+            });
+        });
+    </script>
+    
+
+    </script>
+</body>
+</html>

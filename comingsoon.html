@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon</title>
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Light sky blue background */
+            color: #333;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 3rem;
+            color: #4682b4;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* Button Styling */
+        .game-button {
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background-color: #4682b4;
+            border: none;
+            border-radius: 8px;
+            cursor: not-allowed;
+            opacity: 0.7;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .game-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Footer Styling */
+        footer {
+            margin-top: 50px;
+            font-size: 1rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Guess The Singer</h1>
+        <p>Created by Colby Martel</p>
+    </header>
+    <nav>
+        <a href="index.html">Play</a>
+        <a href="calendar.html">Calendar</a>
+        <a href="about.html">About</a>
+    </nav>
+    <h1>Coming Soon!</h1>
+    <p>Exciting games are on their way. Stay tuned!</p>
+
+    <div class="button-container">
+        <button class="game-button" disabled>Guess the Animal</button>
+        <button class="game-button" disabled>Guess the Food</button>
+        <button class="game-button" disabled>Guess the Character</button>
+        <button class="game-button" disabled>Guess the Athlete</button>
+        <button class="game-button" disabled>Guess the City</button>
+    </div>
+
+    <footer>
+        &copy; 2024 Colby Martel LLC. All rights reserved.
+    </footer>
+</body>
+</html>

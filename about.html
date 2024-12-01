@@ -6,106 +6,147 @@
     <title>About | Guess The Daily Music Artist</title>
     <style>
         /* General Body Styling */
-       /* General Body Styling */
-body {
-    font-family: 'Calibri', 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f8ff; /* Light sky blue background */
-    color: #333;
-    line-height: 1.6;
-}
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Light sky blue background */
+            color: #333;
+            line-height: 1.6;
+        }
 
-/* Header Styling */
-header {
-    background: linear-gradient(90deg, #87cefa, #4682b4);
-    color: white;
-    padding: 15px 0; /* Reduced padding */
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+        /* Header Styling */
+        header {
+            background: linear-gradient(90deg, #87cefa, #4682b4); /* Matching gradient */
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-header h1 {
-    margin: 0;
-    font-size: 2.5rem; /* Reduced font size */
-    font-weight: bold;
-}
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
 
-header p {
-    margin: -5px 0 0;
-    font-size: 1rem; /* Reduced font size */
-}
+        header p {
+            margin: -5px 0 0;
+            font-size: 1rem;
+        }
 
-/* Navigation Bar */
-nav {
-    background: #4682b4;
-    color: white;
-    display: flex;
-    justify-content: center;
-    padding: 8px 0; /* Reduced padding */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+        /* Navigation Bar */
+        nav {
+            background: #4682b4;
+            color: white;
+            display: flex;
+            justify-content: center;
+            padding: 8px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px; /* Reduced spacing */
-    font-size: 1.1rem; /* Slightly smaller font */
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
 
-nav a:hover {
-    color: #d0eaff;
-}
+        nav a:hover {
+            color: #d0eaff;
+        }
 
-/* About Section */
-.about-section {
-    max-width: 800px;
-    margin: 20px auto; /* Reduced margin for tighter spacing */
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
+        /* About Section */
+        .about-section {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 20px 40px;
+            text-align: center;
+        }
 
-.about-section h2 {
-    font-size: 2rem; /* Reduced font size */
-    color: #4682b4;
-    padding: 30px; /* Reduced margin */
-    margin-bottom: -30px;
-    text-align: center;
-}
+        .about-section h2 {
+            font-size: 2rem;
+            color: #3a77c2;
+            margin-bottom: 15px;
+        }
 
-.about-section p {
-    font-size: 1.1rem; /* Slightly smaller font */
-    margin: 10px 20px; /* Reduced margin */
-    text-align: justify;
-    padding: 20px; /* Reduced padding */
-}
+        .about-section p {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            text-align: justify;
+            padding: 0 10px;
+        }
 
-.about-section .creator {
-    text-align: center;
-}
+        /* TikTok Embeds Styling */
+        .tiktok-videos {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
 
-.about-section img {
-    max-width: 120px; /* Reduced image size */
-    border-radius: 50%;
-    margin: 10px auto;
-    display: block;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
+        .tiktok-embed {
+            max-width: 300px;
+            border: none;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
 
-.about-section .creator h3 {
-    font-size: 1.5rem; /* Reduced font size */
-    color: #4682b4;
-}
+        /* Creator Styling */
+        .creator {
+            margin-top: 30px;
+            text-align: center;
+        }
 
-.about-section .creator p {
-    font-size: 1.1rem; /* Reduced font size */
-    color: #333;
-}
+        .creator img {
+            max-width: 150px;
+            border-radius: 50%;
+            margin: 15px auto;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
-.social-links {
+        .creator h2 {
+            font-size: 2rem;
+            color: #3a77c2;
+            margin-bottom: 10px;
+        }
+
+        .creator ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0 auto;
+            text-align: left;
+            max-width: 600px;
+        }
+
+        .creator ul li {
+            background-color: #87cefa;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .creator ul li:hover {
+            background-color: #315f85;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        .social-links {
     display: flex;
     justify-content: center;
     padding: 35px; /* Reduced margin */
@@ -122,31 +163,49 @@ nav a:hover {
 .social-links a:hover {
     color: #315f85;
 }
-
+.about-section img {
+    max-width: 300px; /* Limit the maximum width of the image */
+    width: 100%; /* Ensure responsiveness */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 20px; /* Add curved edges */
+    display: block; /* Center alignment */
+    margin: 20px auto; /* Space around the image */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+}
     </style>
 </head>
 <body>
     <header>
-        <h1>About The Game</h1>
-        <p>Learn more about Guess The Daily Music Artist and its creator.</p>
+        <h1>About</h1>
     </header>
     <nav>
         <a href="index.html">Play</a>
-        <a href="prizes.html">Prizes</a>
+        <a href="calendar.html">History</a>
         <a href="about.html">About</a>
     </nav>
     <section class="about-section">
         <h2>About Me</h2>
         <p>
-            Hi! I'm Colby! After guessing favorite music artists of over 100 strangers, I noticed how many people enjoy playing along with me in the comments. So, I wanted to create a daily guessing game, and to celebrate the holiday season, for every day you participate from now until Christmas, you'll be entered to win a prize!
+            Hi! I'm Colby! After guessing favorite music artists of over 100 strangers, I noticed how many people enjoy playing along with me in the comments. So, I wanted to create a daily guessing game, and to celebrate the holiday season, give back to the community who makes this career possible for me!🎁
+        </p>
+        <img src="OliviaRodrigo.jpg" alt="Colby Martel">
+        <h2>About The Game</h2>
+        <p>
+            Everyday until Christmas, there will be a new artist to guess and a new mystery prize to win! Anyone who correctly guesses the daily artist and enters the Google Form will have a random and equal chance to win the prize of the day. A new prize will be announced each day and there will be one winner each day. Grand prizes for this month include AirPods Max, Concert Tickets, and more!
         </p>
         <div class="creator">
-            <img src="OliviaRodrigo.jpg" alt="Colby Martel">
-            <h3>Colby Martel</h3>
-            <p>
-                Colby Martel is a video creator who is passionate about connecting people through games and challenges.
-                Follow Colby on his journey as he continues to explore new ways to engage and connect with his audience.
-            </p>
+            <h2>How To Play</h2>
+            <ul>
+                <li>Select yes/no questions to figure out the mystery artist.</li>
+                <li>Try to minimize the number of questions and hints you use!</li>
+                <li>Everyday until Christmas will feature a new artist to guess.</li>
+                <li>Have fun, share your results with friends, and enter to win prizes!</li>
+            </ul>
+            <h2>Trending Videos🔥</h2>
+            <div class="tiktok-videos">
+                <iframe width="315" height="560" src="https://www.youtube.com/embed/M5Vjngw9fUQ" title="Guessing his favorite music artist!😂🤦‍♂️" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe width="315" height="560" src="https://www.youtube.com/embed/t9ElcxxFznY" title="Guessing Her Favorite Music Artist🤩" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
             <div class="social-links">
                 <a href="https://www.youtube.com/colbymartel" target="_blank">YouTube</a>
                 <a href="https://www.instagram.com/colbymartel19" target="_blank">Instagram</a>
