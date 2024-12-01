@@ -646,10 +646,7 @@ hintButton.addEventListener("click", () => {
 
         // Share functionality
         shareButton.addEventListener("click", () => {
-    const shareText = `Congrats! You guessed today's music artist in 
-${questionCount} ${questionCount === 1 ? "question" : "questions"}, 
-${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and 
-${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
+    const shareText = `Congrats! You guessed today's music artist in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
 
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(shareText).then(() => {
