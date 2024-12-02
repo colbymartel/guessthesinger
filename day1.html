@@ -398,6 +398,30 @@ nav a:hover {
     color: green; /* Display text in green */
     font-weight: bold;
 }
+.prize-announcement {
+    position: relative;
+    margin: 10px auto;
+    padding: 10px;
+    max-width: 600px;
+    background-color: #f9f9f9;
+    border: 2px solid #4682b4;
+    border-radius: 10px;
+    text-align: center;
+    justify-content: space-around; /* Space between each item */
+    align-items: center; /* Vertically center items */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.prize-announcement p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+
+.prize-announcement span {
+    color: #315f85;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
@@ -407,7 +431,7 @@ nav a:hover {
     </header>
     <nav>
         <a href="index.html">Play</a>
-        <a href="prizes.html">Prizes</a>
+        <a href="calendar.html">History</a>
         <a href="about.html">About</a>
     </nav>
     <section class="game-section">
@@ -420,6 +444,8 @@ nav a:hover {
                 <option value="are they over 30 years old?">Are they over 30 years old?</option>
                 <option value="are they over 40 years old?">Are they over 40 years old?</option>
                 <option value="are they over 50 years old?">Are they over 50 years old?</option>
+                <option value="were they most popular after 2000?">Were they most popular after 2000?</option>
+                <option value="were they most popular after 2020?">Were they most popular after 2020?</option>
                 <option value="are they from north america?">Are they from North America?</option>
                 <option value="are they from the united states?">Are they from the United States?</option>
                 <option value="are they from europe?">Are they from Europe?</option>
@@ -433,8 +459,10 @@ nav a:hover {
                 <option value="do they perform jazz music?">Do they perform jazz music?</option>
                 <option value="do they perform sad music?">Do they perform sad music?</option>
                 <option value="are they also an actor?">Are they also an actor?</option>
+                <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
                 <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
                 <option value="are they in a band?">Are/were they in a band?</option>
+                <option value="do they have dark hair?">Do they have dark hair?</option>
             </select>
             <button id="submit-question">Submit Question</button>
             <div class="response question-response" id="question-response">Select a question to start.</div>
@@ -467,13 +495,13 @@ nav a:hover {
 <div class="rules-popup" id="rules-popup">
     <div class="rules-content">
         <button class="close-popup" id="close-popup">&times;</button>
-        <h2>Game Rules</h2>
+        <h2>How To Play</h2>
         <p>Welcome to "Guess The Daily Music Artist"! Here are the rules:</p>
         <ul>
             <li>Select yes/no questions to figure out the mystery artist.</li>
-            <li>Use hints wisely – they count towards your total attempts.</li>
-            <li>Everyday until Christmas will feature a new artist to guess.</li>
+            <li>Try to minimize the number of questions and hints you use!</li>
             <li>Have fun, share your results with friends, and enter to win prizes!</li>
+            <li>Everyday until Christmas will feature a new artist to guess⭐</li>
         </ul>
     </div>
 </div>
@@ -496,6 +524,11 @@ nav a:hover {
         </div>
     </div>
 </div>
+<!-- Prize Announcement Container -->
+<div class="prize-announcement">
+    <p><strong>Today's Prize:</strong> <span id="prize-name">$25 Amazon Gift Card</span></p>
+    <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
+</div>
     <div class="social-links">
         <a href="https://www.youtube.com/colbymartel" target="_blank">YouTube</a>
         <a href="https://www.instagram.com/colbymartel19" target="_blank">Instagram</a>
@@ -517,7 +550,7 @@ nav a:hover {
         const countdownMinutes = document.getElementById("minutes");
         const countdownSeconds = document.getElementById("seconds");
 
-        const correctAnswer = "Frank Sinatra"; // Correct artist name
+        const correctAnswer = "Billie Eilish"; // Correct artist name
         let questionCount = 0;
         let guessCount = 0;
         let hintCount = 0; // Track the number of hints used
@@ -525,12 +558,14 @@ nav a:hover {
 
         // Predefined answers for dropdown questions
         const predefinedAnswers = {
-            "is this a male artist?": "Yes!",
-            "are they over 30 years old?": "Yes!",
-            "are they over 40 years old?": "Yes!",
-            "are they over 50 years old?": "Yes!",
-            "do they go by their birth name?": "Close!",
-            "are they still alive?": "No!",
+            "is this a male artist?": "No!",
+            "are they over 30 years old?": "No!",
+            "are they over 40 years old?": "No!",
+            "are they over 50 years old?": "No!",
+            "were they most popular after 2000?": "Yes!",
+            "were they most popular after 2020?": "Yes!",
+            "do they go by their birth name?": "Yes!",
+            "are they still alive?": "Yes!",
             "are they from north america?": "Yes!",
             "are they from the united states?": "Yes!",
             "do they go by one word?": "No!",
@@ -540,11 +575,13 @@ nav a:hover {
             "do they perform R&B music?": "No!",
             "do they perform rock music?": "No!",
             "do they perform country music?": "No!",
-            "do they perform jazz music?": "Yes!",
-            "do they perform sad music?": "Sometimes!",
+            "do they perform jazz music?": "No!",
+            "do they perform sad music?": "Yes!",
+            "do they have more than 10M TikTok followers?": "Yes!",
             "do they have more than 20M listeners?": "Yes!",
-            "are they also an actor?": "Yes!",
+            "are they also an actor?": "No!",
             "are they in a band?": "No!",
+            "do they have dark hair?": "No!",
         };
 
         function updateProgress() {
@@ -608,9 +645,10 @@ nav a:hover {
 });
      // Array of hints
      const hints = [
-    "Hint: This is my grandpa's favorite artist.",
-    "Hint: His name starts with F.",
-    "Hint: He sang 'My Way'"
+    "Hint: She has over 50 million monthly listeners on Spotify.",
+    "Hint: Her brother also produces music.",
+    "Hint: Her last name is actually her middle name.",
+    "Hint: She is featured on the Barbie movie soundtrack."
 ];
 
 let currentHintIndex = 0; // Track which hint to display
@@ -637,10 +675,7 @@ hintButton.addEventListener("click", () => {
 
         // Share functionality
         shareButton.addEventListener("click", () => {
-    const shareText = `Congrats! You guessed today's music artist in 
-${questionCount} ${questionCount === 1 ? "question" : "questions"}, 
-${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and 
-${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
+    const shareText = `Congrats! You guessed today's music artist in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
 
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(shareText).then(() => {

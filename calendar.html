@@ -137,7 +137,7 @@
             <div class="calendar">
                 <!-- Dates for December 1st to 25th -->
                 <div class="calendar-day unlocked" data-prize="🎁 Gift Card">1</div>
-                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">2</div>
                 <div class="calendar-day locked">🔒</div>
                 <div class="calendar-day locked">🔒</div>
                 <div class="calendar-day locked">🔒</div>
@@ -173,6 +173,10 @@
             day.addEventListener('click', () => {
                 if (day.textContent.trim() === "1") {
                     // Redirect to index.html when Day 1 is clicked
+                    window.location.href = "day1.html";
+                }
+                if (day.textContent.trim() === "2") {
+                    // Redirect to index.html when Day 2 is clicked
                     window.location.href = "index.html";
                 }
             });
