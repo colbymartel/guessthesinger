@@ -712,6 +712,27 @@ function updateProgress() {
     document.getElementById("hints-used").textContent = hintCount;
     document.getElementById("guesses-made").textContent = guessCount;
 }
+// Get the popup and close button elements
+const rulesPopup = document.getElementById("rules-popup");
+const closePopup = document.getElementById("close-popup");
+
+// Show the popup when the page loads
+window.addEventListener("load", () => {
+    rulesPopup.style.display = "flex";
+});
+
+// Close the popup when the close button is clicked
+closePopup.addEventListener("click", () => {
+    rulesPopup.style.display = "none";
+});
+// Get the close button element
+const closeCountdown = document.getElementById("close-countdown");
+
+// Close the popup when the close button is clicked
+closeCountdown.addEventListener("click", () => {
+    const countdownPopup = document.getElementById("countdown-popup");
+    countdownPopup.style.display = "none";
+});
 
 // Show the celebration popup
 function showCelebrationPopup() {
