@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coming Soon</title>
+    <title>Coming Soon | Guess The Daily Music Artist</title>
     <style>
         /* General Body Styling */
         body {
@@ -12,27 +12,51 @@
             padding: 0;
             background-color: #f0f8ff; /* Light sky blue background */
             color: #333;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            line-height: 1.6;
         }
 
         /* Header Styling */
-        h1 {
-            font-size: 3rem;
-            color: #4682b4;
-            margin-bottom: 20px;
-        }
+header {
+    background: linear-gradient(90deg, #87cefa, #4682b4);
+    color: white;
+    padding: 15px 0; /* Reduced padding */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        p {
-            font-size: 1.2rem;
-            color: #555;
-            margin-bottom: 40px;
-        }
+header h1 {
+    margin: 0;
+    font-size: 2.5rem; /* Reduced font size */
+    font-weight: bold;
+}
 
+header p {
+    margin: -5px 0 0;
+    font-size: 1rem; /* Reduced font size */
+}
+
+/* Navigation Bar */
+nav {
+    background: #4682b4;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 8px 0; /* Reduced padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px; /* Reduced spacing */
+    font-size: 1.1rem; /* Slightly smaller font */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #d0eaff;
+}
         /* Button Container */
         .button-container {
             display: flex;
@@ -40,6 +64,8 @@
             gap: 20px;
             width: 90%;
             max-width: 400px;
+            align-items: center;
+            margin-top: 20px;
         }
 
         /* Button Styling */
@@ -54,6 +80,9 @@
             cursor: not-allowed;
             opacity: 0.7;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .game-button:hover {
@@ -65,35 +94,59 @@
             transform: scale(0.95);
         }
 
+        .game-button span {
+            margin-left: 10px;
+        }
+
+        .game-button i {
+            font-size: 1.5rem;
+        }
+
         /* Footer Styling */
         footer {
             margin-top: 50px;
             font-size: 1rem;
             color: #777;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Guess The Singer</h1>
-        <p>Created by Colby Martel</p>
+        <h1>Coming Soon</h1>
     </header>
     <nav>
         <a href="index.html">Play</a>
-        <a href="calendar.html">Calendar</a>
+        <a href="calendar.html">History</a>
         <a href="about.html">About</a>
     </nav>
-    <h1>Coming Soon!</h1>
-    <p>Exciting games are on their way. Stay tuned!</p>
+    <section>
+        <h1>Coming Soon!</h1>
+        <p>Exciting games are on their way. Stay tuned!</p>
 
-    <div class="button-container">
-        <button class="game-button" disabled>Guess the Animal</button>
-        <button class="game-button" disabled>Guess the Food</button>
-        <button class="game-button" disabled>Guess the Character</button>
-        <button class="game-button" disabled>Guess the Athlete</button>
-        <button class="game-button" disabled>Guess the City</button>
-    </div>
-
+        <div class="button-container">
+            <button class="game-button" disabled>
+                <i>🔒</i>
+                <span>Locked</span>
+            </button>
+            <button class="game-button" disabled>
+                <i>🔒</i>
+                <span>Locked</span>
+            </button>
+            <button class="game-button" disabled>
+                <i>🔒</i>
+                <span>Locked</span>
+            </button>
+            <button class="game-button" disabled>
+                <i>🔒</i>
+                <span>Locked</span>
+            </button>
+            <button class="game-button" disabled>
+                <i>🔒</i>
+                <span>Locked</span>
+            </button>
+        </div>
+    </section>
     <footer>
         &copy; 2024 Colby Martel LLC. All rights reserved.
     </footer>

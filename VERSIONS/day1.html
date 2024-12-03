@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T42NG5C994"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T42NG5C994');
-</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess The Daily Music Artist</title>
@@ -420,174 +411,21 @@ nav a:hover {
     align-items: center; /* Vertically center items */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+
 .prize-announcement p {
     font-size: 1.2rem;
     margin: 5px 0;
 }
+
 .prize-announcement span {
     color: #315f85;
     font-weight: bold;
 }
-/* Red Banner Styling */
-#red-banner {
-    background-color: #ff4d4d;
-    color: white;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 15px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-/* Timer Container */
-.countdown-timer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 5px;
-    font-family: 'Arial', sans-serif;
-}
-
-/* Time Block Styling */
-.time-block {
-    text-align: center;
-    background: white;
-    padding: 10px 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    color: #4682b4;
-    max-height: 60px;
-}
-
-/* Time Digits */
-.time-digit {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ff4d4d; /* Matches the banner color for emphasis */
-    margin-bottom: 5px;
-}
-
-/* Time Labels */
-.time-label {
-    font-size: 0.9rem;
-    color: #333;
-}
-#armylink{
-    color: white;
-}
-/* Celebration Popup Styling */
-.celebration-popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    display: none; /* Hidden by default */
-}
-
-.celebration-popup .popup-content {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
-
-.celebration-popup h2 {
-    font-size: 2rem;
-    color: #4682b4;
-    margin-bottom: 15px;
-}
-
-.celebration-popup p {
-    font-size: 1.2rem;
-    margin: 10px 0;
-}
-
-.celebration-popup .celebration-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.celebration-popup .celebration-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-    background: #4682b4;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.celebration-popup .celebration-button:hover {
-    background: #315f85;
-    transform: scale(1.05);
-}
-
-.celebration-popup .close-popup {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #4682b4;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.celebration-popup .close-popup:hover {
-    color: #ff4d4d;
-}
-
-</style>
-
     </style>
 </head>
 <body>
     <header>
-
-            <div id="red-banner">
-                <span>For every raffle entry until Friday, $0.05 will be donated to the <a id="armylink" href="https://www.salvationarmyusa.org">Salvation Army</a>!
-                </span>
-                <div id="banner-timer" class="countdown-timer">
-                    <div class="time-block">
-                        <span class="time-digit" id="days">0</span>Days
-                    </div>
-                    <div class="time-block">
-                        <span class="time-digit" id="hours">0</span>Hours
-                    </div>
-                    <div class="time-block">
-                        <span class="time-digit" id="minutes">0</span>Mins
-                    </div>
-                    <div class="time-block">
-                        <span class="time-digit" id="seconds">0</span>Secs
-                    </div>
-                </div>
-            </div>              
         <h1>Guess The Singer</h1>
         <p>Created by Colby Martel</p>
     </header>
@@ -597,7 +435,7 @@ nav a:hover {
         <a href="about.html">About</a>
     </nav>
     <section class="game-section">
-        <h3>Game #3</h3>
+        <h3>Game #1</h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Choose a question</option>
@@ -614,7 +452,7 @@ nav a:hover {
                 <option value="do they go by their birth name?">Do they go by their birth name?</option>
                 <option value="do they go by one word?">Do they go by one word?</option>
                 <option value="do they perform pop music?">Do they perform pop music?</option>
-                <option value="do they perform rap music?">Do they perform hip-hop music?</option>
+                <option value="do they perform rap music?">Do they perform rap music?</option>
                 <option value="do they perform R&B music?">Do they perform R&B music?</option>
                 <option value="do they perform rock music?">Do they perform rock music?</option>
                 <option value="do they perform country music?">Do they perform country music?</option>
@@ -651,35 +489,19 @@ nav a:hover {
             <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
             <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
         </div>
-
-    <!-- Celebration Popup -->
-
-        <div id="celebration-popup" class="celebration-popup">
-            <div class="popup-content">
-                <button class="close-popup" id="close-celebration-popup">&times;</button>
-                <h2>🎉 Congratulations! 🎉</h2>
-                <p>You correctly guessed <strong id="correct-artist-name">Rihanna</strong>!</p>
-                <p>Questions used: <span id="questions-used-popup">0</span></p>
-                <p>Guesses made: <span id="guesses-made-popup">0</span></p>
-                <p>Hints used: <span id="hints-used-popup">0</span></p>
-                <div class="celebration-buttons">
-                    <button id="share-result-button" class="celebration-button">Share Your Result</button>
-                    <button id="enter-raffle-button" class="celebration-button">Enter Raffle</button>
-                </div>
-            </div>
-        </div>
-
+        
+    
 <!-- Rules Popup -->
 <div class="rules-popup" id="rules-popup">
     <div class="rules-content">
         <button class="close-popup" id="close-popup">&times;</button>
-        <h2>How to Play</h2>
-        <p>Welcome to "Guess The Daily Singer"! To play:</p>
+        <h2>How To Play</h2>
+        <p>Welcome to "Guess The Daily Music Artist"! Here are the rules:</p>
         <ul>
             <li>Select yes/no questions to figure out the mystery artist.</li>
             <li>Try to minimize the number of questions and hints you use!</li>
-            <li>Once you guess the singer, enter the daily raffle to WIN prizes!</li>
-            <li>Have fun and share your results with friends!⭐</li>
+            <li>Have fun, share your results with friends, and enter to win prizes!</li>
+            <li>Everyday until Christmas will feature a new artist to guess⭐</li>
         </ul>
     </div>
 </div>
@@ -702,10 +524,9 @@ nav a:hover {
         </div>
     </div>
 </div>
-
 <!-- Prize Announcement Container -->
 <div class="prize-announcement">
-    <p><strong>Today's Prize:</strong> <span id="prize-name">$50 Target Gift Card</span></p>
+    <p><strong>Today's Prize:</strong> <span id="prize-name">$25 Amazon Gift Card</span></p>
     <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
 </div>
     <div class="social-links">
@@ -715,117 +536,90 @@ nav a:hover {
     </div>
     <script>
         const questionDropdown = document.getElementById("question-dropdown");
-const submitQuestion = document.getElementById("submit-question");
-const questionResponse = document.getElementById("question-response");
-const hintButton = document.getElementById("hint");
-const artistGuess = document.getElementById("artist-guess");
-const submitGuess = document.getElementById("submit-guess");
-const guessResponse = document.getElementById("guess-response");
-const shareContainer = document.getElementById("share-container");
-const shareButton = document.getElementById("share-button");
-const raffleButton = document.getElementById("raffle-button");
-const countdownPopup = document.getElementById("countdown-popup");
-const countdownHours = document.getElementById("hours");
-const countdownMinutes = document.getElementById("minutes");
-const countdownSeconds = document.getElementById("seconds");
+        const submitQuestion = document.getElementById("submit-question");
+        const questionResponse = document.getElementById("question-response");
+        const hintButton = document.getElementById("hint");
+        const artistGuess = document.getElementById("artist-guess");
+        const submitGuess = document.getElementById("submit-guess");
+        const guessResponse = document.getElementById("guess-response");
+        const shareContainer = document.getElementById("share-container");
+        const shareButton = document.getElementById("share-button");
+        const raffleButton = document.getElementById("raffle-button");
+        const countdownPopup = document.getElementById("countdown-popup");
+        const countdownHours = document.getElementById("hours");
+        const countdownMinutes = document.getElementById("minutes");
+        const countdownSeconds = document.getElementById("seconds");
 
-const correctAnswer = "Rihanna"; // Correct artist name
-let questionCount = 0;
-let guessCount = 0;
-let hintCount = 0; // Track the number of hints used
-let hasGuessedCorrectly = false;
+        const correctAnswer = "Billie Eilish"; // Correct artist name
+        let questionCount = 0;
+        let guessCount = 0;
+        let hintCount = 0; // Track the number of hints used
+        let hasGuessedCorrectly = false;
 
-// Predefined answers for dropdown questions
-const predefinedAnswers = {
-    "is this a male artist?": "No!",
-    "are they over 30 years old?": "Yes!",
-    "are they over 40 years old?": "No!",
-    "are they over 50 years old?": "No!",
-    "were they most popular after 2000?": "Yes!",
-    "were they most popular after 2020?": "Maybe!",
-    "do they go by their birth name?": "Somewhat!",
-    "are they still alive?": "Yes!",
-    "are they from north america?": "Yes!",
-    "are they from the united states?": "No!",
-    "do they go by one word?": "Yes!",
-    "are they from europe?": "No!",
-    "do they perform pop music?": "Yes!",
-    "do they perform rap music?": "Maybe!",
-    "do they perform R&B music?": "Yes!",
-    "do they perform rock music?": "No!",
-    "do they perform country music?": "No!",
-    "do they perform jazz music?": "No!",
-    "do they perform sad music?": "Sometimes!",
-    "do they have more than 10M TikTok followers?": "Yes!",
-    "do they have more than 20M listeners?": "Yes!",
-    "are they also an actor?": "Yes!",
-    "are they in a band?": "Somewhat!",
-    "do they have dark hair?": "Yes!",
-};
+        // Predefined answers for dropdown questions
+        const predefinedAnswers = {
+            "is this a male artist?": "No!",
+            "are they over 30 years old?": "No!",
+            "are they over 40 years old?": "No!",
+            "are they over 50 years old?": "No!",
+            "were they most popular after 2000?": "Yes!",
+            "were they most popular after 2020?": "Yes!",
+            "do they go by their birth name?": "Yes!",
+            "are they still alive?": "Yes!",
+            "are they from north america?": "Yes!",
+            "are they from the united states?": "Yes!",
+            "do they go by one word?": "No!",
+            "are they from europe?": "No!",
+            "do they perform pop music?": "Yes!",
+            "do they perform rap music?": "No!",
+            "do they perform R&B music?": "No!",
+            "do they perform rock music?": "No!",
+            "do they perform country music?": "No!",
+            "do they perform jazz music?": "No!",
+            "do they perform sad music?": "Yes!",
+            "do they have more than 10M TikTok followers?": "Yes!",
+            "do they have more than 20M listeners?": "Yes!",
+            "are they also an actor?": "No!",
+            "are they in a band?": "No!",
+            "do they have dark hair?": "No!",
+        };
 
-function updateProgress() {
+        function updateProgress() {
     document.getElementById("questions-used").textContent = questionCount;
     document.getElementById("hints-used").textContent = hintCount;
     document.getElementById("guesses-made").textContent = guessCount;
 }
+        // Handle question submission
+        submitQuestion.addEventListener("click", () => {
+            const selectedQuestion = questionDropdown.value;
 
-// Show the celebration popup
-function showCelebrationPopup() {
-    const celebrationPopup = document.getElementById("celebration-popup");
-    const correctArtistName = document.getElementById("correct-artist-name");
-    const questionsUsedPopup = document.getElementById("questions-used-popup");
-    const guessesMadePopup = document.getElementById("guesses-made-popup");
-    const hintsUsedPopup = document.getElementById("hints-used-popup");
+            if (!selectedQuestion) {
+                questionResponse.textContent = "Please select a question!";
+                questionResponse.className = "response";
+                return;
+            }
 
-    // Set popup content
-    correctArtistName.textContent = correctAnswer;
-    questionsUsedPopup.textContent = questionCount;
-    guessesMadePopup.textContent = guessCount;
-    hintsUsedPopup.textContent = hintCount;
+            questionCount++;
+            updateProgress(); // Update progress after question submission
+            questionResponse.textContent = ""; 
+            
+            // Clear response for 0.2 seconds
 
-    // Show the popup
-    celebrationPopup.style.display = "flex";
-}
+            setTimeout(() => {
+                const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
+                questionResponse.textContent = answer;
+                questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
 
-// Close the celebration popup
-function closeCelebrationPopup() {
-    const celebrationPopup = document.getElementById("celebration-popup");
-    celebrationPopup.style.display = "none";
-}
+                // Highlight dropdown question
+                const selectedOption = questionDropdown.options[questionDropdown.selectedIndex];
+                selectedOption.style.backgroundColor = answer === "Yes!" ? "green" : "red";
+                selectedOption.style.color = "white";
+            }, 200);
+        });
+        
 
-// Event listener for closing the popup
-const closeCelebrationPopupButton = document.getElementById("close-celebration-popup");
-closeCelebrationPopupButton.addEventListener("click", closeCelebrationPopup);
-
-// Handle question submission
-submitQuestion.addEventListener("click", () => {
-    const selectedQuestion = questionDropdown.value;
-
-    if (!selectedQuestion) {
-        questionResponse.textContent = "Please select a question!";
-        questionResponse.className = "response";
-        return;
-    }
-
-    questionCount++;
-    updateProgress(); // Update progress after question submission
-    questionResponse.textContent = "";
-
-    // Clear response for 0.2 seconds
-    setTimeout(() => {
-        const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
-        questionResponse.textContent = answer;
-        questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
-
-        // Highlight dropdown question
-        const selectedOption = questionDropdown.options[questionDropdown.selectedIndex];
-        selectedOption.style.backgroundColor = answer === "Yes!" ? "green" : "red";
-        selectedOption.style.color = "white";
-    }, 200);
-});
-
-// Modify the artist guess submission logic
-submitGuess.addEventListener("click", () => {
+        // Handle artist guess submission
+        submitGuess.addEventListener("click", () => {
     const guess = artistGuess.value.trim().toLowerCase();
 
     if (!guess) {
@@ -835,30 +629,26 @@ submitGuess.addEventListener("click", () => {
     }
 
     guessCount++;
-    updateProgress();
+    updateProgress(); // Update progress after question submission
 
     if (guess === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
-        guessResponse.className = "response guess-response correct";
+        guessResponse.className = "response guess-response correct"; // Add correct styling
         hasGuessedCorrectly = true;
         shareContainer.style.display = "block";
-
-        // Show the celebration popup
-        showCelebrationPopup();
     } else {
         guessResponse.textContent = "Incorrect! Keep trying.";
-        guessResponse.className = "response guess-response incorrect";
+        guessResponse.className = "response guess-response incorrect"; // Add incorrect styling
     }
 
     artistGuess.value = ""; // Clear input
 });
-
-// Array of hints
-const hints = [
-    "Hint: She had 14 #1 singles on the Billboard Hot 100.",
-    "Hint: She headlined a Super Bowl Halftime Show.",
-    "Hint: Her name starts with an 'R'.",
-    "Hint: You and her are like diamonds in the sky."
+     // Array of hints
+     const hints = [
+    "Hint: She has over 50 million monthly listeners on Spotify.",
+    "Hint: Her brother also produces music.",
+    "Hint: Her last name is actually her middle name.",
+    "Hint: She is featured on the Barbie movie soundtrack."
 ];
 
 let currentHintIndex = 0; // Track which hint to display
@@ -874,16 +664,23 @@ hintButton.addEventListener("click", () => {
     } else {
         guessResponse.className = "response no"; // Remove hint-specific class for 'no hints' case
         guessResponse.textContent = "No more hints available!";
+
+        setTimeout(() => {
+            // Display the "no more hints" message in red after 0.2 seconds
+            guessResponse.textContent = "No more hints available!";
+            guessResponse.className = "response no"; // Apply the 'no' class for red text
+        }, 200); // 0.2-second delay
     }
 });
 
-// Share functionality
-shareButton.addEventListener("click", () => {
-    const shareText = `Woohoo! I guessed today's mystery singer in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
+        // Share functionality
+        shareButton.addEventListener("click", () => {
+    const shareText = `Congrats! You guessed today's music artist in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
 
     if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(shareText).then(() => {
             alert("Result copied to clipboard! Share it with your friends.");
+            showCountdownPopup(); // Show the countdown popup after copying
         }).catch(err => {
             console.error("Clipboard API failed: ", err);
             alert("Failed to copy text. Please try again.");
@@ -898,6 +695,7 @@ shareButton.addEventListener("click", () => {
         try {
             document.execCommand("copy");
             alert("Result copied to clipboard! Share it with your friends.");
+            showCountdownPopup(); // Show the countdown popup after copying
         } catch (err) {
             console.error("Fallback copy method failed: ", err);
             alert("Failed to copy text. Please try again.");
@@ -905,82 +703,66 @@ shareButton.addEventListener("click", () => {
         document.body.removeChild(tempInput);
     }
 });
-    // Share functionality for the celebration popup
-const shareResultButton = document.getElementById("share-result-button");
 
-shareResultButton.addEventListener("click", () => {
-    const shareText = `Woohoo! I guessed today's mystery singer in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
 
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(shareText).then(() => {
-            alert("Result copied to clipboard! Share it with your friends.");
-        }).catch(err => {
-            console.error("Clipboard API failed: ", err);
-            alert("Failed to copy text. Please try again.");
-        });
-    } else {
-        // Fallback for older browsers
-        const tempInput = document.createElement("textarea");
-        tempInput.value = shareText;
-        tempInput.style.position = "absolute";
-        tempInput.style.left = "-9999px";
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        try {
-            document.execCommand("copy");
-            alert("Result copied to clipboard! Share it with your friends.");
-        } catch (err) {
-            console.error("Fallback copy method failed: ", err);
-            alert("Failed to copy text. Please try again.");
+        // Show countdown popup
+        function showCountdownPopup() {
+            countdownPopup.style.display = "flex";
+            startCountdown();
         }
-        document.body.removeChild(tempInput);
-    }
-});
-function updateBannerTimer() {
-    const now = new Date();
-    const countdownStart = new Date(); // Start time
-    countdownStart.setHours(12, 0, 0, 0); // Start at 12:00 today
 
-    const target = new Date(countdownStart.getTime() + 96 * 60 * 60 * 1000); // 96 hours from 12:00
+        // Countdown timer logic
+        function startCountdown() {
+            const now = new Date();
+            const midnight = new Date();
+            midnight.setHours(24, 0, 0, 0); // Set to next midnight
 
-    const timeLeft = target - now;
+            function updateCountdown() {
+                const now = new Date();
+                const timeLeft = midnight - now;
 
-    if (timeLeft <= 0) {
-        document.getElementById("red-banner").textContent = "The raffle has ended. Thank you for participating!";
-        return;
-    }
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                countdownHours.innerHTML = `${hours}<span>Hrs</span>`;
+                countdownMinutes.innerHTML = `${minutes}<span>Mins</span>`;
+                countdownSeconds.innerHTML = `${seconds}<span>Secs</span>`;
+            }
 
-    document.getElementById("days").textContent = days;
-    document.getElementById("hours").textContent = hours;
-    document.getElementById("minutes").textContent = minutes;
-    document.getElementById("seconds").textContent = seconds;
-}
-
-// Initialize and update every second
-setInterval(updateBannerTimer, 1000);
-updateBannerTimer();
- // Get the raffle container and its elements
- const raffleContainer = document.getElementById("raffle-container");
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        // Get the raffle container and its elements
+const raffleContainer = document.getElementById("raffle-container");
 const raffleName = document.getElementById("raffle-name");
 const raffleEmail = document.getElementById("raffle-email");
 const submitRaffle = document.getElementById("submit-raffle");
 
 // Show the raffle container when the "Enter Raffle" button is clicked
 raffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/z8QnnzyMgHQcRUTB6", "_blank"); // Replace with your Google Form URL
+    window.open("https://forms.gle/PuYc421AKN3r5Us26", "_blank"); // Replace with your Google Form URL
 });
-// Raffle functionality for the celebration popup
-const enterRaffleButton = document.getElementById("enter-raffle-button");
+// Get the popup and close button elements
+const rulesPopup = document.getElementById("rules-popup");
+const closePopup = document.getElementById("close-popup");
 
-enterRaffleButton.addEventListener("click", () => {
-    // Replace this URL with your actual Google Form link
-    const raffleFormURL = "https://forms.gle/z8QnnzyMgHQcRUTB6"; 
-    window.open(raffleFormURL, "_blank"); // Opens the Google Form in a new tab
+// Show the popup when the page loads
+window.addEventListener("load", () => {
+    rulesPopup.style.display = "flex";
+});
+
+// Close the popup when the close button is clicked
+closePopup.addEventListener("click", () => {
+    rulesPopup.style.display = "none";
+});
+// Get the close button element
+const closeCountdown = document.getElementById("close-countdown");
+
+// Close the popup when the close button is clicked
+closeCountdown.addEventListener("click", () => {
+    const countdownPopup = document.getElementById("countdown-popup");
+    countdownPopup.style.display = "none";
 });
 
 </script>
