@@ -445,43 +445,6 @@ nav a:hover {
     align-items: center;
     gap: 10px;
 }
-
-/* Timer Container */
-.countdown-timer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 5px;
-    font-family: 'Arial', sans-serif;
-}
-
-/* Time Block Styling */
-.time-block {
-    text-align: center;
-    background: white;
-    padding: 10px 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    font-size: 1rem;
-    color: #4682b4;
-    max-height: 60px;
-}
-
-/* Time Digits */
-.time-digit {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #ff4d4d; /* Matches the banner color for emphasis */
-    margin-bottom: 5px;
-}
-
-/* Time Labels */
-.time-label {
-    font-size: 0.9rem;
-    color: #333;
-}
 #armylink{
     color: white;
 }
@@ -573,20 +536,6 @@ nav a:hover {
             <div id="red-banner">
                 <span>For every raffle entry until Friday, $0.05 will be donated to the <a id="armylink" href="https://www.salvationarmyusa.org">Salvation Army</a>!
                 </span>
-                <div id="banner-timer" class="countdown-timer">
-                    <div class="time-block">
-                        <span class="time-digit" id="days">0</span>Days
-                    </div>
-                    <div class="time-block">
-                        <span class="time-digit" id="hours">0</span>Hours
-                    </div>
-                    <div class="time-block">
-                        <span class="time-digit" id="minutes">0</span>Mins
-                    </div>
-                    <div class="time-block">
-                        <span class="time-digit" id="seconds">0</span>Secs
-                    </div>
-                </div>
             </div>              
         <h1>Guess The Singer</h1>
         <p>Created by Colby Martel</p>
@@ -936,34 +885,6 @@ shareResultButton.addEventListener("click", () => {
         document.body.removeChild(tempInput);
     }
 });
-function updateBannerTimer() {
-    const now = new Date();
-    const countdownStart = new Date(); // Start time
-    countdownStart.setHours(12, 0, 0, 0); // Start at 12:00 today
-
-    const target = new Date(countdownStart.getTime() + 96 * 60 * 60 * 1000); // 96 hours from 12:00
-
-    const timeLeft = target - now;
-
-    if (timeLeft <= 0) {
-        document.getElementById("red-banner").textContent = "The raffle has ended. Thank you for participating!";
-        return;
-    }
-
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-    document.getElementById("days").textContent = days;
-    document.getElementById("hours").textContent = hours;
-    document.getElementById("minutes").textContent = minutes;
-    document.getElementById("seconds").textContent = seconds;
-}
-
-// Initialize and update every second
-setInterval(updateBannerTimer, 1000);
-updateBannerTimer();
  // Get the raffle container and its elements
  const raffleContainer = document.getElementById("raffle-container");
 const raffleName = document.getElementById("raffle-name");
