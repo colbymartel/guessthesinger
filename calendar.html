@@ -139,7 +139,7 @@
                 <div class="calendar-day unlocked" data-prize="🎁 Gift Card">1</div>
                 <div class="calendar-day unlocked" data-prize="🎁 Gift Card">2</div>
                 <div class="calendar-day unlocked" data-prize="🎁 Gift Card">3</div>
-                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">4</div>
                 <div class="calendar-day locked">🔒</div>
                 <div class="calendar-day locked">🔒</div>
                 <div class="calendar-day locked">🔒</div>
@@ -180,6 +180,10 @@
                     window.location.href = "day2.html";
                 }
                 if (day.textContent.trim() === "3") {
+                    // Redirect to index.html when Day 2 is clicked
+                    window.location.href = "day3.html";
+                }
+                if (day.textContent.trim() === "4") {
                     // Redirect to index.html when Day 2 is clicked
                     window.location.href = "index.html";
                 }
