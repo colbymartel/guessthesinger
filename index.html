@@ -541,7 +541,7 @@ nav a:hover {
         <a href="about.html">About</a>
     </nav>
     <section class="game-section">
-        <h3>Game #4</h3>
+        <h3>Game #5</h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Choose a question</option>
@@ -602,7 +602,7 @@ nav a:hover {
             <div class="popup-content">
                 <button class="close-popup" id="close-celebration-popup">&times;</button>
                 <h2>🎉 Congratulations! 🎉</h2>
-                <p>You correctly guessed <strong id="correct-artist-name">Jelly Roll</strong>!</p>
+                <p>You correctly guessed <strong id="correct-artist-name">Kendrick Lamar</strong>!</p>
                 <p>Questions used: <span id="questions-used-popup">0</span></p>
                 <p>Guesses made: <span id="guesses-made-popup">0</span></p>
                 <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -673,7 +673,7 @@ const countdownHours = document.getElementById("hours");
 const countdownMinutes = document.getElementById("minutes");
 const countdownSeconds = document.getElementById("seconds");
 
-const correctAnswer = "Jelly Roll"; // Correct artist name
+const correctAnswer = "Kendrick Lamar"; // Correct artist name
 let questionCount = 0;
 let guessCount = 0;
 let hintCount = 0; // Track the number of hints used
@@ -686,8 +686,8 @@ const predefinedAnswers = {
     "are they over 40 years old?": "No!",
     "are they over 50 years old?": "No!",
     "were they most popular after 2000?": "Yes!",
-    "were they most popular after 2020?": "Yes!",
-    "do they go by their birth name?": "No!",
+    "were they most popular after 2020?": "Maybe!",
+    "do they go by their birth name?": "Not quite!",
     "are they still alive?": "Yes!",
     "are they from north america?": "Yes!",
     "are they from the united states?": "Yes!",
@@ -695,13 +695,13 @@ const predefinedAnswers = {
     "are they from europe?": "No!",
     "do they perform pop music?": "No!",
     "do they perform rap music?": "Yes!",
-    "do they perform R&B music?": "Yes!",
-    "do they perform rock music?": "Yes!",
-    "do they perform country music?": "Yes!",
+    "do they perform R&B music?": "No!",
+    "do they perform rock music?": "No!",
+    "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
     "do they perform sad music?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 20M listeners?": "No!",
+    "do they have more than 20M listeners?": "Yes!",
     "are they also an actor?": "No!",
     "are they in a band?": "No!",
     "do they have dark hair?": "Yes!",
@@ -799,11 +799,11 @@ submitGuess.addEventListener("click", () => {
 
 // Array of hints
 const hints = [
-    "Hint: He has made music in many different genres.",
-    "Hint: Today is his 40th birthday!",
-    "Hint: He has tattoos.",
-    "Hint: He has face tattoos.",
-    "Hint: His first name goes well with peanut butter."
+    "Hint: His stage name includes his first name from birth.",
+    "Hint: He is from California.",
+    "Hint: K.",
+    "Hint: He released a new album in the past two weeks.",
+    "Hint: He has beef with Drake."
 ];
 
 let currentHintIndex = 0; // Track which hint to display
@@ -818,7 +818,7 @@ hintButton.addEventListener("click", () => {
         updateProgress(); // Update progress after using a hint
     } else {
         guessResponse.className = "response no"; // Remove hint-specific class for 'no hints' case
-        guessResponse.textContent = "No more hints available!";
+        guessResponse.textContent = "DAMN. No more hints available!";
     }
 });
 
