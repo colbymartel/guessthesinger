@@ -12,7 +12,7 @@
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess The Daily Music Artist</title>
+    <title>Guess The Daily Singer</title>
     <link rel="icon" href="favicon.ico">
     <style>
         /* General Body Styling */
@@ -399,6 +399,23 @@ nav a:hover {
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
     color: green; /* Optional: Different color for hints to distinguish */
 }
+#hint {
+    cursor: not-allowed;
+    background-color: grey; /* Locked state */
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#hint:enabled {
+    cursor: pointer;
+    background-color: #4caf50; /* Green for unlocked state */
+}
+
 .guess-response.incorrect {
     color: red; /* Display text in red */
     font-weight: bold;
@@ -658,28 +675,35 @@ nav a:hover {
         <a href="https://www.tiktok.com/@colbymartel" target="_blank">TikTok</a>
     </div>
     <script>
-        const questionDropdown = document.getElementById("question-dropdown");
-const submitQuestion = document.getElementById("submit-question");
-const questionResponse = document.getElementById("question-response");
+// Initialize hint button state
+let questionsSinceLastHint = 0; // Tracks questions asked since the last hint
+let hintAvailable = false; // Tracks whether the hint is available
+let questionCount = 0; // Tracks total questions asked
+let guessCount = 0; // Tracks total guesses made
+let hintCount = 0; // Tracks total hints used
+let currentHintIndex = 0; // Tracks current hint index
+
 const hintButton = document.getElementById("hint");
-const artistGuess = document.getElementById("artist-guess");
+const submitQuestion = document.getElementById("submit-question");
 const submitGuess = document.getElementById("submit-guess");
+const questionDropdown = document.getElementById("question-dropdown");
+const questionResponse = document.getElementById("question-response");
 const guessResponse = document.getElementById("guess-response");
+
+const artistGuess = document.getElementById("artist-guess");
 const shareContainer = document.getElementById("share-container");
 const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
-const countdownHours = document.getElementById("hours");
-const countdownMinutes = document.getElementById("minutes");
-const countdownSeconds = document.getElementById("seconds");
 
-const correctAnswer = "Kendrick Lamar"; // Correct artist name
-let questionCount = 0;
-let guessCount = 0;
-let hintCount = 0; // Track the number of hints used
-let hasGuessedCorrectly = false;
+const hints = [
+    "Hint: His stage name includes his first name from birth.",
+    "Hint: He is from California.",
+    "Hint: K.",
+    "Hint: He released a new album in the past two weeks.",
+    "Hint: He has beef with Drake."
+];
 
-// Predefined answers for dropdown questions
 const predefinedAnswers = {
     "is this a male artist?": "Yes!",
     "are they over 30 years old?": "Yes!",
@@ -704,15 +728,60 @@ const predefinedAnswers = {
     "do they have more than 20M listeners?": "Yes!",
     "are they also an actor?": "No!",
     "are they in a band?": "No!",
-    "do they have dark hair?": "Yes!",
+    "do they have dark hair?": "Yes!"
 };
 
-function updateProgress() {
-    document.getElementById("questions-used").textContent = questionCount;
-    document.getElementById("hints-used").textContent = hintCount;
-    document.getElementById("guesses-made").textContent = guessCount;
+// Lock the hint button (visual state only)
+function lockHintButton() {
+    hintButton.style.backgroundColor = "grey";
+    hintButton.textContent = "🔒 Hint Locked";
+    hintAvailable = false;
 }
 
+// Unlock the hint button (visual state only)
+function unlockHintButton() {
+    hintButton.style.backgroundColor = "#4caf50"; // Green color
+    hintButton.textContent = "Try a hint?"; // Update text when hint becomes available
+    hintAvailable = true;
+}
+
+// Update hint availability based on questions asked
+function updateHintAvailability() {
+    const remainingQuestions = 4 - questionsSinceLastHint; // Calculate remaining questions
+
+    if (questionsSinceLastHint >= 4 && !hintAvailable) {
+        unlockHintButton(); // Unlock the hint if the threshold is reached
+    } else if (!hintAvailable) {
+        // Update the response text dynamically while locked
+        guessResponse.textContent = `Guess ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
+        guessResponse.className = "response no"; // Style the response appropriately
+    }
+}
+
+// Event listener for hint button
+hintButton.addEventListener("click", () => {
+    if (!hintAvailable) {
+        // If locked, display how many more questions are needed
+        const remainingQuestions = 4 - questionsSinceLastHint;
+        guessResponse.textContent = `Guess ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
+        guessResponse.className = "response no"; // Style the response appropriately
+        return; // Exit if the hint is locked
+    }
+
+    // If unlocked, show a hint
+    if (currentHintIndex < hints.length) {
+        guessResponse.textContent = hints[currentHintIndex];
+        guessResponse.className = "response guess-response hint"; // Add hint-specific class
+        currentHintIndex++;
+        hintCount++;
+        updateProgress();
+        lockHintButton(); // Lock the hint button again after use
+        questionsSinceLastHint = 0; // Reset the question count since the last hint
+    } else {
+        guessResponse.textContent = "No more hints available!";
+        guessResponse.className = "response no";
+    }
+});
 // Show the celebration popup
 function showCelebrationPopup() {
     const celebrationPopup = document.getElementById("celebration-popup");
@@ -741,7 +810,7 @@ function closeCelebrationPopup() {
 const closeCelebrationPopupButton = document.getElementById("close-celebration-popup");
 closeCelebrationPopupButton.addEventListener("click", closeCelebrationPopup);
 
-// Handle question submission
+// Event listener for question submission
 submitQuestion.addEventListener("click", () => {
     const selectedQuestion = questionDropdown.value;
 
@@ -752,25 +821,36 @@ submitQuestion.addEventListener("click", () => {
     }
 
     questionCount++;
+    questionsSinceLastHint++; // Increment questions since last hint
     updateProgress(); // Update progress after question submission
-    questionResponse.textContent = "";
+    updateHintAvailability(); // Check if the hint button should be unlocked
+    questionResponse.textContent = ""; // Clear any prior response
 
-    // Clear response for 0.2 seconds
     setTimeout(() => {
         const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
         questionResponse.textContent = answer;
         questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
 
-        // Highlight dropdown question
+        // Highlight the selected dropdown question
         const selectedOption = questionDropdown.options[questionDropdown.selectedIndex];
         selectedOption.style.backgroundColor = answer === "Yes!" ? "green" : "red";
         selectedOption.style.color = "white";
-    }, 200);
+    }, 200); // 0.2-second delay before displaying the response
 });
 
-// Modify the artist guess submission logic
+// Track and display progress
+function updateProgress() {
+    document.getElementById("questions-used").textContent = questionCount;
+    document.getElementById("hints-used").textContent = hintCount;
+    document.getElementById("guesses-made").textContent = guessCount;
+}
+
+// Lock the hint button initially on page load
+window.addEventListener("load", lockHintButton);
+
+// Handle artist guess submission
 submitGuess.addEventListener("click", () => {
-    const guess = artistGuess.value.trim().toLowerCase();
+    const guess = document.getElementById("artist-guess").value.trim().toLowerCase();
 
     if (!guess) {
         guessResponse.textContent = "Please enter a guess!";
@@ -781,47 +861,17 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
+    const correctAnswer = "kendrick lamar"; // Example correct answer
     if (guess === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
-        hasGuessedCorrectly = true;
-        shareContainer.style.display = "block";
-
-        // Show the celebration popup
-        showCelebrationPopup();
     } else {
         guessResponse.textContent = "Incorrect! Keep trying.";
         guessResponse.className = "response guess-response incorrect";
     }
 
-    artistGuess.value = ""; // Clear input
+    document.getElementById("artist-guess").value = ""; // Clear input
 });
-
-// Array of hints
-const hints = [
-    "Hint: His stage name includes his first name from birth.",
-    "Hint: He is from California.",
-    "Hint: K.",
-    "Hint: He released a new album in the past two weeks.",
-    "Hint: He has beef with Drake."
-];
-
-let currentHintIndex = 0; // Track which hint to display
-
-// Handle hint action
-hintButton.addEventListener("click", () => {
-    if (currentHintIndex < hints.length) {
-        guessResponse.className = "response guess-response hint"; // Add hint-specific class
-        guessResponse.textContent = hints[currentHintIndex];
-        currentHintIndex++;
-        hintCount++;
-        updateProgress(); // Update progress after using a hint
-    } else {
-        guessResponse.className = "response no"; // Remove hint-specific class for 'no hints' case
-        guessResponse.textContent = "DAMN. No more hints available!";
-    }
-});
-
 // Share functionality
 shareButton.addEventListener("click", () => {
     const shareText = `Woohoo! I guessed today's mystery singer in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
