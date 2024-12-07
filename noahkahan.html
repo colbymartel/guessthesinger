@@ -414,31 +414,52 @@ nav a:hover {
         <h3>Game #1</h3>
         <div class="game-container">
             <select id="question-dropdown">
-                <option value="" disabled selected>Choose a question</option>
-                <option value="is this a male artist?">Is this a male artist?</option>
-                <option value="are they still alive?">Are they still alive?</option>
-                <option value="are they over 30 years old?">Are they over 30 years old?</option>
-                <option value="are they over 40 years old?">Are they over 40 years old?</option>
-                <option value="are they over 50 years old?">Are they over 50 years old?</option>
-                <option value="were they most popular after 2000?">Were they most popular after 2000?</option>
-                <option value="were they most popular after 2020?">Were they most popular after 2020?</option>
-                <option value="are they from north america?">Are they from North America?</option>
-                <option value="are they from the united states?">Are they from the United States?</option>
-                <option value="are they from europe?">Are they from Europe?</option>
-                <option value="do they go by their birth name?">Do they go by their birth name?</option>
-                <option value="do they go by one word?">Do they go by one word?</option>
-                <option value="do they perform pop music?">Do they perform pop music?</option>
-                <option value="do they perform rap music?">Do they perform rap music?</option>
-                <option value="do they perform R&B music?">Do they perform R&B music?</option>
-                <option value="do they perform rock music?">Do they perform rock music?</option>
-                <option value="do they perform country music?">Do they perform country music?</option>
-                <option value="do they perform jazz music?">Do they perform jazz music?</option>
-                <option value="do they perform sad music?">Do they perform sad music?</option>
-                <option value="are they also an actor?">Are they also an actor?</option>
-                <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
-                <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
-                <option value="are they in a band?">Are/were they in a band?</option>
-                <option value="do they have dark hair?">Do they have dark hair?</option>
+               <!-- General Questions -->
+              <option value="is this a male artist?">Is this a male artist?</option>
+              <option value="are they still alive?">Are they still alive?</option>
+              <option value="are they over 30 years old?">Are they over 30 years old?</option>
+              <option value="are they over 40 years old?">Are they over 40 years old?</option>
+              <option value="are they over 50 years old?">Are they over 50 years old?</option>
+              <option value="were they most popular before 2000?">Were they most popular before 2000?</option>
+              <option value="are they most popular now?">Were they most popular in the last 5 years?</option>
+              <option value="album release?">Did they release a new album in the last 2 years?</option>
+              <option value="are they touring?">Are they currently touring?</option>
+              
+              <!-- Geographic Questions -->
+              <option value="are they from the united states?">Are they from the United States?</option>
+              <option value="are they from north america?">Are they from North America?</option>
+              <option value="are they from europe?">Are they from Europe?</option>
+              <option value="are they from australia?">Are they from Australia?</option>
+              <option value="are they from asia or africa?">Are they from Asia or Africa?</option>
+              
+              <!-- Music Style and Language -->
+              <option value="different languages?">Do they make songs in different languages?</option>
+              <option value="are they spanish?">Do they make Spanish songs?</option>
+              <option value="do they perform pop music?">Do they perform pop music?</option>
+              <option value="do they perform rap music?">Do they perform hip-hop music?</option>
+              <option value="do they perform R&B music?">Do they perform R&B music?</option>
+              <option value="do they perform rock music?">Do they perform rock music?</option>
+              <option value="do they perform country music?">Do they perform country music?</option>
+              <option value="do they perform jazz music?">Do they perform jazz music?</option>
+              <option value="do they perform sad music?">Do they perform sad music?</option>
+              
+              <!-- Career and Popularity -->
+              <option value="are they also an actor?">Are they also an actor?</option>
+              <option value="have they won a Grammy?">Have they won a Grammy?</option>
+              <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
+              <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
+              <option value="do they have more than 50M listeners?">Do they have more than 50M monthly listeners?</option>
+              <option value="are they in a band?">Are/were they in a band?</option>
+              
+              <!-- Appearance and Name -->
+              <option value="do they have dark hair?">Do they have black or brown hair?</option>
+              <option value="do they have blond hair?">Do they have blond hair?</option>
+              <option value="do they have tattoos?">Do they have visible tattoos?</option>
+              <option value="do they wear glasses?">Do they wear glasses or sunglasses often?</option>
+              <option value="do they go by their birth name?">Do they go by their birth name?</option>
+              <option value="do they go by one word?">Do they go by one word?</option>
+              <option value="do they have a common first name?">Do they have a common first name?</option>
+              <option value="what does their name start with?">Does their name start with A-M?</option>
             </select>
             <button id="submit-question">Submit Question</button>
             <div class="response question-response" id="question-response">Select a question to start.</div>
@@ -529,30 +550,47 @@ nav a:hover {
 
         // Predefined answers for dropdown questions
         const predefinedAnswers = {
-            "is this a male artist?": "Yes!",
-            "are they over 30 years old?": "No!",
-            "are they over 40 years old?": "No!",
-            "are they over 50 years old?": "No!",
-            "were they most popular after 2000?": "Yes!",
-            "were they most popular after 2020?": "Yes!",
-            "do they go by their birth name?": "Yes!",
-            "are they still alive?": "Yes!",
-            "are they from north america?": "Yes!",
-            "are they from the united states?": "Yes!",
-            "do they go by one word?": "No!",
-            "are they from europe?": "No!",
-            "do they perform pop music?": "Kind of!",
-            "do they perform rap music?": "No!",
-            "do they perform R&B music?": "No!",
-            "do they perform rock music?": "No!",
-            "do they perform country music?": "No!",
-            "do they perform jazz music?": "No!",
-            "do they perform sad music?": "Mostly!",
-            "do they have more than 10M TikTok followers?": "No!",
-            "do they have more than 20M listeners?": "Yes!",
-            "are they also an actor?": "No!",
-            "are they in a band?": "No!",
-            "do they have dark hair?": "Yes!",
+    "is this a male artist?": "Yes!",
+    "are they still alive?": "Yes!",
+    "are they over 30 years old?": "No!",
+    "are they over 40 years old?": "No!",
+    "are they over 50 years old?": "No!",
+    "were they most popular before 2000?": "No!",
+    "are they most popular now?": "Yes!",
+    "album release?": "Yes!",
+    "are they touring?": "No!",
+
+    "are they from the united states?": "Yes!",
+    "are they from north america?": "Yes!",
+    "are they from europe?": "No!",
+    "are they from australia?": "No!",
+    "are they from asia or africa?": "No!",
+
+    "different languages?": "No",
+    "are they spanish?": "No!",
+    "do they perform pop music?": "Kind of!",
+    "do they perform rap music?": "No!",
+    "do they perform R&B music?": "No!",
+    "do they perform rock music?": "Yes!",
+    "do they perform country music?": "No!",
+    "do they perform jazz music?": "No!",
+    "do they perform sad music?": "Yes!",
+
+    "are they also an actor?": "No!",
+    "have they won a Grammy?": "No!",
+    "do they have more than 10M TikTok followers?": "No!",
+    "do they have more than 20M listeners?": "Yes!",
+    "do they have more than 50M listeners?": "No!",
+    "are they in a band?": "No!",
+
+    "do they have dark hair?": "Yes!",
+    "do they have blond hair?": "No!",
+    "do they have tattoos?": "No!",
+    "do they wear glasses?": "No!",
+    "do they go by their birth name?": "Yes!",
+    "do they go by one word?": "No!",
+    "do they have a common first name?": "Yes!",
+    "what does their name start with?": "No!"
         };
 
         function updateProgress() {
