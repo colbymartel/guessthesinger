@@ -145,7 +145,16 @@ nav a:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
+        @media screen and (max-width: 768px) {
+    /* Add margin between buttons for mobile */
+    #hint {
+        margin-bottom: 10px; /* Space below the Hint button */
+    }
 
+    #submit-guess {
+        margin-top: 10px; /* Space above the Submit Guess button */
+    }
+}
 /* Question Response Styling */
 .question-response {
     margin-top: 10px;
