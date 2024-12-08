@@ -682,7 +682,7 @@ nav a:hover {
             <div class="popup-content">
                 <button class="close-popup" id="close-celebration-popup">&times;</button>
                 <h2>🎉 Congratulations! 🎉</h2>
-                <p>You correctly guessed <strong id="correct-artist-name">Ariana Grande</strong>!</p>
+                <p>You correctly guessed <strong id="correct-artist-name">Usher</strong>!</p>
                 <p>Questions used: <span id="questions-used-popup">0</span></p>
                 <p>Guesses made: <span id="guesses-made-popup">0</span></p>
                 <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -763,23 +763,23 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-"Hint: She was born on the East Coast of the USA.",
-    "Hint: She is about 5 feet tall.",
-    "Hint: Her name starts with 'A'.",
-    "Hint: As a teenager, she acted on Nickelodeon.",
-    "Hint: She plays Glinda the Good in Wicked.",
+"Hint: He has won more than five Grammys.",
+    "Hint: His most famous music video on YouTube is from 2015.",
+    "Hint: He was a judge for a popular TV singing competition.",
+    "Hint: He recently headlined a Super Bowl halftime show.",
+    "Hint: His name is synonymous with someone who shows people to seats."
 ];
 
 const predefinedAnswers = {
-    "is this a male artist?": "No!",
+    "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
     "are they over 30 years old?": "Yes!",
-    "are they over 40 years old?": "No!",
+    "are they over 40 years old?": "Yes!",
     "are they over 50 years old?": "No!",
     "were they most popular before 2000?": "No!",
-    "are they most popular now?": "Yes!",
+    "are they most popular now?": "Unsure!",
     "album release?": "Yes!",
-    "are they touring?": "No!",
+    "are they touring?": "Yes!",
 
     "are they from the united states?": "Yes!",
     "are they from north america?": "Yes!",
@@ -787,8 +787,8 @@ const predefinedAnswers = {
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
-    "different languages?": "Not really!",
-    "are they spanish?": "Not often!",
+    "different languages?": "No!",
+    "are they spanish?": "No!",
     "do they perform pop music?": "Yes!",
     "do they perform rap music?": "No!",
     "do they perform R&B music?": "Yes!",
@@ -799,19 +799,19 @@ const predefinedAnswers = {
 
     "are they also an actor?": "Yes!",
     "have they won a Grammy?": "Yes!",
-    "do they have more than 10M TikTok followers?": "Yes!",
+    "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "Yes!",
+    "do they have more than 50M listeners?": "No!",
     "are they in a band?": "No!",
 
-    "do they have dark hair?": "Sometimes!",
-    "do they have blond hair?": "Sometimes!",
-    "do they have tattoos?": "Yes!",
+    "do they have dark hair?": "Yes!",
+    "do they have blond hair?": "No!",
+    "do they have tattoos?": "No!",
     "do they wear glasses?": "No!",
     "do they go by their birth name?": "Yes!",
-    "do they go by one word?": "No!",
-    "do they have a common first name?": "Yes!",
-    "what does their name start with?": "Yes!"
+    "do they go by one word?": "Yes!",
+    "do they have a common first name?": "No!",
+    "what does their name start with?": "No!" 
 };
 
 // Lock the hint button (visual state only)
@@ -907,7 +907,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Ariana Grande"; // Example correct answer
+    const correctAnswer = "Usher"; // Example correct answer
     if (guess === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
