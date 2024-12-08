@@ -114,11 +114,16 @@ nav a:hover {
     border: 2px solid #d8ebfc;
 }
 
+@media (max-width: 768px) {
+    .game-section {
+        margin: 20px auto; /* Reduce the top margin for mobile */
+    }
+}
 .game-section h3 {
-    font-size: 2rem;
-    margin-top: -10px;
+    font-size: 1.5rem;
+    margin-top: -20px;
+    margin-bottom: 20px;
     color: #4682b4;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Game Container */
@@ -464,7 +469,6 @@ nav a:hover {
     text-align: center;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
-
 .prize-announcement p {
     font-size: 1.5rem;
     margin: 15px 0;
@@ -474,6 +478,14 @@ nav a:hover {
     color: #315f85;
     font-weight: bold;
     font-size: 1.3rem;
+    display: inline; /* Default for non-mobile views */
+}
+
+@media (max-width: 768px) {
+    .prize-announcement span {
+        display: block; /* Move to a new line on mobile */
+        margin-top: 10px; /* Add some space between the lines */
+    }
 }
 /* Red Banner Styling */
 #red-banner {
