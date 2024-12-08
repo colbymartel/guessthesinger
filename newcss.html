@@ -28,7 +28,7 @@
 
 /* Header Styling */
 header {
-    background: linear-gradient(90deg, #4682b4, #315f85);
+    background: linear-gradient(90deg, #6ca0dc, #4682b4);
     color: white;
     padding: 20px 0;
     text-align: center;
@@ -52,35 +52,26 @@ header p {
 
 /* Navigation Bar */
 nav {
-    background: #315f85;
+    background: #4682b4;
     color: white;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 15px 0;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    border-bottom: 2px solid #5a9fd8;
+    padding: 8px 0; /* Reduced padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    margin: 0 20px;
-    font-size: 1rem;
+    margin: 0 10px; /* Reduced spacing */
+    font-size: 1.1rem; /* Slightly smaller font */
     font-weight: bold;
-    padding: 10px 15px;
-    border-radius: 25px;
-    background: linear-gradient(90deg, #5a9fd8, #4682b4);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-    background: linear-gradient(90deg, #3b709e, #2b4d6d);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    transform: scale(1.05);
+    color: #d0eaff;
 }
-
 /* Social Links */
 .social-links {
     display: flex;
@@ -179,29 +170,26 @@ nav a:hover {
 
 /* Question Response Styling */
 .question-response {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-size: 1.3rem; /* Slightly smaller text for question response */
+    margin-top: 15px;
+    font-size: 1.3rem; 
     font-weight: bold;
     text-align: center;
-    color: #333; /* Standard black for guesses */
+    color: #333;
 }
 
 /* Guess Response Styling */
 .guess-response {
     margin-top: 20px;
-    margin-bottom: -10px;
-    font-size: 1.3rem; /* Larger text for guess prompt */
+    font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
-    color: #333; /* Standard black for guesses */
+    color: #333;
 }
         .response.yes {
             color: green;
             font-weight: bold;
             margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 1.3rem; /* Larger text for guess prompt */
+            font-size: 1.3rem;
 
         }
 
@@ -209,8 +197,8 @@ nav a:hover {
             color: red;
             font-weight: bold;
             margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 1.3rem; /* Larger text for guess prompt */
+            margin-bottom: 0px;
+            font-size: 1.3rem;
         }
 
         .share-container {
@@ -423,13 +411,14 @@ nav a:hover {
 }
 
 .guess-response.hint {
-    margin-bottom: 5px; /* Reduce margin below hints */
+    margin: auto; /* Reduce margin below hints */
+    margin-top: 15px;
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
     color: green; /* Optional: Different color for hints to distinguish */
 }
 #hint {
     cursor: pointer;
-    background: linear-gradient(to right, #2c2f31, #616972);
+    background: grey;
     color: white;
     font-weight: bold;
     border: none;
@@ -444,11 +433,6 @@ nav a:hover {
     background: linear-gradient(to right, #2b4d6d, #3b709e);
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-#hint:enabled {
-    cursor: pointer;
-    background-color: #4caf50; /* Green for unlocked state */
 }
 
 @media screen and (max-width: 768px) {
@@ -604,7 +588,7 @@ nav a:hover {
         <a href="about.html">About</a>
     </nav>
     <section class="game-section">
-        <h3>Game #7</h3>
+        <h3>Game #8</h3>
         <div class="game-container">
             <select id="question-dropdown">
               <!-- General Questions -->
@@ -733,14 +717,16 @@ nav a:hover {
 
 <!-- Prize Announcement Container -->
 <div class="prize-announcement">
-    <p><strong>Today's Prize:</strong> <span id="prize-name">$50 Amazon Gift Card</span></p>
+    <p><strong>Today's Prize:</strong> <span id="prize-name">$25 Amazon Gift Card</span></p>
     <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
 </div>
-    <div class="social-links">
+    <div class="social-links">   
+        <a href="https://www.instagram.com/colbymartel19" target="_blank">
+            <img src="instagramicon.png" alt="Instagram" /></a>      
         <a href="https://www.youtube.com/colbymartel" target="_blank">
-            <img src="youtubeicon.png" alt="YouTube" /></a>        
-        <a href="https://www.instagram.com/colbymartel19" target="_blank">Instagram</a>
-        <a href="https://www.tiktok.com/@colbymartel" target="_blank">TikTok</a>
+            <img src="youtubeicon.png" alt="YouTube" /></a>       
+        <a href="https://www.tiktok.com/@colbymartel" target="_blank">
+            <img src="tiktokicon.png" alt="TikTok" /></a>        
     </div>
     <script>
 // Initialize hint button state
@@ -826,7 +812,9 @@ function lockHintButton() {
 // Unlock the hint button (visual state only)
 function unlockHintButton() {
     hintButton.style.backgroundColor = "#4caf50"; // Green color
-    hintButton.textContent = "Try a hint?"; // Update text when hint becomes available
+    hintButton.textContent = "🔓 Hint"; // Update text on the button
+    guessResponse.textContent = "Try a hint!"; // Update the text below the button
+    guessResponse.className = "response guess-response hint"; // Ensure it's styled as a hint message
     hintAvailable = true;
 }
 
@@ -838,17 +826,16 @@ function updateHintAvailability() {
         unlockHintButton(); // Unlock the hint if the threshold is reached
     } else if (!hintAvailable) {
         // Update the response text dynamically while locked
-        guessResponse.textContent = `Guess ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
+        guessResponse.textContent = `Ask ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
         guessResponse.className = "response no"; // Style the response appropriately
     }
 }
-
 // Event listener for hint button
 hintButton.addEventListener("click", () => {
     if (!hintAvailable) {
         // If locked, display how many more questions are needed
         const remainingQuestions = 4 - questionsSinceLastHint;
-        guessResponse.textContent = `Guess ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
+        guessResponse.textContent = `Ask ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
         guessResponse.className = "response no"; // Style the response appropriately
         return; // Exit if the hint is locked
     }

@@ -17,152 +17,134 @@
     <style>
         /* General Body Styling */
         body {
-    font-family: 'Poppins', 'Arial', sans-serif; /* Modern, clean font */
+            font-family: 'Calibri', 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom, #f7faff, #d8ebfc); /* Gradient background */
+    background-color: #f7faff; /* Soft sky blue */
     color: #333;
     line-height: 1.6;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-/* Header Styling */
-header {
-    background: linear-gradient(90deg, #4682b4, #315f85);
+        /* Header Styling */
+        header {
+    background: linear-gradient(90deg, #6ca0dc, #4682b4);
     color: white;
-    padding: 30px 0;
+    padding: 20px 0;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
     margin: 0;
-    font-size: 3rem;
+    font-size: 2.5rem; /* Reduced font size */
     font-weight: bold;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 header p {
-    margin: 10px 0 0;
-    font-size: 1.2rem;
-    font-style: italic;
-    opacity: 0.9;
+    margin: -5px 0 0;
+    font-size: 1rem; /* Reduced font size */
 }
 
 /* Navigation Bar */
 nav {
-    background: #315f85;
+    background: #4682b4;
     color: white;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 15px 0;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    border-bottom: 2px solid #5a9fd8;
+    padding: 8px 0; /* Reduced padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 nav a {
     color: white;
     text-decoration: none;
-    margin: 0 20px;
-    font-size: 1.2rem;
+    margin: 0 10px; /* Reduced spacing */
+    font-size: 1.1rem; /* Slightly smaller font */
     font-weight: bold;
-    padding: 10px 15px;
-    border-radius: 25px;
-    background: linear-gradient(90deg, #5a9fd8, #4682b4);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-    background: linear-gradient(90deg, #3b709e, #2b4d6d);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    transform: scale(1.1);
+    color: #d0eaff;
 }
-/* Social Links */
 .social-links {
     display: flex;
     justify-content: center;
-    padding: 20px;
-    gap: 25px;
-    margin-top: 10px;
+    padding: 35px; /* Reduced margin */
+    gap: 15px; /* Reduced gap */
 }
 
 .social-links a {
     color: #4682b4;
-    font-size: 2rem;
     text-decoration: none;
-    transition: all 0.3s ease-in-out;
+    font-size: 1.3rem; /* Slightly smaller font */
+    transition: color 0.3s ease;
 }
 
 .social-links a:hover {
     color: #315f85;
-    transform: translateY(-5px);
 }
+        /* Game Section */
+        .game-section {
+            padding: 50px 20px;
+            background-color: #ffffff;
+            text-align: center;
+        }
 
-/* Game Section */
-.game-section {
-    padding: 50px 20px;
-    background: #ffffff;
-    text-align: center;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    margin: 40px auto;
-    max-width: 950px;
-    border: 2px solid #d8ebfc;
-}
+        .game-section h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            margin-top: -20px;
+            color: #4682b4;
+        }
 
-.game-section h3 {
-    font-size: 2rem;
-    margin-bottom: 30px;
-    color: #4682b4;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        .game-container {
+        padding: 35px;
+          max-width: 600px;
+          margin: 0 auto -40px auto; 
+          background: white;
+          border-radius: 10px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+          text-align: center;
 }
-/* Game Container */
-.game-container {
-    padding: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-    background: linear-gradient(to bottom, #ffffff, #e9f5fd);
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
+        .game-container select,
+        .game-container input {
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            width: 80%;
+            max-width: 400px;
+            margin-bottom: 15px;
+            border: 2px solid #87cefa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.game-container select,
-.game-container input {
-    padding: 15px;
-    font-size: 1.2rem;
-    width: 90%;
-    margin: 20px auto;
-    border: 2px solid #87cefa;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: border 0.3s, box-shadow 0.3s ease-in-out;
-}
+        .game-container input:focus,
+        .game-container select:focus {
+            outline: none;
+            border: 2px solid #4682b4;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-.game-container button {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    background: linear-gradient(to right, #4682b4, #6ca0dc);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
+        .game-container button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #4682b4;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
-.game-container button:hover {
-    background: linear-gradient(to right, #2b4d6d, #3b709e);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-   
+        .game-container button:hover {
+            background: #315f85;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
 
 /* Question Response Styling */
 .question-response {
@@ -387,27 +369,31 @@ nav a:hover {
 }
 /* Progress Container */
 .progress-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
+    position: relative;
+    top: -20px; /* Move upwards by 20px */
+    padding: 10px 30px;
     border: 2px solid #4682b4;
-    border-radius: 15px;
-    background: linear-gradient(to right, #f0f8ff, #d8ebfc);
-    margin: 30px auto;
-    max-width: 700px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    font-size: 1.3rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: #333;
+    display: flex; /* Use flexbox */
+    justify-content: space-around; /* Space between each item */
+    align-items: center; /* Vertically center items */
 }
 
 .progress-container p {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .progress-container strong {
-    color: #315f85;
+    color: #4682b4;
 }
+
 .guess-response.hint {
     margin-bottom: 5px; /* Reduce margin below hints */
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
@@ -450,27 +436,26 @@ nav a:hover {
     font-weight: bold;
 }
 .prize-announcement {
-    padding: 25px;
+    position: relative;
+    margin: 10px auto;
+    padding: 10px;
+    max-width: 600px;
+    background-color: #f9f9f9;
     border: 2px solid #4682b4;
-    border-radius: 15px;
-    background: #f9fcff;
-    margin: 30px auto;
-    max-width: 800px;
+    border-radius: 10px;
     text-align: center;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    justify-content: space-around; /* Space between each item */
+    align-items: center; /* Vertically center items */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 .prize-announcement p {
-    font-size: 1.5rem;
-    margin: 15px 0;
+    font-size: 1.2rem;
+    margin: 5px 0;
 }
-
 .prize-announcement span {
     color: #315f85;
     font-weight: bold;
-    font-size: 1.3rem;
 }
-
 /* Red Banner Styling */
 #red-banner {
     background-color: #ff4d4d;
@@ -498,51 +483,58 @@ nav a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.85); /* Dark overlay */
+    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2000;
+    display: none; /* Hidden by default */
 }
 
 .celebration-popup .popup-content {
-    background: #ffffff;
+    background: white;
     padding: 30px;
-    border-radius: 20px;
+    border-radius: 15px;
     text-align: center;
     max-width: 500px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     position: relative;
-    border: 2px solid #87cefa;
 }
 
 .celebration-popup h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #4682b4;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .celebration-popup p {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin: 10px 0;
 }
 
+.celebration-popup .celebration-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
 .celebration-popup .celebration-button {
-    padding: 15px 30px;
-    font-size: 1.2rem;
+    padding: 10px 20px;
+    font-size: 1rem;
     font-weight: bold;
     color: white;
     background: #4682b4;
     border: none;
-    border-radius: 50px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .celebration-popup .celebration-button:hover {
-    background: #2b4d6d;
-    transform: scale(1.1);
+    background: #315f85;
+    transform: scale(1.05);
 }
 
 .celebration-popup .close-popup {
@@ -572,14 +564,15 @@ nav a:hover {
         <p>Created by Colby Martel</p>
     </header>
     <nav>
-        <a href="index.html">Play</a>
-        <a href="calendar.html">History</a>
-        <a href="about.html">About</a>
+        <a href="/index.html">Play</a>
+        <a href="/calendar.html">History</a>
+        <a href="/about.html">About</a>
     </nav>
     <section class="game-section">
         <h3>Game #7</h3>
         <div class="game-container">
             <select id="question-dropdown">
+            <option value="" disabled selected>Choose a question</option>
               <!-- General Questions -->
               <option value="is this a male artist?">Is this a male artist?</option>
               <option value="are they still alive?">Are they still alive?</option>
@@ -737,13 +730,12 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-"Hint: She was born on the East Coast of the USA.",
+    "Hint: She was born on the East Coast of the USA.",
     "Hint: She is about 5 feet tall.",
     "Hint: Her name starts with 'A'.",
-    "Hint: As a teenager, she acted on Nickelodeon.",
+    "Hint: As a teenager, she was an actress on Nickelodeon.",
     "Hint: She plays Glinda the Good in Wicked.",
 ];
-
 const predefinedAnswers = {
     "is this a male artist?": "No!",
     "are they still alive?": "Yes!",
@@ -785,7 +777,7 @@ const predefinedAnswers = {
     "do they go by their birth name?": "Yes!",
     "do they go by one word?": "No!",
     "do they have a common first name?": "Yes!",
-    "what does their name start with?": "Yes!"
+    "what does their name start with?": "Yes!" 
 };
 
 // Lock the hint button (visual state only)
