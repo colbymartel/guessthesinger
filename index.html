@@ -32,31 +32,44 @@
 }
 
 /* Header Styling */
-
 .header {
-            background-color: #4682b4;
-            color: white;
-            padding: 25px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative; /* For proper centering */
-        }
+    background-color: #4682b4;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+    position: relative; /* Allows for absolute positioning */
+}
 
-        .header .logo {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%); /* Center the logo horizontally */
-            font-size: 2.3rem;
-            font-weight: bold;
-            text-align: center;
-        }
+/* Center and add space around the logo */
+.header .logo {
+    position: absolute;
+    left: 50%; /* Move logo to center */
+    transform: translateX(-50%); /* Adjust for centering */
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px; /* Add space above */
+    margin-bottom: 20px; /* Add space below */
+    line-height: 1.2; /* Ensures proper vertical spacing for multi-line logos */
+}
         .header .social-icons {
             display: flex;
             gap: 15px;
             margin-top: 5px;
             margin-left: 5px;
         }
+/* Hide social links on mobile */
+@media (max-width: 768px) {
+    .header .social-icons {
+        display: none; /* Hides the social icons on smaller screens */
+    }
+
+    .navbar ul {
+        flex-wrap: nowrap; /* Prevents wrapping of navigation links */
+    }
+}
 
         .header .social-icons img {
             width: 25px;
@@ -77,10 +90,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             font-weight: bold;
         }
-
+ 
         .navbar ul {
             list-style: none;
             display: flex;
@@ -410,7 +424,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 10px 30px;
+    padding: 20px 30px;
     border: 2px solid #4682b4;
     border-radius: 15px;
     text-align: center;
