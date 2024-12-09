@@ -116,20 +116,24 @@
 /* Mobile Specific Adjustments */
 @media (max-width: 768px) {
     .header {
-        flex-wrap: wrap; /* Allow content to wrap */
+        flex-wrap: wrap; /* Allow items to wrap */
         justify-content: center; /* Center items */
         text-align: center; /* Align text for better readability */
-        padding: 20px 20px; /* Add padding for mobile */
+        padding: 15px; /* Add padding around the header */
+        box-sizing: border-box; /* Ensure padding is included in the element's size */
     }
 
     .header .logo {
         margin: 0 auto; /* Center the logo */
-    }
-
-    .header .social-icons {
-        margin-top: 10px; /* Add space below the logo */
+        padding: 5px 0; /* Optional: Add spacing around the logo */
     }
 }
+@media (max-width: 768px) {
+    .header {
+        padding: 15px !important; /* Force padding */
+    }
+}
+
 /* Game Section */
 .game-section {
     padding: 50px 20px;
