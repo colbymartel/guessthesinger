@@ -34,44 +34,33 @@
 /* Header Styling */
 .header {
     display: flex;
-    justify-content: space-between; /* Space between logo and navigation */
-    align-items: center; /* Vertically align content */
-    padding: 45px 25px;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    padding: 30px; /* Add consistent padding */
     background-color: #4682b4;
     color: white;
+    box-sizing: border-box; /* Ensure padding is included in width */
 }
 
-/* Center and add space around the logo */
+/* Center and style the logo */
 .header .logo {
-    position: absolute;
-    left: 50%; /* Move logo to center */
-    transform: translateX(-50%); /* Adjust for centering */
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
-    margin-top: 20px; /* Add space above */
-    margin-bottom: 20px; /* Add space below */
-    line-height: 1.2; /* Ensures proper vertical spacing for multi-line logos */
+    line-height: 1.2; /* Ensures proper vertical spacing for multi-line text */
     white-space: nowrap; /* Prevent wrapping */
 }
-        .header .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 5px;
-            margin-left: 5px;
-        }
+@media (max-width: 768px) {
+    .header {
+        padding: 40px !important; /* Ensure the padding is applied */
+        box-sizing: border-box; /* Include padding in width calculations */
+    }
 
-        .header .social-icons img {
-            width: 25px;
-            height: 25px;
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .header .social-icons img:hover {
-            transform: scale(1.2);
-        }
-
+    .header .logo {
+        margin: 0 auto; /* Center logo */
+        padding: 40px 0; /* Adjust spacing if needed */
+    }
+}
         /* Navbar Styling */
         .navbar {
     display: flex;
@@ -101,27 +90,6 @@
 
 .navbar ul li a:hover {
     background-color: #4682b4;
-}
-
-/* Mobile Specific Adjustments */
-@media (max-width: 768px) {
-    .header {
-        flex-wrap: wrap; /* Allow items to wrap */
-        justify-content: center; /* Center items */
-        text-align: center; /* Align text for better readability */
-        padding: 15px; /* Add padding around the header */
-        box-sizing: border-box; /* Ensure padding is included in the element's size */
-    }
-
-    .header .logo {
-        margin: 0 auto; /* Center the logo */
-        padding: 5px 0; /* Optional: Add spacing around the logo */
-    }
-}
-@media (max-width: 768px) {
-    .header {
-        padding: 15px !important; /* Force padding */
-    }
 }
 
 /* Game Section */
