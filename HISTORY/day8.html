@@ -17,32 +17,37 @@
     <style>
         /* General Body Styling */
         body {
-            font-family: 'Calibri', 'Arial', sans-serif;
+    font-family: 'Poppins', 'Arial', sans-serif; /* Modern, clean font */
     margin: 0;
     padding: 0;
-    background-color: #f7faff; /* Soft sky blue */
+    background: linear-gradient(to bottom, #f7faff, #d8ebfc); /* Gradient background */
     color: #333;
     line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-        /* Header Styling */
-        header {
+/* Header Styling */
+header {
     background: linear-gradient(90deg, #6ca0dc, #4682b4);
     color: white;
     padding: 20px 0;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    position: sticky;
 }
 
 header h1 {
     margin: 0;
-    font-size: 2.5rem; /* Reduced font size */
+    font-size: 2.5rem;
     font-weight: bold;
 }
 
 header p {
-    margin: -5px 0 0;
-    font-size: 1rem; /* Reduced font size */
+    font-size: 1rem;
+    font-style: italic;
+    opacity: 0.9;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 /* Navigation Bar */
@@ -67,110 +72,129 @@ nav a {
 nav a:hover {
     color: #d0eaff;
 }
+/* Social Links */
 .social-links {
     display: flex;
     justify-content: center;
-    padding: 35px; /* Reduced margin */
-    gap: 15px; /* Reduced gap */
+    padding: 20px;
+    gap: 30px; /* Space between the icons */
+    margin-top: 10px;
 }
 
 .social-links a {
+    display: inline-block;
+    transition: all 0.3s ease-in-out;
+}
+
+.social-links img {
+    width: 50px; /* Set width of icons */
+    height: 50px; /* Set height of icons */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 50%; /* Make icons circular if applicable */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+.social-links img:hover {
+    transform: translateY(-5px) scale(1.1); /* Hover effect to lift icon */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+    cursor: pointer;
+}
+
+
+
+/* Game Section */
+.game-section {
+    padding: 50px 20px;
+    background: #ffffff;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    margin: 40px auto;
+    max-width: 950px;
+    border: 2px solid #d8ebfc;
+}
+
+@media (max-width: 768px) {
+    .game-section {
+        margin: 20px auto; /* Reduce the top margin for mobile */
+    }
+}
+.game-section h3 {
+    font-size: 1.5rem;
+    margin-top: -20px;
+    margin-bottom: 20px;
     color: #4682b4;
-    text-decoration: none;
-    font-size: 1.3rem; /* Slightly smaller font */
-    transition: color 0.3s ease;
 }
 
-.social-links a:hover {
-    color: #315f85;
+/* Game Container */
+.game-container {
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
-        /* Game Section */
-        .game-section {
-            padding: 50px 20px;
-            background-color: #ffffff;
-            text-align: center;
-        }
 
-        .game-section h3 {
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-            margin-top: -20px;
-            color: #4682b4;
-        }
-
-        .game-container {
-        padding: 35px;
-          max-width: 600px;
-          margin: 0 auto -40px auto; 
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-          text-align: center;
+.game-container select,
+.game-container input {
+    padding: 15px;
+    font-size: 1.2rem;
+    width: 90%;
+    margin: 20px auto;
+    border: 2px solid #87cefa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s ease-in-out;
 }
-        .game-container select,
-        .game-container input {
-            padding: 12px 15px;
-            font-size: 1.1rem;
-            width: 80%;
-            max-width: 400px;
-            margin-bottom: 15px;
-            border: 2px solid #87cefa;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: border 0.3s ease, box-shadow 0.3s ease;
-        }
 
-        .game-container input:focus,
-        .game-container select:focus {
-            outline: none;
-            border: 2px solid #4682b4;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+.game-container input:focus,
+.game-container select:focus {
+    outline: none;
+    border: 2px solid #4682b4;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
 
-        .game-container button {
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            background: #4682b4;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+.game-container button {
+    padding: 13px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #4682b4, #6ca0dc);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
 
-        .game-container button:hover {
-            background: #315f85;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-        }
+.game-container button:hover {
+    background: linear-gradient(to right, #2b4d6d, #3b709e);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
 
 /* Question Response Styling */
 .question-response {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    font-size: 1.3rem; /* Slightly smaller text for question response */
+    margin-top: 15px;
+    font-size: 1.3rem; 
     font-weight: bold;
     text-align: center;
-    color: #333; /* Standard black for guesses */
+    color: #333;
 }
 
 /* Guess Response Styling */
 .guess-response {
     margin-top: 20px;
-    margin-bottom: -10px;
-    font-size: 1.3rem; /* Larger text for guess prompt */
+    font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
-    color: #333; /* Standard black for guesses */
+    color: #333;
 }
         .response.yes {
             color: green;
             font-weight: bold;
             margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 1.3rem; /* Larger text for guess prompt */
+            font-size: 1.3rem;
 
         }
 
@@ -178,8 +202,8 @@ nav a:hover {
             color: red;
             font-weight: bold;
             margin-top: 15px;
-            margin-bottom: 20px;
-            font-size: 1.3rem; /* Larger text for guess prompt */
+            margin-bottom: 0px;
+            font-size: 1.3rem;
         }
 
         .share-container {
@@ -369,51 +393,51 @@ nav a:hover {
 }
 /* Progress Container */
 .progress-container {
-    position: relative;
-    top: -20px; /* Move upwards by 20px */
-    padding: 10px 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 30px;
     border: 2px solid #4682b4;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
     text-align: center;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
-    font-size: 1.2rem;
-    color: #333;
-    display: flex; /* Use flexbox */
-    justify-content: space-around; /* Space between each item */
-    align-items: center; /* Vertically center items */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    font-size: 1.3rem;
 }
 
 .progress-container p {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 .progress-container strong {
-    color: #4682b4;
+    color: #315f85;
 }
 
 .guess-response.hint {
-    margin-bottom: 5px; /* Reduce margin below hints */
+    margin: auto; /* Reduce margin below hints */
+    margin-top: 15px;
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
     color: green; /* Optional: Different color for hints to distinguish */
 }
 #hint {
     cursor: pointer;
-    background-color: grey; /* Locked state */
+    background: grey;
     color: white;
     font-weight: bold;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     padding: 10px 20px;
-    font-size: 1.1rem;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-#hint:enabled {
-    cursor: pointer;
-    background-color: #4caf50; /* Green for unlocked state */
+.game-container button:hover {
+    background: linear-gradient(to right, #2b4d6d, #3b709e);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 @media screen and (max-width: 768px) {
@@ -436,25 +460,32 @@ nav a:hover {
     font-weight: bold;
 }
 .prize-announcement {
-    position: relative;
-    margin: 10px auto;
-    padding: 10px;
-    max-width: 600px;
-    background-color: #f9f9f9;
+    padding: 25px;
     border: 2px solid #4682b4;
-    border-radius: 10px;
+    border-radius: 15px;
+    background: #f9fcff;
+    margin: 30px auto;
+    max-width: 800px;
     text-align: center;
-    justify-content: space-around; /* Space between each item */
-    align-items: center; /* Vertically center items */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 .prize-announcement p {
-    font-size: 1.2rem;
-    margin: 5px 0;
+    font-size: 1.5rem;
+    margin: 15px 0;
 }
+
 .prize-announcement span {
     color: #315f85;
     font-weight: bold;
+    font-size: 1.3rem;
+    display: inline; /* Default for non-mobile views */
+}
+
+@media (max-width: 768px) {
+    .prize-announcement span {
+        display: block; /* Move to a new line on mobile */
+        margin-top: 10px; /* Add some space between the lines */
+    }
 }
 /* Red Banner Styling */
 #red-banner {
@@ -572,7 +603,6 @@ nav a:hover {
         <h3>Game #8</h3>
         <div class="game-container">
             <select id="question-dropdown">
-            <option value="" disabled selected>Choose a question</option>
               <!-- General Questions -->
               <option value="is this a male artist?">Is this a male artist?</option>
               <option value="are they still alive?">Are they still alive?</option>
@@ -699,13 +729,16 @@ nav a:hover {
 
 <!-- Prize Announcement Container -->
 <div class="prize-announcement">
-    <p><strong>Today's Prize:</strong> <span id="prize-name">$50 Amazon Gift Card</span></p>
+    <p><strong>Today's Prize:</strong> <span id="prize-name">$25 Amazon Gift Card</span></p>
     <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
 </div>
-    <div class="social-links">
-        <a href="https://www.youtube.com/colbymartel" target="_blank">YouTube</a>
-        <a href="https://www.instagram.com/colbymartel19" target="_blank">Instagram</a>
-        <a href="https://www.tiktok.com/@colbymartel" target="_blank">TikTok</a>
+    <div class="social-links">   
+        <a href="https://www.instagram.com/colbymartel19" target="_blank">
+            <img src="instagramicon.png" alt="Instagram" /></a>      
+        <a href="https://www.youtube.com/colbymartel" target="_blank">
+            <img src="youtubeicon.png" alt="YouTube" /></a>       
+        <a href="https://www.tiktok.com/@colbymartel" target="_blank">
+            <img src="tiktokicon.png" alt="TikTok" /></a>        
     </div>
     <script>
 // Initialize hint button state
@@ -730,12 +763,13 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-    "Hint: He has won more than five Grammys.",
+"Hint: He has won more than five Grammys.",
     "Hint: His most famous music video on YouTube is from 2015.",
     "Hint: He was a judge for a popular TV singing competition.",
     "Hint: He recently headlined a Super Bowl halftime show.",
     "Hint: His name is synonymous with someone who shows people to seats."
 ];
+
 const predefinedAnswers = {
     "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
@@ -790,7 +824,9 @@ function lockHintButton() {
 // Unlock the hint button (visual state only)
 function unlockHintButton() {
     hintButton.style.backgroundColor = "#4caf50"; // Green color
-    hintButton.textContent = "Try a hint?"; // Update text when hint becomes available
+    hintButton.textContent = "🔓 Hint"; // Update text on the button
+    guessResponse.textContent = "Try a hint!"; // Update the text below the button
+    guessResponse.className = "response guess-response hint"; // Ensure it's styled as a hint message
     hintAvailable = true;
 }
 
@@ -802,17 +838,16 @@ function updateHintAvailability() {
         unlockHintButton(); // Unlock the hint if the threshold is reached
     } else if (!hintAvailable) {
         // Update the response text dynamically while locked
-        guessResponse.textContent = `Guess ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
+        guessResponse.textContent = `Ask ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
         guessResponse.className = "response no"; // Style the response appropriately
     }
 }
-
 // Event listener for hint button
 hintButton.addEventListener("click", () => {
     if (!hintAvailable) {
         // If locked, display how many more questions are needed
         const remainingQuestions = 4 - questionsSinceLastHint;
-        guessResponse.textContent = `Guess ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
+        guessResponse.textContent = `Ask ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
         guessResponse.className = "response no"; // Style the response appropriately
         return; // Exit if the hint is locked
     }

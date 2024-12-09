@@ -16,6 +16,7 @@
     <link rel="icon" href="favicon.ico">
     <style>
         /* General Body Styling */
+    
         body {
     font-family: 'Poppins', 'Arial', sans-serif; /* Modern, clean font */
     margin: 0;
@@ -24,83 +25,96 @@
     color: #333;
     line-height: 1.6;
     overflow-x: hidden; /* Prevent horizontal scrolling */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+    margin: 0; /* Remove default margin */
 }
 
 /* Header Styling */
-header {
-    background: linear-gradient(90deg, #6ca0dc, #4682b4);
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    position: sticky;
-}
 
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: bold;
-}
+.header {
+            background-color: #4682b4;
+            color: white;
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative; /* For proper centering */
+        }
 
-header p {
-    font-size: 1rem;
-    font-style: italic;
-    opacity: 0.9;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
+        .header .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%); /* Center the logo horizontally */
+            font-size: 2.3rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .header .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            margin-left: 5px;
+        }
 
-/* Navigation Bar */
-nav {
-    background: #4682b4;
-    color: white;
-    display: flex;
-    justify-content: center;
-    padding: 8px 0; /* Reduced padding */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+        .header .social-icons img {
+            width: 25px;
+            height: 25px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px; /* Reduced spacing */
-    font-size: 1.1rem; /* Slightly smaller font */
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
+        .header .social-icons img:hover {
+            transform: scale(1.2);
+        }
 
-nav a:hover {
-    color: #d0eaff;
-}
-/* Social Links */
-.social-links {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    gap: 30px; /* Space between the icons */
-    margin-top: 10px;
-}
+        /* Navbar Styling */
+        .navbar {
+            background-color: #315f85;
+            color: white;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
 
-.social-links a {
-    display: inline-block;
-    transition: all 0.3s ease-in-out;
-}
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
 
-.social-links img {
-    width: 50px; /* Set width of icons */
-    height: 50px; /* Set height of icons */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 50%; /* Make icons circular if applicable */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
-}
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-.social-links img:hover {
-    transform: translateY(-5px) scale(1.1); /* Hover effect to lift icon */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
-    cursor: pointer;
-}
+        .navbar ul li a:hover {
+            background-color: #4682b4;
+        }
 
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
 
+            .navbar ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+        }
 
 /* Game Section */
 .game-section {
@@ -396,12 +410,13 @@ nav a:hover {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 20px 30px;
+    padding: 10px 30px;
     border: 2px solid #4682b4;
     border-radius: 15px;
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
+    margin-top: -10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     font-size: 1.3rem;
 }
@@ -468,6 +483,7 @@ nav a:hover {
     max-width: 800px;
     text-align: center;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    margin-bottom: -20px;
 }
 .prize-announcement p {
     font-size: 1.5rem;
@@ -585,22 +601,44 @@ nav a:hover {
     color: #ff4d4d;
 }
 
-</style>
+main {
+    flex: 1; /* Pushes the footer to the bottom */
+}
+
+.footer {
+    background-color: #315f85; /* Matches the site's theme */
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Adds space around the text */
+    font-size: 1rem;
+    position: relative;
+    width: 100%; /* Full width across the page */
+}
 
     </style>
 </head>
+<main>
 <body>
-    <header>           
-        <h1>Guess The Singer</h1>
-        <p>Created by Colby Martel</p>
+    <header class="header">
+        <div class="logo">Guess The Singer</div>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/colbymartel19" target="_blank">
+                <img src="instagramicon.png" alt="Instagram Logo">
+            </a>
+            <a href="https://www.tiktok.com/@colbymartel" target="_blank">
+                <img src="tiktokicon.png" alt="TikTok Logo">
+            </a>
+        </div>
     </header>
-    <nav>
-        <a href="index.html">Play</a>
-        <a href="calendar.html">History</a>
-        <a href="about.html">About</a>
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="calendar.html">History</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #8</h3>
+        <h3>Game #9</h3>
         <div class="game-container">
             <select id="question-dropdown">
               <!-- General Questions -->
@@ -630,6 +668,7 @@ nav a:hover {
               <option value="do they perform rock music?">Do they perform rock music?</option>
               <option value="do they perform country music?">Do they perform country music?</option>
               <option value="do they perform jazz music?">Do they perform jazz music?</option>
+              <option value="do they perform party music?">Do they perform party music?</option>
               <option value="do they perform sad music?">Do they perform sad music?</option>
               
               <!-- Career and Popularity -->
@@ -682,7 +721,7 @@ nav a:hover {
             <div class="popup-content">
                 <button class="close-popup" id="close-celebration-popup">&times;</button>
                 <h2>🎉 Congratulations! 🎉</h2>
-                <p>You correctly guessed <strong id="correct-artist-name">Usher</strong>!</p>
+                <p>You correctly guessed <strong id="correct-artist-name">Calvin Harris</strong>!</p>
                 <p>Questions used: <span id="questions-used-popup">0</span></p>
                 <p>Guesses made: <span id="guesses-made-popup">0</span></p>
                 <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -732,14 +771,10 @@ nav a:hover {
     <p><strong>Today's Prize:</strong> <span id="prize-name">$25 Amazon Gift Card</span></p>
     <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
 </div>
-    <div class="social-links">   
-        <a href="https://www.instagram.com/colbymartel19" target="_blank">
-            <img src="instagramicon.png" alt="Instagram" /></a>      
-        <a href="https://www.youtube.com/colbymartel" target="_blank">
-            <img src="youtubeicon.png" alt="YouTube" /></a>       
-        <a href="https://www.tiktok.com/@colbymartel" target="_blank">
-            <img src="tiktokicon.png" alt="TikTok" /></a>        
-    </div>
+</main>
+<footer class="footer">
+    &copy; Colby Martel, 2024
+</footer>
     <script>
 // Initialize hint button state
 let questionsSinceLastHint = 0; // Tracks questions asked since the last hint
@@ -763,55 +798,57 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-"Hint: He has won more than five Grammys.",
-    "Hint: His most famous music video on YouTube is from 2015.",
-    "Hint: He was a judge for a popular TV singing competition.",
-    "Hint: He recently headlined a Super Bowl halftime show.",
-    "Hint: His name is synonymous with someone who shows people to seats."
+    "Hint: He was most popular in the 2010s.",
+    "Hint: He is almost 6 and a half feet tall.",
+    "Hint: Two of his most famous songs are in collaboration with Rihanna.",
+    "Hint: He dated Taylor Swift.",
+    "Hint: He is a Scottish DJ.",
+    "Hint: His initials are 'C' and 'H'."
 ];
 
 const predefinedAnswers = {
     "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
     "are they over 30 years old?": "Yes!",
-    "are they over 40 years old?": "Yes!",
+    "are they over 40 years old?": "No!",
     "are they over 50 years old?": "No!",
     "were they most popular before 2000?": "No!",
-    "are they most popular now?": "Unsure!",
-    "album release?": "Yes!",
-    "are they touring?": "Yes!",
+    "are they most popular now?": "No!",
+    "album release?": "Close!",
+    "are they touring?": "No!",
 
-    "are they from the united states?": "Yes!",
-    "are they from north america?": "Yes!",
-    "are they from europe?": "No!",
+    "are they from the united states?": "No!",
+    "are they from north america?": "No!",
+    "are they from europe?": "Yes!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
     "different languages?": "No!",
     "are they spanish?": "No!",
-    "do they perform pop music?": "Yes!",
+    "do they perform pop music?": "No!",
     "do they perform rap music?": "No!",
-    "do they perform R&B music?": "Yes!",
+    "do they perform R&B music?": "No!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
-    "do they perform sad music?": "Yes!",
+    "do they perform party music?": "Yes!",
+    "do they perform sad music?": "No!",
 
-    "are they also an actor?": "Yes!",
+    "are they also an actor?": "No!",
     "have they won a Grammy?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "No!",
+    "do they have more than 50M listeners?": "Yes!",
     "are they in a band?": "No!",
 
-    "do they have dark hair?": "Yes!",
-    "do they have blond hair?": "No!",
-    "do they have tattoos?": "No!",
+    "do they have dark hair?": "No!",
+    "do they have blond hair?": "Yes!",
+    "do they have tattoos?": "Yes!",
     "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Yes!",
-    "do they go by one word?": "Yes!",
-    "do they have a common first name?": "No!",
-    "what does their name start with?": "No!" 
+    "do they go by their birth name?": "No!",
+    "do they go by one word?": "No!",
+    "do they have a common first name?": "Yes!",
+    "what does their name start with?": "Yes!"
 };
 
 // Lock the hint button (visual state only)
@@ -907,7 +944,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Usher"; // Example correct answer
+    const correctAnswer = "Calvin Harris"; // Example correct answer
     if (guess === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
@@ -1057,6 +1094,12 @@ closeCountdown.addEventListener("click", () => {
     const countdownPopup = document.getElementById("countdown-popup");
     countdownPopup.style.display = "none";
 });
+function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            menu.classList.toggle('open');
+            dropdownMenu.classList.toggle('open');
+        }
 </script>
 </body>
 </html>
