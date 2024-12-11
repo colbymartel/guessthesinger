@@ -743,7 +743,7 @@ main {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #10</h3>
+        <h3>Game #11</h3>
         <div class="game-container">
             <select id="question-dropdown">
               <!-- General Questions -->
@@ -843,7 +843,7 @@ main {
         <div class="popup-content">
             <button class="close-popup" id="close-giveup-popup">&times;</button>
             <h2>Better Luck Tomorrow! 🎉</h2>
-            <p>The correct answer is <strong id="giveup-correct-artist-name">JENNIE</strong>.</p>
+            <p>The correct answer is <strong id="giveup-correct-artist-name">Bruno Mars</strong>.</p>
             <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
             <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
             <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -924,37 +924,36 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-    "Hint: She is also a dancer.",
-    "Hint: She hasn't released a solo album (yet).",
-    "Hint: Her name starts with 'J'.",
-    "Hint: She is from South Korea.",
-    "Hint: Her favorite colors are black and pink."
+    "Hint: He performs multiple genres of music.",
+    "Hint: He has performed at the Super Bowl Halftime Show.",
+    "Hint: He has performed at the Super Bowl Halftime Show more than once.",
+    "Hint: He has the most monthly listeners on Spotify.",
+    "Hint: His last name is the name of a planet.",
 ];
 const predefinedAnswers = {
     // General Information
-    "is this a male artist?": "No!",
+    "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
-    "are they over 30 years old?": "No!",
+    "are they over 30 years old?": "Yes!",
     "are they over 40 years old?": "No!",
     "are they over 50 years old?": "No!",
     "were they most popular before 2000?": "No!",
     "are they most popular now?": "Yes!",
     "album release?": "No!",
-    "are they touring?": "No!",
 
     // Geographic Information
-    "are they from the united states?": "No!",
-    "are they from north america?": "No!",
+    "are they from the united states?": "Yes!",
+    "are they from north america?": "Yes!",
     "are they from europe?": "No!",
     "are they from australia?": "No!",
-    "are they from asia or africa?": "Yes!",
+    "are they from asia or africa?": "No!",
 
     // Music Style
-    "different languages?": "Yes!",
+    "different languages?": "No!",
     "are they spanish?": "No!",
     "do they perform pop music?": "Yes!",
-    "do they perform rap music?": "Yes!",
-    "do they perform R&B music?": "No!",
+    "do they perform rap music?": "No!",
+    "do they perform R&B music?": "Yes!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
@@ -963,21 +962,21 @@ const predefinedAnswers = {
 
     // Career and Popularity
     "are they also an actor?": "Yes!",
-    "have they won a Grammy?": "No!",
-    "do they have more than 10M TikTok followers?": "Yes!",
+    "have they won a Grammy?": "Yes!",
+    "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "No!",
-    "are they in a band?": "Yes!",
+    "do they have more than 50M listeners?": "Yes!",
+    "are they in a band?": "No!",
 
     // Appearance
     "do they have dark hair?": "Yes!",
     "do they have blond hair?": "No!",
     "do they have tattoos?": "No!",
-    "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Yes!",
-    "do they go by one word?": "Yes!",
+    "do they wear glasses?": "Yes!",
+    "do they go by their birth name?": "No!",
+    "do they go by one word?": "No!",
     "do they have a common first name?": "Kind of!",
-    "what does their name start with?": "Yes!" 
+    "what does their name start with?": "Yes!"
 };
 // Lock the hint button (visual state only)
 function lockHintButton() {
@@ -1020,7 +1019,7 @@ function transformHintToGiveUp() {
 
     // Add the Give Up functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("JENNIE"); // Replace with the correct answer dynamically
+        showGiveUpPopup("Bruno Mars"); // Replace with the correct answer dynamically
     });
 }
 
@@ -1146,7 +1145,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "JENNIE"; // Example correct answer
+    const correctAnswer = "Bruno Mars"; // Example correct answer
     if (guess === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
