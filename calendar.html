@@ -35,28 +35,36 @@
             font-size: 1rem;
         }
 
-        /* Navigation Bar */
-        nav {
-            background: #4682b4;
-            color: white;
-            display: flex;
-            justify-content: center;
-            padding: 8px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+       /* Navbar Styling */
+       .navbar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #315f85;
+    padding: 10px 0;
+    font-weight: bold;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
 
-        nav a:hover {
-            color: #d0eaff;
-        }
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    background-color: #4682b4;
+}
 
         /* Calendar Section */
         .calendar-section {
@@ -126,28 +134,30 @@
     <header>
         <h1>Game History</h1>
     </header>
-    <nav>
-        <a href="index.html">Play</a>
-        <a href="calendar.html">History</a>
-        <a href="about.html">About</a>
+    <nav class="navbar">
+        <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/calendar.html">History</a></li>
+            <li><a href="/about.html">About</a></li>
+        </ul>
     </nav>
     <section class="calendar-section">
         <div class="calendar-container">
             <h2>December</h2>
             <div class="calendar">
                 <!-- Dates for December 1st to 25th -->
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">1</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">2</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">3</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">4</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">5</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">6</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">7</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">8</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">9</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">10</div>
-                <div class="calendar-day unlocked" data-prize="🎁 Gift Card">11</div>
-                <div class="calendar-day locked">🔒</div>
+                <div class="calendar-day unlocked">1</div>
+                <div class="calendar-day unlocked">2</div>
+                <div class="calendar-day unlocked">3</div>
+                <div class="calendar-day unlocked">4</div>
+                <div class="calendar-day unlocked">5</div>
+                <div class="calendar-day unlocked">6</div>
+                <div class="calendar-day unlocked">7</div>
+                <div class="calendar-day unlocked">8</div>
+                <div class="calendar-day unlocked">9</div>
+                <div class="calendar-day unlocked">10</div>
+                <div class="calendar-day unlocked">11</div>
+                <div class="calendar-day unlocked">12</div>
                 <div class="calendar-day locked">🔒</div>
                 <div class="calendar-day locked">🔒</div>
                 <div class="calendar-day locked">🔒</div>
@@ -203,6 +213,9 @@
                 }
                 if (day.textContent.trim() === "11") {
                     window.location.href = "HISTORY/day11.html";
+                }
+                if (day.textContent.trim() === "12") {
+                    window.location.href = "HISTORY/day12.html";
                 }
             });
         });

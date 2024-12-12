@@ -35,28 +35,36 @@
             font-size: 1rem;
         }
 
-        /* Navigation Bar */
-        nav {
-            background: #4682b4;
-            color: white;
-            display: flex;
-            justify-content: center;
-            padding: 8px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+         /* Navbar Styling */
+         .navbar {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: #315f85;
+    padding: 10px 0;
+    font-weight: bold;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
 
-        nav a:hover {
-            color: #d0eaff;
-        }
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    background-color: #4682b4;
+}
 
         /* About Section */
         .about-section {
@@ -178,10 +186,12 @@
     <header>
         <h1>About</h1>
     </header>
-    <nav>
-        <a href="index.html">Play</a>
-        <a href="calendar.html">History</a>
-        <a href="about.html">About</a>
+    <nav class="navbar">
+        <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/calendar.html">History</a></li>
+            <li><a href="/about.html">About</a></li>
+        </ul>
     </nav>
     <section class="about-section">
         <h2>About Me</h2>

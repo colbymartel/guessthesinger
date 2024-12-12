@@ -726,6 +726,15 @@ main {
     margin: 20px auto; /* Space around the image */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a shadow */
 }
+#giveup-popup img {
+    max-width: 300px; /* Limit the maximum width */
+    width: 100%; /* Make it responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 20px; /* Add rounded corners */
+    display: block; /* Center alignment */
+    margin: 20px auto; /* Space around the image */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a shadow */
+}
     </style>
 </head>
 <main>
@@ -743,7 +752,7 @@ main {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #11</h3>
+        <h3>Game #12</h3>
         <div class="game-container">
             <select id="question-dropdown">
               <!-- General Questions -->
@@ -791,6 +800,7 @@ main {
               <option value="do they wear glasses?">Do they wear glasses or sunglasses often?</option>
               <option value="do they go by their birth name?">Do they go by their birth name?</option>
               <option value="do they go by one word?">Do they go by one word?</option>
+              <option value="do they go by two words?">Do they go by two words?</option>
               <option value="do they have a common first name?">Do they have a common first name?</option>
               <option value="what does their name start with?">Does their name start with A-M?</option>
             </select>
@@ -800,7 +810,7 @@ main {
             <input type="text" id="artist-guess" placeholder="Type your artist guess here..." />
             <button id="submit-guess">Submit Guess</button>
             <button id="hint" class="hint">Hint</button>
-            <div class="response guess-response" id="guess-response">Guess the artist's name!</div>
+            <div class="response guess-response" id="guess-response">Guess the singer's name!</div>
             <div class="share-container" id="share-container" style="display: none;">
                 <button id="share-button">Share Your Result</button>
                 <button id="raffle-button" class="raffle-button">Enter Raffle</button>
@@ -826,7 +836,8 @@ main {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">JENNIE</strong>!</p>
+            <p>You correctly guessed <strong id="correct-artist-name">billyjoel Joel</strong>!</p>
+            <img src="/billyjoel.jpg">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -843,7 +854,8 @@ main {
         <div class="popup-content">
             <button class="close-popup" id="close-giveup-popup">&times;</button>
             <h2>Better Luck Tomorrow! 🎉</h2>
-            <p>The correct answer is <strong id="giveup-correct-artist-name">Bruno Mars</strong>.</p>
+            <p>The correct answer is <strong id="giveup-correct-artist-name">Billy Joel</strong>.</p>
+            <img src="/billyjoel.jpg">
             <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
             <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
             <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -924,21 +936,21 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-    "Hint: He performs multiple genres of music.",
-    "Hint: He has performed at the Super Bowl Halftime Show.",
-    "Hint: He has performed at the Super Bowl Halftime Show more than once.",
-    "Hint: He has the most monthly listeners on Spotify.",
-    "Hint: His last name is the name of a planet.",
+    "Hint: He goes by a common American nickname.",
+    "Hint: He is from New York City.",
+    "Hint: He is in the Rock and Roll Hall of Fame.",
+    "Hint: He is 75 years old.",
+    "Hint: He is a Piano Man.",
 ];
 const predefinedAnswers = {
     // General Information
     "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
     "are they over 30 years old?": "Yes!",
-    "are they over 40 years old?": "No!",
-    "are they over 50 years old?": "No!",
-    "were they most popular before 2000?": "No!",
-    "are they most popular now?": "Yes!",
+    "are they over 40 years old?": "Yes!",
+    "are they over 50 years old?": "Yes!",
+    "were they most popular before 2000?": "Yes!",
+    "are they most popular now?": "No!",
     "album release?": "No!",
 
     // Geographic Information
@@ -953,31 +965,33 @@ const predefinedAnswers = {
     "are they spanish?": "No!",
     "do they perform pop music?": "Yes!",
     "do they perform rap music?": "No!",
-    "do they perform R&B music?": "Yes!",
-    "do they perform rock music?": "No!",
+    "do they perform R&B music?": "No!",
+    "do they perform rock music?": "Yes!",
     "do they perform country music?": "No!",
-    "do they perform jazz music?": "No!",
+    "do they perform jazz music?": "Maybe!",
     "do they perform party music?": "Yes!",
     "do they perform sad music?": "Yes!",
 
     // Career and Popularity
-    "are they also an actor?": "Yes!",
+    "are they also an actor?": "No!",
     "have they won a Grammy?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "Yes!",
+    "do they have more than 20M listeners?": "No!",
+    "do they have more than 50M listeners?": "No!",
     "are they in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "Yes!",
+    "do they have dark hair?": "Not anymore!",
     "do they have blond hair?": "No!",
     "do they have tattoos?": "No!",
-    "do they wear glasses?": "Yes!",
-    "do they go by their birth name?": "No!",
+    "do they wear glasses?": "No!",
+    "do they go by their birth name?": "Close!",
     "do they go by one word?": "No!",
-    "do they have a common first name?": "Kind of!",
-    "what does their name start with?": "Yes!"
+    "do they go by two words?": "Yes!",
+    "do they have a common first name?": "Yes!",
+    "what does their name start with?": "Yes!" 
 };
+
 // Lock the hint button (visual state only)
 function lockHintButton() {
     hintButton.style.backgroundColor = "grey";
@@ -1019,7 +1033,7 @@ function transformHintToGiveUp() {
 
     // Add the Give Up functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Bruno Mars"); // Replace with the correct answer dynamically
+        showGiveUpPopup("Billy Joel"); // Replace with the correct answer dynamically
     });
 }
 
@@ -1145,7 +1159,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Bruno Mars"; // Example correct answer
+    const correctAnswer = "Billy Joel"; // Example correct answer
     if (guess === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
