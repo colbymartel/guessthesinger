@@ -734,7 +734,7 @@ main {
 <body>
     <header class="header">
         <div class="logo">
-            <img src="/SingerLogo.png" alt="Guess the Daily Singer Logo">
+            <img src="/SingerLogo.png" alt="Guess the Singer Logo">
         </div>
     </header>
     <nav class="navbar">
@@ -745,7 +745,7 @@ main {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #12</h3>
+        <h3>Game #13</h3>
         <div class="game-container">
             <select id="question-dropdown">
               <!-- General Questions -->
@@ -829,8 +829,8 @@ main {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">billyjoel Joel</strong>!</p>
-            <img src="/billyjoel.jpg">
+            <p>You correctly guessed <strong id="correct-artist-name">SZA</strong>!</p>
+            <img src="/sza.jpg">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -847,8 +847,8 @@ main {
         <div class="popup-content">
             <button class="close-popup" id="close-giveup-popup">&times;</button>
             <h2>Better Luck Tomorrow! 🎉</h2>
-            <p>The correct answer is <strong id="giveup-correct-artist-name">Billy Joel</strong>.</p>
-            <img src="/billyjoel.jpg">
+            <p>The correct answer is <strong id="giveup-correct-artist-name">SZA</strong>.</p>
+            <img src="/sza.jpg">
             <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
             <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
             <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -929,22 +929,22 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-    "Hint: He goes by a common American nickname.",
-    "Hint: He is from New York City.",
-    "Hint: He is in the Rock and Roll Hall of Fame.",
-    "Hint: He is 75 years old.",
-    "Hint: He is a Piano Man.",
+    "Hint: She won her first Grammy in 2022.",
+    "Hint: Her most streamed song is inspired by a movie title.",
+    "Hint: She will soon be touring with Kendrick Lamar.",
+    "Hint: Her stage name is just three letters.",
 ];
 const predefinedAnswers = {
     // General Information
-    "is this a male artist?": "Yes!",
+    "is this a male artist?": "No!",
     "are they still alive?": "Yes!",
     "are they over 30 years old?": "Yes!",
-    "are they over 40 years old?": "Yes!",
-    "are they over 50 years old?": "Yes!",
-    "were they most popular before 2000?": "Yes!",
-    "are they most popular now?": "No!",
-    "album release?": "No!",
+    "are they over 40 years old?": "No!",
+    "are they over 50 years old?": "No!",
+    "were they most popular before 2000?": "No!",
+    "are they most popular now?": "Yes!",
+    "album release?": "Not quite!",
+    "are they touring?": "Soon!",
 
     // Geographic Information
     "are they from the united states?": "Yes!",
@@ -958,10 +958,10 @@ const predefinedAnswers = {
     "are they spanish?": "No!",
     "do they perform pop music?": "Yes!",
     "do they perform rap music?": "No!",
-    "do they perform R&B music?": "No!",
-    "do they perform rock music?": "Yes!",
+    "do they perform R&B music?": "Yes!",
+    "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
-    "do they perform jazz music?": "Maybe!",
+    "do they perform jazz music?": "No!",
     "do they perform party music?": "Yes!",
     "do they perform sad music?": "Yes!",
 
@@ -969,20 +969,20 @@ const predefinedAnswers = {
     "are they also an actor?": "No!",
     "have they won a Grammy?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 20M listeners?": "No!",
-    "do they have more than 50M listeners?": "No!",
+    "do they have more than 20M listeners?": "Yes!",
+    "do they have more than 50M listeners?": "Yes!",
     "are they in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "Not anymore!",
+    "do they have dark hair?": "Yes!",
     "do they have blond hair?": "No!",
-    "do they have tattoos?": "No!",
+    "do they have tattoos?": "Yes!",
     "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Close!",
-    "do they go by one word?": "No!",
-    "do they go by two words?": "Yes!",
-    "do they have a common first name?": "Yes!",
-    "what does their name start with?": "Yes!" 
+    "do they go by their birth name?": "No!",
+    "do they go by one word?": "Yes!",
+    "do they go by two words?": "No!",
+    "do they have a common first name?": "No!",
+    "what does their name start with?": "No!" 
 };
 
 // Lock the hint button (visual state only)
@@ -1026,7 +1026,7 @@ function transformHintToGiveUp() {
 
     // Add the Give Up functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Billy Joel"); // Replace with the correct answer dynamically
+        showGiveUpPopup("SZA"); // Replace with the correct answer dynamically
     });
 }
 
@@ -1152,7 +1152,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Billy Joel"; // Example correct answer
+    const correctAnswer = "SZA"; // Example correct answer
     if (guess === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
