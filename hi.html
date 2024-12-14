@@ -146,7 +146,27 @@
     padding: 15px;
     font-size: 1rem;
 }
+/* Locked Buttons Section */
+.locked-buttons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
+.locked-button {
+    background-color: #ccc; /* Grey background */
+    color: #666; /* Darker grey text */
+    padding: 15px 60px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer; 
+    display: inline-block;
+    text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
+}
     </style>
 </head>
 <body>
@@ -161,7 +181,14 @@
         <h2>Hello Jeffrey and Cassidy</h2>
         <p>I have been expecting you...</p>
         <button class="cta-button" onclick="window.location.href='HISTORY/day13.html'">Guess The Singer</button>
-    </main>
+    
+    <!-- Locked Buttons Section -->
+    <div class="locked-buttons">
+        <button class="locked-button" disabled>🔒 Locked</button>
+        <button class="locked-button" disabled>🔒 Locked</button>
+        <button class="locked-button" disabled>🔒 Locked</button>
+    </div>
+</main>
     <!-- Footer -->
     <footer class="footer">
         &copy; 2024 Colby Martel | 
