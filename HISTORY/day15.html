@@ -734,7 +734,7 @@ main {
 <body>
     <header class="header">
         <div class="logo">
-            <img src="/SingerLogo.png" alt="Guess the Singer Logo">
+            <img src="/images/SingerLogo.png" alt="Guess the Singer Logo">
         </div>
     </header>
     <nav class="navbar">
@@ -748,6 +748,7 @@ main {
         <h3>Game #15</h3>
         <div class="game-container">
             <select id="question-dropdown">
+                <option value="" disabled selected>Select a question...</option>
               <!-- General Questions -->
               <option value="is this a male artist?">Is this a male artist?</option>
               <option value="are they still alive?">Are they still alive?</option>
@@ -830,7 +831,7 @@ main {
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
             <p>You correctly guessed <strong id="correct-artist-name">Juice WRLD</strong>!</p>
-            <img src="/juicewrld.jpg">
+            <img src="/images/juicewrld.jpg">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -848,7 +849,7 @@ main {
             <button class="close-popup" id="close-giveup-popup">&times;</button>
             <h2>Better Luck Tomorrow! 🎉</h2>
             <p>The correct answer is <strong id="giveup-correct-artist-name">Juice WRLD</strong>.</p>
-            <img src="/juicewrld.jpg">
+            <img src="/images/juicewrld.jpg">
             <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
             <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
             <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1118,31 +1119,47 @@ giveupEnterRaffleButton.addEventListener("click", () => {
 
 // Event listener for question submission
 submitQuestion.addEventListener("click", () => {
-    const selectedQuestion = questionDropdown.value;
+    const selectedIndex = questionDropdown.selectedIndex;
+    const selectedOption = questionDropdown.options[selectedIndex];
+    const selectedQuestion = selectedOption.value;
 
-    if (!selectedQuestion) {
-        questionResponse.textContent = "Please select a question!";
-        questionResponse.className = "response";
+    if (!selectedQuestion || selectedIndex === 0) {
+        questionResponse.textContent = "Please select a valid question!";
+        questionResponse.className = "response no";
+        questionDropdown.style.border = "2px solid red"; // Highlight the dropdown
         return;
     }
 
+    questionDropdown.style.border = ""; // Reset dropdown border on valid selection
     questionCount++;
-    questionsSinceLastHint++; // Increment questions since last hint
-    updateProgress(); // Update progress after question submission
-    updateHintAvailability(); // Check if the hint button should be unlocked
-    questionResponse.textContent = ""; // Clear any prior response
+    questionsSinceLastHint++;
+    updateProgress();
+    updateHintAvailability();
+
+    questionResponse.textContent = ""; // Clear previous response
 
     setTimeout(() => {
         const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
         questionResponse.textContent = answer;
         questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
 
-        // Highlight the selected dropdown question
-        const selectedOption = questionDropdown.options[questionDropdown.selectedIndex];
-        selectedOption.style.backgroundColor = answer === "Yes!" ? "green" : "red";
-        selectedOption.style.color = "white";
-    }, 200); // 0.2-second delay before displaying the response
+        // Update the option text to include a check or X emoji
+        if (answer === "Yes!") {
+            selectedOption.textContent = `✅ ${selectedOption.textContent}`;
+        } else if (answer === "No!") {
+            selectedOption.textContent = `❌ ${selectedOption.textContent}`;
+        } else {
+            selectedOption.textContent = `❓ ${selectedOption.textContent}`; // For unknown responses
+        }
+
+        // Disable the option so it can't be selected again
+        selectedOption.disabled = true;
+
+        // Reset the dropdown to show the placeholder
+        questionDropdown.selectedIndex = 0;
+    }, 200); // Delay for showing the response
 });
+
 // Handle artist guess submission
 submitGuess.addEventListener("click", () => {
     const guess = document.getElementById("artist-guess").value.trim().toLowerCase();
