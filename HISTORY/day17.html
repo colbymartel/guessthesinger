@@ -1656,13 +1656,6 @@ shareButton.onclick = () => {
 };
 }
 
-// Set game completion for the current date
-function markGameAsCompleted() {
-    const today = getTodayDate();
-    localStorage.setItem("gameCompletedDate", today); // Save the completion date
-    lockGameplay(); // Lock the gameplay immediately
-}
-
 // Event listener for closing the celebration popup
 closeCelebrationPopupButton.addEventListener("click", () => {
     closeCelebrationPopup();
@@ -1678,10 +1671,6 @@ closeGiveUpPopupButton.addEventListener("click", () => {
     markGameAsCompleted(); // Mark the game as completed
 });
 
-// Check game completion state on page load
-window.addEventListener("load", () => {
-    checkGameCompletion(); // Check if the game was already completed
-});
 
 </script>
 </body>
