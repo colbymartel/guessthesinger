@@ -828,7 +828,7 @@ select:focus {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #19</h3>
+        <h3>Game #20</h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question...</option>
@@ -1491,7 +1491,7 @@ inputField.addEventListener("input", () => {
     autocompleteList.innerHTML = ""; // Clear previous suggestions
 
     // Only show suggestions if input length is at least 2 characters
-    if (query.length >= 11) {
+    if (query.length >= 10) {
         const matches = artists.filter(name =>
             name.toLowerCase().includes(query)
         );
