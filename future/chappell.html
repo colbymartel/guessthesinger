@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T42NG5C994"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T42NG5C994');
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess The Daily Music Artist</title>
+    <link rel="icon" href="favicon.ico">
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Light sky blue background */
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styling */
+header {
+    background: linear-gradient(90deg, #87cefa, #4682b4);
+    color: white;
+    padding: 15px 0; /* Reduced padding */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem; /* Reduced font size */
+    font-weight: bold;
+}
+
+header p {
+    margin: -5px 0 0;
+    font-size: 1rem; /* Reduced font size */
+}
+
+/* Navigation Bar */
+nav {
+    background: #4682b4;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 8px 0; /* Reduced padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px; /* Reduced spacing */
+    font-size: 1.1rem; /* Slightly smaller font */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #d0eaff;
+}
+.social-links {
+    display: flex;
+    justify-content: center;
+    padding: 35px; /* Reduced margin */
+    gap: 15px; /* Reduced gap */
+}
+
+.social-links a {
+    color: #4682b4;
+    text-decoration: none;
+    font-size: 1.3rem; /* Slightly smaller font */
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #315f85;
+}
+        /* Game Section */
+        .game-section {
+            padding: 50px 20px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        .game-section h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            margin-top: -20px;
+            color: #4682b4;
+        }
+
+        .game-container {
+        padding: 35px;
+          max-width: 600px;
+          margin: 0 auto -40px auto; 
+          background: white;
+          border-radius: 10px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+          text-align: center;
+}
+        .game-container select,
+        .game-container input {
+            padding: 12px 15px;
+            font-size: 1.1rem;
+            width: 80%;
+            max-width: 400px;
+            margin-bottom: 15px;
+            border: 2px solid #87cefa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .game-container input:focus,
+        .game-container select:focus {
+            outline: none;
+            border: 2px solid #4682b4;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-container button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #4682b4;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-container button:hover {
+            background: #315f85;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+/* Question Response Styling */
+.question-response {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 1.3rem; /* Slightly smaller text for question response */
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Standard black for guesses */
+}
+
+/* Guess Response Styling */
+.guess-response {
+    margin-top: 20px;
+    margin-bottom: -10px;
+    font-size: 1.3rem; /* Larger text for guess prompt */
+    font-weight: bold;
+    text-align: center;
+    color: #333; /* Standard black for guesses */
+}
+        .response.yes {
+            color: green;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem; /* Larger text for guess prompt */
+
+        }
+
+        .response.no {
+            color: red;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 1.3rem; /* Larger text for guess prompt */
+        }
+
+        .share-container {
+            margin-top: 20px;
+        }
+
+        .share-container button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #ff914d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .raffle-container {
+    margin-top: 20px; /* Adds spacing between the raffle container and other elements */
+}
+
+.raffle-container input {
+    margin-bottom: 10px; /* Adds spacing between the input fields */
+}
+
+        .share-container button:hover {
+            background: #ff5c33;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .share-container .raffle-button {
+            background: #4caf50;
+            margin-left: 10px;
+        }
+
+        .share-container .raffle-button:hover {
+            background: #388e3c;
+        }
+
+        /* Countdown Popup */
+        .countdown-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none; /* Hidden by default */
+        }
+
+        .countdown-content {
+            background: #fff;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .countdown-content h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            color: #4682b4;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .time-block {
+            background-color: #87cefa;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-block span {
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+        }
+        /* Rules Popup Styling */
+.rules-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    display: none; /* Hidden by default */
+}
+
+.rules-content {
+    background: white;
+    color: #333;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    text-align: center;
+}
+
+.rules-content h2 {
+    font-size: 2rem;
+    color: #4682b4;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.rules-content ul {
+    padding: 0;
+    text-align: left;
+    margin-left: 30px;
+}
+
+.rules-content ul li {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+.rules-content p {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.rules-content .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4682b4;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.rules-content .close-popup:hover {
+    color: #ff4d4d;
+}
+/* Close Button Styling for Countdown Popup */
+.close-countdown {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4682b4;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-countdown:hover {
+    color: #ff4d4d;
+}
+
+.response.no {
+    color: red;
+}
+/* Progress Container */
+.progress-container {
+    position: relative;
+    top: -20px; /* Move upwards by 20px */
+    padding: 10px 30px;
+    border: 2px solid #4682b4;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    color: #333;
+    display: flex; /* Use flexbox */
+    justify-content: space-around; /* Space between each item */
+    align-items: center; /* Vertically center items */
+}
+
+.progress-container p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.progress-container strong {
+    color: #4682b4;
+}
+
+.guess-response.hint {
+    margin-bottom: 5px; /* Reduce margin below hints */
+    font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
+    color: green; /* Optional: Different color for hints to distinguish */
+}
+.guess-response.incorrect {
+    color: red; /* Display text in red */
+    font-weight: bold;
+}
+.guess-response.correct {
+    color: green; /* Display text in green */
+    font-weight: bold;
+}
+.prize-announcement {
+    position: relative;
+    margin: 10px auto;
+    padding: 10px;
+    max-width: 600px;
+    background-color: #f9f9f9;
+    border: 2px solid #4682b4;
+    border-radius: 10px;
+    text-align: center;
+    justify-content: space-around; /* Space between each item */
+    align-items: center; /* Vertically center items */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.prize-announcement p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+.prize-announcement span {
+    color: #315f85;
+    font-weight: bold;
+}
+/* Red Banner Styling */
+#red-banner {
+    background-color: #ff4d4d;
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+#armylink{
+    color: white;
+}
+/* Celebration Popup Styling */
+.celebration-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    display: none; /* Hidden by default */
+}
+
+.celebration-popup .popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.celebration-popup h2 {
+    font-size: 2rem;
+    color: #4682b4;
+    margin-bottom: 15px;
+}
+
+.celebration-popup p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.celebration-popup .celebration-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.celebration-popup .celebration-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background: #4682b4;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.celebration-popup .celebration-button:hover {
+    background: #315f85;
+    transform: scale(1.05);
+}
+
+.celebration-popup .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4682b4;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.celebration-popup .close-popup:hover {
+    color: #ff4d4d;
+}
+
+</style>
+
+    </style>
+</head>
+<body>
+    <header>           
+        <h1>Guess The Singer</h1>
+        <p>Created by Colby Martel</p>
+    </header>
+    <nav>
+        <a href="index.html">Play</a>
+        <a href="calendar.html">History</a>
+        <a href="about.html">About</a>
+    </nav>
+    <section class="game-section">
+        <h3>Game #4</h3>
+        <div class="game-container">
+            <select id="question-dropdown">
+                <option value="" disabled selected>Choose a question</option>
+                <option value="is this a male artist?">Is this a male artist?</option>
+                <option value="are they still alive?">Are they still alive?</option>
+                <option value="are they over 30 years old?">Are they over 30 years old?</option>
+                <option value="are they over 40 years old?">Are they over 40 years old?</option>
+                <option value="are they over 50 years old?">Are they over 50 years old?</option>
+                <option value="were they most popular after 2000?">Were they most popular after 2000?</option>
+                <option value="were they most popular after 2020?">Were they most popular after 2020?</option>
+                <option value="are they from north america?">Are they from North America?</option>
+                <option value="are they from the united states?">Are they from the United States?</option>
+                <option value="are they from europe?">Are they from Europe?</option>
+                <option value="do they go by their birth name?">Do they go by their birth name?</option>
+                <option value="do they go by one word?">Do they go by one word?</option>
+                <option value="do they perform pop music?">Do they perform pop music?</option>
+                <option value="do they perform rap music?">Do they perform hip-hop music?</option>
+                <option value="do they perform R&B music?">Do they perform R&B music?</option>
+                <option value="do they perform rock music?">Do they perform rock music?</option>
+                <option value="do they perform country music?">Do they perform country music?</option>
+                <option value="do they perform jazz music?">Do they perform jazz music?</option>
+                <option value="do they perform sad music?">Do they perform sad music?</option>
+                <option value="are they also an actor?">Are they also an actor?</option>
+                <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
+                <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
+                <option value="are they in a band?">Are/were they in a band?</option>
+                <option value="do they have dark hair?">Do they have dark hair?</option>
+            </select>
+            <button id="submit-question">Submit Question</button>
+            <div class="response question-response" id="question-response">Select a question to start.</div>
+
+            <input type="text" id="artist-guess" placeholder="Type your artist guess here..." />
+            <button id="submit-guess">Submit Guess</button>
+            <button id="hint" class="hint">Hint</button>
+            <div class="response guess-response" id="guess-response">Guess the artist's name!</div>
+            <div class="share-container" id="share-container" style="display: none;">
+                <button id="share-button">Share Your Result</button>
+                <button id="raffle-button" class="raffle-button">Enter Raffle</button>
+            </div>
+            <div class="raffle-container" id="raffle-container" style="display: none;">
+                <input type="text" id="raffle-name" placeholder="Your Name" />
+                <input type="email" id="raffle-email" placeholder="Your Email" />
+                <button id="submit-raffle">Submit</button>
+            </div>
+        </div>
+    </section>
+    <section class="game-section">
+    
+        <div class="progress-container">
+            <p><strong>Questions:</strong> <span id="questions-used">0</span></p>
+            <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
+            <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
+        </div>
+
+    <!-- Celebration Popup -->
+
+        <div id="celebration-popup" class="celebration-popup">
+            <div class="popup-content">
+                <button class="close-popup" id="close-celebration-popup">&times;</button>
+                <h2>🎉 Congratulations! 🎉</h2>
+                <p>You correctly guessed <strong id="correct-artist-name">Chappell Roan</strong>!</p>
+                <p>Questions used: <span id="questions-used-popup">0</span></p>
+                <p>Guesses made: <span id="guesses-made-popup">0</span></p>
+                <p>Hints used: <span id="hints-used-popup">0</span></p>
+                <div class="celebration-buttons">
+                    <button id="share-result-button" class="celebration-button">Share Your Result</button>
+                    <button id="enter-raffle-button" class="celebration-button">Enter Raffle</button>
+                </div>
+            </div>
+        </div>
+
+<!-- Rules Popup -->
+<div class="rules-popup" id="rules-popup">
+    <div class="rules-content">
+        <button class="close-popup" id="close-popup">&times;</button>
+        <h2>How to Play</h2>
+        <p>Welcome to "Guess The Daily Singer"! To play:</p>
+        <ul>
+            <li>Select yes/no questions to figure out the mystery artist.</li>
+            <li>Try to minimize the number of questions and hints you use!</li>
+            <li>Once you guess the singer, enter the daily raffle to WIN prizes!</li>
+            <li>Have fun and share your results with friends!⭐</li>
+        </ul>
+    </div>
+</div>
+    <!-- Countdown Popup -->
+<div class="countdown-popup" id="countdown-popup">
+    <div class="countdown-content">
+        <button class="close-countdown" id="close-countdown">&times;</button>
+        <h2>Next Singer Countdown</h2>
+        <p>Time until the next singer:</p>
+        <div class="countdown-timer" id="countdown-timer">
+            <div class="time-block" id="hours">
+                00<span>Hrs</span>
+            </div>
+            <div class="time-block" id="minutes">
+                00<span>Mins</span>
+            </div>
+            <div class="time-block" id="seconds">
+                00<span>Secs</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Prize Announcement Container -->
+<div class="prize-announcement">
+    <p><strong>Today's Prize:</strong> <span id="prize-name">$50 Target Gift Card</span></p>
+    <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
+</div>
+    <div class="social-links">
+        <a href="https://www.youtube.com/colbymartel" target="_blank">YouTube</a>
+        <a href="https://www.instagram.com/colbymartel19" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@colbymartel" target="_blank">TikTok</a>
+    </div>
+    <script>
+        const questionDropdown = document.getElementById("question-dropdown");
+const submitQuestion = document.getElementById("submit-question");
+const questionResponse = document.getElementById("question-response");
+const hintButton = document.getElementById("hint");
+const artistGuess = document.getElementById("artist-guess");
+const submitGuess = document.getElementById("submit-guess");
+const guessResponse = document.getElementById("guess-response");
+const shareContainer = document.getElementById("share-container");
+const shareButton = document.getElementById("share-button");
+const raffleButton = document.getElementById("raffle-button");
+const countdownPopup = document.getElementById("countdown-popup");
+const countdownHours = document.getElementById("hours");
+const countdownMinutes = document.getElementById("minutes");
+const countdownSeconds = document.getElementById("seconds");
+
+const correctAnswer = "Chappell Roan"; // Correct artist name
+let questionCount = 0;
+let guessCount = 0;
+let hintCount = 0; // Track the number of hints used
+let hasGuessedCorrectly = false;
+
+// Predefined answers for dropdown questions
+const predefinedAnswers = {
+    "is this a male artist?": "No!",
+    "are they over 30 years old?": "No!",
+    "are they over 40 years old?": "No!",
+    "are they over 50 years old?": "No!",
+    "were they most popular after 2000?": "Yes!",
+    "were they most popular after 2020?": "Yes!",
+    "do they go by their birth name?": "No!",
+    "are they still alive?": "Yes!",
+    "are they from north america?": "Yes!",
+    "are they from the united states?": "Yes!",
+    "do they go by one word?": "No!",
+    "are they from europe?": "No!",
+    "do they perform pop music?": "Yes!",
+    "do they perform rap music?": "No!",
+    "do they perform R&B music?": "No!",
+    "do they perform rock music?": "Yes!",
+    "do they perform country music?": "No!",
+    "do they perform jazz music?": "No!",
+    "do they perform sad music?": "Yes!",
+    "do they have more than 10M TikTok followers?": "No!",
+    "do they have more than 20M listeners?": "Yes!",
+    "are they also an actor?": "No!",
+    "are they in a band?": "No!",
+    "do they have dark hair?": "Yes!",
+};
+
+function updateProgress() {
+    document.getElementById("questions-used").textContent = questionCount;
+    document.getElementById("hints-used").textContent = hintCount;
+    document.getElementById("guesses-made").textContent = guessCount;
+}
+
+// Show the celebration popup
+function showCelebrationPopup() {
+    const celebrationPopup = document.getElementById("celebration-popup");
+    const correctArtistName = document.getElementById("correct-artist-name");
+    const questionsUsedPopup = document.getElementById("questions-used-popup");
+    const guessesMadePopup = document.getElementById("guesses-made-popup");
+    const hintsUsedPopup = document.getElementById("hints-used-popup");
+
+    // Set popup content
+    correctArtistName.textContent = correctAnswer;
+    questionsUsedPopup.textContent = questionCount;
+    guessesMadePopup.textContent = guessCount;
+    hintsUsedPopup.textContent = hintCount;
+
+    // Show the popup
+    celebrationPopup.style.display = "flex";
+}
+
+// Close the celebration popup
+function closeCelebrationPopup() {
+    const celebrationPopup = document.getElementById("celebration-popup");
+    celebrationPopup.style.display = "none";
+}
+
+// Event listener for closing the popup
+const closeCelebrationPopupButton = document.getElementById("close-celebration-popup");
+closeCelebrationPopupButton.addEventListener("click", closeCelebrationPopup);
+
+// Handle question submission
+submitQuestion.addEventListener("click", () => {
+    const selectedQuestion = questionDropdown.value;
+
+    if (!selectedQuestion) {
+        questionResponse.textContent = "Please select a question!";
+        questionResponse.className = "response";
+        return;
+    }
+
+    questionCount++;
+    updateProgress(); // Update progress after question submission
+    questionResponse.textContent = "";
+
+    // Clear response for 0.2 seconds
+    setTimeout(() => {
+        const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
+        questionResponse.textContent = answer;
+        questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
+
+        // Highlight dropdown question
+        const selectedOption = questionDropdown.options[questionDropdown.selectedIndex];
+        selectedOption.style.backgroundColor = answer === "Yes!" ? "green" : "red";
+        selectedOption.style.color = "white";
+    }, 200);
+});
+
+// Modify the artist guess submission logic
+submitGuess.addEventListener("click", () => {
+    const guess = artistGuess.value.trim().toLowerCase();
+
+    if (!guess) {
+        guessResponse.textContent = "Please enter a guess!";
+        guessResponse.className = "response guess-response"; // Default styling
+        return;
+    }
+
+    guessCount++;
+    updateProgress();
+
+    if (guess === correctAnswer.toLowerCase()) {
+        guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
+        guessResponse.className = "response guess-response correct";
+        hasGuessedCorrectly = true;
+        shareContainer.style.display = "block";
+
+        // Show the celebration popup
+        showCelebrationPopup();
+    } else {
+        guessResponse.textContent = "Incorrect! Keep trying.";
+        guessResponse.className = "response guess-response incorrect";
+    }
+
+    artistGuess.value = ""; // Clear input
+});
+
+// Array of hints
+const hints = [
+    "Hint: Their name starts with a 'C'.",
+    "Hint: Most of the time, she has red hair.",
+    "Hint: She was an opener on Olivia Rodrigo's tour.",
+];
+
+let currentHintIndex = 0; // Track which hint to display
+
+// Handle hint action
+hintButton.addEventListener("click", () => {
+    if (currentHintIndex < hints.length) {
+        guessResponse.className = "response guess-response hint"; // Add hint-specific class
+        guessResponse.textContent = hints[currentHintIndex];
+        currentHintIndex++;
+        hintCount++;
+        updateProgress(); // Update progress after using a hint
+    } else {
+        guessResponse.className = "response no"; // Remove hint-specific class for 'no hints' case
+        guessResponse.textContent = "No more hints available. Good luck, Babe!";
+    }
+});
+
+// Share functionality
+shareButton.addEventListener("click", () => {
+    const shareText = `Woohoo! I guessed today's mystery singer in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert("Result copied to clipboard! Share it with your friends.");
+        }).catch(err => {
+            console.error("Clipboard API failed: ", err);
+            alert("Failed to copy text. Please try again.");
+        });
+    } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = shareText;
+        tempInput.style.position = "absolute";
+        tempInput.style.left = "-9999px";
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+            document.execCommand("copy");
+            alert("Result copied to clipboard! Share it with your friends.");
+        } catch (err) {
+            console.error("Fallback copy method failed: ", err);
+            alert("Failed to copy text. Please try again.");
+        }
+        document.body.removeChild(tempInput);
+    }
+});
+    // Share functionality for the celebration popup
+const shareResultButton = document.getElementById("share-result-button");
+
+shareResultButton.addEventListener("click", () => {
+    const shareText = `Woohoo! I guessed today's mystery singer in ${questionCount} ${questionCount === 1 ? "question" : "questions"}, ${guessCount} ${guessCount === 1 ? "guess" : "guesses"}, and ${hintCount} ${hintCount === 1 ? "hint" : "hints"}! 🌟 Try at guessthesinger.com`;
+
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareText).then(() => {
+            alert("Result copied to clipboard! Share it with your friends.");
+        }).catch(err => {
+            console.error("Clipboard API failed: ", err);
+            alert("Failed to copy text. Please try again.");
+        });
+    } else {
+        // Fallback for older browsers
+        const tempInput = document.createElement("textarea");
+        tempInput.value = shareText;
+        tempInput.style.position = "absolute";
+        tempInput.style.left = "-9999px";
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+            document.execCommand("copy");
+            alert("Result copied to clipboard! Share it with your friends.");
+        } catch (err) {
+            console.error("Fallback copy method failed: ", err);
+            alert("Failed to copy text. Please try again.");
+        }
+        document.body.removeChild(tempInput);
+    }
+});
+ // Get the raffle container and its elements
+ const raffleContainer = document.getElementById("raffle-container");
+const raffleName = document.getElementById("raffle-name");
+const raffleEmail = document.getElementById("raffle-email");
+const submitRaffle = document.getElementById("submit-raffle");
+
+// Show the raffle container when the "Enter Raffle" button is clicked
+raffleButton.addEventListener("click", () => {
+    window.open("https://forms.gle/z8QnnzyMgHQcRUTB6", "_blank"); // Replace with your Google Form URL
+});
+// Raffle functionality for the celebration popup
+const enterRaffleButton = document.getElementById("enter-raffle-button");
+
+enterRaffleButton.addEventListener("click", () => {
+    // Replace this URL with your actual Google Form link
+    const raffleFormURL = "https://forms.gle/z8QnnzyMgHQcRUTB6"; 
+    window.open(raffleFormURL, "_blank"); // Opens the Google Form in a new tab
+});
+// Get the popup and close button elements
+const rulesPopup = document.getElementById("rules-popup");
+const closePopup = document.getElementById("close-popup");
+
+// Show the popup when the page loads
+window.addEventListener("load", () => {
+    rulesPopup.style.display = "flex";
+});
+
+// Close the popup when the close button is clicked
+closePopup.addEventListener("click", () => {
+    rulesPopup.style.display = "none";
+});
+// Get the close button element
+const closeCountdown = document.getElementById("close-countdown");
+
+// Close the popup when the close button is clicked
+closeCountdown.addEventListener("click", () => {
+    const countdownPopup = document.getElementById("countdown-popup");
+    countdownPopup.style.display = "none";
+});
+</script>
+</body>
+</html>
