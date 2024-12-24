@@ -828,7 +828,7 @@ select:focus {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #23</h3>
+        <h3>Game #24</h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question...</option>
@@ -928,8 +928,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Alan Walker</strong>!</p>
-            <img src="/images/alanwalker.jpg">
+            <p>You correctly guessed <strong id="correct-artist-name">Sabrina Carpenter</strong>!</p>
+            <img src="/images/sabrina.jpg">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -946,8 +946,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-giveup-popup">&times;</button>
             <h2>Better Luck Tomorrow! 🎉</h2>
-            <p>The correct answer is <strong id="giveup-correct-artist-name">Alan Walker</strong>!</p>
-            <img src="/images/alanwalker.jpg">
+            <p>The correct answer is <strong id="giveup-correct-artist-name">Sabrina Carpenter</strong>!</p>
+            <img src="/images/sabrina.jpg">
             <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
             <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
             <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -969,7 +969,7 @@ select:focus {
             <li>Try to minimize the number of questions and hints you use!</li>
             <li>If you're stumped... you can click "Give Up" after 4 hints.</li>
             <li>Have fun and share your results with friends!⭐</li>
-            <li>Enter the raffle to win AIRPODS MAX!🎶🎉</li>
+            <li>Enter the raffle to win a PS5 or NINTENDO SWITCH!🎶🎉</li>
         </ul>
     </div>
 </div>
@@ -996,7 +996,7 @@ select:focus {
 
 <!-- Prize Announcement Container -->
 <div class="prize-announcement">
-    <p><strong>Today's Prize:</strong> <span id="prize-name">AirPods Max</span></p>
+    <p><strong>Today's Prize:</strong> <span id="prize-name">PS5 or Nintendo Switch</span></p>
     <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
 </div>
 </main>
@@ -1030,10 +1030,10 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-    "Hint: She has won multiple pop Grammy Awards.",
-    "Hint: She has over 80 million Instagram followers.",
-    "Hint: Her first name is only three letters.",
-    "Hint: Her initials are 'D' and 'L'.",
+    "Hint: Around age 10, they began uploading singing videos to YouTube.",
+    "Hint: She was inspired by Christina Aguilera and Stevie Nicks.",
+    "Hint: One of her lyrics refers to a Nintendo Switch.",
+    "Hint: She is short, sweet, and like espresso ☕.",
 ];
 
 const predefinedAnswers = {
@@ -1047,13 +1047,13 @@ const predefinedAnswers = {
     "debut before 2010?": "No!",
     "debut before 2020?": "Yes!",
     "album release?": "Yes!",
-    "are they touring?": "Yes!",
+    "are they touring?": "Soon!",
     "are they married?": "No!",
 
     // Geographic Information
-    "are they from the united states?": "No!",
-    "are they from north america?": "No!",
-    "are they from europe?": "Yes!",
+    "are they from the united states?": "Yes!",
+    "are they from north america?": "Yes!",
+    "are they from europe?": "No!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
@@ -1062,11 +1062,11 @@ const predefinedAnswers = {
     "are they of Asian descent?": "No!",
     "are they of European descent?": "Yes!",
     "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "Yes!",
+    "are they of mixed ethnicity?": "No!",
 
     // Music Style
     "different languages?": "No!",
-    "are they spanish?":"No!",
+    "are they spanish?": "No!",
     "do they perform pop music?": "Yes!",
     "do they perform rap music?": "No!",
     "do they perform R&B music?": "Yes!",
@@ -1078,26 +1078,27 @@ const predefinedAnswers = {
 
     // Career and Popularity
     "are they also an actor?": "Yes!",
-    "disney or nick?": "No!",
+    "disney or nick?": "Yes!",
     "singing competition?": "No!",
-    "have they won a Grammy?": "Yes!",
+    "have they won a Grammy?": "No!",
     "do they have more than 10M TikTok followers?": "Yes!",
     "do they have more than 10M Instagram followers?": "Yes!",
     "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "Yes!",
+    "do they have more than 50M listeners?": "No!",
     "are they in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "Yes!",
-    "do they have blond hair?": "No!",
-    "do they have tattoos?": "Yes!",
+    "do they have dark hair?": "No!",
+    "do they have blond hair?": "Yes!",
+    "do they have tattoos?": "No!",
     "do they wear glasses?": "No!",
     "do they go by their birth name?": "Yes!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
-    "do they have a common first name?": "No!",
-    "what does their name start with?": "Yes!",
+    "do they have a common first name?": "Somewhat!",
+    "what does their name start with?": "No!",
 };
+
 
 // Lock the hint button (visual state only)
 function lockHintButton() {
@@ -1140,7 +1141,7 @@ function transformHintToGiveUp() {
 
     // Add the Give Up functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Alan Walker"); // Replace with the correct answer dynamically
+        showGiveUpPopup("Sabrina Carpenter"); // Replace with the correct answer dynamically
     });
 }
 
@@ -1283,7 +1284,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Alan Walker"; // Example correct answer
+    const correctAnswer = "Sabrina Carpenter"; // Example correct answer
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
