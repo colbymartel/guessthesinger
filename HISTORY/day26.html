@@ -36,26 +36,28 @@
     /* Header */
     .header {
             background-color: #4682b4;
-            padding: 10px;
+            padding: 30px;
             text-align: center;
             color: white;
         }
 
-/* Logo Styling */
+/* Default logo styling */
 .header .logo img {
-    width: 30%; /* Set a default width */
+    width: 30%; /* Ensure it doesn't overflow */
+    height: auto;    /* Maintain aspect ratio */
+    display: block;
+    margin: 0 auto;
     margin-top: -40px;
     margin-bottom: -20px;
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Ensures proper centering */
-    margin: 0 auto; /* Centers horizontally */
 }
 
-/* Responsive Design for Smaller Screens */
+/* Adjust for smaller screens */
 @media (max-width: 768px) {
     .header .logo img {
-        width: 60%; /* Reduce the size for smaller screens */
-    }}
+        max-width: 70%; /* Make it larger for better visibility */
+    }
+}
+
         /* Navbar Styling */
         .navbar {
     display: flex;
