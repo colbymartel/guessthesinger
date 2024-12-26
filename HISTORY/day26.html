@@ -36,15 +36,16 @@
     /* Header */
     .header {
             background-color: #4682b4;
-            padding: 30px;
+            padding: 10px;
             text-align: center;
             color: white;
         }
 
 /* Logo Styling */
 .header .logo img {
-    width: 20%; /* Set a default width */
-    margin-bottom: 10px;
+    width: 30%; /* Set a default width */
+    margin-top: -40px;
+    margin-bottom: -20px;
     height: auto; /* Maintain aspect ratio */
     display: block; /* Ensures proper centering */
     margin: 0 auto; /* Centers horizontally */
@@ -93,7 +94,7 @@
     text-align: center;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    margin: 40px auto;
+    margin: 30px auto;
     max-width: 950px;
     border: 2px solid #d8ebfc;
 }
@@ -106,7 +107,7 @@
 .game-section h3 {
     font-size: 1.5rem;
     margin-top: -20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     color: #4682b4;
 }
 
@@ -115,6 +116,7 @@
     padding: 30px;
     max-width: 800px;
     margin: 0 auto;
+    margin-bottom: -30px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
@@ -398,6 +400,7 @@
     color: red;
 }
 /* Progress Container */
+/* Progress Container Styling */
 .progress-container {
     display: flex;
     justify-content: space-around;
@@ -409,9 +412,19 @@
     max-width: 800px;
     margin: 0 auto;
     margin-top: -10px;
+    margin-bottom: -10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     font-size: 1.3rem;
+    background-color: #ffffff; /* Ensure background contrasts with text */
+    color: #315f85; /* Text color (dark blue) for visibility */
 }
+
+/* Styling for Span Elements Inside Progress Container */
+.progress-container span {
+    color: #4682b4; /* Text color for spans */
+    font-weight: bold;
+}
+
 
 .progress-container p {
     margin: 0;
@@ -466,35 +479,7 @@
     color: green; /* Display text in green */
     font-weight: bold;
 }
-.prize-announcement {
-    padding: 25px;
-    border: 2px solid #4682b4;
-    border-radius: 15px;
-    background: #f9fcff;
-    margin: 30px auto;
-    max-width: 800px;
-    text-align: center;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-    margin-bottom: -20px;
-}
-.prize-announcement p {
-    font-size: 1.5rem;
-    margin: 15px 0;
-}
 
-.prize-announcement span {
-    color: #315f85;
-    font-weight: bold;
-    font-size: 1.3rem;
-    display: inline; /* Default for non-mobile views */
-}
-
-@media (max-width: 768px) {
-    .prize-announcement span {
-        display: block; /* Move to a new line on mobile */
-        margin-top: 10px; /* Add some space between the lines */
-    }
-}
 /* Red Banner Styling */
 #red-banner {
     background-color: #ff4d4d;
@@ -550,6 +535,7 @@
 .celebration-popup p {
     font-size: 1.2rem;
     margin: 10px 0;
+    color: black;
 }
 
 .celebration-popup .celebration-buttons {
@@ -610,6 +596,7 @@ main {
     color: #ff914d; /* Change color on hover */
 }
 
+
 .footer {
     background-color: #315f85; /* Matches the site's theme */
     color: white;
@@ -617,7 +604,6 @@ main {
     padding: 15px;
     font-size: 1rem;
 }
-
 .giveup-popup {
     position: fixed;
     top: 0;
@@ -816,10 +802,11 @@ select:focus {
 <main>
 <body>
     <header class="header">
-        <div class="logo">
-            <img src="/images/SingerLogo.png" alt="Guess the Singer Logo">
-        </div>
-    </header>
+        <header class="header">
+    <div class="logo">
+        <img src="/images/GuesstheSingernewLogo.png" alt="Guess the Singer Logo">
+    </div>
+</header>
     <nav class="navbar">
         <ul>
             <li><a href="/index.html">Home</a></li>
@@ -828,7 +815,7 @@ select:focus {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #23</h3>
+        <h3>Game #26<h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question...</option>
@@ -928,8 +915,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Alan Walker</strong>!</p>
-            <img src="/images/alanwalker.jpg">
+            <p>You correctly guessed <strong id="correct-artist-name">The Weeknd</strong>!</p>
+            <img src="/images/weeknd.jpg">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -939,15 +926,14 @@ select:focus {
             </div>
         </div>
     </div>
-    
     <!-- Give Up Popup -->
 
     <div id="giveup-popup" class="giveup-popup">
         <div class="popup-content">
             <button class="close-popup" id="close-giveup-popup">&times;</button>
             <h2>Better Luck Tomorrow! 🎉</h2>
-            <p>The correct answer is <strong id="giveup-correct-artist-name">Alan Walker</strong>!</p>
-            <img src="/images/alanwalker.jpg">
+            <p>The correct answer is <strong id="giveup-correct-artist-name">The Weeknd</strong>!</p>
+            <img src="/images/weeknd.jpg">
             <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
             <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
             <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -969,7 +955,7 @@ select:focus {
             <li>Try to minimize the number of questions and hints you use!</li>
             <li>If you're stumped... you can click "Give Up" after 4 hints.</li>
             <li>Have fun and share your results with friends!⭐</li>
-            <li>Enter the raffle to win AIRPODS MAX!🎶🎉</li>
+            <li>Enter the raffle to win 1-Year of Premium Music!🎶🎉</li>
         </ul>
     </div>
 </div>
@@ -993,13 +979,8 @@ select:focus {
         </div>
     </div>
 </div>
-
-<!-- Prize Announcement Container -->
-<div class="prize-announcement">
-    <p><strong>Today's Prize:</strong> <span id="prize-name">AirPods Max</span></p>
-    <p><strong>Winner:</strong> <span id="winner-name">To be announced</span></p>
-</div>
 </main>
+
  <!-- Footer -->
  <footer class="footer">
     &copy; 2024 Colby Martel | Follow me here!
@@ -1030,43 +1011,43 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-    "Hint: She has won multiple pop Grammy Awards.",
-    "Hint: She has over 80 million Instagram followers.",
-    "Hint: Her first name is only three letters.",
-    "Hint: Her initials are 'D' and 'L'.",
+      "Hint: They have over 60 million Instagram followers.",
+"Hint: He was born in Canada.",
+    "Hint: He holds the record for the most songs with over 1 billion Spotify streams.",
+    "Hint: His stage name sounds like a period of time where many people don't have to work." 
 ];
 
 const predefinedAnswers = {
     // Basic Info
-    "is this a male artist?": "No!",
+    "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
-    "are they over 30 years old?": "No!",
+    "are they over 30 years old?": "Yes!",
     "are they over 40 years old?": "No!",
     "are they over 50 years old?": "No!",
     "debut before 2000?": "No!",
-    "debut before 2010?": "No!",
+    "debut before 2010?": "Yes!",
     "debut before 2020?": "Yes!",
-    "album release?": "Yes!",
-    "are they touring?": "Yes!",
+    "album release?": "No!",
+    "are they touring?": "No!",
     "are they married?": "No!",
 
     // Geographic Information
     "are they from the united states?": "No!",
-    "are they from north america?": "No!",
-    "are they from europe?": "Yes!",
+    "are they from north america?": "Yes!",
+    "are they from europe?": "No!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
-    "are they of African descent?": "No!",
+    "are they of African descent?": "Yes!",
     "are they of Asian descent?": "No!",
-    "are they of European descent?": "Yes!",
+    "are they of European descent?": "No!",
     "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "Yes!",
+    "are they of mixed ethnicity?": "No!",
 
     // Music Style
     "different languages?": "No!",
-    "are they spanish?":"No!",
+    "are they spanish?": "No!",
     "do they perform pop music?": "Yes!",
     "do they perform rap music?": "No!",
     "do they perform R&B music?": "Yes!",
@@ -1081,7 +1062,7 @@ const predefinedAnswers = {
     "disney or nick?": "No!",
     "singing competition?": "No!",
     "have they won a Grammy?": "Yes!",
-    "do they have more than 10M TikTok followers?": "Yes!",
+    "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 10M Instagram followers?": "Yes!",
     "do they have more than 20M listeners?": "Yes!",
     "do they have more than 50M listeners?": "Yes!",
@@ -1090,13 +1071,13 @@ const predefinedAnswers = {
     // Appearance
     "do they have dark hair?": "Yes!",
     "do they have blond hair?": "No!",
-    "do they have tattoos?": "Yes!",
-    "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Yes!",
+    "do they have tattoos?": "No!",
+    "do they wear glasses?": "Yes!",
+    "do they go by their birth name?": "No!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
     "do they have a common first name?": "No!",
-    "what does their name start with?": "Yes!",
+    "what does their name start with?": "Not their stage name!"
 };
 
 // Lock the hint button (visual state only)
@@ -1140,7 +1121,7 @@ function transformHintToGiveUp() {
 
     // Add the Give Up functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Alan Walker"); // Replace with the correct answer dynamically
+        showGiveUpPopup("The Weeknd"); // Replace with the correct answer dynamically
     });
 }
 
@@ -1221,7 +1202,7 @@ giveupShareButton.addEventListener("click", () => {
 // Add Raffle functionality for the Give Up popup
 const giveupEnterRaffleButton = document.getElementById("giveup-enter-raffle-button");
 giveupEnterRaffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/5TGBMhUkZzFavCgs7", "_blank"); // Replace with your Google Form URL
+    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
 });
 
 
@@ -1283,7 +1264,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Alan Walker"; // Example correct answer
+    const correctAnswer = "The Weeknd"; // Example correct answer
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
@@ -1402,14 +1383,14 @@ const submitRaffle = document.getElementById("submit-raffle");
 
 // Show the raffle container when the "Enter Raffle" button is clicked
 raffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/5TGBMhUkZzFavCgs7", "_blank"); // Replace with your Google Form URL
+    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
 });
 // Raffle functionality for the celebration popup
 const enterRaffleButton = document.getElementById("enter-raffle-button");
 
 enterRaffleButton.addEventListener("click", () => {
     // Replace this URL with your actual Google Form link
-    const raffleFormURL = "https://forms.gle/5TGBMhUkZzFavCgs7"; 
+    const raffleFormURL = "https://forms.gle/oAZMPM18uhoqhssk6"; 
     window.open(raffleFormURL, "_blank"); // Opens the Google Form in a new tab
 });
 // Get the popup and close button elements
