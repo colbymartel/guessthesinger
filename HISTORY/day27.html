@@ -644,7 +644,6 @@ main {
     font-size: 1.2rem;
     margin: 10px 0;
     color: black;
-
 }
 
 .giveup-popup .celebration-buttons {
@@ -823,7 +822,7 @@ select:focus {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #26<h3>
+        <h3>Game #27<h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question...</option>
@@ -839,6 +838,8 @@ select:focus {
               <option value="album release?">Did they release a new album in the last 2 years?</option>
               <option value="are they touring?">Are they currently touring?</option>
               <option value="are they married?">Are they married?</option>
+              <option value="college?">Did they attend college?</option>
+
         
               <!-- Geographic Questions -->
               <option value="are they from the united states?">Were they born in the United States?</option>
@@ -871,6 +872,8 @@ select:focus {
               <option value="disney or nick?">Were they ever on Nickelodeon or Disney Channel?</option>
               <option value="singing competition?">Did they ever compete on a singing show?</option>
               <option value="have they won a Grammy?">Have they won a Grammy?</option>
+              <option value="coachella?">Have they performed at Coachella?</option>
+              <option value="billion club?">Do they have any songs with 1 billion+ Spotify streams?</option>
               <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
               <option value="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</option>
               <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
@@ -887,6 +890,8 @@ select:focus {
               <option value="do they go by two words?">Do they go by two words?</option>
               <option value="do they have a common first name?">Do they have a common first name?</option>
               <option value="what does their name start with?">Does their name start with A-M?</option>
+              <option value="A to E?">Does their name start with A-E?</option>
+              <option value="N to S?">Does their name start with N-S?</option>
 
             </select>
             <button id="submit-question">Submit Question</button>
@@ -923,8 +928,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">The Weeknd</strong>!</p>
-            <img src="/images/weeknd.jpg">
+            <p>You correctly guessed <strong id="correct-artist-name">Alec Benjamin</strong>!</p>
+            <img src="/images/alecbenjamin.jpg">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -940,8 +945,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-giveup-popup">&times;</button>
             <h2>Better Luck Tomorrow! 🎉</h2>
-            <p>The correct answer is <strong id="giveup-correct-artist-name">The Weeknd</strong>!</p>
-            <img src="/images/weeknd.jpg">
+            <p>The correct answer is <strong id="giveup-correct-artist-name">Alec Benjamin</strong>!</p>
+            <img src="/images/alecbenjamin.jpg">
             <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
             <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
             <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1017,39 +1022,39 @@ const shareContainer = document.getElementById("share-container");
 const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
-
 const hints = [
-      "Hint: They have over 60 million Instagram followers.",
-"Hint: He was born in Canada.",
-    "Hint: He holds the record for the most songs with over 1 billion Spotify streams.",
-    "Hint: His stage name sounds like a period of time where many people don't have to work." 
+    "Hint: He was my most streamed Spotify artist of 2024.",
+    "Hint: He likes tea, is a Gemini, and went to USC.",
+    "Hint: His last name is a very typical male first name.",
+    "Hint: His initials are 'A' and 'B' and he sings 'Let Me Down Slowly'."
 ];
 
 const predefinedAnswers = {
     // Basic Info
     "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
-    "are they over 30 years old?": "Yes!",
+    "are they over 30 years old?": "No!",
     "are they over 40 years old?": "No!",
     "are they over 50 years old?": "No!",
     "debut before 2000?": "No!",
-    "debut before 2010?": "Yes!",
+    "debut before 2010?": "No!",
     "debut before 2020?": "Yes!",
-    "album release?": "No!",
-    "are they touring?": "No!",
+    "album release?": "Yes!",
+    "are they touring?": "Yes!",
     "are they married?": "No!",
+    "college?": "Yes, but dropped out!",
 
     // Geographic Information
-    "are they from the united states?": "No!",
+    "are they from the united states?": "Yes!",
     "are they from north america?": "Yes!",
     "are they from europe?": "No!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
-    "are they of African descent?": "Yes!",
+    "are they of African descent?": "No!",
     "are they of Asian descent?": "No!",
-    "are they of European descent?": "No!",
+    "are they of European descent?": "Yes!",
     "are they of Latin American descent?": "No!",
     "are they of mixed ethnicity?": "No!",
 
@@ -1058,34 +1063,38 @@ const predefinedAnswers = {
     "are they spanish?": "No!",
     "do they perform pop music?": "Yes!",
     "do they perform rap music?": "No!",
-    "do they perform R&B music?": "Yes!",
+    "do they perform R&B music?": "No!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
-    "do they perform party music?": "Yes!",
+    "do they perform party music?": "No!",
     "do they perform sad music?": "Yes!",
 
     // Career and Popularity
-    "are they also an actor?": "Yes!",
+    "are they also an actor?": "No!",
     "disney or nick?": "No!",
     "singing competition?": "No!",
-    "have they won a Grammy?": "Yes!",
+    "have they won a Grammy?": "No!",
+    "coachella?": "Yes!",
+    "billion club?": "Yes, one!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 10M Instagram followers?": "Yes!",
-    "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "Yes!",
+    "do they have more than 10M Instagram followers?": "No!",
+    "do they have more than 20M listeners?": "Close!",
+    "do they have more than 50M listeners?": "No!",
     "are they in a band?": "No!",
 
     // Appearance
     "do they have dark hair?": "Yes!",
     "do they have blond hair?": "No!",
     "do they have tattoos?": "No!",
-    "do they wear glasses?": "Yes!",
-    "do they go by their birth name?": "No!",
+    "do they wear glasses?": "No!",
+    "do they go by their birth name?": "Yes!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
-    "do they have a common first name?": "No!",
-    "what does their name start with?": "Not their stage name!"
+    "do they have a common first name?": "Yes!",
+    "what does their name start with?": "Yes!",
+    "A to E?": "Yes!",
+    "N to S?": "No!"
 };
 
 // Lock the hint button (visual state only)
@@ -1129,7 +1138,7 @@ function transformHintToGiveUp() {
 
     // Add the Give Up functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("The Weeknd"); // Replace with the correct answer dynamically
+        showGiveUpPopup("Alec Benjamin"); // Replace with the correct answer dynamically
     });
 }
 
@@ -1272,7 +1281,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "The Weeknd"; // Example correct answer
+    const correctAnswer = "Alec Benjamin"; // Example correct answer
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
