@@ -699,6 +699,10 @@ main {
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
+#guess-response {
+    display: block !important;
+    margin-bottom: -25px;
+}
 
 #giveup-share-button:hover {
     background-color: #315f85; /* Darker Blue */
@@ -822,7 +826,7 @@ select:focus {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #29<h3>
+        <h3>Game #30<h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question...</option>
@@ -839,8 +843,6 @@ select:focus {
               <option value="are they touring?">Are they currently touring?</option>
               <option value="are they married?">Are they married?</option>
               <option value="college?">Did they attend college?</option>
-
-        
               <!-- Geographic Questions -->
               <option value="are they from the united states?">Were they born in the United States?</option>
               <option value="are they from north america?">Were they born in North America?</option>
@@ -895,7 +897,7 @@ select:focus {
             <button id="submit-question">Submit Question</button>
             <div class="response question-response" id="question-response">Select a question to start.</div>
             <div class="guess-container">
-                <input type="text" id="artist-guess" placeholder="Type your singer guess here..." autocomplete="off" />
+                <input type="text" id="artist-guess" placeholder="Type your guess here..." autocomplete="off" />
                 <ul id="autocomplete-list" class="autocomplete-list"></ul>
                 <button id="submit-guess">Submit Guess</button>
                 <button id="hint" class="hint">Hint</button>
@@ -926,33 +928,41 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Britney Spears</strong>!</p>
-            <img src="/images/britneyspears.jpg">
+            <p>You correctly guessed <strong id="correct-artist-name">Conan Gray</strong>!</p>
+            <img src="/images/conangray.jpg" alt="Celebration Image">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
+    
+            <!-- Time to Guess -->
+            <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">Time to Guess: 0m 0s</p>
+    
             <div class="celebration-buttons">
                 <button id="share-result-button" class="celebration-button">Share with Friends!</button>
                 <button id="enter-raffle-button" class="celebration-button">Enter Raffle</button>
             </div>
         </div>
     </div>
+    
+    </div>
     <!-- Give Up Popup -->
-
-    <div id="giveup-popup" class="giveup-popup">
-        <div class="popup-content">
-            <button class="close-popup" id="close-giveup-popup">&times;</button>
-            <h2>Better Luck Tomorrow! 🎉</h2>
-            <p>The correct answer is <strong id="giveup-correct-artist-name">Britney Spears</strong>!</p>
-            <img src="/images/britneyspears.jpg">
-            <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
-            <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
-            <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
-            <div class="celebration-buttons">
-                <button id="giveup-share-button">Share with Friends!</button>
-                <button id="giveup-enter-raffle-button">Enter Raffle</button>
-            </div>
+<!-- Give Up Popup -->
+<div id="giveup-popup" class="giveup-popup">
+    <div class="popup-content">
+        <button class="close-popup" id="close-giveup-popup">&times;</button>
+        <h2>Better Luck Tomorrow! 🎉</h2>
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Conan Gray</strong>!</p>
+        <img src="/images/conangray.jpg">
+        <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
+        <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
+        <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
+        <div class="celebration-buttons">
+            <button id="giveup-share-button">Share with Friends!</button>
+            <button id="giveup-enter-raffle-button">Enter Raffle</button>
         </div>
+    </div>
+</div>
+
     </div>
     
 <!-- Rules Popup -->
@@ -990,6 +1000,7 @@ select:focus {
         </div>
     </div>
 </div>
+
 </main>
 
  <!-- Footer -->
@@ -1021,26 +1032,26 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-"Hint: They performed at a Superbowl Halftime Show, but not as the headliner.",
-"Hint: She first rose to fame as a teenager.",
-"Hint: She is often referred to as the 'Princess of Pop'.",
-"Hint: Her initials are 'B' and 'S'.",
+    "Hint: He first gained fame on YouTube.",
+    "Hint: His breakout hit is about a crush and jealousy.",
+    "Hint: He is a close friend of Olivia Rodrigo.",
+    "Hint: His first name starts with a 'C' but he wishes it was Heather."
 ];
 
 const predefinedAnswers = {
     // Basic Info
-    "is this a male artist?": "No!",
+    "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
-    "are they over 30 years old?": "Yes!",
-    "are they over 40 years old?": "Yes!",
+    "are they over 30 years old?": "No!",
+    "are they over 40 years old?": "No!",
     "are they over 50 years old?": "No!",
-    "debut before 2000?": "Yes!",
-    "debut before 2010?": "Yes!",
+    "debut before 2000?": "No!",
+    "debut before 2010?": "No!",
     "debut before 2020?": "Yes!",
-    "album release?": "No!",
+    "album release?": "Yes!",
     "are they touring?": "No!",
     "are they married?": "No!",
-    "college?": "No!",
+    "college?": "Yes, but dropped out!",
 
     // Geographic Information
     "are they from the united states?": "Yes!",
@@ -1051,10 +1062,10 @@ const predefinedAnswers = {
 
     // Ethnicity Questions
     "are they of African descent?": "No!",
-    "are they of Asian descent?": "No!",
+    "are they of Asian descent?": "Yes!",
     "are they of European descent?": "Yes!",
     "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "No!",
+    "are they of mixed ethnicity?": "Yes!",
 
     // Music Style
     "different languages?": "No!",
@@ -1065,33 +1076,33 @@ const predefinedAnswers = {
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
-    "do they perform party music?": "Yes!",
-    "do they perform sad music?": "Sometimes!",
+    "do they perform party music?": "No!",
+    "do they perform sad music?": "Yes!",
 
     // Career and Popularity
-    "are they also an actor?": "Yes!", 
-    "disney or nick?": "Yes!", 
+    "are they also an actor?": "No!",
+    "disney or nick?": "No!",
     "singing competition?": "No!",
-    "have they won a Grammy?": "Yes!",
-    "super bowl?":"Yes!",
-    "coachella?": "No!",
-    "billion club?": "Yes!", 
+    "have they won a Grammy?": "No!",
+    "super bowl?": "No!",
+    "coachella?": "Yes!",
+    "billion club?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 10M Instagram followers?": "Yes!",
+    "do they have more than 10M Instagram followers?": "No!",
     "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "Yes, this month!",
+    "do they have more than 50M listeners?": "No!",
     "are they in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "No!",
-    "do they have blond hair?": "Yes!",
+    "do they have dark hair?": "Yes!",
+    "do they have blond hair?": "No!",
     "do they have tattoos?": "No!",
     "do they wear glasses?": "No!",
     "do they go by their birth name?": "Yes!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
-    "do they have a common first name?": "Yes!",
-    "what does their name start with?": "Yes!",
+    "do they have a common first name?": "Not really!",
+    "what does their name start with?": "Yes!"
 };
 
 
@@ -1099,7 +1110,7 @@ const predefinedAnswers = {
 function lockHintButton() {
     hintButton.style.backgroundColor = "grey";
     hintButton.textContent = "🔒 Hint Locked";
-    hintAvailable = false;
+    hintButton.disabled = false; // Allow clicking to show the message
 }
 
 // Unlock the hint button (visual state only)
@@ -1111,63 +1122,140 @@ function unlockHintButton() {
     hintAvailable = true;
 }
 
-// Update hint availability based on questions asked
-function updateHintAvailability() {
-    const remainingQuestions = 4 - questionsSinceLastHint; // Calculate remaining questions
+// Initialize variables
+let totalQuestionsAsked = 0; // Total questions asked in the game
+let usedHints = 0; // Tracks the number of hints used so far
+const maxHints = hints.length; // Maximum number of hints available
 
-    if (questionsSinceLastHint >= 4 && !hintAvailable) {
-        unlockHintButton(); // Unlock the hint if the threshold is reached
-    } else if (!hintAvailable) {
-        // Update the response text dynamically while locked
-        guessResponse.textContent = `Ask ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
-        guessResponse.className = "response no"; // Style the response appropriately
+// Update hint availability dynamically
+function updateHintAvailability() {
+    const unlockedHints = Math.floor(totalQuestionsAsked / 4); // Calculate how many hints should be unlocked
+    const availableHints = Math.min(unlockedHints, maxHints); // Ensure no more hints than available
+
+    if (availableHints > usedHints) {
+        unlockHintButton(); // Unlock the hint button
+    } else {
+        lockHintButton(); // Lock if no additional hints are available
     }
 }
+// Unlock the hint button (visual state only)
+function unlockHintButton() {
+    hintButton.style.backgroundColor = "#4caf50"; // Green color
+    hintButton.textContent = "🔓 Hint";
+    hintButton.disabled = false;
+}
+hintButton.addEventListener("click", () => {
+    console.log("Hint button clicked");
 
-// Transform the Hint button into a Give Up button
+    const questionsNeeded = (usedHints + 1) * 4 - totalQuestionsAsked;
+    console.log("Questions Needed:", questionsNeeded);
+
+    if (hintButton.textContent.includes("Hint Locked")) {
+        console.log("Hint is locked");
+
+        if (questionsNeeded > 0) {
+            guessResponse.textContent = `Ask ${questionsNeeded} more question${questionsNeeded > 1 ? "s" : ""} to unlock the next hint!`;
+            guessResponse.className = "response guess-response no";
+        } else {
+            guessResponse.textContent = "You're close to unlocking the next hint!";
+            guessResponse.className = "response guess-response hint";
+        }
+    } else if (usedHints < maxHints && totalQuestionsAsked >= (usedHints + 1) * 4) {
+        console.log("Hint available and unlocked");
+
+        guessResponse.textContent = hints[usedHints];
+        guessResponse.className = "response guess-response hint";
+        usedHints++;
+        updateProgress();
+        updateHintAvailability();
+    } else {
+        guessResponse.textContent = "No hints available! Keep asking questions.";
+        guessResponse.className = "response guess-response no";
+    }
+
+    if (usedHints >= maxHints) {
+        transformHintToGiveUp();
+        console.log("All hints used, transformed to Give Up");
+    }
+});
+
+submitQuestion.addEventListener("click", () => {
+    const selectedIndex = questionDropdown.selectedIndex;
+    const selectedOption = questionDropdown.options[selectedIndex];
+    const selectedQuestion = selectedOption.value;
+
+    if (!selectedQuestion || selectedIndex === 0) {
+        questionResponse.textContent = "Please select a valid question!";
+        questionResponse.className = "response no";
+        questionDropdown.style.border = "2px solid red"; // Highlight the dropdown
+        return;
+    }
+
+    questionDropdown.style.border = ""; // Reset dropdown border on valid selection
+    totalQuestionsAsked++; // Increment total questions asked
+    questionCount++;
+    updateProgress();
+    updateHintAvailability(); // Check if hint thresholds are reached
+
+    // Update guessResponse dynamically based on remaining questions for next hint
+    const questionsNeeded = (usedHints + 1) * 4 - totalQuestionsAsked;
+    if (questionsNeeded > 0) {
+        guessResponse.textContent = `Ask ${questionsNeeded} more question${questionsNeeded > 1 ? "s" : ""} to unlock the next hint!`;
+        guessResponse.className = "response guess-response no"; // Style for locked hints
+    } else if (questionsNeeded === 0) {
+        guessResponse.textContent = "You've unlocked a new hint!";
+        guessResponse.className = "response guess-response hint"; // Style for hint availability
+    }
+
+    questionResponse.textContent = ""; // Clear previous response
+
+    setTimeout(() => {
+        const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
+        questionResponse.textContent = answer;
+        questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
+
+        // Update the option text to include a check or X emoji
+        if (answer === "Yes!") {
+            selectedOption.textContent = `✅ ${selectedOption.textContent}`;
+        } else if (answer === "No!") {
+            selectedOption.textContent = `❌ ${selectedOption.textContent}`;
+        } else {
+            selectedOption.textContent = `❓ ${selectedOption.textContent}`; // For unknown responses
+        }
+
+        // Disable the option so it can't be selected again
+        selectedOption.disabled = true;
+
+        // Reset the dropdown to show the placeholder
+        questionDropdown.selectedIndex = 0;
+    }, 200); // Delay for showing the response
+});
+
+// Update progress display
+function updateProgress() {
+    document.getElementById("questions-used").textContent = totalQuestionsAsked;
+    document.getElementById("hints-used").textContent = usedHints;
+    document.getElementById("guesses-made").textContent = guessCount;
+}
+
 function transformHintToGiveUp() {
+    // Replace hint button content and style for "Give Up"
+    const hintButton = document.getElementById("hint");
     hintButton.textContent = "Give Up";
     hintButton.style.backgroundColor = "#ff4d4d"; // Red background for "Give Up"
     hintButton.style.color = "white";
 
-    // Remove all previous event listeners from the hint button
+    // Remove all event listeners and replace functionality
     hintButton.replaceWith(hintButton.cloneNode(true));
-    const giveUpButton = document.getElementById("hint");
+    const giveUpButton = document.getElementById("hint"); // Clone retains ID
 
-    // Add the Give Up functionality to the new button
+    // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Britney Spears"); // Replace with the correct answer dynamically
+        showGiveUpPopup("Conan Gray"); // Replace with the dynamic answer
+        endGame(); // End the game logic
     });
 }
 
-// Event listener for hint button
-hintButton.addEventListener("click", () => {
-    if (!hintAvailable) {
-        // If locked, display how many more questions are needed
-        const remainingQuestions = 4 - questionsSinceLastHint;
-        guessResponse.textContent = `Ask ${remainingQuestions} more ${remainingQuestions === 1 ? "question" : "questions"} to unlock hint!`;
-        guessResponse.className = "response no"; // Style the response appropriately
-        return; // Exit if the hint is locked
-    }
-
-    if (currentHintIndex < hints.length) {
-        // Provide a hint if available
-        guessResponse.textContent = hints[currentHintIndex];
-        guessResponse.className = "response guess-response hint"; // Add hint-specific class
-        currentHintIndex++;
-        hintCount++;
-        updateProgress();
-        lockHintButton(); // Lock the hint button after use
-        questionsSinceLastHint = 0; // Reset question count since last hint
-    } else {
-        // No more hints available, transform the Hint button into the Give Up button
-        guessResponse.textContent = "No more hints available!";
-        guessResponse.className = "response no";
-        transformHintToGiveUp(); // Change the button functionality
-    }
-});
-
-// Show the Give Up popup
 function showGiveUpPopup(correctAnswer) {
     const giveupPopup = document.getElementById("giveup-popup");
     const giveupCorrectArtistName = document.getElementById("giveup-correct-artist-name");
@@ -1175,22 +1263,15 @@ function showGiveUpPopup(correctAnswer) {
     const giveupGuessesMadePopup = document.getElementById("giveup-guesses-made-popup");
     const giveupHintsUsedPopup = document.getElementById("giveup-hints-used-popup");
 
-    // Populate the Give Up popup with stats
+    // Populate the "Give Up" popup with stats
     giveupCorrectArtistName.textContent = correctAnswer;
     giveupQuestionsUsedPopup.textContent = questionCount;
     giveupGuessesMadePopup.textContent = guessCount;
     giveupHintsUsedPopup.textContent = hintCount;
 
-    // Display the Give Up popup
+    // Display the "Give Up" popup
     giveupPopup.style.display = "flex";
 }
-
-// Close the Give Up popup
-const closeGiveUpPopupButton = document.getElementById("close-giveup-popup");
-closeGiveUpPopupButton.addEventListener("click", () => {
-    const giveupPopup = document.getElementById("giveup-popup");
-    giveupPopup.style.display = "none";
-});
 
 // Add Share functionality for the Give Up popup
 const giveupShareButton = document.getElementById("giveup-share-button");
@@ -1221,51 +1302,6 @@ giveupEnterRaffleButton.addEventListener("click", () => {
 });
 
 
-// Event listener for question submission
-submitQuestion.addEventListener("click", () => {
-    const selectedIndex = questionDropdown.selectedIndex;
-    const selectedOption = questionDropdown.options[selectedIndex];
-    const selectedQuestion = selectedOption.value;
-
-    if (!selectedQuestion || selectedIndex === 0) {
-        questionResponse.textContent = "Please select a valid question!";
-        questionResponse.className = "response no";
-        questionDropdown.style.border = "2px solid red"; // Highlight the dropdown
-        return;
-    }
-
-    questionDropdown.style.border = ""; // Reset dropdown border on valid selection
-    questionCount++;
-    questionsSinceLastHint++;
-    updateProgress();
-    updateHintAvailability();
-
-    questionResponse.textContent = ""; // Clear previous response
-
-    setTimeout(() => {
-        const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
-        questionResponse.textContent = answer;
-        questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
-
-        // Update the option text to include a check or X emoji
-        if (answer === "Yes!") {
-            selectedOption.textContent = `✅ ${selectedOption.textContent}`;
-        } else if (answer === "No!") {
-            selectedOption.textContent = `❌ ${selectedOption.textContent}`;
-        } else {
-            selectedOption.textContent = `❓ ${selectedOption.textContent}`; // For unknown responses
-        }
-
-        // Disable the option so it can't be selected again
-        selectedOption.disabled = true;
-
-        // Reset the dropdown to show the placeholder
-        questionDropdown.selectedIndex = 0;
-    }, 200); // Delay for showing the response
-});
-
-
-
 // Handle artist guess submission
 submitGuess.addEventListener("click", () => {
     const guess = document.getElementById("artist-guess").value.trim();
@@ -1279,7 +1315,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Britney Spears"; // Example correct answer
+    const correctAnswer = "Conan Gray"; // Example correct answer
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
@@ -1294,19 +1330,21 @@ submitGuess.addEventListener("click", () => {
     document.getElementById("artist-guess").value = ""; // Clear input
 });
 
-// Track and display progress
-function updateProgress() {
-    document.getElementById("questions-used").textContent = questionCount;
-    document.getElementById("hints-used").textContent = hintCount;
-    document.getElementById("guesses-made").textContent = guessCount;
-}
- // Show the celebration popup
- function showCelebrationPopup(correctAnswer) {
+function showCelebrationPopup(correctAnswer) {
     const celebrationPopup = document.getElementById("celebration-popup");
     const correctArtistName = document.getElementById("correct-artist-name");
     const questionsUsedPopup = document.getElementById("questions-used-popup");
     const guessesMadePopup = document.getElementById("guesses-made-popup");
     const hintsUsedPopup = document.getElementById("hints-used-popup");
+    const celebrationTime = document.getElementById("celebration-time");
+
+    // Stop the timer and calculate the elapsed time
+    const endTime = new Date();
+    const elapsedTime = Math.floor((endTime - startTime) / 1000); // Time in seconds
+
+    // Convert elapsed time to minutes and seconds
+    const minutes = Math.floor(elapsedTime / 60);
+    const seconds = elapsedTime % 60;
 
     // Set popup content
     correctArtistName.textContent = correctAnswer;
@@ -1314,22 +1352,12 @@ function updateProgress() {
     guessesMadePopup.textContent = guessCount;
     hintsUsedPopup.textContent = hintCount;
 
+    // Display the elapsed time
+    celebrationTime.textContent = `Time to Guess: ${minutes} Minutes ${seconds} Seconds`;
+
     // Show the popup
     celebrationPopup.style.display = "flex";
 }
-
-function closeCelebrationPopup() {
-    const celebrationPopup = document.getElementById("celebration-popup");
-    celebrationPopup.style.display = "none";
-}
-
-const closeCelebrationPopupButton = document.getElementById("close-celebration-popup");
-closeCelebrationPopupButton.addEventListener("click", closeCelebrationPopup);
-
-
-// Lock the hint button initially on page load
-window.addEventListener("load", lockHintButton);
-
 
 // Share functionality
 shareButton.addEventListener("click", () => {
@@ -1417,10 +1445,15 @@ window.addEventListener("load", () => {
     rulesPopup.style.display = "flex";
 });
 
+let startTime = null; // Start time of the game
+let endTime = null; // End time of the game
+
 // Close the popup when the close button is clicked
 closePopup.addEventListener("click", () => {
     rulesPopup.style.display = "none";
+    startTime = new Date(); // Record the start time
 });
+
 // Get the close button element
 const closeCountdown = document.getElementById("close-countdown");
 
@@ -1429,6 +1462,10 @@ closeCountdown.addEventListener("click", () => {
     const countdownPopup = document.getElementById("countdown-popup");
     countdownPopup.style.display = "none";
 });
+
+// Lock the hint button initially on page load
+window.addEventListener("load", lockHintButton);
+
 function toggleMenu() {
             const menu = document.querySelector('.menu');
             const dropdownMenu = document.querySelector('.dropdown-menu');
@@ -1456,7 +1493,7 @@ function toggleMenu() {
     "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti",
     "Daddy Yankee", "Tyler, The Creator", "One Direction", "OneRepublic",
     "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone",
-    "21 Savage", "Teddy Swims", "The Chainsmokers", "Maluma", "Britney Spears",
+    "21 Savage", "Teddy Swims", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
     "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", 
     "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha",
     "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", 
@@ -1486,7 +1523,7 @@ inputField.addEventListener("input", () => {
     autocompleteList.innerHTML = ""; // Clear previous suggestions
 
     // Only show suggestions if input length is at least 2 characters
-    if (query.length >= 4) {
+    if (query.length >= 6) {
         const matches = artists.filter(name =>
             name.toLowerCase().includes(query)
         );
@@ -1606,7 +1643,6 @@ function lockGameplay() {
     questionDropdown.disabled = true;
     submitQuestion.disabled = true;
     submitGuess.disabled = true;
-    hintButton.disabled = true;
 
     // Update message
     guessResponse.innerHTML = "You've already played today's game!<br>Come back tomorrow for a new challenge!";
@@ -1652,19 +1688,25 @@ shareButton.onclick = () => {
 }
 
 // Event listener for closing the celebration popup
-closeCelebrationPopupButton.addEventListener("click", () => {
-    closeCelebrationPopup();
-    showCountdownPopup(); // Show countdown after closing celebration popup
-    markGameAsCompleted(); // Mark the game as completed
-});
+function closeCelebrationPopup() {
+    const celebrationPopup = document.getElementById("celebration-popup");
+    celebrationPopup.style.display = "none";
+}
 
-// Event listener for closing the give up popup
+// Add event listener to the close button
+const closeCelebrationPopupButton = document.getElementById("close-celebration-popup");
+closeCelebrationPopupButton.addEventListener("click", closeCelebrationPopup);
+
+
+// Get the close button for the "Give Up" popup
+const closeGiveUpPopupButton = document.getElementById("close-giveup-popup");
+
+// Add an event listener to close the popup
 closeGiveUpPopupButton.addEventListener("click", () => {
     const giveupPopup = document.getElementById("giveup-popup");
     giveupPopup.style.display = "none";
-    showCountdownPopup(); // Show countdown after closing give up popup
-    markGameAsCompleted(); // Mark the game as completed
 });
+
 </script>
 </body>
 </html>
