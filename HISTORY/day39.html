@@ -826,7 +826,7 @@ select:focus {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #37<h3>
+        <h3>Game #39<h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question...</option>
@@ -932,8 +932,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Troye Sivan</strong>!</p>
-            <img src="/images/troyesivan.jpg" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">GloRilla</strong>!</p>
+            <img src="/images/glorilla.jpg" alt="Celebration Image">
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -955,8 +955,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Troye Sivan</strong>!</p>
-        <img src="/images/troyesivan.jpg">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">GloRilla</strong>!</p>
+        <img src="/images/glorilla.jpg">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1036,54 +1036,54 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: He first gained fame as a YouTuber and actor.",
-    "Hint: He was born in South Africa but grew up in Australia.",
-    "Hint: He is openly LGBTQ+ and an advocate for the community.",
-    "Hint: His initials are 'T' and 'S'."
+    "Hint: Most of her songs are collaborations, some viral on TikTok.",
+    "Hint: Her debut album was released in 2024.",
+    "Hint: She is 25 years old and from Memphis, Tennessee.",
+    "Hint: Her name starts with 'G' and combines her name with an animal's name."
 ];
 
 const predefinedAnswers = {
     // Basic Info
-    "is this a male artist?": "Yes!",
+
+    "is this a male artist?": "No!",
     "are they still alive?": "Yes!",
     "are they over 50 years old?": "No!",
     "are they over 40 years old?": "No!",
     "are they over 30 years old?": "No!",
     "debut before 2000?": "No!",
-    "debut before 2010?": "Yes!",
-    "debut before 2020?": "Yes!",
+    "debut before 2010?": "No!",
+    "debut before 2020?": "No!",
     "album release?": "Yes!",
     "are they touring?": "No!",
     "are they married?": "No!",
     "divorced?": "No!",
-    "LGBTQ?": "Yes!",
+    "LGBTQ?": "No!",
 
     // Geographic Information
-    "are they from the united states?": "No!",
-    "are they from north america?": "No!",
+    "are they from the united states?": "Yes!",
+    "are they from north america?": "Yes!",
     "are they from europe?": "No!",
     "are they from australia?": "No!",
-    "are they from asia or africa?": "Yes!",
-
+    "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
-    "are they of African descent?": "No!",
+    "are they of African descent?": "Yes!",
     "are they of Asian descent?": "No!",
-    "are they of European descent?": "Yes!",
+    "are they of European descent?": "No!",
     "are they of Latin American descent?": "No!",
     "are they of mixed ethnicity?": "No!",
 
     // Music Style
     "different languages?": "No!",
     "are they spanish?": "No!",
-    "do they perform pop music?": "Yes!",
-    "do they perform rap music?": "No!",
-    "do they perform R&B music?": "Yes!",
+    "do they perform pop music?": "No!",
+    "do they perform rap music?": "Yes!",
+    "do they perform R&B music?": "No!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
     "do they perform party music?": "Yes!",
-    "do they perform sad music?": "Yes!",
+  "do they perform sad music?": "No!",
 
     // Career and Popularity
     "are they also an actor?": "Yes!",
@@ -1094,7 +1094,7 @@ const predefinedAnswers = {
     "coachella?": "Yes!",
     "billion club?": "No!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 10M Instagram followers?": "Yes!",
+    "do they have more than 10M Instagram followers?": "No!",
     "do they have more than 20M listeners?": "Yes!",
     "do they have more than 50M listeners?": "No!",
     "are they in a band?": "No!",
@@ -1102,16 +1102,16 @@ const predefinedAnswers = {
     // Appearance
     "do they have dark hair?": "Yes!",
     "do they have blond hair?": "No!",
-    "5.5 feet tall?": "Yes!",
+    "5.5 feet tall?": "No!",
     "6 feet tall?": "No!",
-    "do they have tattoos?": "No!",
+    "do they have tattoos?": "Yes!",
     "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Kind of!",
-    "do they go by one word?": "No!",
-    "do they go by two words?": "Yes!",
-    "do they have a common first name?": "Not really!",
-    "what does their name start with?": "No!"
+    "do they go by their birth name?": "No!",
+    "do they go by one word?": "Yes!",
+    "do they have a common first name?": "No!",
+    "what does their name start with?": "Yes!"
 };
+
 // Lock the hint button (visual state only)
 function lockHintButton() {
     hintButton.style.backgroundColor = "grey";
@@ -1257,7 +1257,8 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Troye Sivan"); // Replace with the dynamic answer
+        showGiveUpPopup("GloRilla"); // Replace with the dynamic answer
+
         endGame(); // End the game logic
     });
 }
@@ -1320,8 +1321,7 @@ submitGuess.addEventListener("click", () => {
 
     guessCount++;
     updateProgress();
-
-    const correctAnswer = "Troye Sivan"; // Example correct answer
+    const correctAnswer = "GloRilla"; // Example correct answer
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
@@ -1468,9 +1468,9 @@ function toggleMenu() {
     "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", 
     "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future",
     "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti",
-    "Daddy Yankee", "Tyler, The Creator", "One Direction", "OneRepublic",
+    "Daddy Yankee", "Tyler, The Creator", "One Direction", "GloRilla", "OneRepublic",
     "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone",
-    "21 Savage", "Teddy Swims", "Gwen Stefani", "Troye Sivan", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
+    "21 Savage", "Teddy Swims", "Gwen Stefani", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
     "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", 
     "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha",
     "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", 
