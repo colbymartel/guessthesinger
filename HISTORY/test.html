@@ -806,6 +806,80 @@ select:invalid {
 select:focus {
     background-color: white;
 }
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+#dropdown-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    background-color: #315f85;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    width: 100%;
+    background: white;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 2px solid #315f85;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dropdown-menu li {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+.dropdown-menu li:hover {
+    background-color: #d8ebfc;
+}
+#submit-question {
+    margin-top: 30px;
+}
+.sub-menu {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 3px solid #315f85;
+}
+
+.sub-menu li {
+    padding: 10px;
+    background: #f0f8ff;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.sub-menu li:hover {
+    background: #cce5ff;
+}
+
+.category {
+    font-weight: bold;
+    background: #4682b4;
+    color: white;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.category:hover {
+    background: #315f85;
+}
 
 
     </style>
@@ -828,76 +902,99 @@ select:focus {
     <section class="game-section">
         <h3>Game #37<h3>
         <div class="game-container">
-            <select id="question-dropdown">
-                <option value="" disabled selected>Select a question...</option>
-              <!-- General Questions -->
-              <option value="is this a male artist?">Is this a male artist?</option>
-              <option value="are they still alive?">Are they still alive?</option>
-              <option value="are they over 30 years old?">Are they over 30 years old?</option>
-              <option value="are they over 40 years old?">Are they over 40 years old?</option>
-              <option value="are they over 50 years old?">Are they over 50 years old?</option>
-              <option value="debut before 2000?">Did they debut before 2000?</option>
-              <option value="debut before 2010?">Did they debut before 2010?</option>
-              <option value="debut before 2020?">Did they debut before 2020?</option>
-              <option value="album release?">Did they release a new album in the last 2 years?</option>
-              <option value="are they touring?">Are they currently touring?</option>
-              <option value="are they married?">Are they currently married?</option>
-              <option value="divorced?">Did they ever get divorced?</option>
-              <option value="LGBTQ?">Do they identify as LGBTQ+?</option>
+          <!-- Custom Dropdown Menu -->
+<div class="custom-dropdown">
+    <button id="dropdown-btn">Select a category...</button>
+    <ul id="dropdown-menu" class="dropdown-menu">
+    
+    <!-- General Questions -->
+        <li class="category" data-category="general">General/Personal Life</li>
+        <ul class="sub-menu" id="general">
+            <li data-question="is this a male artist?">Is this a male artist?</li>
+            <li data-question="are they still alive?">Are they still alive?</li>
+            <li data-question="are they over 30 years old?">Are they over 30 years old?</li>
+            <li data-question="are they over 40 years old?">Are they over 40 years old?</li>
+            <li data-question="are they over 50 years old?">Are they over 50 years old?</li>
+            <li data-question="do they go by their birth name?">Do they go by their birth name?</li>
+            <li data-question="do they go by one word?">Do they go by one word?</li>
+            <li data-question="do they go by two words?">Do they go by two words?</option>
+            <li data-question="do they have a common first name?">Do they have a common first name?</option>
+            <li data-question="what does their name start with?">Does their name start with A-M?</option>
+            <li data-question="are they married?">Are they currently married?</li>
+            <li data-question="divorced?">Did they ever get divorced?</li>
+            <li data-question="LGBTQ?">Do they identify as LGBTQ+?</li>
+        </ul>
+  <!-- Geography Questions -->
+        <li class="category" data-category="geography">Geography</li>
+        <ul class="sub-menu" id="geography">
+            <li data-question="are they from north america?">Were they born in North America?</li>
+            <li data-question="are they from the united states?">Were they born in the United States?</li>
+            <li data-question="are they from europe?">Were they born in Europe?</li>
+            <li data-question="are they from australia?">Were they born in Australia?</li>
+            <li data-question="are they from south america?">Were they born in South America?</li>
+            <li data-question="are they from asia?">Were they born in Asia?</li>
+            <li data-question="are they from africa?">Were they born in Africa?</li>
+        </ul>
+  <!-- Ethnicity Questions -->
+        <li class="category" data-category="ethnicity">Ethnicity</li>
+        <ul class="sub-menu" id="ethnicity">
+            <li data-question="are they of African descent?">Are they of African descent?</li>
+            <li data-question="are they of Asian descent?">Are they of Asian descent?</li>
+            <li data-question="are they of European descent?">Are they of European descent?</li>
+            <li data-question="are they of Latin descent?">Are they of Latin American descent?</li>
+            <li data-question="mixed ethnicity?">Are they of mixed ethnicity?</li>
+        </ul>
+  <!-- Style Questions -->
+        <li class="category" data-category="music">Music Style</li>
+        <ul class="sub-menu" id="music"> 
+            <li data-question="do they perform pop music?">Do they perform pop music?</li>
+            <li data-question="do they perform rap music?">Do they perform hip-hop music?</li>
+            <li data-question="do they perform R&B music?">Do they perform R&B music?</li>
+            <li data-question="do they perform rock music?">Do they perform rock music?</li>
+            <li data-question="do they perform country music?">Do they perform country music?</li>
+            <li data-question="do they perform jazz music?">Do they perform jazz music?</li>
+            <li data-question="do they perform party music?">Do they perform party music?</li>
+            <li data-question="do they perform sad music?">Do they perform sad music?</li>
+            <li data-question="different languages?">Do they make songs in different languages?</li>
+            <li data-question="are they spanish?">Do they make Spanish songs?</li>
+        </ul>
+  <!-- Career Questions -->
+        <li class="category" data-category="career">Career</li>
+        <ul class="sub-menu" id="career">
 
-              <!-- Geographic Questions -->
-              <option value="are they from the united states?">Were they born in the United States?</option>
-              <option value="are they from north america?">Were they born in North America?</option>
-              <option value="are they from europe?">Were they born in Europe?</option>
-              <option value="are they from australia?">Were they born in Australia?</option>
-              <option value="are they from asia or africa?">Were they born in Asia or Africa?</option>
+            <li data-question="debut before 2000?">Did they debut before 2000?</li>
+            <li data-question="debut before 2010?">Did they debut before 2010?</li>
+            <li data-question="debut before 2000?">Did they debut before 2020?</li>
+            <option value="are they in a band?">Are/were they in a group?</option>
+            <li data-question="album release?">Did they release a new album in the last 2 years?</li>
+            <li data-question="are they touring?">Are they currently touring?</li>
+            <li data-question="disney or nick?">Were they ever on Nickelodeon or Disney Channel?</li>
+            <li data-question="singing competition?">Did they ever compete on a singing show?</li>
+            <li data-question="singing competition?">Were they ever a judge on a singing show?</li>
+            <li data-question="have they won a Grammy?">Have they won a Grammy?</li>
+            <li data-question="super bowl?">Have they performed at a Super Bowl Halftime Show?</li>
+            <li data-question="coachella?">Have they performed at Coachella?</li>
+            <li data-question="billion club?">Do they have any songs with 1 billion+ Spotify streams?</li>
+            <li data-question="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</li>
+            <li data-question="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</li>
+            <li data-question="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</li>
+            <li data-question="do they have more than 50M listeners?">Do they have more than 50M monthly listeners?</li>
 
-                <!-- Ethnicity Questions -->
-              <option value="are they of African descent?">Are they of African descent?</option>
-              <option value="are they of Asian descent?">Are they of Asian descent?</option>
-              <option value="are they of European descent?">Are they of European descent?</option>
-              <option value="are they of Latin American descent?">Are they of Latin American descent?</option>
-              <option value="are they of mixed ethnicity?">Are they of mixed ethnicity?</option>
-              
-              <!-- Music Style and Language -->
-              <option value="different languages?">Do they make songs in different languages?</option>
-              <option value="are they spanish?">Do they make Spanish songs?</option>
-              <option value="do they perform pop music?">Do they perform pop music?</option>
-              <option value="do they perform rap music?">Do they perform hip-hop music?</option>
-              <option value="do they perform R&B music?">Do they perform R&B music?</option>
-              <option value="do they perform rock music?">Do they perform rock music?</option>
-              <option value="do they perform country music?">Do they perform country music?</option>
-              <option value="do they perform jazz music?">Do they perform jazz music?</option>
-              <option value="do they perform party music?">Do they perform party music?</option>
-              <option value="do they perform sad music?">Do they perform sad music?</option>
-              
-              <!-- Career and Popularity -->
-              <option value="are they also an actor?">Are they also an actor?</option>
-              <option value="disney or nick?">Were they ever on Nickelodeon or Disney Channel?</option>
-              <option value="singing competition?">Did they ever compete on a singing show?</option>
-              <option value="have they won a Grammy?">Have they won a Grammy?</option>
-              <option value="super bowl?">Have they performed at a Super Bowl Halftime Show?</option>
-              <option value="coachella?">Have they performed at Coachella?</option>
-              <option value="billion club?">Do they have any songs with 1 billion+ Spotify streams?</option>
-              <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
-              <option value="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</option>
-              <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
-              <option value="do they have more than 50M listeners?">Do they have more than 50M monthly listeners?</option>
-              <option value="are they in a band?">Are/were they in a group?</option>
-              
-              <!-- Appearance and Name -->
-              <option value="do they have dark hair?">Do they have black or brown hair?</option>
-              <option value="do they have blond hair?">Do they have blond hair?</option>
-              <option value="5.5 feet tall?">Are they above 5 1/2 feet tall?</option>
-              <option value="6 feet tall?">Are they above 6 feet tall?</option>
-              <option value="do they have tattoos?">Do they have visible tattoos?</option>
-              <option value="do they wear glasses?">Do they wear glasses or sunglasses often?</option>
-              <option value="do they go by their birth name?">Do they go by their birth name?</option>
-              <option value="do they go by one word?">Do they go by one word?</option>
-              <option value="do they go by two words?">Do they go by two words?</option>
-              <option value="do they have a common first name?">Do they have a common first name?</option>
-              <option value="what does their name start with?">Does their name start with A-M?</option>
-            </select>
+        </ul>
+
+    <!-- Appearance Questions -->
+    <li class="category" data-category="appearance">Appearance</li>
+    <ul class="sub-menu" id="appearance">
+    <li data-question="do they have dark hair?">Do they have black or brown hair?</li>
+    <li data-question="do they have blond hair?">Do they have blond hair?</li>
+    <li data-question="do they have red hair?">Do they have red hair?</li>
+    <li data-question="5.5 feet tall?">Are they above 5 1/2 feet tall?</li>
+    <li data-question="6 feet tall?">Are they above 6 feet tall?</li>
+    <li data-question="do they have tattoos?">Do they have visible tattoos?</li>
+    <li data-question="do they wear glasses?">Do they wear glasses or sunglasses often?</li>
+    </ul>
+</div>
+<!-- Response Display -->
             <button id="submit-question">Submit Question</button>
             <div class="response question-response" id="question-response">Select a question to start.</div>
             <div class="guess-container">
@@ -1023,8 +1120,8 @@ let guessCount = 0; // Tracks total guesses made
 let hintCount = 0; // Tracks total hints used
 let currentHintIndex = 0; // Tracks current hint index
 
-const hintButton = document.getElementById("hint");
 const submitQuestion = document.getElementById("submit-question");
+const hintButton = document.getElementById("hint");
 const submitGuess = document.getElementById("submit-guess");
 const questionDropdown = document.getElementById("question-dropdown");
 const questionResponse = document.getElementById("question-response");
@@ -1035,6 +1132,10 @@ const shareContainer = document.getElementById("share-container");
 const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
+
+let selectedQuestion = null;
+let selectedQuestionText = null;
+
 const hints = [
     "Hint: He first gained fame as a YouTuber and actor.",
     "Hint: He was born in South Africa but grew up in Australia.",
@@ -1112,134 +1213,91 @@ const predefinedAnswers = {
     "do they have a common first name?": "Not really!",
     "what does their name start with?": "No!"
 };
-// Lock the hint button (visual state only)
-function lockHintButton() {
-    hintButton.style.backgroundColor = "grey";
-    hintButton.textContent = "🔒 Hint Locked";
-    hintButton.disabled = false; // Allow clicking to show the message
-}
 
-// Unlock the hint button (visual state only)
-function unlockHintButton() {
-    hintButton.style.backgroundColor = "#4caf50"; // Green color
-    hintButton.textContent = "🔓 Hint"; // Update text on the button
-    guessResponse.textContent = "Try a hint!"; // Update the text below the button
-    guessResponse.className = "response guess-response hint"; // Ensure it's styled as a hint message
-    hintAvailable = true;
-}
 
-// Initialize variables
-let totalQuestionsAsked = 0; // Total questions asked in the game
-let usedHints = 0; // Tracks the number of hints used so far
-const maxHints = hints.length; // Maximum number of hints available
+// Initialize game state variables
+let totalQuestionsAsked = 0; // Tracks total questions asked
+let usedHints = 0; // Tracks hints used
+const maxHints = hints.length; // Maximum number of hints
 
-// Update hint availability dynamically
+// Function to check and update hint button availability
 function updateHintAvailability() {
-    const unlockedHints = Math.floor(totalQuestionsAsked / 4); // Calculate how many hints should be unlocked
-    const availableHints = Math.min(unlockedHints, maxHints); // Ensure no more hints than available
+    console.log("🔄 Checking hint unlock...");
+    console.log("Total Questions Asked:", totalQuestionsAsked, "Used Hints:", usedHints);
 
-    if (availableHints > usedHints) {
-        unlockHintButton(); // Unlock the hint button
+    // Determine if a hint should be unlocked
+    const nextHintUnlock = (usedHints + 1) * hintUnlockThreshold;
+
+    if (usedHints < maxHints && totalQuestionsAsked >= nextHintUnlock) {
+        unlockHintButton();
+    } else if (usedHints >= maxHints) {
+        transformHintToGiveUp(); // Convert to "Give Up" if max hints are used
     } else {
-        lockHintButton(); // Lock if no additional hints are available
+        lockHintButton(); // Keep it locked otherwise
     }
 }
-// Unlock the hint button (visual state only)
+
+
+// Unlock hint button
 function unlockHintButton() {
-    hintButton.style.backgroundColor = "#4caf50"; // Green color
-    hintButton.textContent = "🔓 Hint";
-    hintButton.disabled = false;
+    console.log("✅ Hint button always available!");
+    hintButton.style.backgroundColor = "#4caf50"; // Green
+    hintButton.textContent = "Hint Available!";
+    hintButton.disabled = false; // Ensure it's always enabled
 }
-hintButton.addEventListener("click", () => {
-    console.log("Hint button clicked");
 
-    const questionsNeeded = (usedHints + 1) * 4 - totalQuestionsAsked;
-    console.log("Questions Needed:", questionsNeeded);
-
-    if (hintButton.textContent.includes("Hint Locked")) {
-        console.log("Hint is locked");
-
-        if (questionsNeeded > 0) {
-            guessResponse.textContent = `Ask ${questionsNeeded} more question${questionsNeeded > 1 ? "s" : ""} to unlock the next hint!`;
-            guessResponse.className = "response guess-response no";
-        } else {
-            guessResponse.textContent = "You're close to unlocking the next hint!";
-            guessResponse.className = "response guess-response hint";
-        }
-    } else if (usedHints < maxHints && totalQuestionsAsked >= (usedHints + 1) * 4) {
-        console.log("Hint available and unlocked");
-
-        guessResponse.textContent = hints[usedHints];
-        guessResponse.className = "response guess-response hint";
-        usedHints++;
-        updateProgress(); // Update progress whenever a hint is used
-        updateHintAvailability();
-    } else {
-        guessResponse.textContent = "No hints available! Keep asking questions.";
-        guessResponse.className = "response guess-response no";
-    }
-
-    if (usedHints >= maxHints) {
-        transformHintToGiveUp();
-        console.log("All hints used, transformed to Give Up");
-    }
+// Call this function when the page loads
+window.addEventListener("load", () => {
+    unlockHintButton();
 });
 
-submitQuestion.addEventListener("click", () => {
-    const selectedIndex = questionDropdown.selectedIndex;
-    const selectedOption = questionDropdown.options[selectedIndex];
-    const selectedQuestion = selectedOption.value;
 
-    if (!selectedQuestion || selectedIndex === 0) {
-        questionResponse.textContent = "Please select a valid question!";
-        questionResponse.className = "response no";
-        questionDropdown.style.border = "2px solid red"; // Highlight the dropdown
-        return;
-    }
+// Ensure updateHintAvailability() is called whenever a question is processed
+function processQuestion(question, text) {
+    if (!question) return;
 
-    questionDropdown.style.border = ""; // Reset dropdown border on valid selection
-    totalQuestionsAsked++; // Increment total questions asked
+    const answer = predefinedAnswers[question] || "I don't know. Try another question.";
+
+    // Update question count FIRST, before checking hints
+    totalQuestionsAsked++;
     questionCount++;
+
+    console.log("🆕 Total Questions Asked:", totalQuestionsAsked);
+
+    // Update game state before checking hints
     updateProgress();
-    updateHintAvailability(); // Check if hint thresholds are reached
+    updateHintAvailability(); // This must run AFTER updating the count!
 
-    // Update guessResponse dynamically based on remaining questions for next hint
-    const questionsNeeded = (usedHints + 1) * 4 - totalQuestionsAsked;
-    if (questionsNeeded > 0) {
-        guessResponse.textContent = `Ask ${questionsNeeded} more question${questionsNeeded > 1 ? "s" : ""} to unlock the next hint!`;
-        guessResponse.className = "response guess-response no"; // Style for locked hints
-    } else if (questionsNeeded === 0) {
-        guessResponse.textContent = "You've unlocked a new hint!";
-        guessResponse.className = "response guess-response hint"; // Style for hint availability
-    }
-
-    questionResponse.textContent = ""; // Clear previous response
+    updateDropdown(question, text, answer);
+    selectedQuestion = null;
+    dropdownBtn.textContent = "Select a category...";
 
     setTimeout(() => {
-        const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
         questionResponse.textContent = answer;
         questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
+    }, 200);
+}
 
-        // Update the option text to include a check or X emoji
-        if (answer === "Yes!") {
-            selectedOption.textContent = `✅ ${selectedOption.textContent}`;
-        } else if (answer === "No!") {
-            selectedOption.textContent = `❌ ${selectedOption.textContent}`;
-        } else {
-            selectedOption.textContent = `❓ ${selectedOption.textContent}`; // For unknown responses
-        }
+hintButton.addEventListener("click", () => {
+    console.log("🔓 Hint button clicked");
 
-        // Disable the option so it can't be selected again
-        selectedOption.disabled = true;
-
-        // Reset the dropdown to show the placeholder
-        questionDropdown.selectedIndex = 0;
-    }, 200); // Delay for showing the response
+    if (usedHints < maxHints) {
+        console.log("Showing hint");
+        guessResponse.textContent = hints[usedHints]; // Show hint
+        guessResponse.className = "response guess-response hint";
+        usedHints++; // Increase hint count
+        updateProgress();
+    } else {
+        console.log("No more hints available.");
+        guessResponse.textContent = "No more hints available!";
+        guessResponse.className = "response guess-response no";
+    }
 });
+
 
 // Update progress display
 function updateProgress() {
-    document.getElementById("questions-used").textContent = totalQuestionsAsked;
+    document.getElementById("questions-used").textContent = questionCount;
     document.getElementById("hints-used").textContent = usedHints;
     document.getElementById("guesses-made").textContent = guessCount;
 }
@@ -1440,8 +1498,6 @@ closeCountdown.addEventListener("click", () => {
     countdownPopup.style.display = "none";
 });
 
-// Lock the hint button initially on page load
-window.addEventListener("load", lockHintButton);
 
 function toggleMenu() {
             const menu = document.querySelector('.menu');
@@ -1470,7 +1526,7 @@ function toggleMenu() {
     "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti",
     "Daddy Yankee", "Tyler, The Creator", "One Direction", "OneRepublic",
     "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone",
-    "21 Savage", "Teddy Swims", "Gwen Stefani", "Troye Sivan", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
+    "21 Savage", "Teddy Swims", "Troye Sivan", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
     "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", 
     "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha",
     "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", 
@@ -1611,14 +1667,12 @@ function checkGameCompletion() {
 // Lock all gameplay elements
 function lockGameplay() {
     const questionDropdown = document.getElementById("question-dropdown");
-    const submitQuestion = document.getElementById("submit-question");
     const submitGuess = document.getElementById("submit-guess");
     const hintButton = document.getElementById("hint");
     const guessResponse = document.getElementById("guess-response");
 
     // Disable gameplay elements
     questionDropdown.disabled = true;
-    submitQuestion.disabled = true;
     submitGuess.disabled = true;
 
     // Update message
@@ -1710,6 +1764,106 @@ closeGiveUpPopupButton.addEventListener("click", () => {
     const giveupPopup = document.getElementById("giveup-popup");
     giveupPopup.style.display = "none";
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdownBtn = document.getElementById("dropdown-btn");
+    const dropdownMenu = document.getElementById("dropdown-menu");
+    const categories = document.querySelectorAll(".category");
+    const subMenus = document.querySelectorAll(".sub-menu");
+    const submitQuestionBtn = document.getElementById("submit-question");
+    const questionResponse = document.getElementById("question-response");
+
+    let selectedQuestion = null;
+    let selectedQuestionText = null;
+
+    // Toggle dropdown menu visibility
+    dropdownBtn.addEventListener("click", () => {
+        dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+    });
+
+    // Handle category click to show sub-menu
+    categories.forEach(category => {
+        category.addEventListener("click", function () {
+            const categoryName = this.dataset.category;
+            const subMenu = document.getElementById(categoryName);
+
+            // Hide other sub-menus
+            subMenus.forEach(menu => {
+                if (menu !== subMenu) menu.style.display = "none";
+            });
+
+            // Toggle selected sub-menu
+            subMenu.style.display = subMenu.style.display === "block" ? "none" : "block";
+        });
+    });
+
+    // Handle question selection, but don't process it yet
+    document.querySelectorAll(".sub-menu li").forEach(item => {
+        item.addEventListener("click", function () {
+            selectedQuestion = this.dataset.question;
+            selectedQuestionText = this.textContent;
+
+            // Update dropdown button text to show the selected question
+            dropdownBtn.textContent = selectedQuestionText;
+        });
+    });
+
+    // Process question only when the Submit Question button is clicked
+    submitQuestionBtn.addEventListener("click", function () {
+        if (!selectedQuestion) {
+            questionResponse.textContent = "Please select a question first!";
+            questionResponse.className = "response no";
+            return;
+        }
+
+        processQuestion(selectedQuestion, selectedQuestionText);
+    });
+
+    function processQuestion(question, text) {
+    const answer = predefinedAnswers[question] || "I don't know. Try another question.";
+
+    // Increase question count
+    questionCount++;
+    updateProgress();
+
+    // Add ✅ or ❌ and move the question to the top
+    updateDropdown(question, text, answer);
+
+    // Reset selectedQuestion after processing
+    selectedQuestion = null;
+    dropdownBtn.textContent = "Select a category...";
+
+    // Temporarily set response to blank
+    questionResponse.textContent = ""; 
+
+    // Delay showing the actual response by 0.2 seconds
+    setTimeout(() => {
+        questionResponse.textContent = answer;
+        questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
+    }, 200);
+}
+
+
+    function updateDropdown(question, text, answer) {
+        const checkmark = answer === "Yes!" ? "✅" : "❌";
+
+        // Remove the question from the sub-menu
+        document.querySelectorAll(".sub-menu li").forEach(item => {
+            if (item.dataset.question === question) item.remove();
+        });
+
+        // Create a new top-level question entry
+        const newEntry = document.createElement("li");
+        newEntry.textContent = `${checkmark} ${text}`;
+        newEntry.style.fontWeight = "bold";
+        newEntry.style.backgroundColor = "#d8ebfc";
+        newEntry.style.padding = "12px";
+        newEntry.style.cursor = "default";
+
+        // Insert at the top of the dropdown
+        dropdownMenu.insertBefore(newEntry, dropdownMenu.firstChild);
+    }
+});
+
 
 </script>
 </body>

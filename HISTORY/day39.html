@@ -1044,6 +1044,7 @@ const hints = [
 
 const predefinedAnswers = {
     // Basic Info
+
     "is this a male artist?": "No!",
     "are they still alive?": "Yes!",
     "are they over 50 years old?": "No!",
@@ -1082,10 +1083,10 @@ const predefinedAnswers = {
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
     "do they perform party music?": "Yes!",
-    "do they perform sad music?": "No!",
+  "do they perform sad music?": "No!",
 
     // Career and Popularity
-    "are they also an actor?": "No!",
+    "are they also an actor?": "Yes!",
     "disney or nick?": "No!",
     "singing competition?": "No!",
     "have they won a Grammy?": "No!",
@@ -1257,6 +1258,7 @@ function transformHintToGiveUp() {
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
         showGiveUpPopup("GloRilla"); // Replace with the dynamic answer
+
         endGame(); // End the game logic
     });
 }
@@ -1319,7 +1321,6 @@ submitGuess.addEventListener("click", () => {
 
     guessCount++;
     updateProgress();
-
     const correctAnswer = "GloRilla"; // Example correct answer
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
