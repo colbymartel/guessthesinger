@@ -934,6 +934,7 @@ select:focus {
             <h2>🎉 Congratulations! 🎉</h2>
             <p>You correctly guessed <strong id="correct-artist-name">Mac Miller</strong>!</p>
             <img src="/images/macmiller.jpg" alt="Celebration Image">
+
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
             <p>Hints used: <span id="hints-used-popup">0</span></p>
@@ -1062,6 +1063,7 @@ const predefinedAnswers = {
     "are they from the united states?": "Yes!",
     "are they from north america?": "Yes!",
     "are they from europe?": "No!",
+
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
@@ -1322,6 +1324,7 @@ submitGuess.addEventListener("click", () => {
     updateProgress();
 
     const correctAnswer = "Mac Miller"; // Example correct answer
+
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
@@ -1454,12 +1457,12 @@ function toggleMenu() {
         const autocompleteList = document.getElementById("autocomplete-list");
 
         const artists = [
-    "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran",
+        "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran",
     "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd",
     "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber",
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes",
-    "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith",
-    "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean",
+    "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank",
+    "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins",
     "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey",
     "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee",
     "Ellie Goulding", "Zayn Malik", "Meghan Trainor", "Jason Derulo", "Chris Brown",
@@ -1468,19 +1471,20 @@ function toggleMenu() {
     "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", 
     "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future",
     "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti",
-    "Daddy Yankee", "Tyler, The Creator", "One Direction", "OneRepublic",
-    "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone", "Mac Miller",
-    "21 Savage", "Teddy Swims", "Gwen Stefani", "Troye Sivan", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
-    "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", 
-    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha",
-    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", 
+    "Daddy Yankee", "Tyler, The Creator", "One Direction", "GloRilla", "Adam Levine", "Don Toliver", "OneRepublic",
+    "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone", "Joji", "Chelsea Cutler",
+    "21 Savage", "Teddy Swims", "Gwen Stefani", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
+    "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", "Noah Kahan", "beabadoobee", "Morgan Wallen",
+    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave",
+    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller",
     "Shreya Ghoshal", "Tate McRae", "Pritam", "Chappell Roan", "Zach Bryan",
     "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas",
     "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", 
     "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent",
-    "Don Toliver", "Bebe Rexha", "Ava Max", "Ne-Yo", "J. Cole", "Tyla",
+    "Bebe Rexha", "Ava Max", "Ne-Yo", "J. Cole", "Tyla",
     "Cris Mj", "A$AP Rocky", "James Arthur", "Ty Dolla $ign", "Alec Benjamin", "Swae Lee"
 ];
+
 
         // Adjust the autocomplete list width and position
         function adjustAutocompleteWidth() {
