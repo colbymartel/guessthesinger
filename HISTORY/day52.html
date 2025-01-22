@@ -45,11 +45,10 @@
     max-width: 800px;
     width: 90%; /* Optional, adjusts width responsiveness */
 }
-
 .navbar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center; /* Center all content horizontally */
+    align-items: center; /* Center all content vertically */
     padding: 20px 40px;
     background-color: #315f85;
     width: 100%;
@@ -57,13 +56,15 @@
 }
 
 .navbar .logo img {
-    height: 60px;
-    width: auto;
+    height: 100px; /* Adjust this to the desired size */
+    width: auto; /* Maintain aspect ratio */
+    max-width:  100%; /* Prevent it from exceeding its container width */
 }
 
+
 .navbar ul {
+    display: none; /* Hide the menu items if you only want the logo centered */
     list-style: none;
-    display: flex;
     gap: 25px;
 }
 
@@ -415,6 +416,25 @@
 .progress-container span{
     font-size: 1.5rem;
 }
+@media screen and (max-width: 768px) {
+    footer {
+        padding: 15px;
+    }
+
+    .progress-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        text-align: center;
+    }
+
+    .progress-container p {
+        font-size: 0.9rem; /* Reduce font size slightly for smaller screens */
+        margin-bottom: 10px;
+    }
+
+    .progress-container span {
+        font-size: 1.2rem; /* Adjust the font size for mobile */
+    }
+}
 .guess-response.hint {
     margin: auto; /* Reduce margin below hints */
     margin-top: 15px;
@@ -763,19 +783,14 @@ select:focus {
                     <img src="/images/logo.png" alt="Guess the Singer Logo">
                 </div>
                 <nav>
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Music</a></li>
-                    </ul>
                 </nav>
             </header>
     <section class="game-section">
         <div class="text-box">
-            <h1>Game #53</h1>       
+            <h1>Game #52</h1>       
              <div class="game-container">
             <select id="question-dropdown">
-                <option value="" disabled selected>Select a question...</option>
+                <option value="" disabled selected>Select a question to start...</option>
               <!-- General Questions -->
               <option value="is this a male artist?">Is this a male artist?</option>
               <option value="are they still alive?">Are they still alive?</option>
