@@ -1,319 +1,373 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
-
-/*========================
-DEFAULT CSS HERE
-========================*/
 @font-face {
-    font-family: "Gotham Rounded";
-    src: url(fonts/GothamRoundedBook.ttf);
-    font-weight: 350;
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_light.otf') format('otf');    font-weight: 300;
+    font-style: normal;
 }
 
 @font-face {
-    font-family: "Gotham Rounded";
-    src: url(fonts/GothamRoundedMedium.ttf);
-    font-weight: 500;
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_book.otf') format('otf');    font-weight: normal;
+    font-style: normal;
 }
 
-:root {
-    --dmFonts: "DM Sans", serif;
+@font-face {
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_medium.otf') format('otf');    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_bold.otf') format('otf');
+    font-weight: bold;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Gotham', Arial, sans-serif;
 }
 
 body {
-    font-family: "Gotham Rounded";
+    background: linear-gradient(135deg, #E3efff 0%, #e7f3ff 100%);
+    min-height: 100vh;
 }
 
-h1,
-h2,
-h3,
-h5,
-h6,
-p {
-    margin: 0;
+.main-container {
+    background-image: url('./images/bg-top.png');
+    background-position: top;
 }
 
-a,
-a:hover {
-    text-decoration: none;
-    display: inline-block;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#main-wrpper {
-    width: 100%;
-    height: 100%;
-    background: url(/images/colby-martel-body-bg.png) no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-
-/*=========================
-HEADER AREA CSS HERE
-===========================*/
-.header-area {
-    padding-top: 14px;
-    padding-bottom: 13px;
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0px 4px 15px 0px rgba(94, 94, 94, 0.1);
-}
-
-.logo-wrpper a img {
-    width: 364px;
-}
-
-.menu-list {
+nav {
     display: flex;
-    justify-content: flex-end;
-    column-gap: 70px;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFFFFF80;
+    padding: 10px 8%;
 }
 
-.menu-item a {
-    color: #003c76;
-    font-size: 18px;
-    font-weight: 400;
+.logo {
+    font-size: 24px;
+    color: #4a4a8a;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-/*=========================
-QUESTION AREA CSS HERE
-===========================*/
-.question-wrpper {
-    width: 100%;
-    max-width: 1126px;
-    border-radius: 30px;
-    border: 1px solid rgba(81, 166, 255, 0.27);
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0px 9px 40px 0px rgba(106, 106, 106, 0.1);
-    backdrop-filter: blur(30px);
-    padding: 70px 92px 45px 92px;
+.logo img {
+    max-width: 300px;
+}
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #003C76;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.game-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 70%;
     margin: auto;
-    margin-top: 80px;
+    margin-top: 60px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: relative;
 }
 
-.offer-box {
-    width: 100%;
-    max-width: 865px;
-    padding: 22px 0;
-    border-radius: 18px;
-    background: #2786e2;
-    box-shadow: 0px 6px 0px 0px #0e66bc;
-    position: absolute;
-    left: 50%;
-    top: -45px;
-    transform: translateX(-50%);
-}
-
-.offer-box p {
-    color: #fff;
+.prize-banner {
+    background: #2786E2;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
     text-align: center;
-    font-size: 22px;
-    font-weight: 400;
+    margin-bottom: 20px;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    box-shadow: 0px 6px 0px 0px #0E66BC;
+    font-weight: bold;
 }
 
-.question-count-widget p {
+.trophy-icon {
+    font-size: 20px;
+    margin: 0 5px;
+}
+
+.progress-bar {
+    background: #F6E9E2;
+    height: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.progress {
+    background: linear-gradient(90deg, #FDC365 0%, #FE9312 100%);
+    width: 33.33%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.question-number {
     color: #797979;
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 15px;
+    margin: 20px 0;
+    font-weight: 600;
 }
-
-.question-count-widget p span {
-    color: #212121;
+.question-number span {
+    color: #000;
+ }
+.question-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-
-.question-proggres-bar {
+select, input[type="text"] {
     width: 100%;
-    max-width: 942px;
-    height: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 0;
+    outline: none;
     border-radius: 8px;
-    background: #f6e9e2;
+    background: #EDF5FF;
+    color: #929292;
+    font-weight: 600;
+    box-shadow: 0px 4px 0px 0px #D4E7FF;
 }
 
-.answered-progres-bar {
-    width: calc(100% / 3);
-    height: 10px;
+.button {
+    color: white;
+    padding: 15px 24px;
+    border: none;
     border-radius: 8px;
-    background: linear-gradient(90deg, #fdc365 0%, #fe9312 100%);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    min-width: 200px;
 }
 
-.question-one-widget {
+.variant-blue:hover {
+    background: #1976D2;
+}
+
+.variant-blue {
+    background: #2786E2;
+    box-shadow: 0px 4px 0px 0px #0E66BC;
+}
+
+.variant-green {
+    background: #00BE64;
+    box-shadow: 0px 4px 0px 0px #00964F;
+}
+
+.hint-button {
+    background: #E3E3E3;
+    color: #4A4A4A;
+    padding: 12px 24px;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: not-allowed;
+    box-shadow: 0px 4px 0px 0px #BBBBBB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 200px;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    max-width: 60%;
+    margin: auto;
+}
+
+.stat-box {
+    flex: 1;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+.stat-box div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.questions-stat {
+    background: #9CF19B4F;
+    box-shadow: 0px 4px 0px 0px #8ACDAD;
+}
+
+.hints-stat {
+    background: #FFF2CF;
+    box-shadow: 0px 4px 0px 0px #FFD977;
+}
+
+.guesses-stat {
+    background: #FFCACA78;
+    box-shadow: 0px 4px 0px 0px #FFACB1;
+}
+
+.stat-value {
+    margin: 5px 0;
+    color: #287ED1
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.popup-message {
+    background-color: #00FF862E;
     margin-top: 30px;
 }
 
-.question-one-widget p {
-    color: #212121;
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 15px;
-}
-
-.question-one-widget select,
-.question-one-widget input {
-    border-radius: 12px;
-    background: #edf5ff;
-    box-shadow: 0px 4px 0px 0px #d4e7ff;
-    color: #929292;
-    font-size: 16px;
-    font-weight: 400;
-    padding: 15px 20px;
-    appearance: none;
-    width: 100%;
-    border: none;
-    outline: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 16px 12px;
-}
-
-.question-one-widget select option {
-    color: #929292;
-    font-size: 16px;
-    font-weight: 400;
-}
-
-.submit-btn button {
-    width: 200px;
-    height: 48px;
+.popup-message div {
+    margin: 0 auto;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 12px;
-    background: #2786e2;
-    box-shadow: 0px 4px 0px 0px #0e66bc;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 400;
-    border: none;
-    outline: none;
-    margin-top: 21px;
+    gap: 10px;
+    padding: 1% 0;
 }
 
-.question-one-widget input {
-    width: 100%;
-    background-image: none;
-}
 
-.secondBtn {
+.popup-message div .popup-content {
     display: flex;
-    align-items: center;
-    column-gap: 11px;
-    border-radius: 12px;
-    background: #e3e3e3 !important;
-    box-shadow: 0px 4px 0px 0px #bbb !important;
-    color: #4a4a4a !important;
-    font-size: 18px;
-    font-weight: 400;
-}
-
-#dual-button {
-    display: flex;
-    align-items: center;
-    column-gap: 18px;
-}
-
-#count-total-widget {
-    width: 100%;
-    max-width: 931px;
-    margin: auto;
-    margin-top: 40px;
-}
-
-#count-total-widget {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.single-count-widget {
-    width: 277px;
-    display: flex;
-    align-items: center;
     flex-direction: column;
-    row-gap: 16px;
 }
 
-.single-count-widget svg {
-    width: 32px;
+.popup-message div .popup-content .title {
+    font-weight: 600;
+    color: #00964F;
 }
-
-.single-count-widget p {
-    color: #212121;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 400;
-}
-
-.single-count-widget p span {
-    font-family: var(--dmFonts);
-    color: #287ed1;
-    font-size: 22px;
-    font-weight: 700;
-}
-
-#count-total-widget .single-count-widget:first-child {
-    width: 277px;
-    padding: 15px 0;
-    border-radius: 15px;
-    background: rgba(156, 241, 155, 0.31);
-    box-shadow: 0px 4px 0px 0px #8acdad;
-}
-
-#count-total-widget .single-count-widget:nth-child(2) {
-    width: 277px;
-    padding: 15px 0;
-    border-radius: 15px;
-    background: #fff2cf;
-    box-shadow: 0px 4px 0px 0px #ffd977;
-}
-
-#count-total-widget .single-count-widget:nth-child(3) {
-    width: 277px;
-    padding: 15px 0;
-    border-radius: 15px;
-    background: rgba(255, 202, 202, 0.47);
-    box-shadow: 0px 4px 0px 0px #ffacb1;
-}
-
-.footer-area {
-    margin-top: 40px;
-    padding-top: 31px;
-    padding-bottom: 32px;
-    background: rgba(0, 255, 134, 0.18);
-}
-
-.footer-left h6 {
-    color: #00964f;
-    font-size: 20px;
-    font-weight: 400;
-    margin-bottom: 10px;
-}
-
-.footer-left p {
+.popup-message div .popup-content .description {
     color: #242425;
-    font-size: 16px;
-    font-weight: 400;
-    margin-bottom: 0;
 }
 
-.footer-right button {
-    width: 200px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    outline: none;
-    margin-left: auto;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 400;
-    border-radius: 12px;
-    background: #00be64;
-    box-shadow: 0px 4px 0px 0px #00964f;
+/* Responsive Styles */
+@media screen and (max-width: 1200px) {
+    .game-container {
+        max-width: 80%;
+    }
+
+    .stats-container {
+        max-width: 80%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .game-container {
+        max-width: 90%;
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    .stats-container {
+        max-width: 90%;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .prize-banner {
+        width: 90%;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .logo img {
+        max-width: 200px;
+    }
+
+    nav {
+        padding: 10px 4%;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .button, .hint-button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .stat-box {
+        padding: 15px;
+    }
+
+    .stat-box div {
+        font-size: 16px;
+    }
+
+    .popup-message div {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .game-container {
+        max-width: 95%;
+        padding: 15px;
+        margin-top: 90px;
+    }
+
+    .stats-container {
+        max-width: 95%;
+    }
+
+    .logo img {
+        max-width: 150px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .nav-links {
+        justify-content: center;
+    }
+
+    select, input[type="text"] {
+        padding: 12px;
+    }
+
+    .question-number {
+        font-size: 14px;
+    }
+    .prize-banner {
+        top: -60px;
+    }
+    .popup-message div .popup-content .title {
+        font-size: 16px;
+    }
+
+    .popup-message div .popup-content .description {
+        font-size: 14px;
+    }
 }
