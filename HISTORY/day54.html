@@ -104,7 +104,7 @@
     color: #4682b4;
 }
 .text-box h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     margin-bottom: 30px;
     line-height: 1.4;
     color: rgba(255, 255, 255, 0.9);
@@ -830,18 +830,6 @@ select:focus {
     background: linear-gradient(135deg, #f44336, #e57373); /* Red gradient */
 }
 
-/* Responsive Design for Smaller Screens */
-@media screen and (max-width: 768px) {
-    .stats-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .stat-box {
-        width: 90%; /* Full width on mobile */
-        margin: 10px auto;
-    }
-}
 .stats-container {
     display: flex;
     justify-content: center;
@@ -849,6 +837,60 @@ select:focus {
     padding: 20px 10px;
     margin-top: -110px;
 }
+/* Responsive Design for Stats Container */
+@media screen and (max-width: 768px) {
+    .stats-container {
+        flex-wrap: wrap; /* Allow items to wrap */
+        justify-content: center; /* Center items horizontally */
+        gap: 10px; /* Add spacing between items */
+        max-width: 90%; /* Reduce width for smaller screens */
+        margin: 0 auto; /* Center the container */
+    }
+
+    .stat-box {
+        flex: 1 1 calc(33.33% - 10px); /* Fit 3 boxes in one row with spacing */
+        margin: 5px; /* Add spacing between boxes */
+        max-width: 100px; /* Limit box width */
+        padding: 10px 5px; /* Reduce padding for smaller size */
+        font-size: 0.8rem; /* Reduce font size */
+    }
+
+    .stat-box span {
+        font-size: 1.5rem; /* Adjust emoji size */
+    }
+
+    .stat-box strong {
+        font-size: 1rem; /* Reduce stat value size */
+    }
+
+    .stat-box p {
+        font-size: 0.9rem; /* Reduce label size */
+    }
+}
+
+/* Adjust logo size on smaller screens */
+@media screen and (max-width: 768px) {
+    .navbar .logo img {
+        height: 60px; /* Adjust logo size */
+        max-width: 80%; /* Maintain aspect ratio */
+    }
+}
+
+/* Adjust input and button alignment on mobile */
+@media screen and (max-width: 768px) {
+    .guess-container input,
+    .game-container button {
+        margin: 10px 5px; /* Add spacing between elements */
+        width: calc(33.33% - 10px); /* Fit 3 elements per row */
+        flex: 1;
+        font-size: 1rem;
+    }
+
+    #hint {
+        margin: 5px; /* Space around the hint button */
+    }
+}
+
 
     </style>
 </head>
