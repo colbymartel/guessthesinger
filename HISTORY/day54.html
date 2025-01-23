@@ -415,25 +415,12 @@
     footer {
         padding: 15px;
     }
-
-    .progress-container {
-        flex-direction: column; /* Stack items vertically on small screens */
-        text-align: center;
-    }
-
-    .progress-container p {
-        font-size: 0.9rem; /* Reduce font size slightly for smaller screens */
-        margin-bottom: 10px;
-    }
-
-    .progress-container span {
-        font-size: 1.2rem; /* Adjust the font size for mobile */
-    }
     #count-total-widget {
-        flex-wrap: wrap;
-        justify-content: center;
-        row-gap: 15px;
+        justify-content: space-between;
+        align-items: center;
         margin-top: 25px;
+        margin-left: 10px;
+        margin-right: 10px;
     }
     .question-count-widget p,
     .question-one-widget p {
@@ -842,8 +829,6 @@ select:focus {
 
 .stats-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px 10px;
     margin-top: -90px;
     margin-bottom: 50px;
