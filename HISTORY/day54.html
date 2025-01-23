@@ -845,15 +845,14 @@ select:focus {
     justify-content: center;
     align-items: center;
     padding: 20px 10px;
-    margin-top: -110px;
+    margin-top: -90px;
     font: bold;
 }
 
 #count-total-widget {
     width: 100%;
-    max-width: 931px;
+    max-width: 500px;
     margin: auto;
-    margin-top: 40px;
 }
 
 #count-total-widget {
@@ -867,7 +866,7 @@ select:focus {
     display: flex;
     align-items: center;
     flex-direction: column;
-    row-gap: 16px;
+    row-gap: 15px;
 }
 
 .single-count-widget svg {
@@ -890,18 +889,21 @@ select:focus {
 
 #count-total-widget .single-count-widget:first-child {
     width: 277px;
-    padding: 15px 0;
+    padding: 12px 0;
     border-radius: 15px;
     background: rgba(156, 241, 155, 0.31);
     box-shadow: 0px 4px 0px 0px #8acdad;
+    margin-right: 10px;
 }
 
 #count-total-widget .single-count-widget:nth-child(2) {
     width: 277px;
-    padding: 15px 0;
+    padding: 10px 0;
     border-radius: 15px;
     background: #fff2cf;
     box-shadow: 0px 4px 0px 0px #ffd977;
+    margin-right: 10px;
+
 }
 
 #count-total-widget .single-count-widget:nth-child(3) {
@@ -919,7 +921,7 @@ select:focus {
         flex-direction: row; /* Align items in a single row */
         justify-content: center; /* Center items horizontally */
         align-items: center; /* Center items vertically */
-        gap: 15px; /* Add spacing between items */
+        gap: 5px; /* Add spacing between items */
         flex-wrap: nowrap; /* Prevent wrapping */
         width: 100%; /* Ensure it spans full width */
         padding: 10px; /* Add padding for spacing */
@@ -931,6 +933,7 @@ select:focus {
         margin: 0 5px; /* Add spacing between each stat box */
         padding: 8px 10px; /* Adjust padding for smaller sizes */
         font-size: 0.9rem; /* Make text smaller for mobile */
+        max-width: 20px;
     }
 
     .stat-box span {
