@@ -915,34 +915,34 @@ select:focus {
 /* Responsive Design for Stats Container */
 @media screen and (max-width: 768px) {
     .stats-container {
-        flex-wrap: wrap; /* Allow items to wrap */
+        display: flex; /* Ensure it's a flex container */
+        flex-direction: row; /* Align items in a single row */
         justify-content: center; /* Center items horizontally */
-        gap: 10px; /* Add spacing between items */
-        max-width: 90%; /* Reduce width for smaller screens */
-        margin: 0 auto; /* Center the container */
-        margin-top: -100px;
+        align-items: center; /* Center items vertically */
+        gap: 15px; /* Add spacing between items */
+        flex-wrap: nowrap; /* Prevent wrapping */
+        width: 100%; /* Ensure it spans full width */
+        padding: 10px; /* Add padding for spacing */
+        margin: 0 auto; /* Center the entire container */
     }
-    .h1{
-        margin-bottom: -20px;
-    }
+
     .stat-box {
-        flex: 1 1 calc(33.33% - 10px); /* Fit 3 boxes in one row with spacing */
-        margin: 5px; /* Add spacing between boxes */
-        max-width: 100px; /* Limit box width */
-        padding: 10px 5px; /* Reduce padding for smaller size */
-        font-size: 0.8rem; /* Reduce font size */
+        flex: 0 1 auto; /* Let items size naturally without wrapping */
+        margin: 0 5px; /* Add spacing between each stat box */
+        padding: 8px 10px; /* Adjust padding for smaller sizes */
+        font-size: 0.9rem; /* Make text smaller for mobile */
     }
 
     .stat-box span {
-        font-size: 1.5rem; /* Adjust emoji size */
+        font-size: 1.2rem; /* Slightly reduce emoji size */
     }
 
     .stat-box strong {
-        font-size: 1rem; /* Reduce stat value size */
+        font-size: 1rem; /* Stat value size stays legible */
     }
 
     .stat-box p {
-        font-size: 0.9rem; /* Reduce label size */
+        font-size: 0.8rem; /* Reduce label size slightly */
     }
 }
 
