@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Singer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #f0f8ff, #dceeff); /* Smooth gradient matching the image */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #2d7ff9; /* Blue header */
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #fdd835; /* Hover color */
+}
+
+/* Game Container */
+main.game-container {
+    padding: 30px;
+    max-width: 900px;
+    margin: 30px auto;
+    background-color: #ffffff; /* White background for the container */
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Progress Bar */
+.progress-bar {
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2d7ff9; /* Match header blue */
+}
+
+.progress {
+    height: 12px;
+    background-color: #e0e0e0; /* Light gray background */
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 8px;
+    position: relative;
+}
+
+.progress-filled {
+    height: 100%;
+    width: 33%; /* Adjust dynamically */
+    background: linear-gradient(to right, #2d7ff9, #76a9ff); /* Gradient fill */
+    border-radius: 6px 0 0 6px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Cards */
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #2d7ff9;
+    font-weight: bold;
+}
+
+.card input {
+    width: 90%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
+}
+
+.card input:focus {
+    border-color: #2d7ff9;
+    outline: none;
+}
+
+.btn {
+    background-color: #2d7ff9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: #1b5db3; /* Darker blue */
+    transform: translateY(-2px);
+}
+
+.hint-button {
+    background-color: #ccc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: not-allowed;
+    margin-top: 10px;
+}
+
+.hint-button.active {
+    background-color: #fdd835;
+    cursor: pointer;
+}/* Enhanced Stats Section */
+.stats-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px 10px;
+    background-color: #f3f7fa; /* Light background color for contrast */
+    box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for the footer */
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border at the top */
+}
+
+/* Individual Stat Box */
+.stat-box {
+    flex: 1;
+    max-width: 150px;
+    margin: 10px;
+    padding: 20px 15px;
+    border-radius: 15px; /* Smooth rounded corners */
+    text-align: center;
+    font-size: 1rem;
+    color: #ffffff; /* White text for readability */
+    font-weight: bold;
+    line-height: 1.5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Elevated shadow effect */
+}
+
+/* Emoji Styling */
+.stat-box span {
+    font-size: 2.5rem; /* Make the emoji larger */
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Stat Label */
+.stat-box p {
+    font-size: 1rem;
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.9); /* Slightly lighter text for the label */
+}
+
+/* Stat Value */
+.stat-box strong {
+    font-size: 2rem; /* Larger value font */
+    display: block;
+    margin-top: 5px;
+}
+
+/* Hover Effect */
+.stat-box:hover {
+    transform: translateY(-5px); /* Subtle lift effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+/* Green Box */
+.stat-box.green {
+    background: linear-gradient(135deg, #4caf50, #81c784); /* Green gradient */
+}
+
+/* Yellow Box */
+.stat-box.yellow {
+    background: linear-gradient(135deg, #ffc107, #ffeb3b); /* Yellow gradient */
+}
+
+/* Red Box */
+.stat-box.red {
+    background: linear-gradient(135deg, #f44336, #e57373); /* Red gradient */
+}
+
+/* Responsive Design for Smaller Screens */
+@media screen and (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .stat-box {
+        width: 90%; /* Full width on mobile */
+        margin: 10px auto;
+    }
+}
+
+
+/* Footer */
+footer.footer {
+    background-color: #eafaf1;
+    padding: 20px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 1rem;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: #e8f5e9; /* Light green */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-bar span {
+    color: #4caf50; /* Green text */
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.status-bar .btn.continue {
+    background-color: #4caf50; /* Green button */
+    color: white;
+}
+
+.status-bar .btn.continue:hover {
+    background-color: #388e3c; /* Darker green */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    main.game-container {
+        padding: 20px;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .status-bar {
+        flex-direction: column;
+    }
+}
+
+.guess-container {
+    padding: 30px;
+    max-width: 800px;
+    margin-top: -20px;
+    border-radius: 15px;
+}
+.guess-container input#artist-guess {
+    font-size: 1.2rem; /* Make the text larger */
+    padding: 15px; /* Add sufficient padding for better spacing */
+    width: 90%; /* Adjust input width */
+    margin: 20px auto;
+    border: 2px solid #87cefa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s ease-in-out;
+    outline: none;
+}
+
+.guess-container input:focus {
+    border: 2px solid #4682b4; /* Focus border styling */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.game-container select,
+.game-container input {
+    padding: 15px;
+    font-size: 1.2rem;
+    width: 90%;
+    margin: 20px auto;
+    border: 2px solid #87cefa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s, box-shadow 0.3s ease-in-out;
+}
+
+.game-container input:focus,
+.game-container select:focus {
+    outline: none;
+    border: 2px solid #4682b4;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+.game-container button {
+    padding: 13px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #4682b4, #6ca0dc);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Question Response Styling */
+.question-response {
+    margin-top: 15px;
+    font-size: 1.3rem; 
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    display: none;
+}
+
+/* Guess Response Styling */
+.guess-response {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+        .response.yes {
+            color: white;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 1.3rem;
+            display: none;
+        }
+
+        .response.no {
+            color: white;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 0px;
+            font-size: 1.3rem;
+            display: none;
+        }
+
+        .share-container {
+            margin-top: 20px;
+        }
+
+        .share-container button {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: #ff914d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .raffle-container {
+    margin-top: 20px; /* Adds spacing between the raffle container and other elements */
+}
+
+.raffle-container input {
+    margin-bottom: 10px; /* Adds spacing between the input fields */
+}
+
+        .share-container button:hover {
+            background: #ff5c33;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .share-container .raffle-button {
+            background: #4caf50;
+            margin-left: 10px;
+        }
+
+        .share-container .raffle-button:hover {
+            background: #388e3c;
+        }
+
+        /* Countdown Popup */
+        .countdown-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none; /* Hidden by default */
+        }
+
+        .countdown-content {
+            background: #fff;
+            color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .countdown-content h2 {
+            margin-top: 0;
+            font-size: 2rem;
+            color: #4682b4;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .time-block {
+            background-color: #87cefa;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-block span {
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+        }
+        /* Rules Popup Styling */
+.rules-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    display: none; /* Hidden by default */
+}
+
+.rules-content {
+    background: white;
+    color: #333;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    text-align: center;
+}
+
+.rules-content h2 {
+    font-size: 2rem;
+    color: #4682b4;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.rules-content ul {
+    padding: 0;
+    text-align: left;
+    margin-left: 30px;
+}
+
+.rules-content ul li {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+.rules-content p {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-weight: bold;
+}
+
+.rules-content .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4682b4;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.rules-content .close-popup:hover {
+    color: #ff4d4d;
+}
+/* Close Button Styling for Countdown Popup */
+.close-countdown {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4682b4;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-countdown:hover {
+    color: #ff4d4d;
+}
+
+.response.no {
+    color: white;
+    border-color: red;
+}
+/* Progress Container */
+.progress-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 30px;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.3rem;
+}
+.progress-container p {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    color: white;
+}
+.progress-container span{
+    font-size: 1.5rem;
+}
+@media screen and (max-width: 768px) {
+    footer {
+        padding: 15px;
+    }
+
+    .progress-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        text-align: center;
+    }
+
+    .progress-container p {
+        font-size: 0.9rem; /* Reduce font size slightly for smaller screens */
+        margin-bottom: 10px;
+    }
+
+    .progress-container span {
+        font-size: 1.2rem; /* Adjust the font size for mobile */
+    }
+}
+.guess-response.hint {
+    margin: auto; /* Reduce margin below hints */
+    margin-top: 15px;
+    font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
+    color: white; /* Optional: Different color for hints to distinguish */
+}
+#hint {
+    cursor: pointer;
+    background: grey;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 768px) {
+    /* Add margin between buttons for mobile */
+    #hint {
+        margin-top: 7px; /* Space below the Hint button */
+    }
+
+    #submit-guess {
+        margin-bottom: 7px; /* Space above the Submit Guess button */
+    }
+}
+
+.guess-response.incorrect {
+    border: 2px solid white;
+    display: none;
+}
+.guess-response.correct {
+    border: 2px solid white;
+    display: none;
+}
+
+/* Celebration Popup Styling */
+.celebration-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    display: none; /* Hidden by default */
+}
+
+.celebration-popup .popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.celebration-popup h2 {
+    font-size: 2rem;
+    color: #4682b4;
+    margin-bottom: 15px;
+}
+
+.celebration-popup p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: black;
+}
+
+.celebration-popup .celebration-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.celebration-popup .celebration-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background: #4682b4;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.celebration-popup .celebration-button:hover {
+    background: #315f85;
+    transform: scale(1.05);
+}
+
+.celebration-popup .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4682b4;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.celebration-popup .close-popup:hover {
+    color: #ff4d4d;
+}
+
+main {
+    flex: 1; /* Pushes the footer to the bottom */
+}
+
+        /* Footer */
+        footer {
+    background-color: #315f85;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+
+.footer-item {
+    font-size: 1.5rem; /* Increased size */
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-item strong {
+    color: #00bfff; /* Highlighting counts */
+    font-size: 1.8rem;
+}
+.giveup-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Dark overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    display: none; /* Hidden by default */
+}
+
+.giveup-popup .popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.giveup-popup h2 {
+    font-size: 2rem;
+    color: #4682b4;
+    margin-bottom: 15px;
+}
+
+.giveup-popup p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: black;
+}
+
+.giveup-popup .celebration-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.giveup-popup .celebration-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background: #ff4d4d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.giveup-popup .celebration-button:hover {
+    background: #d32f2f;
+    transform: scale(1.05);
+}
+
+.giveup-popup .close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4682b4;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.giveup-popup .close-popup:hover {
+    color: #ff4d4d;
+}
+/* Share Button - Blue */
+#giveup-share-button {
+    background-color: #4682b4; /* Blue */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#giveup-share-button:hover {
+    background-color: #315f85; /* Darker Blue */
+    transform: scale(1.05);
+}
+
+/* Raffle Button - Green */
+#giveup-enter-raffle-button {
+    background-color: #4caf50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#giveup-enter-raffle-button:hover {
+    background-color: #388e3c; /* Darker Green */
+    transform: scale(1.05);
+}
+
+#celebration-popup img {
+    max-width: 300px; /* Limit the maximum width */
+    width: 100%; /* Make it responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 20px; /* Add rounded corners */
+    display: block; /* Center alignment */
+    margin: 20px auto; /* Space around the image */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a shadow */
+}
+#giveup-popup img {
+    max-width: 300px; /* Limit the maximum width */
+    width: 100%; /* Make it responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 20px; /* Add rounded corners */
+    display: block; /* Center alignment */
+    margin: 20px auto; /* Space around the image */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a shadow */
+}
+#artist-guess {
+            width: 90%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid #87cefa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Autocomplete List Styling */
+        .autocomplete-list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            background: white;
+            border: 1px solid #87cefa;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            color: #315f85;
+            visibility: hidden;
+        }
+
+        .autocomplete-list.visible {
+            visibility: visible;
+        }
+
+        .autocomplete-list li {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .autocomplete-list li:last-child {
+            border-bottom: none;
+        }
+
+        .autocomplete-list li:hover {
+            background-color: #f0f8ff;
+            color: #315f85;
+        }
+
+        .autocomplete-container {
+            position: relative; /* Ensures positioning works relative to this container */
+            width: 90%;
+            margin: 0 auto;
+        }
+        /* Add a red border when there's an error */
+select:invalid {
+    border: 2px solid red;
+    background-color: #ffe6e6; /* Light red background for better visibility */
+}
+
+/* Optional: Reset the background when the dropdown is focused */
+select:focus {
+    background-color: white;
+}
+
+</style>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">GuessTheSinger.com</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">History</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="game-container">
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <span>Question 5 of 15</span>
+            <div class="progress">
+                <div class="progress-filled"></div>
+            </div>
+        </div>
+
+        <!-- Question Section -->
+        <div class="card">
+            <h2>Question 1</h2>
+            <select id="question-dropdown">
+                <option value="" disabled selected>Select a question to start...</option>
+              <!-- General Questions -->
+              <option value="is this a male artist?">Is this a male artist?</option>
+              <option value="are they still alive?">Are they still alive?</option>
+              <option value="are they over 30 years old?">Are they over 30 years old?</option>
+              <option value="are they over 40 years old?">Are they over 40 years old?</option>
+              <option value="are they over 50 years old?">Are they over 50 years old?</option>
+              <option value="debut before 2000?">Did they debut before 2000?</option>
+              <option value="debut before 2010?">Did they debut before 2010?</option>
+              <option value="debut before 2020?">Did they debut before 2020?</option>
+              <option value="album release?">Did they release a new album in the last 2 years?</option>
+              <option value="are they touring?">Are they currently touring?</option>
+              <option value="are they married?">Are they currently married?</option>
+              <option value="divorced?">Did they ever get divorced?</option>
+              <option value="LGBTQ?">Do they identify as LGBTQ+?</option>
+
+              <!-- Geographic Questions -->
+              <option value="are they from the united states?">Were they born in the United States?</option>
+              <option value="are they from north america?">Were they born in North America?</option>
+              <option value="are they from europe?">Were they born in Europe?</option>
+              <option value="are they from australia?">Were they born in Australia?</option>
+              <option value="are they from asia or africa?">Were they born in Asia or Africa?</option>
+
+                <!-- Ethnicity Questions -->
+              <option value="are they of African descent?">Are they of African descent?</option>
+              <option value="are they of Asian descent?">Are they of Asian descent?</option>
+              <option value="are they of European descent?">Are they of European descent?</option>
+              <option value="are they of Latin American descent?">Are they of Latin American descent?</option>
+              <option value="are they of mixed ethnicity?">Are they of mixed ethnicity?</option>
+              
+              <!-- Music Style and Language -->
+              <option value="different languages?">Do they make songs in different languages?</option>
+              <option value="are they spanish?">Do they make Spanish songs?</option>
+              <option value="do they perform pop music?">Do they perform pop music?</option>
+              <option value="do they perform rap music?">Do they perform hip-hop music?</option>
+              <option value="do they perform R&B music?">Do they perform R&B music?</option>
+              <option value="do they perform rock music?">Do they perform rock music?</option>
+              <option value="do they perform country music?">Do they perform country music?</option>
+              <option value="do they perform jazz music?">Do they perform jazz music?</option>
+              <option value="do they perform party music?">Do they perform party music?</option>
+              <option value="do they perform sad music?">Do they perform sad music?</option>
+              
+              <!-- Career and Popularity -->
+              <option value="are they also an actor?">Are they also an actor?</option>
+              <option value="disney or nick?">Were they ever on Nickelodeon or Disney Channel?</option>
+              <option value="singing competition?">Did they ever compete on a singing show?</option>
+              <option value="have they won a Grammy?">Have they won a Grammy?</option>
+              <option value="super bowl?">Have they performed at a Super Bowl Halftime Show?</option>
+              <option value="coachella?">Have they performed at Coachella?</option>
+              <option value="billion club?">Do they have any songs with 1 billion+ Spotify streams?</option>
+              <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
+              <option value="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</option>
+              <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
+              <option value="do they have more than 50M listeners?">Do they have more than 50M monthly listeners?</option>
+              <option value="are they in a band?">Are/were they in a group?</option>
+              
+              <!-- Appearance and Name -->
+              <option value="do they have dark hair?">Do they have black or brown hair?</option>
+              <option value="do they have blond hair?">Do they have blond hair?</option>
+              <option value="5.5 feet tall?">Are they above 5 1/2 feet tall?</option>
+              <option value="6 feet tall?">Are they above 6 feet tall?</option>
+              <option value="do they have tattoos?">Do they have visible tattoos?</option>
+              <option value="do they wear glasses?">Do they wear glasses or sunglasses often?</option>
+              <option value="do they go by their birth name?">Do they go by their birth name?</option>
+              <option value="do they go by one word?">Do they go by one word?</option>
+              <option value="do they go by two words?">Do they go by two words?</option>
+              <option value="do they have a common first name?">Do they have a common first name?</option>
+              <option value="what does their name start with?">Does their name start with A-M?</option>
+            </select>
+            <button id="submit-question">Submit Question</button>
+            <div class="response question-response" id="question-response">Select a question to start.</div>
+            <div class="guess-container">
+                <input type="text" id="artist-guess" placeholder="Type your guess here..." autocomplete="off" />
+                <ul id="autocomplete-list" class="autocomplete-list"></ul>
+                <button id="submit-guess">Submit Guess</button>
+                <button id="hint" class="hint">Hint</button>
+                <div class="response guess-response" id="guess-response"></div>
+            </div>
+            <div class="share-container" id="share-container" style="display: none;">
+                <button id="share-button">Share with Friends!</button>
+                <button id="raffle-button" class="raffle-button">Enter Raffle</button>
+            </div>
+            <div class="raffle-container" id="raffle-container" style="display: none;">
+                <input type="text" id="raffle-name" placeholder="Your Name" />
+                <input type="email" id="raffle-email" placeholder="Your Email" />
+                <button id="submit-raffle">Submit</button>
+            </div>
+        </div>
+    </section>
+        </div>
+
+        <!-- Stats Section -->
+        
+            <div class="stats-container">
+                <div class="stat-box green">
+                    <span>💡</span>
+                    <p>Total Questions:</p>
+                    <strong id="total-questions">15</strong>
+                </div>
+                <div class="stat-box yellow">
+                    <span>📝</span>
+                    <p>Total Hints:</p>
+                    <strong id="total-hints">4</strong>
+                </div>
+                <div class="stat-box red">
+                    <span>❌</span>
+                    <p>Total Guesses:</p>
+                    <strong id="total-guesses">0</strong>
+                </div>
+            </div>
+    
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="status-bar">
+            <span>Great!!!</span>
+            <button class="btn continue">Continue</button>
+        </div>
+    </footer>
+</body>
+</html>
