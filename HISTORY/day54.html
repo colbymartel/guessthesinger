@@ -25,7 +25,7 @@
 }
  body {
     font-family: sans-serif;
-    background: #4682b4;
+    background: linear-gradient(to bottom right, #ffffff, #cfe9fc, #e3f2fd); /* Light blue to white gradient */
     color: #fff;
     line-height: 1.6;
     margin: 0;
@@ -34,17 +34,7 @@
     align-items: center; /* Vertical centering */
     height: 100vh; /* Make the body height fill the viewport */
 }
-.game-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Horizontal alignment */
-    justify-content: center; /* Vertical alignment */
-    background: #315f85;
-    padding: 20px;
-    border-radius: 15px;
-    max-width: 800px;
-    width: 90%; /* Optional, adjusts width responsiveness */
-}
+
 .navbar {
     display: flex;
     justify-content: center; /* Center all content horizontally */
@@ -85,7 +75,7 @@
     flex: 1;
     display: flex;
     padding: 50px 20px;
-    background:#4682b4;
+    justify-content: center; /* Vertical alignment */
     text-align: center;
     border-radius: 15px;
     margin: 30px auto;
@@ -107,13 +97,15 @@
     font-size: 1.6rem;
     margin-bottom: 30px;
     line-height: 1.4;
-    color: rgba(255, 255, 255, 0.9);
+    color: #4682b4;
 }
 
 .text-box h1 span {
     color: white;
     font-weight: bold;
     font-size: 3rem;
+    margin-top: -20px;
+    margin-bottom: -20px;
 }
 
 /* Game Container */
