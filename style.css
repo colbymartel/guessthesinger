@@ -1,0 +1,319 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+/*========================
+DEFAULT CSS HERE
+========================*/
+@font-face {
+    font-family: "Gotham Rounded";
+    src: url(fonts/GothamRoundedBook.ttf);
+    font-weight: 350;
+}
+
+@font-face {
+    font-family: "Gotham Rounded";
+    src: url(fonts/GothamRoundedMedium.ttf);
+    font-weight: 500;
+}
+
+:root {
+    --dmFonts: "DM Sans", serif;
+}
+
+body {
+    font-family: "Gotham Rounded";
+}
+
+h1,
+h2,
+h3,
+h5,
+h6,
+p {
+    margin: 0;
+}
+
+a,
+a:hover {
+    text-decoration: none;
+    display: inline-block;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#main-wrpper {
+    width: 100%;
+    height: 100%;
+    background: url(/images/colby-martel-body-bg.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+/*=========================
+HEADER AREA CSS HERE
+===========================*/
+.header-area {
+    padding-top: 14px;
+    padding-bottom: 13px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 4px 15px 0px rgba(94, 94, 94, 0.1);
+}
+
+.logo-wrpper a img {
+    width: 364px;
+}
+
+.menu-list {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 70px;
+}
+
+.menu-item a {
+    color: #003c76;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+/*=========================
+QUESTION AREA CSS HERE
+===========================*/
+.question-wrpper {
+    width: 100%;
+    max-width: 1126px;
+    border-radius: 30px;
+    border: 1px solid rgba(81, 166, 255, 0.27);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 9px 40px 0px rgba(106, 106, 106, 0.1);
+    backdrop-filter: blur(30px);
+    padding: 70px 92px 45px 92px;
+    margin: auto;
+    margin-top: 80px;
+    position: relative;
+}
+
+.offer-box {
+    width: 100%;
+    max-width: 865px;
+    padding: 22px 0;
+    border-radius: 18px;
+    background: #2786e2;
+    box-shadow: 0px 6px 0px 0px #0e66bc;
+    position: absolute;
+    left: 50%;
+    top: -45px;
+    transform: translateX(-50%);
+}
+
+.offer-box p {
+    color: #fff;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.question-count-widget p {
+    color: #797979;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.question-count-widget p span {
+    color: #212121;
+}
+
+.question-proggres-bar {
+    width: 100%;
+    max-width: 942px;
+    height: 10px;
+    border-radius: 8px;
+    background: #f6e9e2;
+}
+
+.answered-progres-bar {
+    width: calc(100% / 3);
+    height: 10px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #fdc365 0%, #fe9312 100%);
+}
+
+.question-one-widget {
+    margin-top: 30px;
+}
+
+.question-one-widget p {
+    color: #212121;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+.question-one-widget select,
+.question-one-widget input {
+    border-radius: 12px;
+    background: #edf5ff;
+    box-shadow: 0px 4px 0px 0px #d4e7ff;
+    color: #929292;
+    font-size: 16px;
+    font-weight: 400;
+    padding: 15px 20px;
+    appearance: none;
+    width: 100%;
+    border: none;
+    outline: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+.question-one-widget select option {
+    color: #929292;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.submit-btn button {
+    width: 200px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #2786e2;
+    box-shadow: 0px 4px 0px 0px #0e66bc;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    border: none;
+    outline: none;
+    margin-top: 21px;
+}
+
+.question-one-widget input {
+    width: 100%;
+    background-image: none;
+}
+
+.secondBtn {
+    display: flex;
+    align-items: center;
+    column-gap: 11px;
+    border-radius: 12px;
+    background: #e3e3e3 !important;
+    box-shadow: 0px 4px 0px 0px #bbb !important;
+    color: #4a4a4a !important;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+#dual-button {
+    display: flex;
+    align-items: center;
+    column-gap: 18px;
+}
+
+#count-total-widget {
+    width: 100%;
+    max-width: 931px;
+    margin: auto;
+    margin-top: 40px;
+}
+
+#count-total-widget {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.single-count-widget {
+    width: 277px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 16px;
+}
+
+.single-count-widget svg {
+    width: 32px;
+}
+
+.single-count-widget p {
+    color: #212121;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.single-count-widget p span {
+    font-family: var(--dmFonts);
+    color: #287ed1;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#count-total-widget .single-count-widget:first-child {
+    width: 277px;
+    padding: 15px 0;
+    border-radius: 15px;
+    background: rgba(156, 241, 155, 0.31);
+    box-shadow: 0px 4px 0px 0px #8acdad;
+}
+
+#count-total-widget .single-count-widget:nth-child(2) {
+    width: 277px;
+    padding: 15px 0;
+    border-radius: 15px;
+    background: #fff2cf;
+    box-shadow: 0px 4px 0px 0px #ffd977;
+}
+
+#count-total-widget .single-count-widget:nth-child(3) {
+    width: 277px;
+    padding: 15px 0;
+    border-radius: 15px;
+    background: rgba(255, 202, 202, 0.47);
+    box-shadow: 0px 4px 0px 0px #ffacb1;
+}
+
+.footer-area {
+    margin-top: 40px;
+    padding-top: 31px;
+    padding-bottom: 32px;
+    background: rgba(0, 255, 134, 0.18);
+}
+
+.footer-left h6 {
+    color: #00964f;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.footer-left p {
+    color: #242425;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.footer-right button {
+    width: 200px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    margin-left: auto;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    border-radius: 12px;
+    background: #00be64;
+    box-shadow: 0px 4px 0px 0px #00964f;
+}
