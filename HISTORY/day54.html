@@ -557,25 +557,26 @@ main {
     flex: 1; /* Pushes the footer to the bottom */
 }
 
-        /* Footer */
-        footer {
-    background-color: #315f85;
-    padding: 20px 0;
+      /* Footer */
+      .footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 6px; /* Add horizontal space between icons */
+    font-size: 1rem; /* Adjust size of icons */
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ff914d; /* Change color on hover */
+}
+
+
+.footer {
+    background-color: #315f85; /* Matches the site's theme */
+    color: white;
     text-align: center;
-    position: relative;
-    border-top: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-
-.footer-item {
-    font-size: 1.5rem; /* Increased size */
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.footer-item strong {
-    color: #00bfff; /* Highlighting counts */
-    font-size: 1.8rem;
+    padding: 15px;
+    font-size: 1rem;
 }
 .giveup-popup {
     position: fixed;
@@ -771,6 +772,83 @@ select:invalid {
 select:focus {
     background-color: white;
 }
+/* Individual Stat Box */
+.stat-box {
+    flex: 1;
+    max-width: 150px;
+    margin: 10px;
+    padding: 20px 15px;
+    border-radius: 15px; /* Smooth rounded corners */
+    text-align: center;
+    font-size: 1rem;
+    color: #ffffff; /* White text for readability */
+    font-weight: bold;
+    line-height: 1.5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Elevated shadow effect */
+}
+
+/* Emoji Styling */
+.stat-box span {
+    font-size: 2.5rem; /* Make the emoji larger */
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Stat Label */
+.stat-box p {
+    font-size: 1rem;
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.9); /* Slightly lighter text for the label */
+}
+
+/* Stat Value */
+.stat-box strong {
+    font-size: 2rem; /* Larger value font */
+    display: block;
+    margin-top: 5px;
+}
+
+/* Hover Effect */
+.stat-box:hover {
+    transform: translateY(-5px); /* Subtle lift effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+/* Green Box */
+.stat-box.green {
+    background: linear-gradient(135deg, #4caf50, #81c784); /* Green gradient */
+}
+
+/* Yellow Box */
+.stat-box.yellow {
+    background: linear-gradient(135deg, #ffc107, #ffeb3b); /* Yellow gradient */
+}
+
+/* Red Box */
+.stat-box.red {
+    background: linear-gradient(135deg, #f44336, #e57373); /* Red gradient */
+}
+
+/* Responsive Design for Smaller Screens */
+@media screen and (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .stat-box {
+        width: 90%; /* Full width on mobile */
+        margin: 10px auto;
+    }
+}
+.stats-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+    margin-top: -110px;
+}
 
     </style>
 </head>
@@ -959,18 +1037,30 @@ select:focus {
         </div>
     </div>
 </div>
-
-</main>
-
- <!-- Footer -->
- <footer>
-    <div class="progress-container">
-        <p><strong>Questions:</strong> <span id="questions-used">0</span></p>
-        <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
-        <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
+<div class="stats-container">
+    <div class="stat-box green">
+        <span>💡</span>
+        <p>Questions:</p>
+        <strong id="questions-used">0</strong>
     </div>
+    <div class="stat-box yellow">
+        <span>📝</span>
+        <p>Hints:</p>
+        <strong id="hints-used">0</strong>
+    </div>
+    <div class="stat-box red">
+        <span>❌</span>
+        <p>Guesses:</p>
+        <strong id="guesses-made">0</strong>
+    </div>
+</div>
+</main>
+<footer class="footer">
+    &copy; 2024 Colby Martel | Follow me here!
+    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
 </footer>
-
     <script>
 // Initialize hint button state
 let questionsSinceLastHint = 0; // Tracks questions asked since the last hint
