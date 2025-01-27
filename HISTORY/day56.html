@@ -18,51 +18,39 @@
     <style>
         
         /* General Body Styling */
-    
-        body {
-    font-family: 'Poppins', 'Arial', sans-serif; /* Modern, clean font */
+        * {
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom, #f7faff, #d8ebfc); /* Gradient background */
-    color: #333;
+    box-sizing: border-box;
+}
+ body {
+    font-family: sans-serif;
+    background: url(/images/bg-top.png) no-repeat;
+    color: #fff;
     line-height: 1.6;
-    overflow-x: hidden; 
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-    margin: 0; 
+    margin: 0;
+    padding: 0;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    height: 100vh; /* Make the body height fill the viewport */
 }
 
-    /* Header */
-    .header {
-            background-color: #4682b4;
-            padding: 30px;
-            text-align: center;
-            color: white;
-        }
-
-/* Default logo styling */
-.header .logo img {
-    width: 30%; /* Ensure it doesn't overflow */
-    height: auto;    /* Maintain aspect ratio */
-    display: block;
-    margin: 0 auto;
-    margin-top: -40px;
-    margin-bottom: -20px;
-    display: block;
-    visibility: visible;
-    opacity: 1;
+header {
+    background-color: #4682b4;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 120px; /* Set a fixed height if needed */
 }
 
-/* Adjust for smaller screens */
-@media (max-width: 768px) {
-    .header .logo img {
-        width: 90%; /* Make it larger for better visibility */
-    }
+.logo img {
+    height: 100px; /* Adjust this to the desired size */
+    width: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Prevent it from exceeding its container width */
 }
 
-        /* Navbar Styling */
-        .navbar {
+ /* Navbar Styling */
+ .navbar {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -94,14 +82,14 @@
 
 /* Game Section */
 .game-section {
+    flex: 1;
+    display: flex;
     padding: 50px 20px;
-    background: #ffffff;
+    justify-content: center; /* Vertical alignment */
     text-align: center;
     border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     margin: 30px auto;
     max-width: 1000px;
-    border: 2px solid #d8ebfc;
 }
 
 @media (max-width: 768px) {
@@ -115,22 +103,28 @@
     margin-bottom: 40px;
     color: #4682b4;
 }
+.text-box h1 {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+    line-height: 1.4;
+    color: #4682b4;
+}
+
+.text-box h1 span {
+    color: white;
+    font-weight: bold;
+    font-size: 3rem;
+    margin-top: -20px;
+    margin-bottom: -20px;
+}
 
 /* Game Container */
-.game-container {
-    padding: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-    margin-bottom: -30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
+
 .guess-container {
     padding: 30px;
     max-width: 800px;
     margin-top: -20px;
     border-radius: 15px;
-    
 }
 .guess-container input#artist-guess {
     font-size: 1.2rem; /* Make the text larger */
@@ -168,23 +162,20 @@
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 .game-container button {
-    padding: 13px 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    background: linear-gradient(to right, #4682b4, #6ca0dc);
-    color: white;
+    width: 200px;
+    height: 48px;
+    justify-content: center;
+    border-radius: 12px;
+    background: #2786e2;
+    box-shadow: 0px 4px 0px 0px #0e66bc;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
     border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    outline: none;
+    margin-top: 5px;
 }
 
-.game-container button:hover {
-    background: linear-gradient(to right, #2b4d6d, #3b709e);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
 
 /* Question Response Styling */
 .question-response {
@@ -193,6 +184,7 @@
     font-weight: bold;
     text-align: center;
     color: #333;
+    display: none;
 }
 
 /* Guess Response Styling */
@@ -201,22 +193,23 @@
     font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
-    color: #333;
+    color: #4682b4;
 }
         .response.yes {
-            color: green;
+            color: #4682b4;
             font-weight: bold;
             margin-top: 15px;
             font-size: 1.3rem;
-
+            display: none;
         }
 
         .response.no {
-            color: red;
+            color: #4682b4;
             font-weight: bold;
             margin-top: 15px;
             margin-bottom: 0px;
             font-size: 1.3rem;
+            display: none;
         }
 
         .share-container {
@@ -402,67 +395,73 @@
 }
 
 .response.no {
-    color: red;
+    color: white;
+    border-color: red;
 }
 /* Progress Container */
-/* Progress Container Styling */
 .progress-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 20px 30px;
-    border: 2px solid #4682b4;
-    border-radius: 15px;
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
-    margin-top: -10px;
-    margin-bottom: -10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     font-size: 1.3rem;
-    background-color: #ffffff; /* Ensure background contrasts with text */
-    color: #315f85; /* Text color (dark blue) for visibility */
 }
-
-/* Styling for Span Elements Inside Progress Container */
-.progress-container span {
-    color: #4682b4; /* Text color for spans */
-    font-weight: bold;
-}
-
-
 .progress-container p {
     margin: 0;
     font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    color: white;
 }
-
-.progress-container strong {
-    color: #315f85;
+.progress-container span{
+    font-size: 1.5rem;
 }
-
+@media screen and (max-width: 768px) {
+    footer {
+        padding: 15px;
+    }
+    .stats-container{
+        margin-bottom: -20px;
+    }
+    #count-total-widget {
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .question-count-widget p,
+    .question-one-widget p {
+        margin-bottom: 10px;
+    }
+    .question-one-widget {
+        margin-top: 15px;
+    }
+}
 .guess-response.hint {
     margin: auto; /* Reduce margin below hints */
     margin-top: 15px;
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
-    color: green; /* Optional: Different color for hints to distinguish */
+    color: #4682b4;
 }
 #hint {
-    cursor: pointer;
-    background: grey;
-    color: white;
-    font-weight: bold;
+    width: 200px;
+    height: 48px;
+    justify-content: center;
+    border-radius: 12px;
+    background: #2786e2;
+    box-shadow: 0px 4px 0px 0px #0e66bc;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
     border: none;
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-}
-
-.game-container button:hover {
-    background: linear-gradient(to right, #2b4d6d, #3b709e);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    outline: none;
+    margin-top: 21px;
 }
 
 @media screen and (max-width: 768px) {
@@ -477,34 +476,14 @@
 }
 
 .guess-response.incorrect {
-    color: red; /* Display text in red */
-    font-weight: bold;
+    border: 2px solid white;
+    display: none;
 }
 .guess-response.correct {
-    color: green; /* Display text in green */
-    font-weight: bold;
+    border: 2px solid white;
+    display: none;
 }
 
-/* Red Banner Styling */
-#red-banner {
-    background-color: #ff4d4d;
-    color: white;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 15px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-#armylink{
-    color: white;
-}
 /* Celebration Popup Styling */
 .celebration-popup {
     position: fixed;
@@ -588,8 +567,8 @@ main {
     flex: 1; /* Pushes the footer to the bottom */
 }
 
-        /* Footer */
-        .footer a {
+      /* Footer */
+      .footer a {
     color: white;
     text-decoration: none;
     margin: 0 6px; /* Add horizontal space between icons */
@@ -699,10 +678,6 @@ main {
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-#guess-response {
-    display: block !important;
-    margin-bottom: -25px;
-}
 
 #giveup-share-button:hover {
     background-color: #315f85; /* Darker Blue */
@@ -769,6 +744,7 @@ main {
             z-index: 1000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-size: 16px;
+            color: #315f85;
             visibility: hidden;
         }
 
@@ -806,30 +782,168 @@ select:invalid {
 select:focus {
     background-color: white;
 }
+/* Individual Stat Box */
+.stat-box {
+    flex: 1;
+    max-width: 150px;
+    margin: 10px;
+    padding: 20px 15px;
+    border-radius: 15px; /* Smooth rounded corners */
+    text-align: center;
+    font-size: 1rem;
+    color: #ffffff; /* White text for readability */
+    font-weight: bold;
+    line-height: 1.5;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Elevated shadow effect */
+}
+
+/* Emoji Styling */
+.stat-box span {
+    font-size: 2.5rem; /* Make the emoji larger */
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Stat Label */
+.stat-box p {
+    font-size: 1rem;
+    margin: 5px 0;
+    color: rgba(255, 255, 255, 0.9); /* Slightly lighter text for the label */
+}
+
+/* Stat Value */
+.stat-box strong {
+    font-size: 2rem; /* Larger value font */
+    display: block;
+    margin-top: 5px;
+}
+
+/* Hover Effect */
+.stat-box:hover {
+    transform: translateY(-5px); /* Subtle lift effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+/* Green Box */
+.stat-box.green {
+    background: linear-gradient(135deg, #4caf50, #81c784); /* Green gradient */
+}
+
+/* Yellow Box */
+.stat-box.yellow {
+    background: linear-gradient(135deg, #ffc107, #ffeb3b); /* Yellow gradient */
+}
+
+/* Red Box */
+.stat-box.red {
+    background: linear-gradient(135deg, #f44336, #e57373); /* Red gradient */
+}
+
+.stats-container {
+    display: flex;
+    padding: 20px 10px;
+    margin-top: -90px;
+    margin-bottom: 50px;
+    font: bold;
+}
+
+#count-total-widget {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
+
+#count-total-widget {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.single-count-widget {
+    width: 277px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.single-count-widget svg {
+    width: 32px;
+}
+
+.single-count-widget p {
+    color: #212121;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.single-count-widget p span {
+    font-family: var(--dmFonts);
+    color: #287ed1;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#count-total-widget .single-count-widget:first-child {
+    width: 277px;
+    padding: 12px 0;
+    border-radius: 15px;
+    background: rgba(156, 241, 155, 0.31);
+    box-shadow: 0px 4px 0px 0px #8acdad;
+    margin-right: 10px;
+}
+
+#count-total-widget .single-count-widget:nth-child(2) {
+    width: 277px;
+    padding: 10px 0;
+    border-radius: 15px;
+    background: #fff2cf;
+    box-shadow: 0px 4px 0px 0px #ffd977;
+    margin-right: 10px;
+
+}
+
+#count-total-widget .single-count-widget:nth-child(3) {
+    width: 277px;
+    padding: 15px 0;
+    border-radius: 15px;
+    background: rgba(255, 202, 202, 0.47);
+    box-shadow: 0px 4px 0px 0px #ffacb1;
+}
+
+
+/* Adjust logo size on smaller screens */
+@media screen and (max-width: 768px) {
+    .navbar .logo img {
+        height: 65px; /* Maintain aspect ratio */
+    }
+}
 
 
     </style>
 </head>
 <main>
 <body>
-    <header class="header">
-        <header class="header">
-    <div class="logo">
-        <img src="/GuesstheSingernewlogo.png" alt="Guess the Singer Logo">
-    </div>
-</header>
-    <nav class="navbar">
-        <ul>
-            <li><a href="/index.html">Home</a></li>
-            <li><a href="/calendar.html">History</a></li>
-            <li><a href="/about.html">About</a></li>
-        </ul>
-    </nav>
+        <div class="container">
+            <header>
+                <div class="logo">
+                    <img src="/images/logo.png" alt="Guess the Singer Logo">
+            </header>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/calendar.html">History</a></li>
+                    <li><a href="/about.html">About</a></li>
+                </ul>
+            </nav>
     <section class="game-section">
-        <h3>Game #50<h3>
-        <div class="game-container">
+        <div class="text-box">
+            <h1>Game #56</h1>       
+             <div class="game-container">
             <select id="question-dropdown">
-                <option value="" disabled selected>Select a question...</option>
+                <option value="" disabled selected>Select a question to start...</option>
               <!-- General Questions -->
               <option value="is this a male artist?">Is this a male artist?</option>
               <option value="are they still alive?">Are they still alive?</option>
@@ -905,7 +1019,7 @@ select:focus {
                 <ul id="autocomplete-list" class="autocomplete-list"></ul>
                 <button id="submit-guess">Submit Guess</button>
                 <button id="hint" class="hint">Hint</button>
-                <div class="response guess-response" id="guess-response">Guess the singer's name!</div>
+                <div class="response guess-response" id="guess-response"></div>
             </div>
             <div class="share-container" id="share-container" style="display: none;">
                 <button id="share-button">Share with Friends!</button>
@@ -918,13 +1032,6 @@ select:focus {
             </div>
         </div>
     </section>
-    <section class="game-section">
-    
-        <div class="progress-container">
-            <p><strong>Questions:</strong> <span id="questions-used">0</span></p>
-            <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
-            <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
-        </div>
 
     <!-- Celebration Popup -->
 
@@ -932,8 +1039,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Mac Miller</strong>!</p>
-            <img src="/images/macmiller.jpg" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Ice Cube</strong>!</p>
+            <img src="/images/icecube.png" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -956,8 +1063,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Mac Miller</strong>!</p>
-        <img src="/images/macmiller.jpg">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Ice Cube</strong>!</p>
+        <img src="/images/icecube.png">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1005,11 +1112,69 @@ select:focus {
         </div>
     </div>
 </div>
-
+<div class="stats-container">
+    <div id="count-total-widget">
+        <div class="single-count-widget">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <g clip-path="url(#clip0_1_88)">
+                    <path d="M21.3333 10.6667C27.2245 10.6667 32 15.4422 32 21.3333C32 23.1461 31.5477 24.8539 30.7499 26.3488L32 30.9333L27.9333 29.7136C26.054 31.1981 23.7282 32.0038 21.3333 32C15.4422 32 10.6667 27.2245 10.6667 21.3333L21.3333 10.6667Z" fill="#00964F" />
+                    <path d="M31.9078 20C31.2502 14.7398 26.7718 10.6667 21.3334 10.6667C15.895 10.6667 11.416 14.7398 10.759 20C11.4166 25.2603 15.895 29.3333 21.3334 29.3333C26.7718 29.3333 31.2507 25.2603 31.9078 20Z" fill="#446AA9" />
+                    <path d="M31.9078 20C31.2502 14.7398 26.7718 10.6667 21.3334 10.6667C15.895 10.6667 11.416 14.7398 10.759 20C11.4166 25.2603 15.895 29.3333 21.3334 29.3333C26.7718 29.3333 31.2507 25.2603 31.9078 20Z" fill="#40CF8B" />
+                    <path d="M22.3984 10.7206C22.0445 10.6851 21.689 10.6671 21.3333 10.6667L10.6667 21.3333C10.6667 21.6928 10.6859 22.048 10.7206 22.3984C17.1477 22.3691 22.3696 17.1472 22.3989 10.72L22.3984 10.7206Z" fill="#BDE8D4" />
+                    <path d="M1.25013 15.6821L0 20.2667L4.06666 19.0469C5.94596 20.5314 8.2718 21.3371 10.6667 21.3333C16.5579 21.3333 21.3333 16.5579 21.3333 10.6667C21.3333 4.77546 16.5579 0 10.6667 0C4.77546 0 0 4.77546 0 10.6667C0 12.4795 0.452266 14.1872 1.25013 15.6821Z" fill="#00964F" />
+                    <path d="M21.2411 9.33333C20.5835 4.07306 16.1051 0 10.6667 0C5.22834 0 0.749412 4.07306 0.0923462 9.33333C0.749946 14.5936 5.22834 18.6667 10.6667 18.6667C16.1051 18.6667 20.5841 14.5936 21.2411 9.33333Z" fill="#53DF97" />
+                    <path d="M16.7354 15.825L15.5376 14.6272C16.1884 13.6606 16.5352 12.5215 16.5333 11.3562C16.5333 8.11623 13.9066 5.48956 10.6667 5.48956C7.42665 5.48956 4.79999 8.11623 4.79999 11.3562C4.79999 14.5962 7.42665 17.2229 10.6667 17.2229C11.8778 17.2229 13.0032 16.856 13.9376 16.2272L15.1354 17.425C15.2935 17.5835 15.4951 17.6915 15.7147 17.7354C15.9342 17.7792 16.1619 17.7568 16.3687 17.6711C16.5755 17.5855 16.7523 17.4403 16.8765 17.2541C17.0008 17.0678 17.0669 16.8489 17.0666 16.625C17.0666 16.3248 16.9472 16.0373 16.7354 15.825ZM13.9829 13.0725L13.1312 12.2208C12.9731 12.0622 12.7715 11.9542 12.5519 11.9104C12.3324 11.8666 12.1048 11.889 11.8979 11.9746C11.6911 12.0603 11.5143 12.2055 11.3901 12.3917C11.2658 12.5779 11.1997 12.7969 11.2 13.0208C11.2 13.321 11.3194 13.6085 11.5312 13.8208L12.3829 14.6725C11.5916 15.0819 10.68 15.1949 9.81275 14.991C8.94546 14.7871 8.17969 14.2798 7.65376 13.5606C7.12782 12.8415 6.8764 11.958 6.94491 11.0697C7.01342 10.1814 7.39734 9.34688 8.02733 8.7169C8.65731 8.08692 9.49182 7.703 10.3801 7.63449C11.2684 7.56598 12.1519 7.8174 12.871 8.34333C13.5902 8.86927 14.0975 9.63504 14.3014 10.5023C14.5053 11.3696 14.3924 12.2812 13.9829 13.0725Z" fill="#00964F" />
+                    <path d="M16.7354 15.1354L15.5376 13.9376C16.1884 12.9711 16.5352 11.8319 16.5333 10.6667C16.5333 7.42665 13.9066 4.79999 10.6667 4.79999C7.42665 4.79999 4.79999 7.42665 4.79999 10.6667C4.79999 13.9066 7.42665 16.5333 10.6667 16.5333C11.8778 16.5333 13.0032 16.1664 13.9376 15.5376L15.1354 16.7354C15.2935 16.894 15.4951 17.002 15.7147 17.0458C15.9342 17.0896 16.1619 17.0672 16.3687 16.9816C16.5755 16.8959 16.7523 16.7507 16.8765 16.5645C17.0008 16.3783 17.0669 16.1593 17.0666 15.9354C17.0666 15.6352 16.9472 15.3477 16.7354 15.1354ZM13.9829 12.3829L13.1312 11.5312C12.9731 11.3727 12.7715 11.2647 12.5519 11.2208C12.3324 11.177 12.1048 11.1994 11.8979 11.2851C11.6911 11.3707 11.5143 11.5159 11.3901 11.7021C11.2658 11.8884 11.1997 12.1073 11.2 12.3312C11.2 12.6314 11.3194 12.9189 11.5312 13.1312L12.3829 13.9829C11.5916 14.3924 10.68 14.5053 9.81275 14.3014C8.94546 14.0975 8.17969 13.5902 7.65376 12.871C7.12782 12.1519 6.8764 11.2684 6.94491 10.3801C7.01342 9.49182 7.39734 8.65731 8.02733 8.02733C8.65731 7.39734 9.49182 7.01342 10.3801 6.94491C11.2684 6.8764 12.1519 7.12782 12.871 7.65376C13.5902 8.17969 14.0975 8.94546 14.3014 9.81275C14.5053 10.68 14.3924 11.5916 13.9829 12.3829Z" fill="#EDF4FA" />
+                    <path d="M26.0986 25.7003L24.4928 18.6902C24.1445 17.1691 22.8373 16.0961 21.3333 16.0961C20.8816 16.0961 20.4474 16.1931 20.0517 16.3697L18.1194 18.9275L16.568 25.7009C16.3813 26.5147 16.9754 27.2966 17.7802 27.2966C18.3584 27.2966 18.8608 26.8833 18.9936 26.2977L19.3712 24.6299H23.2954L23.673 26.2977C23.8053 26.8827 24.3077 27.2966 24.8864 27.2966C25.6917 27.2966 26.2853 26.5147 26.0986 25.7003ZM19.8538 22.4961L20.7024 18.7483C20.7712 18.4443 21.0325 18.2294 21.3328 18.2294C21.633 18.2294 21.8944 18.4443 21.9632 18.7483L22.8117 22.4961H19.8533H19.8538Z" fill="#00964F" />
+                    <path d="M26.0986 25.0709L24.4928 18.0608C24.1445 16.5397 22.8373 15.4667 21.3333 15.4667C20.8816 15.4667 20.4474 15.5637 20.0517 15.7403L18.1194 18.2981L16.568 25.0715C16.3813 25.8853 16.9754 26.6672 17.7802 26.6672C18.3584 26.6672 18.8608 26.2539 18.9936 25.6683L19.3712 24.0005H23.2954L23.673 25.6683C23.8053 26.2533 24.3077 26.6672 24.8864 26.6672C25.6917 26.6672 26.2853 25.8853 26.0986 25.0709ZM19.8538 21.8667L20.7024 18.1189C20.7712 17.8149 21.0325 17.6 21.3328 17.6C21.633 17.6 21.8944 17.8149 21.9632 18.1189L22.8117 21.8667H19.8533H19.8538Z" fill="#EDF4FA" />
+                </g>
+                <defs>
+                    <clipPath id="clip0_1_88">
+                        <rect width="32" height="32" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <p>Questions : &nbsp; <span id="questions-used">0</span>
+            </p>
+        </div>
+        <div class="single-count-widget">
+            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38" fill="none">
+                <path d="M16.6207 3.24924C12.3219 4.16904 8.92303 7.70794 8.18325 12.0466C7.46339 16.1654 9.08292 20.2643 12.402 22.7836C13.4217 23.5633 14.0016 24.723 14.0016 26.0027L16.8231 27.1207L14.0015 29.0017V30.0014C14.0015 30.3413 14.0415 30.6812 14.1015 31.0011L17.0006 33.0006L19 31.0011L20.9994 33.0006L23.8986 31.0011C23.9585 30.6812 23.9986 30.3413 23.9986 30.0014V29.0017L21.1969 27.134L23.9986 26.0026C23.9986 24.723 24.5783 23.5632 25.5981 22.7835C28.3573 20.7041 29.9968 17.425 29.9968 14.0061C29.9968 7.13278 23.7214 1.76114 16.6207 3.24924ZM19 29.0017L17.3131 27.3148L19.0473 28.002L20.6448 27.3569L19 29.0017Z" fill="url(#paint0_linear_1_105)" />
+                <path d="M14.0014 29.0017H17.0006C17.5605 29.0017 18.0003 29.4415 18.0003 30.0014C18.0003 30.5612 17.5605 31.0011 17.0006 31.0011H14.1014C14.5613 33.2805 16.5807 35 19 35C21.5687 35 23.5056 33.0964 23.8986 31.0011H20.9994C20.4395 31.0011 19.9997 30.5612 19.9997 30.0014C19.9997 29.4415 20.4395 29.0017 20.9994 29.0017H23.9985V26.0026H14.0014V29.0017ZM5.50685 17.8536L3.62753 18.538C3.10815 18.7264 2.84063 19.3005 3.03004 19.8189C3.22032 20.3432 3.79862 20.6035 4.31093 20.4164L6.19025 19.732C6.70963 19.5436 6.97716 18.9696 6.78774 18.4511C6.59833 17.9327 6.02137 17.6642 5.50685 17.8536ZM32.4931 10.1586L34.3724 9.47421C34.8918 9.28579 35.1593 8.71176 34.9699 8.19331C34.7815 7.67393 34.2055 7.40841 33.689 7.59582L31.8097 8.28022C31.2903 8.46863 31.0228 9.04267 31.2122 9.56111C31.4026 10.0854 31.9808 10.3457 32.4931 10.1586ZM6.19025 8.28022L4.31093 7.59589C3.79349 7.40941 3.21845 7.674 3.03004 8.19338C2.84063 8.71176 3.10815 9.28586 3.62753 9.47427L5.50685 10.1587C6.01837 10.3455 6.5972 10.0862 6.78774 9.56118C6.97709 9.04273 6.70963 8.46863 6.19025 8.28022ZM34.3724 18.538L32.4931 17.8536C31.9767 17.6651 31.4006 17.9327 31.2122 18.4511C31.0228 18.9694 31.2903 19.5435 31.8097 19.7319L33.689 20.4163C34.2005 20.6032 34.7794 20.3438 34.9699 19.8189C35.1593 19.3005 34.8918 18.7264 34.3724 18.538ZM6.00377 14.0061C6.00377 13.4535 5.55664 13.0064 5.00407 13.0064H2.938C2.38543 13.0064 1.93829 13.4535 1.93829 14.0061C1.93829 14.5587 2.38543 15.0058 2.938 15.0058H5.00407C5.55664 15.0058 6.00377 14.5587 6.00377 14.0061ZM35.062 13.0064H32.9959C32.4433 13.0064 31.9962 13.4535 31.9962 14.0061C31.9962 14.5587 32.4433 15.0058 32.9959 15.0058H35.062C35.6145 15.0058 36.0617 14.5587 36.0617 14.0061C36.0617 13.4535 35.6145 13.0064 35.062 13.0064ZM23.1882 13.0698C22.8733 12.78 22.5116 11.007 20.9994 11.007C19.8816 11.007 19.3954 11.9783 19.1054 12.5592C19.0742 12.6218 19.038 12.6949 19 12.7672C18.9619 12.6949 18.9258 12.6217 18.8945 12.5592C18.6046 11.9783 18.1184 11.007 17.0006 11.007C15.588 11.007 15.1942 12.538 14.8557 13.0171C14.3724 13.0874 14.0014 13.5033 14.0014 14.0061C14.0014 14.5587 14.4486 15.0058 15.0011 15.0058C16.119 15.0058 16.6051 14.0344 16.8951 13.4535C16.9264 13.391 16.9625 13.3178 17.0006 13.2456C17.0386 13.3178 17.0747 13.3911 17.106 13.4535C17.2861 13.8145 17.5641 14.3047 18.0003 14.6406V20.0043C18.0003 20.5569 18.4474 21.004 19 21.004C19.5526 21.004 19.9997 20.5569 19.9997 20.0043V14.6406C20.4358 14.3047 20.7138 13.8145 20.894 13.4535C20.9252 13.391 20.9613 13.3178 20.9994 13.2456C21.0375 13.3178 21.0736 13.3911 21.1048 13.4535C21.3948 14.0344 21.881 15.0058 22.9988 15.0058C23.5514 15.0058 24.0932 14.5899 24.0932 14.0383C24.0932 13.4858 23.7408 13.0698 23.1882 13.0698Z" fill="url(#paint1_linear_1_105)" />
+                <defs>
+                    <linearGradient id="paint0_linear_1_105" x1="19.0058" y1="33.0006" x2="19.0058" y2="2.99985" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FD5900" />
+                        <stop offset="1" stop-color="#FFDE00" />
+                    </linearGradient>
+                    <linearGradient id="paint1_linear_1_105" x1="19" y1="21.004" x2="19" y2="7.53577" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FACC47" />
+                        <stop offset="1" stop-color="#FCFC3E" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <p>Hints : &nbsp; <span id="hints-used">0</span>
+            </p>
+        </div>
+        <div class="single-count-widget">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <g clip-path="url(#clip0_1_114)">
+                    <path d="M27.4017 5.63993C26.8751 3.26212 24.57 1.08391 22.1856 0.621256C20.7326 0.330866 16.6797 -0.0278843 14 6.32915e-06C11.3203 -0.0295249 7.26797 0.328131 5.81492 0.619616C3.43055 1.08391 1.12547 3.26212 0.601563 5.63993C0.299141 7.08368 0.004375 9.04805 0 11.7294C0.004375 14.4091 0.299141 16.374 0.601563 17.8183C1.1282 20.1961 3.43328 22.3743 5.81766 22.837C6.60188 22.9934 8.14461 23.1706 9.81914 23.2952C10.0087 23.5931 10.2147 23.9103 10.4371 24.2468C11.3258 25.5932 12.0055 26.5311 12.5213 27.1846C13.3788 28.2718 14.6267 28.2718 15.4842 27.1846C15.9999 26.5311 16.6797 25.5932 17.5684 24.2468C17.7908 23.9107 17.9967 23.5935 18.1863 23.2952C19.8614 23.1706 21.4036 22.9934 22.1884 22.837C24.5727 22.3743 26.8778 20.1961 27.4045 17.8183C27.7041 16.374 27.9984 14.4102 28.0033 11.7294C27.9956 9.04751 27.7014 7.08422 27.4017 5.63993Z" fill="#FF6F6F" />
+                    <path d="M14 6.32915e-06C11.3203 -0.0295249 7.26797 0.328131 5.81492 0.619616C3.43055 1.08391 1.12547 3.26212 0.601562 5.63993C0.299141 7.08368 0.004375 9.04805 0 11.7294C0.004375 14.4091 0.299141 16.374 0.601562 17.8183C0.911641 19.2177 1.83805 20.5483 3.03406 21.5004C4.20071 21.7797 5.39623 21.9205 6.59586 21.9199C14.9975 21.9199 21.8083 15.1091 21.8083 6.70798C21.8102 4.52009 21.3382 2.35775 20.4247 0.369694C18.556 0.159694 15.9245 -0.0196812 14 6.32915e-06Z" fill="#FF8F8F" />
+                    <path d="M15.5466 19.8592C15.5103 20.0295 15.4254 20.1857 15.3023 20.3089C15.1791 20.432 15.0229 20.5169 14.8526 20.5532C14.2877 20.6399 13.7129 20.6399 13.148 20.5532C12.9776 20.5169 12.8214 20.4321 12.6982 20.3089C12.5751 20.1858 12.4903 20.0296 12.454 19.8592C12.3665 19.2942 12.3665 18.7191 12.454 18.154C12.4903 17.9837 12.5751 17.8275 12.6982 17.7043C12.8214 17.5811 12.9776 17.4963 13.148 17.46C13.7129 17.3733 14.2877 17.3733 14.8526 17.46C15.0232 17.4965 15.1796 17.5817 15.3028 17.7053C15.426 17.8288 15.5107 17.9855 15.5466 18.1562C15.6341 18.7212 15.6341 19.2964 15.5466 19.8614V19.8592ZM18.876 10.9019C18.4538 11.4991 17.821 12.0443 16.8848 12.6169C15.6997 13.3476 15.5099 13.6478 15.5099 14.2357V14.4681C15.5138 14.6691 15.4775 14.8688 15.4032 15.0555C15.329 15.2423 15.2182 15.4124 15.0775 15.5559C14.9367 15.6993 14.7687 15.8133 14.5834 15.8911C14.3981 15.9689 14.1991 16.009 13.9981 16.009C13.7971 16.009 13.5981 15.9689 13.4128 15.8911C13.2275 15.8133 13.0595 15.6993 12.9188 15.5559C12.778 15.4124 12.6673 15.2423 12.593 15.0555C12.5187 14.8688 12.4825 14.6691 12.4863 14.4681V13.9294C12.4863 13.236 12.6596 12.6475 13.0162 12.1308C13.3618 11.6298 13.8803 11.1847 14.6481 10.728C16.0639 9.89513 16.3231 9.42755 16.3231 8.80685C16.3231 8.027 15.6587 7.52278 14.6278 7.52278C13.5018 7.52278 12.7685 8.03466 12.4485 9.04474C12.3449 9.36968 12.1401 9.65299 11.864 9.8533C11.5879 10.0536 11.2551 10.1604 10.914 10.1582C10.8746 10.1582 10.8347 10.1582 10.7959 10.1538C10.5509 10.1365 10.313 10.0635 10.1005 9.94029C9.88803 9.81708 9.7065 9.64694 9.56979 9.44286C9.4332 9.24242 9.34426 9.0134 9.30976 8.77331C9.27525 8.53322 9.29611 8.28842 9.37073 8.05763C9.69884 7.00588 10.3718 6.09538 11.281 5.4731C12.1975 4.84856 13.3553 4.5188 14.6278 4.5188C15.9496 4.5188 17.1763 4.94044 18.0819 5.70606C19.0143 6.49356 19.5273 7.58021 19.5273 8.76528C19.53 9.58013 19.3162 10.2812 18.876 10.9019Z" fill="white" />
+                </g>
+                <defs>
+                    <clipPath id="clip0_1_114">
+                        <rect width="28" height="28" fill="white" />
+                    </clipPath>
+                </defs>
+            </svg>
+            <p>Guesses : &nbsp; <span id="guesses-made">0</span>
+            </p>
+    </div>
+  
+</div>
 </main>
-
- <!-- Footer -->
- <footer class="footer">
+<footer class="footer">
     &copy; 2024 Colby Martel | Follow me here!
     <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
     <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
@@ -1037,25 +1202,25 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: He started rapping at 14 years old.",
-    "Hint: He was born in Pennsylvania.",
-    "Hint: He would be 33 years old today.",
-    "Hint: His birth name was Malcolm McCormick and his stage name has the same initials."
+    "Hint: He has transitioned into a successful acting and filmmaking career.",
+    "Hint: He is a legendary rapper and a member of the iconic group N.W.A.",
+    "Hint: His stage name is something you'd find in a kitchen.",
+    "Hint: His initials are 'I' and 'C'."
 ];
 
 const predefinedAnswers = {
     // Basic Info
     "is this a male artist?": "Yes!",
-    "are they still alive?": "No!",
-    "are they over 50 years old?": "No!",
-    "are they over 40 years old?": "No!",
+    "are they still alive?": "Yes!",
+    "are they over 50 years old?": "Yes!",
+    "are they over 40 years old?": "Yes!",
     "are they over 30 years old?": "Yes!",
-    "debut before 2000?": "No!",
+    "debut before 2000?": "Yes!",
     "debut before 2010?": "Yes!",
     "debut before 2020?": "Yes!",
     "album release?": "Yes!",
     "are they touring?": "No!",
-    "are they married?": "No!",
+    "are they married?": "Yes!",
     "divorced?": "No!",
     "LGBTQ?": "No!",
 
@@ -1063,16 +1228,15 @@ const predefinedAnswers = {
     "are they from the united states?": "Yes!",
     "are they from north america?": "Yes!",
     "are they from europe?": "No!",
-
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
-    "are they of African descent?": "No!",
+    "are they of African descent?": "Yes!",
     "are they of Asian descent?": "No!",
-    "are they of European descent?": "Yes!",
+    "are they of European descent?": "No!",
     "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "Yes!",
+    "are they of mixed ethnicity?": "No!",
 
     // Music Style
     "different languages?": "No!",
@@ -1082,37 +1246,39 @@ const predefinedAnswers = {
     "do they perform R&B music?": "No!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
-    "do they perform jazz music?": "Influenced!",
+    "do they perform jazz music?": "No!",
     "do they perform party music?": "Yes!",
-    "do they perform sad music?": "Yes!",
+    "do they perform sad music?": "No!",
 
     // Career and Popularity
-    "are they also an actor?": "No!",
+    "are they also an actor?": "Yes!",
     "disney or nick?": "No!",
     "singing competition?": "No!",
     "have they won a Grammy?": "No!",
     "super bowl?": "No!",
-    "coachella?": "Yes!",
-    "billion club?": "No!", 
+    "coachella?": "No!",
+    "billion club?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 10M Instagram followers?": "Yes!",
-    "do they have more than 20M listeners?": "Yes!",
+    "do they have more than 20M listeners?": "No!",
     "do they have more than 50M listeners?": "No!",
-    "are they in a band?": "No!",
+    "are they in a band?": "Yes!",
 
     // Appearance
     "do they have dark hair?": "Yes!",
     "do they have blond hair?": "No!",
     "5.5 feet tall?": "Yes!",
     "6 feet tall?": "No!",
-    "do they have tattoos?": "Yes!",
-    "do they wear glasses?": "No!",
+    "do they have tattoos?": "No!",
+    "do they wear glasses?": "Sometimes!",
     "do they go by their birth name?": "No!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
-    "do they have a common first name?": "Yes!",
+    "do they have a common first name?": "No!",
     "what does their name start with?": "Yes!"
 };
+
+
 
 // Lock the hint button (visual state only)
 function lockHintButton() {
@@ -1186,7 +1352,6 @@ hintButton.addEventListener("click", () => {
         console.log("All hints used, transformed to Give Up");
     }
 });
-
 submitQuestion.addEventListener("click", () => {
     const selectedIndex = questionDropdown.selectedIndex;
     const selectedOption = questionDropdown.options[selectedIndex];
@@ -1204,6 +1369,7 @@ submitQuestion.addEventListener("click", () => {
     questionCount++;
     updateProgress();
     updateHintAvailability(); // Check if hint thresholds are reached
+    submitQuestion.disabled = true;
 
     // Update guessResponse dynamically based on remaining questions for next hint
     const questionsNeeded = (usedHints + 1) * 4 - totalQuestionsAsked;
@@ -1225,19 +1391,25 @@ submitQuestion.addEventListener("click", () => {
         // Update the option text to include a check or X emoji
         if (answer === "Yes!") {
             selectedOption.textContent = `✅ ${selectedOption.textContent}`;
+            questionDropdown.style.border = "2px solid green"; // Add red border for incorrect answer
         } else if (answer === "No!") {
             selectedOption.textContent = `❌ ${selectedOption.textContent}`;
+            questionDropdown.style.border = "2px solid red"; // Add red border for incorrect answer
         } else {
             selectedOption.textContent = `❓ ${selectedOption.textContent}`; // For unknown responses
+            questionDropdown.style.border = "2px solid yellow"; // Add red border for incorrect answer
         }
 
         // Disable the option so it can't be selected again
         selectedOption.disabled = true;
-
-        // Reset the dropdown to show the placeholder
-        questionDropdown.selectedIndex = 0;
-    }, 200); // Delay for showing the response
+        setTimeout(() => {
+            questionDropdown.selectedIndex = 0; // Resets to the placeholder option
+            submitQuestion.disabled = false;
+            questionDropdown.options[0].textContent = "Ask another question?";
+            questionDropdown.style.border = ""        }, 1500); // 2-second delay
+    }, 200); // Short delay for showing the response
 });
+
 
 // Update progress display
 function updateProgress() {
@@ -1259,7 +1431,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Mac Miller"); // Replace with the dynamic answer
+        showGiveUpPopup("Ice Cube"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1312,31 +1484,40 @@ giveupEnterRaffleButton.addEventListener("click", () => {
 
 // Handle artist guess submission
 submitGuess.addEventListener("click", () => {
-    const guess = document.getElementById("artist-guess").value.trim();
+    const guessInput = document.getElementById("artist-guess"); // Select the input box
+    const guess = guessInput.value.trim();
 
     if (!guess) {
         guessResponse.textContent = "Please enter a guess!";
         guessResponse.className = "response guess-response"; // Default styling
+        guessInput.style.border = "2px solid red"; // Highlight the input box
         return;
     }
 
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Mac Miller"; // Example correct answer
+    const correctAnswer = "Ice Cube"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
-
+        guessInput.style.border = "2px solid green"; // Green border for correct guess
+        guessInput.placeholder = "You got it!"; // Optional: Set a success message in the placeholder
         // Show the celebration popup
         showCelebrationPopup(correctAnswer);
     } else {
         guessResponse.textContent = "Incorrect! Keep trying.";
         guessResponse.className = "response guess-response incorrect";
+        guessInput.style.border = "2px solid red"; // Red border for incorrect guess
+        guessInput.value = ""; // Clear the input field
+        guessInput.placeholder = "Incorrect! Guess again!"; // Set the placeholder to "That is incorrect!"
     }
 
-    document.getElementById("artist-guess").value = ""; // Clear input
+    setTimeout(() => {
+        guessInput.style.border = ""; // Reset border after 2 seconds
+        guessInput.placeholder = "Type your guess here..."; // Reset placeholder after 2 seconds
+    }, 2000);
 });
 
 // Share functionality
@@ -1467,16 +1648,16 @@ function toggleMenu() {
     "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee",
     "Ellie Goulding", "Zayn Malik", "Meghan Trainor", "Jason Derulo", "Chris Brown",
     "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.",
-    "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", 
+    "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube",
     "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", 
-    "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future",
-    "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti",
+    "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future", "Melanie Martinez",
+    "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti", "2Pac",
     "Daddy Yankee", "Tyler, The Creator", "One Direction", "GloRilla", "Adam Levine", "Don Toliver", "OneRepublic",
     "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone", "Joji", "Chelsea Cutler",
     "21 Savage", "Teddy Swims", "Gwen Stefani", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
     "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", "Noah Kahan", "beabadoobee", "Morgan Wallen",
-    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave",
-    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller",
+    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave", "Carrie Underwood",
+    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller", "Iggy Azalea", "Mel B",
     "Shreya Ghoshal", "Tate McRae", "Pritam", "Chappell Roan", "Zach Bryan",
     "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas",
     "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", 

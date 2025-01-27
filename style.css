@@ -1,0 +1,373 @@
+@font-face {
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_light.otf') format('otf');    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_book.otf') format('otf');    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_medium.otf') format('otf');    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('./assets/fonts/GothamRounded/gothamrnd_bold.otf') format('otf');
+    font-weight: bold;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Gotham', Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #E3efff 0%, #e7f3ff 100%);
+    min-height: 100vh;
+}
+
+.main-container {
+    background-image: url('./images/bg-top.png');
+    background-position: top;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #FFFFFF80;
+    padding: 10px 8%;
+}
+
+.logo {
+    font-size: 24px;
+    color: #4a4a8a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.logo img {
+    max-width: 300px;
+}
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #003C76;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.game-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 70%;
+    margin: auto;
+    margin-top: 60px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.prize-banner {
+    background: #2786E2;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    box-shadow: 0px 6px 0px 0px #0E66BC;
+    font-weight: bold;
+}
+
+.trophy-icon {
+    font-size: 20px;
+    margin: 0 5px;
+}
+
+.progress-bar {
+    background: #F6E9E2;
+    height: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.progress {
+    background: linear-gradient(90deg, #FDC365 0%, #FE9312 100%);
+    width: 33.33%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.question-number {
+    color: #797979;
+    margin: 20px 0;
+    font-weight: 600;
+}
+.question-number span {
+    color: #000;
+ }
+.question-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+select, input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 0;
+    outline: none;
+    border-radius: 8px;
+    background: #EDF5FF;
+    color: #929292;
+    font-weight: 600;
+    box-shadow: 0px 4px 0px 0px #D4E7FF;
+}
+
+.button {
+    color: white;
+    padding: 15px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    min-width: 200px;
+}
+
+.variant-blue:hover {
+    background: #1976D2;
+}
+
+.variant-blue {
+    background: #2786E2;
+    box-shadow: 0px 4px 0px 0px #0E66BC;
+}
+
+.variant-green {
+    background: #00BE64;
+    box-shadow: 0px 4px 0px 0px #00964F;
+}
+
+.hint-button {
+    background: #E3E3E3;
+    color: #4A4A4A;
+    padding: 12px 24px;
+    border: none;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: not-allowed;
+    box-shadow: 0px 4px 0px 0px #BBBBBB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 200px;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    max-width: 60%;
+    margin: auto;
+}
+
+.stat-box {
+    flex: 1;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+.stat-box div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.questions-stat {
+    background: #9CF19B4F;
+    box-shadow: 0px 4px 0px 0px #8ACDAD;
+}
+
+.hints-stat {
+    background: #FFF2CF;
+    box-shadow: 0px 4px 0px 0px #FFD977;
+}
+
+.guesses-stat {
+    background: #FFCACA78;
+    box-shadow: 0px 4px 0px 0px #FFACB1;
+}
+
+.stat-value {
+    margin: 5px 0;
+    color: #287ED1
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.popup-message {
+    background-color: #00FF862E;
+    margin-top: 30px;
+}
+
+.popup-message div {
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    padding: 1% 0;
+}
+
+
+.popup-message div .popup-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-message div .popup-content .title {
+    font-weight: 600;
+    color: #00964F;
+}
+.popup-message div .popup-content .description {
+    color: #242425;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 1200px) {
+    .game-container {
+        max-width: 80%;
+    }
+
+    .stats-container {
+        max-width: 80%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .game-container {
+        max-width: 90%;
+        padding: 20px;
+        margin-top: 40px;
+    }
+
+    .stats-container {
+        max-width: 90%;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .prize-banner {
+        width: 90%;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .logo img {
+        max-width: 200px;
+    }
+
+    nav {
+        padding: 10px 4%;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .button, .hint-button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .stat-box {
+        padding: 15px;
+    }
+
+    .stat-box div {
+        font-size: 16px;
+    }
+
+    .popup-message div {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .game-container {
+        max-width: 95%;
+        padding: 15px;
+        margin-top: 90px;
+    }
+
+    .stats-container {
+        max-width: 95%;
+    }
+
+    .logo img {
+        max-width: 150px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .nav-links {
+        justify-content: center;
+    }
+
+    select, input[type="text"] {
+        padding: 12px;
+    }
+
+    .question-number {
+        font-size: 14px;
+    }
+    .prize-banner {
+        top: -60px;
+    }
+    .popup-message div .popup-content .title {
+        font-size: 16px;
+    }
+
+    .popup-message div .popup-content .description {
+        font-size: 14px;
+    }
+}

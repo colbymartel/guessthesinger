@@ -10,7 +10,7 @@
             font-family: 'Calibri', 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f8ff; /* Light sky blue background */
+            background: url(/images/bg-top.png) no-repeat;
             color: #333;
             line-height: 1.6;
         }
@@ -95,14 +95,11 @@
         }
 
         .calendar-day {
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 20px 0;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            text-align: center;
-            transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    padding: 12px 0;
+    border-radius: 15px;
+    background: rgba(38, 59, 255, 0.31);
+    box-shadow: 0px 4px 0px 0px #315f85;
+    margin-right: 10px;
         }
 
         .calendar-day.locked {
@@ -145,7 +142,6 @@
         <div class="calendar-container">
             <h2>December</h2>
             <div class="calendar">
-                <!-- Dates for December 1st to 25th -->
                 <div class="calendar-day unlocked">1</div>
                 <div class="calendar-day unlocked">2</div>
                 <div class="calendar-day unlocked">3</div>
@@ -177,112 +173,60 @@
                 <div class="calendar-day unlocked">29</div>
                 <div class="calendar-day unlocked">30</div>
                 <div class="calendar-day unlocked">31</div>
-
+            </div>
+            <h2>January</h2>
+            <div class="calendar">
+            <div class="calendar-day unlocked">32</div>
+            <div class="calendar-day unlocked">33</div>
+            <div class="calendar-day unlocked">34</div>
+            <div class="calendar-day unlocked">35</div>
+            <div class="calendar-day unlocked">36</div>
+            <div class="calendar-day unlocked">37</div>
+            <div class="calendar-day unlocked">38</div>
+            <div class="calendar-day unlocked">39</div>
+            <div class="calendar-day unlocked">40</div>
+            <div class="calendar-day unlocked">41</div>
+            <div class="calendar-day unlocked">42</div>
+            <div class="calendar-day unlocked">43</div>
+            <div class="calendar-day unlocked">44</div>
+            <div class="calendar-day unlocked">45</div>
+            <div class="calendar-day unlocked">46</div>
+            <div class="calendar-day unlocked">47</div>
+            <div class="calendar-day unlocked">48</div>
+            <div class="calendar-day unlocked">49</div>
+            <div class="calendar-day unlocked">50</div>
+            <div class="calendar-day unlocked">51</div>
+            <div class="calendar-day unlocked">52</div>
+            <div class="calendar-day unlocked">53</div>
+            <div class="calendar-day unlocked">54</div>
+            <div class="calendar-day unlocked">55</div>
+            <div class="calendar-day unlocked">56</div>
+            <div class="calendar-day locked">🔒</div>
+            <div class="calendar-day locked">🔒</div>
+            <div class="calendar-day locked">🔒</div>
+            <div class="calendar-day locked">🔒</div>
+            <div class="calendar-day locked">🔒</div>
+            <div class="calendar-day locked">🔒</div>
             </div>
             <div class="prize-display" id="prize-display">Click a date to guess the daily artist!</div>
         </div>
     </section>
 
     <script>
-        const calendarDays = document.querySelectorAll('.calendar-day');
-    
-        calendarDays.forEach(day => {
-            day.addEventListener('click', () => {
-                if (day.textContent.trim() === "1") {
-                    window.location.href = "HISTORY/day1.html";
-                }
-                if (day.textContent.trim() === "2") {
-                    window.location.href = "HISTORY/day2.html";
-                }
-                if (day.textContent.trim() === "3") {
-                    window.location.href = "HISTORY/day3.html";
-                }
-                if (day.textContent.trim() === "4") {
-                    window.location.href = "HISTORY/day4.html";
-                }
-                if (day.textContent.trim() === "5") {
-                    window.location.href = "HISTORY/day5.html";
-                }
-                if (day.textContent.trim() === "6") {
-                    window.location.href = "HISTORY/day6.html";
-                }
-                if (day.textContent.trim() === "7") {
-                    window.location.href = "HISTORY/day7.html";
-                }
-                if (day.textContent.trim() === "8") {
-                    window.location.href = "HISTORY/day8.html";
-                }
-                if (day.textContent.trim() === "9") {
-                    window.location.href = "HISTORY/day9.html";
-                }
-                if (day.textContent.trim() === "10") {
-                    window.location.href = "HISTORY/day10.html";
-                }
-                if (day.textContent.trim() === "11") {
-                    window.location.href = "HISTORY/day11.html";
-                }
-                if (day.textContent.trim() === "12") {
-                    window.location.href = "HISTORY/day12.html";
-                }
-                if (day.textContent.trim() === "13") {
-                    window.location.href = "HISTORY/day13.html";
-                }
-                if (day.textContent.trim() === "14") {
-                    window.location.href = "HISTORY/day14.html";
-                }
-                if (day.textContent.trim() === "15") {
-                    window.location.href = "HISTORY/day15.html";
-                }
-                if (day.textContent.trim() === "16") {
-                    window.location.href = "HISTORY/day16.html";
-                }
-                if (day.textContent.trim() === "17") {
-                    window.location.href = "HISTORY/day17.html";
-                }
-                if (day.textContent.trim() === "18") {
-                    window.location.href = "HISTORY/day18.html";
-                }
-                if (day.textContent.trim() === "19") {
-                    window.location.href = "HISTORY/day19.html";
-                }
-                if (day.textContent.trim() === "20") {
-                    window.location.href = "HISTORY/day20.html";
-                }
-                if (day.textContent.trim() === "21") {
-                    window.location.href = "HISTORY/day21.html";
-                }
-                if (day.textContent.trim() === "22") {
-                    window.location.href = "HISTORY/day22.html";
-                }
-                if (day.textContent.trim() === "23") {
-                    window.location.href = "HISTORY/day23.html";
-                }
-                if (day.textContent.trim() === "24") {
-                    window.location.href = "HISTORY/day24.html";
-                }
-                if (day.textContent.trim() === "25") {
-                    window.location.href = "HISTORY/day25.html";
-                }
-                if (day.textContent.trim() === "26") {
-                    window.location.href = "HISTORY/day26.html";
-                }
-                if (day.textContent.trim() === "27") {
-                    window.location.href = "HISTORY/day27.html";
-                }
-                if (day.textContent.trim() === "28") {
-                    window.location.href = "HISTORY/day28.html";
-                }
-                if (day.textContent.trim() === "29") {
-                    window.location.href = "HISTORY/day29.html";
-                }
-                if (day.textContent.trim() === "30") {
-                    window.location.href = "HISTORY/day30.html";
-                }
-                if (day.textContent.trim() === "31") {
-                    window.location.href = "HISTORY/day30.html";
-                }
-            });
-        });
+             const calendarDays = document.querySelectorAll('.calendar-day');
+
+calendarDays.forEach(day => {
+    day.addEventListener('click', () => {
+        // Check if the day is locked
+        if (day.classList.contains('locked')) {
+            alert('This day is locked! Come back another day!');
+            return;
+        }
+        // Redirect for unlocked days
+        const dayNumber = day.textContent.trim();
+        window.location.href = `HISTORY/day${dayNumber}.html`;
+    });
+});
     </script>
     
 

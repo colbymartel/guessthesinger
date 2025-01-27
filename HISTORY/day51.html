@@ -826,7 +826,7 @@ select:focus {
         </ul>
     </nav>
     <section class="game-section">
-        <h3>Game #50<h3>
+        <h3>Game #51<h3>
         <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question...</option>
@@ -932,8 +932,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Mac Miller</strong>!</p>
-            <img src="/images/macmiller.jpg" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Iggy Azalea</strong>!</p>
+            <img src="/images/iggy.jpg" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -956,8 +956,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Mac Miller</strong>!</p>
-        <img src="/images/macmiller.jpg">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Iggy Azalea</strong>!</p>
+        <img src="/images/iggy.jpg">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1037,34 +1037,33 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: He started rapping at 14 years old.",
-    "Hint: He was born in Pennsylvania.",
-    "Hint: He would be 33 years old today.",
-    "Hint: His birth name was Malcolm McCormick and his stage name has the same initials."
+    "Hint: She was born in Australia but moved to the US to pursue music.",
+    "She was nominated for the 'Best New Artist' Grammy in 2015.",
+    "Hint: She first gained fame with her hit single 'Fancy.'",
+    "Hint: Her initials are 'I' and 'A'.",
 ];
 
 const predefinedAnswers = {
     // Basic Info
-    "is this a male artist?": "Yes!",
-    "are they still alive?": "No!",
+    "is this a male artist?": "No!",
+    "are they still alive?": "Yes!",
     "are they over 50 years old?": "No!",
     "are they over 40 years old?": "No!",
     "are they over 30 years old?": "Yes!",
     "debut before 2000?": "No!",
-    "debut before 2010?": "Yes!",
+    "debut before 2010?": "No!",
     "debut before 2020?": "Yes!",
-    "album release?": "Yes!",
+    "album release?": "No!",
     "are they touring?": "No!",
     "are they married?": "No!",
     "divorced?": "No!",
     "LGBTQ?": "No!",
 
     // Geographic Information
-    "are they from the united states?": "Yes!",
-    "are they from north america?": "Yes!",
+    "are they from the united states?": "No!",
+    "are they from north america?": "No!",
     "are they from europe?": "No!",
-
-    "are they from australia?": "No!",
+    "are they from australia?": "Yes!",
     "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
@@ -1077,14 +1076,14 @@ const predefinedAnswers = {
     // Music Style
     "different languages?": "No!",
     "are they spanish?": "No!",
-    "do they perform pop music?": "No!",
+    "do they perform pop music?": "Maybe!",
     "do they perform rap music?": "Yes!",
     "do they perform R&B music?": "No!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
-    "do they perform jazz music?": "Influenced!",
+    "do they perform jazz music?": "No!",
     "do they perform party music?": "Yes!",
-    "do they perform sad music?": "Yes!",
+    "do they perform sad music?": "No!",
 
     // Career and Popularity
     "are they also an actor?": "No!",
@@ -1092,17 +1091,17 @@ const predefinedAnswers = {
     "singing competition?": "No!",
     "have they won a Grammy?": "No!",
     "super bowl?": "No!",
-    "coachella?": "Yes!",
+    "coachella?": "No!",
     "billion club?": "No!", 
     "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 10M Instagram followers?": "Yes!",
-    "do they have more than 20M listeners?": "Yes!",
+    "do they have more than 20M listeners?": "No!",
     "do they have more than 50M listeners?": "No!",
     "are they in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "Yes!",
-    "do they have blond hair?": "No!",
+    "do they have dark hair?": "No!",
+    "do they have blond hair?": "Yes!",
     "5.5 feet tall?": "Yes!",
     "6 feet tall?": "No!",
     "do they have tattoos?": "Yes!",
@@ -1110,7 +1109,7 @@ const predefinedAnswers = {
     "do they go by their birth name?": "No!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
-    "do they have a common first name?": "Yes!",
+    "do they have a common first name?": "No!",
     "what does their name start with?": "Yes!"
 };
 
@@ -1259,7 +1258,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Mac Miller"); // Replace with the dynamic answer
+        showGiveUpPopup("Iggy Azalea"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1323,7 +1322,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Mac Miller"; // Example correct answer
+    const correctAnswer = "Iggy Azalea"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
@@ -1476,7 +1475,7 @@ function toggleMenu() {
     "21 Savage", "Teddy Swims", "Gwen Stefani", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
     "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", "Noah Kahan", "beabadoobee", "Morgan Wallen",
     "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave",
-    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller",
+    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller", "Iggy Azalea",
     "Shreya Ghoshal", "Tate McRae", "Pritam", "Chappell Roan", "Zach Bryan",
     "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas",
     "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", 

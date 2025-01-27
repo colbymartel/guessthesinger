@@ -18,51 +18,39 @@
     <style>
         
         /* General Body Styling */
-    
-        body {
-    font-family: 'Poppins', 'Arial', sans-serif; /* Modern, clean font */
+        * {
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom, #f7faff, #d8ebfc); /* Gradient background */
-    color: #333;
+    box-sizing: border-box;
+}
+body {
+    font-family: sans-serif;
+    background: url(/images/bg-top.png) no-repeat;
+    color: #fff;
     line-height: 1.6;
-    overflow-x: hidden; 
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-    margin: 0; 
+    margin: 0;
+    padding: 0;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    height: 100vh; /* Make the body height fill the viewport */
 }
 
-    /* Header */
-    .header {
-            background-color: #4682b4;
-            padding: 30px;
-            text-align: center;
-            color: white;
-        }
-
-/* Default logo styling */
-.header .logo img {
-    width: 30%; /* Ensure it doesn't overflow */
-    height: auto;    /* Maintain aspect ratio */
-    display: block;
-    margin: 0 auto;
-    margin-top: -40px;
-    margin-bottom: -20px;
-    display: block;
-    visibility: visible;
-    opacity: 1;
+header {
+    background-color: #4682b4;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 120px; /* Set a fixed height if needed */
 }
 
-/* Adjust for smaller screens */
-@media (max-width: 768px) {
-    .header .logo img {
-        width: 90%; /* Make it larger for better visibility */
-    }
+.logo img {
+    height: 100px; /* Adjust this to the desired size */
+    width: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Prevent it from exceeding its container width */
 }
 
-        /* Navbar Styling */
-        .navbar {
+ /* Navbar Styling */
+ .navbar {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -94,14 +82,15 @@
 
 /* Game Section */
 .game-section {
+    flex: 1;
+    display: flex;
     padding: 50px 20px;
-    background: #ffffff;
+    background:#4682b4;
     text-align: center;
+    justify-content: center; /* Vertical alignment */
     border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     margin: 30px auto;
     max-width: 1000px;
-    border: 2px solid #d8ebfc;
 }
 
 @media (max-width: 768px) {
@@ -115,22 +104,26 @@
     margin-bottom: 40px;
     color: #4682b4;
 }
+.text-box h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.text-box h1 span {
+    color: white;
+    font-weight: bold;
+    font-size: 3rem;
+}
 
 /* Game Container */
-.game-container {
-    padding: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-    margin-bottom: -30px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
+
 .guess-container {
     padding: 30px;
     max-width: 800px;
     margin-top: -20px;
     border-radius: 15px;
-    
 }
 .guess-container input#artist-guess {
     font-size: 1.2rem; /* Make the text larger */
@@ -180,12 +173,6 @@
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.game-container button:hover {
-    background: linear-gradient(to right, #2b4d6d, #3b709e);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
 /* Question Response Styling */
 .question-response {
     margin-top: 15px;
@@ -193,6 +180,7 @@
     font-weight: bold;
     text-align: center;
     color: #333;
+    display: none;
 }
 
 /* Guess Response Styling */
@@ -201,22 +189,23 @@
     font-size: 1.3rem;
     font-weight: bold;
     text-align: center;
-    color: #333;
+    color: white;
 }
         .response.yes {
-            color: green;
+            color: white;
             font-weight: bold;
             margin-top: 15px;
             font-size: 1.3rem;
-
+            display: none;
         }
 
         .response.no {
-            color: red;
+            color: white;
             font-weight: bold;
             margin-top: 15px;
             margin-bottom: 0px;
             font-size: 1.3rem;
+            display: none;
         }
 
         .share-container {
@@ -402,49 +391,56 @@
 }
 
 .response.no {
-    color: red;
+    color: white;
+    border-color: red;
 }
 /* Progress Container */
-/* Progress Container Styling */
 .progress-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 20px 30px;
-    border: 2px solid #4682b4;
-    border-radius: 15px;
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
-    margin-top: -10px;
-    margin-bottom: -10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     font-size: 1.3rem;
-    background-color: #ffffff; /* Ensure background contrasts with text */
-    color: #315f85; /* Text color (dark blue) for visibility */
 }
-
-/* Styling for Span Elements Inside Progress Container */
-.progress-container span {
-    color: #4682b4; /* Text color for spans */
-    font-weight: bold;
-}
-
-
 .progress-container p {
     margin: 0;
     font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    color: white;
 }
-
-.progress-container strong {
-    color: #315f85;
+.progress-container span{
+    font-size: 1.5rem;
 }
+@media screen and (max-width: 768px) {
+    footer {
+        padding: 15px;
+    }
 
+    .progress-container {
+        flex-direction: column; /* Stack items vertically on small screens */
+        text-align: center;
+    }
+
+    .progress-container p {
+        font-size: 0.9rem; /* Reduce font size slightly for smaller screens */
+        margin-bottom: 10px;
+    }
+
+    .progress-container span {
+        font-size: 1.2rem; /* Adjust the font size for mobile */
+    }
+}
 .guess-response.hint {
     margin: auto; /* Reduce margin below hints */
     margin-top: 15px;
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
-    color: green; /* Optional: Different color for hints to distinguish */
+    color: white; /* Optional: Different color for hints to distinguish */
 }
 #hint {
     cursor: pointer;
@@ -459,12 +455,6 @@
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.game-container button:hover {
-    background: linear-gradient(to right, #2b4d6d, #3b709e);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
 @media screen and (max-width: 768px) {
     /* Add margin between buttons for mobile */
     #hint {
@@ -477,34 +467,14 @@
 }
 
 .guess-response.incorrect {
-    color: red; /* Display text in red */
-    font-weight: bold;
+    border: 2px solid white;
+    display: none;
 }
 .guess-response.correct {
-    color: green; /* Display text in green */
-    font-weight: bold;
+    border: 2px solid white;
+    display: none;
 }
 
-/* Red Banner Styling */
-#red-banner {
-    background-color: #ff4d4d;
-    color: white;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 15px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-#armylink{
-    color: white;
-}
 /* Celebration Popup Styling */
 .celebration-popup {
     position: fixed;
@@ -589,25 +559,24 @@ main {
 }
 
         /* Footer */
-        .footer a {
-    color: white;
-    text-decoration: none;
-    margin: 0 6px; /* Add horizontal space between icons */
-    font-size: 1rem; /* Adjust size of icons */
-    transition: color 0.3s ease;
-}
-
-.footer a:hover {
-    color: #ff914d; /* Change color on hover */
-}
-
-
-.footer {
-    background-color: #315f85; /* Matches the site's theme */
-    color: white;
+        footer {
+    background-color: #315f85;
+    padding: 20px 0;
     text-align: center;
-    padding: 15px;
-    font-size: 1rem;
+    position: relative;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+
+.footer-item {
+    font-size: 1.5rem; /* Increased size */
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-item strong {
+    color: #00bfff; /* Highlighting counts */
+    font-size: 1.8rem;
 }
 .giveup-popup {
     position: fixed;
@@ -699,10 +668,6 @@ main {
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-#guess-response {
-    display: block !important;
-    margin-bottom: -25px;
-}
 
 #giveup-share-button:hover {
     background-color: #315f85; /* Darker Blue */
@@ -769,6 +734,7 @@ main {
             z-index: 1000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-size: 16px;
+            color: #315f85;
             visibility: hidden;
         }
 
@@ -807,29 +773,28 @@ select:focus {
     background-color: white;
 }
 
-
     </style>
 </head>
 <main>
 <body>
-    <header class="header">
-        <header class="header">
-    <div class="logo">
-        <img src="/GuesstheSingernewlogo.png" alt="Guess the Singer Logo">
-    </div>
-</header>
-    <nav class="navbar">
-        <ul>
-            <li><a href="/index.html">Home</a></li>
-            <li><a href="/calendar.html">History</a></li>
-            <li><a href="/about.html">About</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="/images/logo.png" alt="Guess the Singer Logo">
+        </header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/calendar.html">History</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+        </nav>
     <section class="game-section">
-        <h3>Game #50<h3>
-        <div class="game-container">
+        <div class="text-box">
+            <h1>Game #53</h1>       
+             <div class="game-container">
             <select id="question-dropdown">
-                <option value="" disabled selected>Select a question...</option>
+                <option value="" disabled selected>Select a question to start...</option>
               <!-- General Questions -->
               <option value="is this a male artist?">Is this a male artist?</option>
               <option value="are they still alive?">Are they still alive?</option>
@@ -905,7 +870,7 @@ select:focus {
                 <ul id="autocomplete-list" class="autocomplete-list"></ul>
                 <button id="submit-guess">Submit Guess</button>
                 <button id="hint" class="hint">Hint</button>
-                <div class="response guess-response" id="guess-response">Guess the singer's name!</div>
+                <div class="response guess-response" id="guess-response"></div>
             </div>
             <div class="share-container" id="share-container" style="display: none;">
                 <button id="share-button">Share with Friends!</button>
@@ -918,13 +883,6 @@ select:focus {
             </div>
         </div>
     </section>
-    <section class="game-section">
-    
-        <div class="progress-container">
-            <p><strong>Questions:</strong> <span id="questions-used">0</span></p>
-            <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
-            <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
-        </div>
 
     <!-- Celebration Popup -->
 
@@ -932,8 +890,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Mac Miller</strong>!</p>
-            <img src="/images/macmiller.jpg" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Mel B</strong>!</p>
+            <img src="/images/melb.png" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -956,8 +914,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Mac Miller</strong>!</p>
-        <img src="/images/macmiller.jpg">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Mel B</strong>!</p>
+        <img src="/images/melb.png">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1009,12 +967,14 @@ select:focus {
 </main>
 
  <!-- Footer -->
- <footer class="footer">
-    &copy; 2024 Colby Martel | Follow me here!
-    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+ <footer>
+    <div class="progress-container">
+        <p><strong>Questions:</strong> <span id="questions-used">0</span></p>
+        <p><strong>Hints:</strong> <span id="hints-used">0</span></p>
+        <p><strong>Guesses:</strong> <span id="guesses-made">0</span></p>
+    </div>
 </footer>
+
     <script>
 // Initialize hint button state
 let questionsSinceLastHint = 0; // Tracks questions asked since the last hint
@@ -1037,82 +997,82 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: He started rapping at 14 years old.",
-    "Hint: He was born in Pennsylvania.",
-    "Hint: He would be 33 years old today.",
-    "Hint: His birth name was Malcolm McCormick and his stage name has the same initials."
+    "Hint: She was born in England.",
+    "Hint: She is a member of a world-famous girl group.",
+    "Hint: She was a judge on 'America's Got Talent.'",
+    "Hint: Her initials are 'M' and 'B'."
 ];
 
 const predefinedAnswers = {
     // Basic Info
-    "is this a male artist?": "Yes!",
-    "are they still alive?": "No!",
+    "is this a male artist?": "No!",
+    "are they still alive?": "Yes!",
     "are they over 50 years old?": "No!",
-    "are they over 40 years old?": "No!",
+    "are they over 40 years old?": "Yes!",
     "are they over 30 years old?": "Yes!",
-    "debut before 2000?": "No!",
+    "debut before 2000?": "Yes!",
     "debut before 2010?": "Yes!",
     "debut before 2020?": "Yes!",
-    "album release?": "Yes!",
+    "album release?": "No!",
     "are they touring?": "No!",
     "are they married?": "No!",
-    "divorced?": "No!",
+    "divorced?": "Yes!",
     "LGBTQ?": "No!",
 
     // Geographic Information
-    "are they from the united states?": "Yes!",
-    "are they from north america?": "Yes!",
-    "are they from europe?": "No!",
-
+    "are they from the united states?": "No!",
+    "are they from north america?": "No!",
+    "are they from europe?": "Yes!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
-    "are they of African descent?": "No!",
+    "are they of African descent?": "Yes!",
     "are they of Asian descent?": "No!",
-    "are they of European descent?": "Yes!",
+    "are they of European descent?": "No!",
     "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "Yes!",
+    "are they of mixed ethnicity?": "No!",
 
     // Music Style
     "different languages?": "No!",
     "are they spanish?": "No!",
-    "do they perform pop music?": "No!",
-    "do they perform rap music?": "Yes!",
+    "do they perform pop music?": "Yes!",
+    "do they perform rap music?": "No!",
     "do they perform R&B music?": "No!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
-    "do they perform jazz music?": "Influenced!",
+    "do they perform jazz music?": "No!",
     "do they perform party music?": "Yes!",
-    "do they perform sad music?": "Yes!",
+    "do they perform sad music?": "No!",
 
     // Career and Popularity
-    "are they also an actor?": "No!",
+    "are they also an actor?": "Yes!",
     "disney or nick?": "No!",
     "singing competition?": "No!",
     "have they won a Grammy?": "No!",
     "super bowl?": "No!",
-    "coachella?": "Yes!",
-    "billion club?": "No!", 
+    "coachella?": "No!",
+    "billion club?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 10M Instagram followers?": "Yes!",
-    "do they have more than 20M listeners?": "Yes!",
+    "do they have more than 10M Instagram followers?": "No!",
+    "do they have more than 20M listeners?": "No!",
     "do they have more than 50M listeners?": "No!",
-    "are they in a band?": "No!",
+    "are they in a band?": "Yes!",
 
     // Appearance
     "do they have dark hair?": "Yes!",
     "do they have blond hair?": "No!",
-    "5.5 feet tall?": "Yes!",
+    "5.5 feet tall?": "No!",
     "6 feet tall?": "No!",
     "do they have tattoos?": "Yes!",
     "do they wear glasses?": "No!",
-    "do they go by their birth name?": "No!",
+    "do they go by their birth name?": "Not fully!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
     "do they have a common first name?": "Yes!",
     "what does their name start with?": "Yes!"
 };
+
 
 // Lock the hint button (visual state only)
 function lockHintButton() {
@@ -1186,7 +1146,6 @@ hintButton.addEventListener("click", () => {
         console.log("All hints used, transformed to Give Up");
     }
 });
-
 submitQuestion.addEventListener("click", () => {
     const selectedIndex = questionDropdown.selectedIndex;
     const selectedOption = questionDropdown.options[selectedIndex];
@@ -1204,6 +1163,7 @@ submitQuestion.addEventListener("click", () => {
     questionCount++;
     updateProgress();
     updateHintAvailability(); // Check if hint thresholds are reached
+    submitQuestion.disabled = true;
 
     // Update guessResponse dynamically based on remaining questions for next hint
     const questionsNeeded = (usedHints + 1) * 4 - totalQuestionsAsked;
@@ -1225,19 +1185,25 @@ submitQuestion.addEventListener("click", () => {
         // Update the option text to include a check or X emoji
         if (answer === "Yes!") {
             selectedOption.textContent = `✅ ${selectedOption.textContent}`;
+            questionDropdown.style.border = "2px solid green"; // Add red border for incorrect answer
         } else if (answer === "No!") {
             selectedOption.textContent = `❌ ${selectedOption.textContent}`;
+            questionDropdown.style.border = "2px solid red"; // Add red border for incorrect answer
         } else {
             selectedOption.textContent = `❓ ${selectedOption.textContent}`; // For unknown responses
+            questionDropdown.style.border = "2px solid yellow"; // Add red border for incorrect answer
         }
 
         // Disable the option so it can't be selected again
         selectedOption.disabled = true;
-
-        // Reset the dropdown to show the placeholder
-        questionDropdown.selectedIndex = 0;
-    }, 200); // Delay for showing the response
+        setTimeout(() => {
+            questionDropdown.selectedIndex = 0; // Resets to the placeholder option
+            submitQuestion.disabled = false;
+            questionDropdown.options[0].textContent = "Ask another question?";
+            questionDropdown.style.border = ""        }, 1500); // 2-second delay
+    }, 200); // Short delay for showing the response
 });
+
 
 // Update progress display
 function updateProgress() {
@@ -1259,7 +1225,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Mac Miller"); // Replace with the dynamic answer
+        showGiveUpPopup("Mel B"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1312,31 +1278,40 @@ giveupEnterRaffleButton.addEventListener("click", () => {
 
 // Handle artist guess submission
 submitGuess.addEventListener("click", () => {
-    const guess = document.getElementById("artist-guess").value.trim();
+    const guessInput = document.getElementById("artist-guess"); // Select the input box
+    const guess = guessInput.value.trim();
 
     if (!guess) {
         guessResponse.textContent = "Please enter a guess!";
         guessResponse.className = "response guess-response"; // Default styling
+        guessInput.style.border = "2px solid red"; // Highlight the input box
         return;
     }
 
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Mac Miller"; // Example correct answer
+    const correctAnswer = "Mel B"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
         guessResponse.className = "response guess-response correct";
-
+        guessInput.style.border = "2px solid green"; // Green border for correct guess
+        guessInput.placeholder = "You got it!"; // Optional: Set a success message in the placeholder
         // Show the celebration popup
         showCelebrationPopup(correctAnswer);
     } else {
         guessResponse.textContent = "Incorrect! Keep trying.";
         guessResponse.className = "response guess-response incorrect";
+        guessInput.style.border = "2px solid red"; // Red border for incorrect guess
+        guessInput.value = ""; // Clear the input field
+        guessInput.placeholder = "Incorrect! Guess again!"; // Set the placeholder to "That is incorrect!"
     }
 
-    document.getElementById("artist-guess").value = ""; // Clear input
+    setTimeout(() => {
+        guessInput.style.border = ""; // Reset border after 2 seconds
+        guessInput.placeholder = "Type your guess here..."; // Reset placeholder after 2 seconds
+    }, 2000);
 });
 
 // Share functionality
@@ -1475,8 +1450,8 @@ function toggleMenu() {
     "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone", "Joji", "Chelsea Cutler",
     "21 Savage", "Teddy Swims", "Gwen Stefani", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
     "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", "Noah Kahan", "beabadoobee", "Morgan Wallen",
-    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave",
-    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller",
+    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave", "Carrie Underwood",
+    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller", "Iggy Azalea", "Mel B",
     "Shreya Ghoshal", "Tate McRae", "Pritam", "Chappell Roan", "Zach Bryan",
     "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas",
     "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", 
