@@ -1039,8 +1039,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Artemas</strong>!</p>
-            <img src="/images/artemas.png" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Daniel Caesar</strong>!</p>
+            <img src="/images/danielcaesar.png" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -1063,8 +1063,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Artemas</strong>!</p>
-        <img src="/images/artemas.png">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Daniel Caesar</strong>!</p>
+        <img src="/images/danielcaesar.png">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1202,22 +1202,21 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: He is known for his distinct blend of pop and alternative music.",
-    "Hint: His name sounds like the first name of a fastasy novel series.",
-    "Hint: His most popular song is 'I Like the Way You Kiss Me', which was very famous on TikTok.",
-    "Hint: He is 25 years old and his name starts with the letter 'A'."
+    "Hint: He is known for soulful R&B music.",
+    "Hint: He was born in Toronto, Canada.",
+    "Hint: His most popular song is a collaboration with H.E.R.",
+    "Hint: He shares a last name with a type of salad."
 ];
-
 const predefinedAnswers = {
     // Basic Info
     "is this a male artist?": "Yes!",
     "are they still alive?": "Yes!",
-    "are they over 50 years old?": "No!",
-    "are they over 40 years old?": "No!",
     "are they over 30 years old?": "No!",
+    "are they over 40 years old?": "No!",
+    "are they over 50 years old?": "No!",
     "debut before 2000?": "No!",
     "debut before 2010?": "No!",
-    "debut before 2020?": "No!",
+    "debut before 2020?": "Yes!",
     "album release?": "Yes!",
     "are they touring?": "No!",
     "are they married?": "No!",
@@ -1226,37 +1225,36 @@ const predefinedAnswers = {
 
     // Geographic Information
     "are they from the united states?": "No!",
-    "are they from north america?": "No!",
-    "are they from europe?": "Yes!",
+    "are they from north america?": "Yes!",
+    "are they from europe?": "No!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
-    "are they of African descent?": "No!",
     "are they of Asian descent?": "No!",
-    "are they of European descent?": "Yes!",
+    "are they of African descent?": "Yes!",
+    "are they of European descent?": "No!",
     "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "No!",
+    "are they of mixed ethnicity?": "Yes!",
 
     // Music Style
     "different languages?": "No!",
     "are they spanish?": "No!",
-    "do they perform pop music?": "Yes!",
+    "do they perform pop music?": "No!",
     "do they perform rap music?": "No!",
-    "do they perform R&B music?": "No!",
-    "do they perform rock music?": "Yes!",
-    "do they perform country music?": "No!",
+    "do they perform R&B music?": "Yes!",
+    "do they perform rock music?": "No!",
     "do they perform jazz music?": "No!",
-    "do they perform party music?": "Yes!",
+    "do they perform party music?": "No!",
     "do they perform sad music?": "Yes!",
 
     // Career and Popularity
     "are they also an actor?": "No!",
     "disney or nick?": "No!",
     "singing competition?": "No!",
-    "have they won a Grammy?": "No!",
+    "have they won a Grammy?": "Yes!",
     "super bowl?": "No!",
-    "coachella?": "No!",
+    "coachella?": "Yes!",
     "billion club?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 10M Instagram followers?": "No!",
@@ -1272,9 +1270,8 @@ const predefinedAnswers = {
     "do they have tattoos?": "No!",
     "do they wear glasses?": "No!",
     "do they go by their birth name?": "No!",
-    "do they go by one word?": "Yes!",
-    "do they go by two words?": "No!",
-    "do they have a common first name?": "No!",
+    "do they go by one word?": "No!",
+    "do they have a common first name?": "Yes!",
     "what does their name start with?": "Yes!"
 };
 
@@ -1429,7 +1426,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Artemas"); // Replace with the dynamic answer
+        showGiveUpPopup("Daniel Caesar"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1495,7 +1492,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Artemas"; // Example correct answer
+    const correctAnswer = "Daniel Caesar"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
