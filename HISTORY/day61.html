@@ -940,7 +940,7 @@ select:focus {
             </nav>
     <section class="game-section">
         <div class="text-box">
-            <h1>Game #60</h1>       
+            <h1>Game #61</h1>       
              <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question to start...</option>
@@ -1039,8 +1039,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">ZAYN</strong>!</p>
-            <img src="/images/zayn.png" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">NF</strong>!</p>
+            <img src="/images/NF.png" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -1062,8 +1062,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">ZAYN</strong>!</p>
-        <img src="/images/zayn.png">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">NF</strong>!</p>
+        <img src="/images/NF.png">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1201,10 +1201,10 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: One of their most famous songs is in collaboration with Taylor Swift.",
-    "Hint: They were born in England.",
-    "Hint: He was a member of one of the biggest boy bands of all time.",
-    "Hint: His name starts with the letter 'Z'."
+    "Hint: He is a rapper known for deeply personal lyrics.",
+    "Hint: He often wears a hoodie and cap in his performances.",
+    "Hint: His most popular song is called 'Let Me Down'.",
+    "Hint: His stage name consists of two letters, his initials.",
 ];
 
 const predefinedAnswers = {
@@ -1218,30 +1218,30 @@ const predefinedAnswers = {
     "debut before 2010?": "No!",
     "debut before 2020?": "Yes!",
     "album release in last 2 years?": "Yes!",
-    "are they touring?": "No!",
-    "are they married?": "No!",
+    "are they touring?": "Yes!",
+    "are they married?": "Yes!",
     "divorced?": "No!",
     "LGBTQ?": "No!",
 
     // Geographic Information
-    "are they from the united states?": "No!",
-    "are they from north america?": "No!",
-    "are they from europe?": "Yes!",
+    "are they from the united states?": "Yes!",
+    "are they from north america?": "Yes!",
+    "are they from europe?": "No!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
     // Ethnicity Questions
     "are they of African descent?": "No!",
-    "are they of Asian descent?": "Yes!",
+    "are they of Asian descent?": "No!",
     "are they of European descent?": "Yes!",
     "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "Yes!",
+    "are they of mixed ethnicity?": "No!",
 
     // Music Style
     "different languages?": "No!",
     "are they spanish?": "No!",
-    "do they perform pop music?": "Yes!",
-    "do they perform rap music?": "No!",
+    "do they perform pop music?": "No!",
+    "do they perform rap music?": "Yes!",
     "do they perform R&B music?": "No!",
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
@@ -1251,30 +1251,30 @@ const predefinedAnswers = {
 
     // Career and Popularity
     "are they also an actor?": "No!",
-    "disney or nick?": "Yes!",
-    "singing competition?": "Yes!",
+    "disney or nick?": "No!",
+    "singing competition?": "No!",
     "have they won a Grammy?": "No!",
     "super bowl?": "No!",
     "coachella?": "No!",
     "song over one billion streams?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 10M Instagram followers?": "Yes!",
-    "do they have more than 20M listeners?": "Yes!",
+    "do they have more than 10M Instagram followers?": "No!",
+    "do they have more than 20M listeners?": "No!",
     "do they have more than 50M listeners?": "No!",
-    "were they ever in a band?": "Yes!",
+    "were they ever in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "Yes!",
-    "do they have blond hair?": "Sometimes!",
+    "do they have dark hair?": "Kind of!",
+    "do they have blond hair?": "Kind of!",
     "over 5.5 feet tall?": "Yes!",
     "over 6 feet tall?": "No!",
     "do they have tattoos?": "Yes!",
     "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Close!",
-    "do they go by one word?": "Yes!",
+    "do they go by their birth name?": "No!",
+    "do they go by one word?": "Kind of!",
     "do they go by two words?": "No!",
-    "do they have a common first name?": "No!",
-    "name starts A-M?": "Yes!"
+    "do they have a common first name?": "Yes!",
+    "name starts A-M?": "No!"
 };
 
 // Lock the hint button (visual state only)
@@ -1428,7 +1428,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("ZAYN"); // Replace with the dynamic answer
+        showGiveUpPopup("NF"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1494,7 +1494,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "ZAYN"; // Example correct answer
+    const correctAnswer = "NF"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
@@ -1641,7 +1641,7 @@ function toggleMenu() {
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes",
     "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank",
     "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins",
-    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey",
+    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF",
     "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee",
     "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown",
     "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin",
