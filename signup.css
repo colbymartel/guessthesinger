@@ -1,0 +1,205 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: url('../images/bg-top.png') no-repeat center center fixed;
+    background-size: cover; /* Ensure the background covers the entire viewport */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    background-color: #4682b4;
+    padding: 30px;
+    text-align: center;
+    color: white;
+}
+
+.header .logo img {
+    width: 20%;
+    margin-bottom: 10px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .header .logo img {
+        width: 60%;
+    }
+}
+
+/* Main Section */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Feature Section */
+.features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 20px;
+    background: white;
+}
+
+.feature-item {
+    max-width: 300px;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.feature-item h3 {
+    font-size: 1.5rem;
+    color: #4682b4;
+    margin-bottom: 10px;
+}
+
+.feature-item p {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Footer */
+.footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 6px;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ff914d;
+}
+
+.footer {
+    background-color: #315f85;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 1rem;
+}
+
+/* Login and Signup Container */
+.auth-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 400px;
+    margin: 20px;
+}
+
+/* Form Headings */
+.auth-container h2 {
+    color: #4682b4;
+    margin-bottom: 20px;
+}
+
+/* Input Groups */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #315f85;
+    font-weight: 600;
+}
+
+.input-group input[type="text"],
+.input-group input[type="password"],
+.input-group input[type="email"] {
+    width: 100%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+    font-size: 1rem;
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="password"]:focus,
+.input-group input[type="email"]:focus {
+    border-color: #4682b4;
+    outline: none;
+}
+
+/* Remember Me Checkbox */
+.remember-me {
+    display: flex;
+    align-items: center;
+    color: #315f85;
+}
+
+.remember-me input {
+    margin-right: 8px;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #4682b4;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #315f85;
+    transform: translateY(-2px);
+}
+
+/* Redirect Links */
+.redirect {
+    text-align: center;
+    margin-top: 16px;
+    color: #315f85;
+}
+
+.redirect a {
+    color: #4682b4;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.redirect a:hover {
+    text-decoration: underline;
+}

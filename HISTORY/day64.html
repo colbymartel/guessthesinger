@@ -1051,7 +1051,7 @@ select:focus {
     
             <div class="celebration-buttons">
                 <button id="share-result-button" class="celebration-button">Share with Friends!</button>
-                <button id="enter-raffle-button" class="celebration-button">Enter Raffle</button>
+                <button id="enter-raffle-button" class="celebration-button">Sign-Up</button>
             </div>
         </div>
     </div>
@@ -1477,7 +1477,7 @@ giveupShareButton.addEventListener("click", () => {
 // Add Raffle functionality for the Give Up popup
 const giveupEnterRaffleButton = document.getElementById("giveup-enter-raffle-button");
 giveupEnterRaffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
+    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank");
 });
 
 
@@ -1586,14 +1586,14 @@ const submitRaffle = document.getElementById("submit-raffle");
 
 // Show the raffle container when the "Enter Raffle" button is clicked
 raffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
+    window.open("signup.html", "_blank"); // Replace with your Google Form URL
 });
 // Raffle functionality for the celebration popup
 const enterRaffleButton = document.getElementById("enter-raffle-button");
 
 enterRaffleButton.addEventListener("click", () => {
     // Replace this URL with your actual Google Form link
-    const raffleFormURL = "https://forms.gle/oAZMPM18uhoqhssk6"; 
+    const raffleFormURL = "/signup.html"; 
     window.open(raffleFormURL, "_blank"); // Opens the Google Form in a new tab
 });
 // Get the popup and close button elements
