@@ -940,7 +940,7 @@ select:focus {
             </nav>
     <section class="game-section">
         <div class="text-box">
-            <h1>Game #65</h1>       
+            <h1>Game #66</h1>       
              <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question to start...</option>
@@ -1039,8 +1039,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">David Kushner</strong>!</p>
-            <img src="/images/davidkushner.png" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Tove Lo</strong>!</p>
+            <img src="/images/tovelo.png" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -1051,7 +1051,7 @@ select:focus {
     
             <div class="celebration-buttons">
                 <button id="share-result-button" class="celebration-button">Share with Friends!</button>
-                <button id="enter-raffle-button" class="celebration-button">View Stats</button>
+                <button id="enter-raffle-button" class="celebration-button">Enter Raffle</button>
             </div>
         </div>
     </div>
@@ -1062,8 +1062,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">David Kushner</strong>!</p>
-        <img src="/images/davidkushner.png">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Tove Lo</strong>!</p>
+        <img src="/images/tovelo.png">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1201,32 +1201,32 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: He is from Chicago, Illinois.",
-    "Hint: He was born in 2000.",
-    "Hint: His most viral song is called 'Daylight'.",
-    "Hint: His initials are 'D' and 'K'."
+    "Hint: She is known for blending electropop with dark, emotional themes.",
+    "Hint: She is from Sweden.",
+    "Hint: Her breakout hit 'Habits (Stay High)' gained international recognition.",
+    "Hint: Her initials are 'T' and 'L'."
 ];
 
 const predefinedAnswers = {
     // Basic Info
-    "is this a male artist?": "Yes!",
+    "is this a male artist?": "No!",
     "are they still alive?": "Yes!",
     "are they over 50 years old?": "No!",
     "are they over 40 years old?": "No!",
-    "are they over 30 years old?": "No!",
+    "are they over 30 years old?": "Yes!",
     "debut before 2000?": "No!",
     "debut before 2010?": "No!",
-    "debut before 2020?": "No!",
+    "debut before 2020?": "Yes!",
     "album release in last 2 years?": "Yes!",
     "are they touring?": "Yes!",
     "are they married?": "No!",
     "divorced?": "No!",
-    "LGBTQ?": "No!",
+    "LGBTQ?": "Yes!",
 
     // Geographic Information
-    "are they from the united states?": "Yes!",
-    "are they from north america?": "Yes!",
-    "are they from europe?": "No!",
+    "are they from the united states?": "No!",
+    "are they from north america?": "No!",
+    "are they from europe?": "Yes!",
     "are they from australia?": "No!",
     "are they from asia or africa?": "No!",
 
@@ -1243,10 +1243,10 @@ const predefinedAnswers = {
     "do they perform pop music?": "Yes!",
     "do they perform rap music?": "No!",
     "do they perform R&B music?": "No!",
-    "do they perform rock music?": "Yes!",
+    "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
-    "do they perform party music?": "No!",
+    "do they perform party music?": "Yes!",
     "do they perform sad music?": "Yes!",
 
     // Career and Popularity
@@ -1255,8 +1255,8 @@ const predefinedAnswers = {
     "singing competition?": "No!",
     "have they won a Grammy?": "No!",
     "super bowl?": "No!",
-    "coachella?": "No!",
-    "song over one billion streams?": "No!",
+    "coachella?": "Yes!",
+    "song over one billion streams?": "Yes!",
     "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 10M Instagram followers?": "No!",
     "do they have more than 20M listeners?": "No!",
@@ -1264,19 +1264,19 @@ const predefinedAnswers = {
     "were they ever in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "Yes!",
-    "do they have blond hair?": "No!",
+    "do they have dark hair?": "No!",
+    "do they have blond hair?": "Yes!",
     "over 5.5 feet tall?": "Yes!",
     "over 6 feet tall?": "No!",
-    "do they have tattoos?": "No!",
+    "do they have tattoos?": "Yes!",
     "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Yes!",
+    "do they go by their birth name?": "No!",
     "do they go by one word?": "No!",
     "do they go by two words?": "Yes!",
-    "do they have a common first name?": "Yes!",
-    "name starts A-M?": "Yes!"
-};
+    "do they have a common first name?": "No!",
+    "name starts A-M?": "No!",
 
+};
 
 // Lock the hint button (visual state only)
 function lockHintButton() {
@@ -1430,7 +1430,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("David Kushner"); // Replace with the dynamic answer
+        showGiveUpPopup("Tove Lo"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1496,7 +1496,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "David Kushner"; // Example correct answer
+    const correctAnswer = "Tove Lo"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
@@ -1586,14 +1586,14 @@ const submitRaffle = document.getElementById("submit-raffle");
 
 // Show the raffle container when the "Enter Raffle" button is clicked
 raffleButton.addEventListener("click", () => {
-    window.open("/stats.html", "_blank"); // Replace with your Google Form URL
+    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
 });
 // Raffle functionality for the celebration popup
 const enterRaffleButton = document.getElementById("enter-raffle-button");
 
 enterRaffleButton.addEventListener("click", () => {
     // Replace this URL with your actual Google Form link
-    const raffleFormURL = "/stats.html"; 
+    const raffleFormURL = "https://forms.gle/oAZMPM18uhoqhssk6"; 
     window.open(raffleFormURL, "_blank"); // Opens the Google Form in a new tab
 });
 // Get the popup and close button elements
@@ -1648,7 +1648,7 @@ function toggleMenu() {
     "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown",
     "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin",
     "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube",
-    "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", "Lorde",
+    "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", "Lorde", "Tove Lo",
     "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future", "Melanie Martinez",
     "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti", "2Pac", "David Kushner",
     "Daddy Yankee", "Tyler, The Creator", "One Direction", "GloRilla", "Adam Levine", "Don Toliver", "OneRepublic",

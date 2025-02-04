@@ -33,21 +33,22 @@
             color: white;
         }
 
-/* Logo Styling */
-.header .logo img {
-    width: 20%; /* Set a default width */
-    margin-bottom: 10px;
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Ensures proper centering */
-    margin: 0 auto; /* Centers horizontally */
-}
+        /* Logo Styling */
+        .header .logo img {
+            width: 20%; /* Set a default width */
+            margin-bottom: 10px;
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Ensures proper centering */
+            margin: 0 auto; /* Centers horizontally */
+        }
 
-/* Responsive Design for Smaller Screens */
-@media (max-width: 768px) {
-    .header .logo img {
-        width: 60%; /* Reduce the size for smaller screens */
-    }
-}
+        /* Responsive Design for Smaller Screens */
+        @media (max-width: 768px) {
+            .header .logo img {
+                width: 60%; /* Reduce the size for smaller screens */
+            }
+        }
+
         /* Main Section */
         .main {
             flex: 1;
@@ -72,7 +73,16 @@
             color: #555;
         }
 
-        .main .cta-button {
+        /* Button Group for Login and Play Now */
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
             background-color: #4682b4;
             color: white;
             padding: 15px 30px;
@@ -84,7 +94,7 @@
             transition: background-color 0.3s, transform 0.2s;
         }
 
-        .main .cta-button:hover {
+        .cta-button:hover {
             background-color: #315f85;
             transform: scale(1.05);
         }
@@ -127,25 +137,24 @@
 
         /* Footer */
         .footer a {
-    color: white;
-    text-decoration: none;
-    margin: 0 6px; /* Add horizontal space between icons */
-    font-size: 1rem; /* Adjust size of icons */
-    transition: color 0.3s ease;
-}
+            color: white;
+            text-decoration: none;
+            margin: 0 6px; /* Add horizontal space between icons */
+            font-size: 1rem; /* Adjust size of icons */
+            transition: color 0.3s ease;
+        }
 
-.footer a:hover {
-    color: #ff914d; /* Change color on hover */
-}
+        .footer a:hover {
+            color: #ff914d; /* Change color on hover */
+        }
 
-.footer {
-    background-color: #315f85; /* Matches the site's theme */
-    color: white;
-    text-align: center;
-    padding: 15px;
-    font-size: 1rem;
-}
-
+        .footer {
+            background-color: #315f85; /* Matches the site's theme */
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -155,11 +164,15 @@
             <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
         </div>
     </header>
+    
     <!-- Main Section -->
     <main class="main">
         <h2>Can You Guess Today's Mystery Artist?</h2>
         <p>Ask questions, guess the artist, share your results, and enter to win prizes!</p>
-        <button class="cta-button" onclick="window.location.href='HISTORY/day65.html'">Play Now</button>
+        <div class="button-group">
+            <button class="cta-button" onclick="window.location.href='login.html'">Log In</button>
+            <button class="cta-button" onclick="window.location.href='HISTORY/day66.html'">Play Now</button>
+        </div>
     </main>
 
     <!-- Feature Section -->
