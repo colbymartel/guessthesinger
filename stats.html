@@ -14,7 +14,7 @@
   <!-- External CSS (reuse your signup.css styles) -->
   <link rel="stylesheet" href="./signup.css">
   <style>
-    /* Additional styles for the enhanced stats page */
+    /* Additional styles for the stats page */
     .stats-table {
       width: 100%;
       max-width: 500px;
@@ -86,11 +86,12 @@
 
   <!-- Firebase and Stats Script -->
   <script type="module">
+    // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
 
-    // Your Firebase configuration
+    // Firebase configuration – replace with your own project credentials
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
@@ -107,15 +108,10 @@
     const auth = getAuth(app);
     const database = getDatabase(app);
 
-    // Optional: Retrieve UID from local storage for debugging
-    const storedUid = localStorage.getItem("userId");
-    console.log("Stored UID (if any):", storedUid);
-
-    // Function to render statistics as a table
+    // Helper function to render stats as an HTML table
     function renderStatsTable(stats) {
       let table = '<table class="stats-table">';
       table += '<tr><th>Statistic</th><th>Value</th></tr>';
-      // Display the specific stats: streak, total games played, and fewest guesses.
       table += `<tr><td>Streak</td><td>${stats.streak !== undefined ? stats.streak : 'N/A'}</td></tr>`;
       table += `<tr><td>Total Games Played</td><td>${stats.totalGamesPlayed !== undefined ? stats.totalGamesPlayed : 'N/A'}</td></tr>`;
       table += `<tr><td>Fewest Guesses</td><td>${stats.fewestGuesses !== undefined ? stats.fewestGuesses : 'N/A'}</td></tr>`;
@@ -123,15 +119,15 @@
       return table;
     }
 
-    // Check if the user is authenticated
+    // Listen for changes in authentication state
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const userId = user.uid;
         console.log("User is logged in with UID:", userId);
-        // Update local storage (in case it has changed)
+        // Store UID in localStorage (optional)
         localStorage.setItem("userId", userId);
 
-        // Fetch user display name from the 'signupForm' node (if stored during sign-up)
+        // Fetch the user's display name from a 'signupForm' node if available
         get(ref(database, 'signupForm/' + userId))
           .then((snapshot) => {
             if (snapshot.exists()) {

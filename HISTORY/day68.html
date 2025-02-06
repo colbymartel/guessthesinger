@@ -10,6 +10,31 @@
   gtag('js', new Date());
 
   gtag('config', 'G-T42NG5C994');
+  </script>
+  <script type="module">
+
+  // Import Firebase Database functions if not already imported
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+
+// Your Firebase configuration – replace with your own project's credentials
+const firebaseConfig = {
+  apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+  authDomain: "guessthesinger10.firebaseapp.com",
+  databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
+  projectId: "guessthesinger10",
+  storageBucket: "guessthesinger10.firebasestorage.app",
+  messagingSenderId: "97201023235",
+  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+  measurementId: "G-3R005HTKEW"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
 </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -940,7 +965,7 @@ select:focus {
             </nav>
     <section class="game-section">
         <div class="text-box">
-            <h1>Game #66</h1>       
+            <h1>Game #68</h1>       
              <div class="game-container">
             <select id="question-dropdown">
                 <option value="" disabled selected>Select a question to start...</option>
@@ -1023,7 +1048,7 @@ select:focus {
             </div>
             <div class="share-container" id="share-container" style="display: none;">
                 <button id="share-button">Share with Friends!</button>
-                <button id="raffle-button" class="raffle-button">Enter Raffle</button>
+                <button id="raffle-button" class="raffle-button">Join Discord</button>
             </div>
             <div class="raffle-container" id="raffle-container" style="display: none;">
                 <input type="text" id="raffle-name" placeholder="Your Name" />
@@ -1039,8 +1064,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Tove Lo</strong>!</p>
-            <img src="/images/tovelo.png" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Lauren Spencer-Smith</strong>!</p>
+            <img src="/images/laurenspencersmith.png" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -1051,7 +1076,7 @@ select:focus {
     
             <div class="celebration-buttons">
                 <button id="share-result-button" class="celebration-button">Share with Friends!</button>
-                <button id="enter-raffle-button" class="celebration-button">Enter Raffle</button>
+                <button id="enter-raffle-button" class="celebration-button">Join Discord</button>
             </div>
         </div>
     </div>
@@ -1062,14 +1087,14 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Tove Lo</strong>!</p>
-        <img src="/images/tovelo.png">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Lauren Spencer-Smith</strong>!</p>
+        <img src="/images/laurenspencersmith.png">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
         <div class="celebration-buttons">
             <button id="giveup-share-button">Share with Friends!</button>
-            <button id="giveup-enter-raffle-button">Enter Raffle</button>
+            <button id="giveup-enter-raffle-button">Join Discord</button>
         </div>
     </div>
 </div>
@@ -1201,10 +1226,10 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: She is known for blending electropop with dark, emotional themes.",
-    "Hint: She is from Sweden.",
-    "Hint: Her breakout hit 'Habits (Stay High)' gained international recognition.",
-    "Hint: Her initials are 'T' and 'L'."
+    "Hint: She gained popularity from American Idol.",
+    "Hint: She is Canadian but born in the United Kingdom.",
+    "Hint: Her song 'Fingers Crossed' went viral on TikTok.",
+    "Hint: Her initials are 'L', 'S' and 'S'."
 ];
 
 const predefinedAnswers = {
@@ -1213,15 +1238,15 @@ const predefinedAnswers = {
     "are they still alive?": "Yes!",
     "are they over 50 years old?": "No!",
     "are they over 40 years old?": "No!",
-    "are they over 30 years old?": "Yes!",
+    "are they over 30 years old?": "No!",
     "debut before 2000?": "No!",
     "debut before 2010?": "No!",
-    "debut before 2020?": "Yes!",
+    "debut before 2020?": "No!",
     "album release in last 2 years?": "Yes!",
-    "are they touring?": "Yes!",
+    "are they touring?": "No!",
     "are they married?": "No!",
     "divorced?": "No!",
-    "LGBTQ?": "Yes!",
+    "LGBTQ?": "No!",
 
     // Geographic Information
     "are they from the united states?": "No!",
@@ -1246,17 +1271,17 @@ const predefinedAnswers = {
     "do they perform rock music?": "No!",
     "do they perform country music?": "No!",
     "do they perform jazz music?": "No!",
-    "do they perform party music?": "Yes!",
+    "do they perform party music?": "No!",
     "do they perform sad music?": "Yes!",
 
     // Career and Popularity
     "are they also an actor?": "No!",
     "disney or nick?": "No!",
-    "singing competition?": "No!",
+    "singing competition?": "Yes!",
     "have they won a Grammy?": "No!",
     "super bowl?": "No!",
-    "coachella?": "Yes!",
-    "song over one billion streams?": "Yes!",
+    "coachella?": "No!",
+    "song over one billion streams?": "No!",
     "do they have more than 10M TikTok followers?": "No!",
     "do they have more than 10M Instagram followers?": "No!",
     "do they have more than 20M listeners?": "No!",
@@ -1264,18 +1289,17 @@ const predefinedAnswers = {
     "were they ever in a band?": "No!",
 
     // Appearance
-    "do they have dark hair?": "No!",
-    "do they have blond hair?": "Yes!",
-    "over 5.5 feet tall?": "Yes!",
+    "do they have dark hair?": "Sometimes!",
+    "do they have blond hair?": "Sometimes!",
+    "over 5.5 feet tall?": "No!",
     "over 6 feet tall?": "No!",
-    "do they have tattoos?": "Yes!",
+    "do they have tattoos?": "No!",
     "do they wear glasses?": "No!",
-    "do they go by their birth name?": "No!",
+    "do they go by their birth name?": "Yes!",
     "do they go by one word?": "No!",
-    "do they go by two words?": "Yes!",
-    "do they have a common first name?": "No!",
-    "name starts A-M?": "No!",
-
+    "do they go by two words?": "No!",
+    "do they have a common first name?": "Yes!",
+    "name starts A-M?": "Yes!"
 };
 
 // Lock the hint button (visual state only)
@@ -1430,7 +1454,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Tove Lo"); // Replace with the dynamic answer
+        showGiveUpPopup("Lauren Spencer-Smith"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1496,7 +1520,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "Tove Lo"; // Example correct answer
+    const correctAnswer = "Lauren Spencer-Smith"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
@@ -1505,6 +1529,20 @@ submitGuess.addEventListener("click", () => {
         guessInput.placeholder = "You got it!"; // Optional: Set a success message in the placeholder
         // Show the celebration popup
         showCelebrationPopup(correctAnswer);
+        const userId = localStorage.getItem("userId"); // Assuming UID was stored upon login
+        if (userId) {
+            // Prepare the stats update object. Here, we increment totalGamesPlayed by 1.
+            const statsUpdate = {
+              totalGamesPlayed: 1,         // Increase by 1 game
+              guessCount: guessCount,        // Total guesses made in this game
+              hintCount: hintCount,          // Total hints used in this game
+              questionCount: questionCount,  // Total questions asked in this game
+              lastGameDate: new Date().toISOString() // Record completion date/time
+            };
+            updateGameStats(userId, statsUpdate);
+        } else {
+            console.warn("No userId found in localStorage. Ensure user is logged in.");
+        }
     } else {
         guessResponse.textContent = "Incorrect! Keep trying.";
         guessResponse.className = "response guess-response incorrect";
@@ -1586,14 +1624,14 @@ const submitRaffle = document.getElementById("submit-raffle");
 
 // Show the raffle container when the "Enter Raffle" button is clicked
 raffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
+    window.open("https://forms.gle/8UoyYgQNeD78Feq48", "_blank"); // Replace with your Google Form URL
 });
 // Raffle functionality for the celebration popup
 const enterRaffleButton = document.getElementById("enter-raffle-button");
 
 enterRaffleButton.addEventListener("click", () => {
     // Replace this URL with your actual Google Form link
-    const raffleFormURL = "https://forms.gle/oAZMPM18uhoqhssk6"; 
+    const raffleFormURL = "https://forms.gle/8UoyYgQNeD78Feq48"; 
     window.open(raffleFormURL, "_blank"); // Opens the Google Form in a new tab
 });
 // Get the popup and close button elements
@@ -1647,7 +1685,7 @@ function toggleMenu() {
     "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee",
     "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown",
     "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin",
-    "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube",
+    "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube", "Rex Orange County",
     "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", "Lorde", "Tove Lo",
     "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future", "Melanie Martinez",
     "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti", "2Pac", "David Kushner",
@@ -1657,7 +1695,7 @@ function toggleMenu() {
     "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", "Noah Kahan", "beabadoobee", "Morgan Wallen",
     "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave", "Carrie Underwood",
     "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller", "Iggy Azalea", "Mel B",
-    "Shreya Ghoshal", "Tate McRae", "Pritam", "Chappell Roan", "Zach Bryan",
+    "Shreya Ghoshal", "Tate McRae", "Pritam", "Chappell Roan", "Zach Bryan", "Lauren Spencer-Smith",
     "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas",
     "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", 
     "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent",
@@ -1894,7 +1932,6 @@ closeGiveUpPopupButton.addEventListener("click", () => {
     const giveupPopup = document.getElementById("giveup-popup");
     giveupPopup.style.display = "none";
 });
-
 </script>
 </body>
 </html>

@@ -33,8 +33,8 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
       // Save the user's UID to local storage
       localStorage.setItem("userId", user.uid);
       console.log("User logged in with UID:", user.uid);
-      // Redirect to the stats page
-      window.location.href = 'stats.html';
+      // Redirect to the play page
+      window.location.href = 'HISTORY/day68.html';
     })
     .catch((error) => {
       console.error('Login error:', error.code, error.message);
