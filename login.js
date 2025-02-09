@@ -34,7 +34,7 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
       localStorage.setItem("userId", user.uid);
       console.log("User logged in with UID:", user.uid);
       // Redirect to the play page
-      window.location.href = 'HISTORY/day70.html';
+      window.location.href = 'HISTORY/day71.html';
     })
     .catch((error) => {
       console.error('Login error:', error.code, error.message);
