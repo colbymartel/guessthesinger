@@ -178,6 +178,7 @@ header {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: border 0.3s, box-shadow 0.3s ease-in-out;
+    
 }
 
 .game-container input:focus,
@@ -470,7 +471,8 @@ header {
 }
 .guess-response.hint {
     margin: auto; /* Reduce margin below hints */
-    margin-top: 15px;
+    margin-top: 25px;
+    margin-bottom: -45px;
     font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
     color: #4682b4;
 }
@@ -945,7 +947,146 @@ select:focus {
         height: 65px; /* Maintain aspect ratio */
     }
 }
+/* Example base styling for your game container */
+.game-container {
+  max-width: 600px;
+  margin: 20px auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+  padding: 20px;
+}
 
+/* Enhanced Custom Dropdown Styling */
+.custom-dropdown {
+  position: relative;
+  width: 90%;
+  margin: 20px auto;
+  font-family: sans-serif;
+}
+/* ----- Dropdown Header with Toggle Symbol ----- */
+.dropdown-header {
+  position: relative; /* Ensure positioning for pseudo-element */
+  padding: 15px;
+  font-size: 1.2rem;
+  background: white;
+  border: 2px solid #87cefa;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+/* Add a caret symbol (down arrow) using a pseudo-element */
+.dropdown-header::after {
+  content: "\25BC"; /* Unicode for a down arrow */
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+  font-size: 1rem;
+  color: #87cefa;
+}
+
+/* Rotate the arrow when dropdown is open */
+.custom-dropdown.open .dropdown-header::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* ----- Existing Dropdown Content Rules ----- */
+.dropdown-content {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 2px solid #87cefa;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  display: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Show content when open */
+.custom-dropdown.open .dropdown-content {
+  display: block;
+}
+
+/* Dropdown Group Header using <details> and <summary> */
+.dropdown-group summary {
+  list-style: none;
+  padding: 15px 16px;
+  font-size: 1.1rem;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  font-weight: bold;
+  outline: none;
+}
+
+/* Remove default disclosure triangle */
+.dropdown-group summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Dropdown Items styling */
+.dropdown-item {
+  padding: 15px 16px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid #eee;
+}
+
+.dropdown-item:hover {
+  background: #f0f8ff;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item.disabled {
+  pointer-events: none; /* Prevent clicks */
+  opacity: 0.6;         /* Visually indicate it's disabled */
+  cursor: default;
+}
+/* For Dropdown Group (Category) Headers */
+.dropdown-group summary {
+  position: relative; /* Enable positioning for the pseudo-element */
+  padding: 15px 16px;
+  font-size: 1.1rem;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  font-weight: bold;
+  outline: none;
+}
+
+/* Remove the default disclosure triangle */
+.dropdown-group summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Add a toggle arrow using a pseudo-element */
+.dropdown-group summary::after {
+  content: "\25BC"; /* Unicode down arrow */
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+  font-size: 0.9rem;
+  color: #87cefa;
+}
+
+/* Rotate the arrow when the dropdown group is open */
+.dropdown-group[open] summary::after {
+  transform: translateY(-50%) rotate(180deg);
+}
 
     </style>
 </head>
@@ -966,85 +1107,107 @@ select:focus {
     <section class="game-section">
         <div class="text-box">
             <h1>Game #71</h1>       
-             <div class="game-container">
-            <select id="question-dropdown">
-                <option value="" disabled selected>Select a question to start...</option>
-              <!-- General Questions -->
-              <optgroup label="General Questions">
-              <option value="is this a male artist?">Is this a male artist?</option>
-              <option value="is this a female artist?">Is this a female artist?</option>
-              <option value="are they still alive?">Are they still alive?</option>
-              <option value="are they over 30 years old?">Are they over 30 years old?</option>
-              <option value="are they over 40 years old?">Are they over 40 years old?</option>
-              <option value="are they over 50 years old?">Are they over 50 years old?</option>
-              <option value="debut before 2000?">Did they debut before 2000?</option>
-              <option value="debut before 2010?">Did they debut before 2010?</option>
-              <option value="debut before 2020?">Did they debut before 2020?</option>
-              <option value="album release in last 2 years?">Did they release a new album in the last 2 years?</option>
-              <option value="are they touring?">Are they currently touring?</option>
-              <option value="are they married?">Are they currently married?</option>
-              <option value="divorced?">Did they ever get divorced?</option>
-              <option value="LGBTQ?">Do they identify as LGBTQ+?</option>
+            <div class="game-container">
+                <div class="custom-dropdown" id="customDropdown">
+                  <div class="dropdown-header" id="dropdownHeader">
+                    Select a question to start...
+                  </div>
+                  <div class="dropdown-content" id="dropdownContent">
+                    
+                    <!-- General Questions Section -->
+                    <details class="dropdown-group">
+                      <summary>General Questions</summary>
+                      <div class="dropdown-item" data-value="is this a male artist?">Is this a male artist?</div>
+                      <div class="dropdown-item" data-value="is this a female artist?">Is this a female artist?</div>
+                      <div class="dropdown-item" data-value="are they still alive?">Are they still alive?</div>
+                      <div class="dropdown-item" data-value="are they over 30 years old?">Are they over 30 years old?</div>
+                      <div class="dropdown-item" data-value="are they over 40 years old?">Are they over 40 years old?</div>
+                      <div class="dropdown-item" data-value="are they over 50 years old?">Are they over 50 years old?</div>
+                      <div class="dropdown-item" data-value="debut before 2000?">Did they debut before 2000?</div>
+                      <div class="dropdown-item" data-value="debut before 2010?">Did they debut before 2010?</div>
+                      <div class="dropdown-item" data-value="debut before 2020?">Did they debut before 2020?</div>
+                      <div class="dropdown-item" data-value="album release in last 2 years?">Did they release an album within the last 2 years?</div>
+                      <div class="dropdown-item" data-value="are they touring?">Are they currently on tour?</div>
+                      <div class="dropdown-item" data-value="are they married?">Are they currently married?</div>
+                      <div class="dropdown-item" data-value="divorced?">Were they ever divorced?</div>
+                      <div class="dropdown-item" data-value="LGBTQ?">Do they identify as LGBTQ+?</div>
+                    </details>
+            
+                    <!-- Geographic Questions Section -->
+                    <details class="dropdown-group">
+                      <summary>Geographic Questions</summary>
+                      <div class="dropdown-item" data-value="are they from north america?">Were they born in North America?</div>
+                      <div class="dropdown-item" data-value="are they from the united states?">Were they born in the United States?</div>
+                      <div class="dropdown-item" data-value="are they from canada?">Were they born in Canada?</div>
+                      <div class="dropdown-item" data-value="are they from europe?">Were they born in Europe?</div>
+                      <div class="dropdown-item" data-value="are they from asia?">Were they born in Asia?</div>
+                      <div class="dropdown-item" data-value="are they from south america?">Were they born in South America?</div>
+                      <div class="dropdown-item" data-value="are they from australia?">Were they born in Australia?</div>
+                      <div class="dropdown-item" data-value="are they from aftrica?">Were they born in Africa?</div>
+                    </details>
+                    
+                    <!-- Background Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Background Questions</summary>
+                        <div class="dropdown-item" data-value="are they of african descent?">Are they of African descent?</div>
+                        <div class="dropdown-item" data-value="are they of european descent?">Are they of European descent?</div>
+                        <div class="dropdown-item" data-value="are they of latin american descent?">Are they of Latin America descent?</div>
+                        <div class="dropdown-item" data-value="are they of asian descent?">Are they of Asian descent?</div>
+                        <div class="dropdown-item" data-value="are they of mixed ethnicity?">Are they of mixed ethnicities?</div>
+                      </details>
 
-              <!-- Geographic Questions -->
-              <optgroup label="Geographic Questions">
+                    <!-- Music Style Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Music Style Questions</summary>
+                        <div class="dropdown-item" data-value="different languages?">Do they perform songs in different languages?</div>
+                        <div class="dropdown-item" data-value="are they spanish?">Do they perform Spanish music?</div>
+                        <div class="dropdown-item" data-value="do they perform pop music?">Do they perform pop music?</div>
+                        <div class="dropdown-item" data-value="do they perform rap music?">Do they perform rap music?</div>
+                        <div class="dropdown-item" data-value="do they perform R&B music?">Do they perform R&B music?</div>
+                        <div class="dropdown-item" data-value="do they perform rock music?">Do they perform rock music?</div>
+                        <div class="dropdown-item" data-value="do they perform country music?">Do they perform country music?</div>
+                        <div class="dropdown-item" data-value="do they perform jazz music?">Do they perform jazz music?</div>
+                        <div class="dropdown-item" data-value="do they perform party music?">Do they perform party music?</div>
+                        <div class="dropdown-item" data-value="do they perform sad music?">Do they perform sad music?</div>
+                      </details>
 
-              <option value="are they from the united states?">Were they born in the United States?</option>
-              <option value="are they from north america?">Were they born in North America?</option>
-              <option value="are they from europe?">Were they born in Europe?</option>
-              <option value="are they from australia?">Were they born in Australia?</option>
-              <option value="are they from asia or africa?">Were they born in Asia or Africa?</option>
+                    <!-- Career and Popularity Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Career and Popularity Questions</summary>
+                        <div class="dropdown-item" data-value="are they also an actor?">Are they also an actor?</div>
+                        <div class="dropdown-item" data-value="disney or nick?">Were they ever on Disney Channel or Nickelodeon?</div>
+                        <div class="dropdown-item" data-value="singing competition?">Have they ever competed in a TV Singing Competition?</div>
+                        <div class="dropdown-item" data-value="have they won a grammy?">Have they ever won a Grammy?</div>
+                        <div class="dropdown-item" data-value="super bowl?">Have they ever performed at a Super Bowl Halftime Show?</div>
+                        <div class="dropdown-item" data-value="coachella?">Have they ever performed at Coachella?</div>
+                        <div class="dropdown-item" data-value="song over one billion streams?">Do they have song(s) with over 1 Billion Spotify streams?</div>
+                        <div class="dropdown-item" data-value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</div>
+                        <div class="dropdown-item" data-value="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</div>
+                        <div class="dropdown-item" data-value="do they have more than 20M listeners?">Do they have more than 20M monthly Spotify listeners?</div>
+                        <div class="dropdown-item" data-value="do they have more than 50M listeners?">Do they have more than 50M monthly Spotify listeners?</div>
+                        <div class="dropdown-item" data-value="were they ever in a band?">Are/were they ever in a band?</div>
+                      </details>
 
-                <!-- Ethnicity Questions -->
-                <optgroup label="Background Questions">
-              <option value="are they of African descent?">Are they of African descent?</option>
-              <option value="are they of Asian descent?">Are they of Asian descent?</option>
-              <option value="are they of European descent?">Are they of European descent?</option>
-              <option value="are they of Latin American descent?">Are they of Latin American descent?</option>
-              <option value="are they of mixed ethnicity?">Are they of mixed ethnicity?</option>
-              
-              <!-- Music Style and Language -->
-              <optgroup label="Music Style Questions">
-              <option value="different languages?">Do they make songs in different languages?</option>
-              <option value="are they spanish?">Do they make Spanish songs?</option>
-              <option value="do they perform pop music?">Do they perform pop music?</option>
-              <option value="do they perform rap music?">Do they perform hip-hop music?</option>
-              <option value="do they perform R&B music?">Do they perform R&B music?</option>
-              <option value="do they perform rock music?">Do they perform rock music?</option>
-              <option value="do they perform country music?">Do they perform country music?</option>
-              <option value="do they perform jazz music?">Do they perform jazz music?</option>
-              <option value="do they perform party music?">Do they perform party music?</option>
-              <option value="do they perform sad music?">Do they perform sad music?</option>
-              
-              <!-- Career and Popularity -->
-              <optgroup label="Popularity Questions">
-              <option value="are they also an actor?">Are they also an actor?</option>
-              <option value="disney or nick?">Were they ever on Nickelodeon or Disney Channel?</option>
-              <option value="singing competition?">Did they ever compete on a singing show?</option>
-              <option value="have they won a Grammy?">Have they won a Grammy?</option>
-              <option value="super bowl?">Have they performed at a Super Bowl Halftime Show?</option>
-              <option value="coachella?">Have they performed at Coachella?</option>
-              <option value="song over one billion streams?">Do they have any songs with 1 billion+ Spotify streams?</option>
-              <option value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</option>
-              <option value="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</option>
-              <option value="do they have more than 20M listeners?">Do they have more than 20M monthly listeners?</option>
-              <option value="do they have more than 50M listeners?">Do they have more than 50M monthly listeners?</option>
-              <option value="were they ever in a band?">Are/were they in a group?</option>
-              
-              <!-- Appearance and Name -->
-              <optgroup label="Appearance Questions">
-              <option value="do they have dark hair?">Do they have black or brown hair?</option>
-              <option value="do they have blond hair?">Do they have blond hair?</option>
-              <option value="over 5.5 feet tall?">Are they above 5 1/2 feet tall?</option>
-              <option value="over 6 feet tall?">Are they above 6 feet tall?</option>
-              <option value="do they have tattoos?">Do they have visible tattoos?</option>
-              <option value="do they wear glasses?">Do they wear glasses or sunglasses often?</option>
-              <option value="do they go by their birth name?">Do they go by their birth name?</option>
-              <option value="do they go by one word?">Do they go by one word?</option>
-              <option value="do they go by two words?">Do they go by two words?</option>
-              <option value="do they have a common first name?">Do they have a common first name?</option>
-              <option value="name starts A-M?">Does their name start with A-M?</option>
-            </select>
+                    <!-- Name and Appearance Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Name and Appearance Questions</summary>
+                        <div class="dropdown-item" data-value="do they have dark hair?">Do they have black or brown hair?</div>
+                        <div class="dropdown-item" data-value="do they have blond hair?">Do they have blond hair?</div>
+                        <div class="dropdown-item" data-value="over 5.5 feet tall?">Are they over 5 1/2 feet tall?</div>
+                        <div class="dropdown-item" data-value="over 6 feet tall?">Are they over 6 feet tall?</div>
+                        <div class="dropdown-item" data-value="do they have tattoos?">Do they have visible tattoos?</div>
+                        <div class="dropdown-item" data-value="do they wear glasses?">Do they wear glasses?</div>
+                        <div class="dropdown-item" data-value="do they go by their birth name?">Do they go by their birth name?</div>
+                        <div class="dropdown-item" data-value="do they go by one word?">Do they go by one word?</div>
+                        <div class="dropdown-item" data-value="do they go by two words?">Do they go by two words?</div>
+                        <div class="dropdown-item" data-value="do they have a common first name?">Do they have a common first name?</div>
+                        <div class="dropdown-item" data-value="name starts A-M?">Does their name starts with a letter A-M?</div>
+                      </details>
+                  </div>
+                
+                </div>
+                <!-- Hidden input to store the selected value -->
+                <input type="hidden" id="selectedQuestion" name="selectedQuestion" value="">              
             <button id="submit-question">Submit Question</button>
             <div class="response question-response" id="question-response">Select a question to start.</div>
             <div class="guess-container">
@@ -1120,7 +1283,7 @@ select:focus {
             <li>Try to minimize the number of questions and hints you use!</li>
             <li>If you're stumped... you can click "Give Up" after 4 hints.</li>
             <li>Have fun and share your results with friends!⭐🎉</li>
-            <li>Today's artist was suggested by Isabella L.!⭐🎉</li>
+            <li>Today's artist was recommended by Isabella L!</li>
         </ul>
     </div>
 </div>
@@ -1233,7 +1396,6 @@ const shareContainer = document.getElementById("share-container");
 const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
-// Hints for Janet Jackson
 const hints = [
   "Hint: She is the youngest of 10 siblings.",
   "Hint: Her debut album was released in the 1980s.",
@@ -1261,16 +1423,19 @@ const predefinedAnswers = {
 
   // Geographic Information
   "are they from the united states?": "Yes!",
+  "are they from canada?": "No!",
   "are they from north america?": "Yes!",
   "are they from europe?": "No!",
   "are they from australia?": "No!",
-  "are they from asia or africa?": "No!",
+  "are they from africa?": "No!",
+  "are they from asia?": "No!",
+  "are they from south america?": "No!",
 
   // Ethnicity Questions
-  "are they of African descent?": "Yes!",
-  "are they of Asian descent?": "No!",
-  "are they of European descent?": "No!",
-  "are they of Latin American descent?": "No!",
+  "are they of african descent?": "Yes!",
+  "are they of asian descent?": "No!",
+  "are they of european descent?": "No!",
+  "are they of latin american descent?": "No!",
   "are they of mixed ethnicity?": "No!",
 
   // Music Style
@@ -1289,7 +1454,7 @@ const predefinedAnswers = {
   "are they also an actor?": "Yes!",
   "disney or nick?": "No!",
   "singing competition?": "No!",
-  "have they won a Grammy?": "Yes!",
+  "have they won a grammy?": "Yes!",
   "super bowl?": "Yes!",
   "coachella?": "No!",
   "song over one billion streams?": "No!",
@@ -1312,7 +1477,6 @@ const predefinedAnswers = {
   "do they have a common first name?": "Yes!",
   "name starts A-M?": "Yes!"  // 'Janet' starts with a J (which is between A and M)
 };
-
 
 // Lock the hint button (visual state only)
 function lockHintButton() {
@@ -1388,63 +1552,69 @@ hintButton.addEventListener("click", () => {
     }
 });
 submitQuestion.addEventListener("click", () => {
-    const selectedIndex = questionDropdown.selectedIndex;
-    const selectedOption = questionDropdown.options[selectedIndex];
-    const selectedQuestion = selectedOption.value;
+  // Retrieve the selected question from the hidden input.
+  const selectedQuestion = document.getElementById("selectedQuestion").value;
+  const dropdownHeader = document.getElementById("dropdownHeader");
 
-    if (!selectedQuestion || selectedIndex === 0) {
-        questionResponse.textContent = "Please select a valid question!";
-        questionResponse.className = "response no";
-        questionDropdown.style.border = "2px solid red"; // Highlight the dropdown
-        return;
+  // Validate that a question was selected.
+  if (!selectedQuestion) {
+    questionResponse.textContent = "Please select a valid question!";
+    questionResponse.className = "response no";
+    dropdownHeader.style.border = "2px solid red";
+    return;
+  }
+
+  // Reset any previous error styling.
+  dropdownHeader.style.border = "2px solid #87cefa";
+
+  // Increment counts and update progress.
+  totalQuestionsAsked++;
+  questionCount++;
+  updateProgress();
+  updateHintAvailability();
+
+  // Disable the submit button briefly to avoid rapid clicks.
+  submitQuestion.disabled = true;
+  questionResponse.textContent = "";
+
+  // Look up the answer from predefinedAnswers.
+  const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
+  questionResponse.textContent = answer;
+  questionResponse.className = (answer === "Yes!") ? "response yes" : "response no";
+
+  // Loop through the dropdown items and update the one that matches.
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  dropdownItems.forEach(item => {
+    if (item.getAttribute("data-value") === selectedQuestion) {
+      if (answer === "Yes!") {
+        item.textContent = `✅ ${item.textContent}`;
+        dropdownHeader.textContent = "Yes! Ask another question?";
+        dropdownHeader.style.border = "2px solid green";
+      } else if (answer === "No!") {
+        item.textContent = `❌ ${item.textContent}`;
+        dropdownHeader.textContent = "No! Ask another question?";
+        dropdownHeader.style.border = "2px solid red";
+      } else {
+        item.textContent = `❓ ${item.textContent}`;
+        dropdownHeader.textContent = "Unsure! Ask another question?";
+        dropdownHeader.style.border = "2px solid yellow";
+      }
+      // Mark the item as disabled so it cannot be clicked again.
+      item.classList.add("disabled");
     }
+  });
 
-    questionDropdown.style.border = ""; // Reset dropdown border on valid selection
-    totalQuestionsAsked++; // Increment total questions asked
-    questionCount++;
-    updateProgress();
-    updateHintAvailability(); // Check if hint thresholds are reached
-    submitQuestion.disabled = true;
+  // For answers other than "Yes!", reset the hidden selection.
+  if (answer !== "Yes!") {
+    document.getElementById("selectedQuestion").value = "";
+  }
 
-    // Update guessResponse dynamically based on remaining questions for next hint
-    const questionsNeeded = (usedHints + 1) * 4 - totalQuestionsAsked;
-    if (questionsNeeded > 0) {
-        guessResponse.textContent = `Ask ${questionsNeeded} more question${questionsNeeded > 1 ? "s" : ""} to unlock the next hint!`;
-        guessResponse.className = "response guess-response no"; // Style for locked hints
-    } else if (questionsNeeded === 0) {
-        guessResponse.textContent = "You've unlocked a new hint!";
-        guessResponse.className = "response guess-response hint"; // Style for hint availability
-    }
-
-    questionResponse.textContent = ""; // Clear previous response
-
-    setTimeout(() => {
-        const answer = predefinedAnswers[selectedQuestion] || "I don't know. Try another question.";
-        questionResponse.textContent = answer;
-        questionResponse.className = answer === "Yes!" ? "response yes" : "response no";
-
-        // Update the option text to include a check or X emoji
-        if (answer === "Yes!") {
-            selectedOption.textContent = `✅ ${selectedOption.textContent}`;
-            questionDropdown.style.border = "2px solid green"; // Add red border for incorrect answer
-        } else if (answer === "No!") {
-            selectedOption.textContent = `❌ ${selectedOption.textContent}`;
-            questionDropdown.style.border = "2px solid red"; // Add red border for incorrect answer
-        } else {
-            selectedOption.textContent = `❓ ${selectedOption.textContent}`; // For unknown responses
-            questionDropdown.style.border = "2px solid yellow"; // Add red border for incorrect answer
-        }
-
-        // Disable the option so it can't be selected again
-        selectedOption.disabled = true;
-        setTimeout(() => {
-            questionDropdown.selectedIndex = 0; // Resets to the placeholder option
-            submitQuestion.disabled = false;
-            questionDropdown.options[0].textContent = "Ask another question?";
-            questionDropdown.style.border = ""        }, 1500); // 2-second delay
-    }, 200); // Short delay for showing the response
+  // Re-enable the submit button after a short delay.
+  setTimeout(() => {
+    submitQuestion.disabled = false;
+    dropdownHeader.style.border = "2px solid #87cefa";
+  }, 1500);
 });
-
 
 // Update progress display
 function updateProgress() {
@@ -1515,7 +1685,6 @@ const giveupEnterRaffleButton = document.getElementById("giveup-enter-raffle-but
 giveupEnterRaffleButton.addEventListener("click", () => {
     window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
 });
-
 
 // Handle artist guess submission
 submitGuess.addEventListener("click", () => {
@@ -1944,6 +2113,37 @@ closeGiveUpPopupButton.addEventListener("click", () => {
     const giveupPopup = document.getElementById("giveup-popup");
     giveupPopup.style.display = "none";
 });
+// Toggle the entire dropdown when header is clicked
+const dropdownHeader = document.getElementById('dropdownHeader');
+const customDropdown = document.getElementById('customDropdown');
+dropdownHeader.addEventListener('click', () => {
+  customDropdown.classList.toggle('open');
+  // If you want to hide/show the dropdown-content:
+  const dropdownContent = document.getElementById('dropdownContent');
+  dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+});
+
+// Handle selection of a dropdown item
+const selectedQuestionInput = document.getElementById('selectedQuestion');
+document.querySelectorAll('.dropdown-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    const value = e.target.getAttribute('data-value');
+    dropdownHeader.textContent = e.target.textContent;
+    selectedQuestionInput.value = value;
+    // Optionally close the dropdown
+    customDropdown.classList.remove('open');
+    document.getElementById('dropdownContent').style.display = 'none';
+  });
+});
+
+// Optional: Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!customDropdown.contains(e.target)) {
+    customDropdown.classList.remove('open');
+    document.getElementById('dropdownContent').style.display = 'none';
+  }
+});
+
 </script>
 </body>
 </html>

@@ -1148,11 +1148,62 @@ select:focus {
                     <!-- Background Questions Section -->
                     <details class="dropdown-group">
                         <summary>Background Questions</summary>
-                        <div class="dropdown-item" data-value="are they of African descent?">Are they of African descent?</div>
+                        <div class="dropdown-item" data-value="are they of african descent?">Are they of African descent?</div>
+                        <div class="dropdown-item" data-value="are they of european descent?">Are they of European descent?</div>
+                        <div class="dropdown-item" data-value="are they of latin american descent?">Are they of Latin America descent?</div>
+                        <div class="dropdown-item" data-value="are they of asian descent?">Are they of Asian descent?</div>
+                        <div class="dropdown-item" data-value="are they of mixed ethnicity?">Are they of mixed ethnicities?</div>
                       </details>
-                    
-                  </div>
 
+                    <!-- Music Style Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Music Style Questions</summary>
+                        <div class="dropdown-item" data-value="different languages?">Do they perform songs in different languages?</div>
+                        <div class="dropdown-item" data-value="are they spanish?">Do they perform Spanish music?</div>
+                        <div class="dropdown-item" data-value="do they perform pop music?">Do they perform pop music?</div>
+                        <div class="dropdown-item" data-value="do they perform rap music?">Do they perform rap music?</div>
+                        <div class="dropdown-item" data-value="do they perform R&B music?">Do they perform R&B music?</div>
+                        <div class="dropdown-item" data-value="do they perform rock music?">Do they perform rock music?</div>
+                        <div class="dropdown-item" data-value="do they perform country music?">Do they perform country music?</div>
+                        <div class="dropdown-item" data-value="do they perform jazz music?">Do they perform jazz music?</div>
+                        <div class="dropdown-item" data-value="do they perform party music?">Do they perform party music?</div>
+                        <div class="dropdown-item" data-value="do they perform sad music?">Do they perform sad music?</div>
+                      </details>
+
+                    <!-- Career and Popularity Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Career and Popularity Questions</summary>
+                        <div class="dropdown-item" data-value="are they also an actor?">Are they also an actor?</div>
+                        <div class="dropdown-item" data-value="disney or nick?">Were they ever on Disney Channel or Nickelodeon?</div>
+                        <div class="dropdown-item" data-value="singing competition?">Have they ever competed in a TV Singing Competition?</div>
+                        <div class="dropdown-item" data-value="have they won a grammy?">Have they ever won a Grammy?</div>
+                        <div class="dropdown-item" data-value="super bowl?">Have they ever performed at a Super Bowl Halftime Show?</div>
+                        <div class="dropdown-item" data-value="coachella?">Have they ever performed at Coachella?</div>
+                        <div class="dropdown-item" data-value="song over one billion streams?">Do they have song(s) with over 1 Billion Spotify streams?</div>
+                        <div class="dropdown-item" data-value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</div>
+                        <div class="dropdown-item" data-value="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</div>
+                        <div class="dropdown-item" data-value="do they have more than 20M listeners?">Do they have more than 20M monthly Spotify listeners?</div>
+                        <div class="dropdown-item" data-value="do they have more than 50M listeners?">Do they have more than 50M monthly Spotify listeners?</div>
+                        <div class="dropdown-item" data-value="were they ever in a band?">Are/were they ever in a band?</div>
+                      </details>
+
+                    <!-- Name and Appearance Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Name and Appearance Questions</summary>
+                        <div class="dropdown-item" data-value="do they have dark hair?">Do they have black or brown hair?</div>
+                        <div class="dropdown-item" data-value="do they have blond hair?">Do they have blond hair?</div>
+                        <div class="dropdown-item" data-value="over 5.5 feet tall?">Are they over 5 1/2 feet tall?</div>
+                        <div class="dropdown-item" data-value="over 6 feet tall?">Are they over 6 feet tall?</div>
+                        <div class="dropdown-item" data-value="do they have tattoos?">Do they have visible tattoos?</div>
+                        <div class="dropdown-item" data-value="do they wear glasses?">Do they wear glasses?</div>
+                        <div class="dropdown-item" data-value="do they go by their birth name?">Do they go by their birth name?</div>
+                        <div class="dropdown-item" data-value="do they go by one word?">Do they go by one word?</div>
+                        <div class="dropdown-item" data-value="do they go by two words?">Do they go by two words?</div>
+                        <div class="dropdown-item" data-value="do they have a common first name?">Do they have a common first name?</div>
+                        <div class="dropdown-item" data-value="name starts A-M?">Does their name starts with a letter A-M?</div>
+                      </details>
+                  </div>
+                
                 </div>
                 <!-- Hidden input to store the selected value -->
                 <input type="hidden" id="selectedQuestion" name="selectedQuestion" value="">              
@@ -1183,8 +1234,8 @@ select:focus {
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>🎉 Congratulations! 🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Bryson Tiller</strong>!</p>
-            <img src="/images/brysontiller.png" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Janet Jackson</strong>!</p>
+            <img src="/images/janetjackson.png" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -1206,8 +1257,8 @@ select:focus {
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Bryson Tiller</strong>!</p>
-        <img src="/images/brysontiller.png">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Janet Jackson</strong>!</p>
+        <img src="/images/janetjackson.png">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -1344,84 +1395,82 @@ const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 const hints = [
-    "Hint: His debut album was released in 2015.",
-    "Hint: He is from Kentucky, USA.",
-    "Hint: He is known for pioneering the 'Trapsoul' genre.",
-    "Hint: His initials are 'B' and 'T'."
+  "Hint: She is the youngest of 10 siblings.",
+  "Hint: Her debut album was released in the 1980s.",
+  "Hint: She famously performed with Justin Timberlake at a Super Bowl.",
+  "Hint: Her brother is the King of Pop."
 ];
 
+// Predefined Answers for Janet Jackson
 const predefinedAnswers = {
-    // Basic Info
-    "is this a male artist?": "Yes!",
-    "is this a female artist?": "No!",
-    "are they still alive?": "Yes!",
-    "are they over 50 years old?": "No!",
-    "are they over 40 years old?": "No!",
-    "are they over 30 years old?": "Yes!",
-    "debut before 2000?": "No!",
-    "debut before 2010?": "No!",
-    "debut before 2020?": "Yes!",
-    "album release in last 2 years?": "Yes!",
-    "are they touring?": "No!",
-    "are they married?": "No!",
-    "divorced?": "No!",
-    "LGBTQ?": "No!",
+  // Basic Info
+  "is this a male artist?": "No!",
+  "is this a female artist?": "Yes!",
+  "are they still alive?": "Yes!",
+  "are they over 50 years old?": "Yes!",
+  "are they over 40 years old?": "Yes!",
+  "are they over 30 years old?": "Yes!",
+  "debut before 2000?": "Yes!",
+  "debut before 2010?": "Yes!",
+  "debut before 2020?": "Yes!",
+  "album release in last 2 years?": "No!",
+  "are they touring?": "No!",
+  "are they married?": "No!",
+  "divorced?": "Yes!",
+  "LGBTQ?": "No!",
 
-    // Geographic Information
-    "are they from the united states?": "Yes!",
-    "are they from canada?": "No!",
-    "are they from north america?": "Yes!",
-    "are they from europe?": "No!",
-    "are they from south america?": "No!",
-    "are they from australia?": "No!",
-    "are they from asia?": "No!",
-    "are they from africa?": "No!",
+  // Geographic Information
+  "are they from the united states?": "Yes!",
+  "are they from north america?": "Yes!",
+  "are they from europe?": "No!",
+  "are they from australia?": "No!",
+  "are they from asia or africa?": "No!",
 
-    // Ethnicity Questions
-    "are they of African descent?": "Yes!",
-    "are they of Asian descent?": "No!",
-    "are they of European descent?": "No!",
-    "are they of Latin American descent?": "No!",
-    "are they of mixed ethnicity?": "No!",
+  // Ethnicity Questions
+  "are they of African descent?": "Yes!",
+  "are they of Asian descent?": "No!",
+  "are they of European descent?": "No!",
+  "are they of Latin American descent?": "No!",
+  "are they of mixed ethnicity?": "No!",
 
-    // Music Style
-    "different languages?": "No!",
-    "are they spanish?": "No!",
-    "do they perform pop music?": "No!",
-    "do they perform rap music?": "No!",
-    "do they perform R&B music?": "Yes!",
-    "do they perform rock music?": "No!",
-    "do they perform country music?": "No!",
-    "do they perform jazz music?": "No!",
-    "do they perform party music?": "No!",
-    "do they perform sad music?": "Yes!",
+  // Music Style
+  "different languages?": "No!",
+  "are they spanish?": "No!",
+  "do they perform pop music?": "Yes!",
+  "do they perform rap music?": "No!",
+  "do they perform R&B music?": "Yes!",
+  "do they perform rock music?": "No!",
+  "do they perform country music?": "No!",
+  "do they perform jazz music?": "No!",
+  "do they perform party music?": "Yes!",
+  "do they perform sad music?": "Yes!",
 
-    // Career and Popularity
-    "are they also an actor?": "No!",
-    "disney or nick?": "No!",
-    "singing competition?": "No!",
-    "have they won a Grammy?": "No!",
-    "super bowl?": "No!",
-    "coachella?": "No!",
-    "song over one billion streams?": "Yes!",
-    "do they have more than 10M TikTok followers?": "No!",
-    "do they have more than 10M Instagram followers?": "Yes!",
-    "do they have more than 20M listeners?": "Yes!",
-    "do they have more than 50M listeners?": "No!",
-    "were they ever in a band?": "No!",
+  // Career and Popularity
+  "are they also an actor?": "Yes!",
+  "disney or nick?": "No!",
+  "singing competition?": "No!",
+  "have they won a Grammy?": "Yes!",
+  "super bowl?": "Yes!",
+  "coachella?": "No!",
+  "song over one billion streams?": "No!",
+  "do they have more than 10M TikTok followers?": "No!",
+  "do they have more than 10M Instagram followers?": "No!",
+  "do they have more than 20M listeners?": "No!",
+  "do they have more than 50M listeners?": "No!",
+  "were they ever in a band?": "No!",
 
-    // Appearance
-    "do they have dark hair?": "Yes!",
-    "do they have blond hair?": "No!",
-    "over 5.5 feet tall?": "Yes!",
-    "over 6 feet tall?": "No!",
-    "do they have tattoos?": "Yes!",
-    "do they wear glasses?": "No!",
-    "do they go by their birth name?": "Yes!",
-    "do they go by one word?": "No!",
-    "do they go by two words?": "Yes!",
-    "do they have a common first name?": "Not really!",
-    "name starts A-M?": "Yes!"
+  // Appearance
+  "do they have dark hair?": "Yes!",
+  "do they have blond hair?": "No!",
+  "over 5.5 feet tall?": "No!",  // Janet Jackson is around 5'4"
+  "over 6 feet tall?": "No!",
+  "do they have tattoos?": "No!",
+  "do they wear glasses?": "No!",
+  "do they go by their birth name?": "Yes!",
+  "do they go by one word?": "No!",
+  "do they go by two words?": "Yes!",
+  "do they have a common first name?": "Yes!",
+  "name starts A-M?": "Yes!"  // 'Janet' starts with a J (which is between A and M)
 };
 
 // Lock the hint button (visual state only)
@@ -1582,7 +1631,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Bryson Tiller"); // Replace with the dynamic answer
+        showGiveUpPopup("Janet Jackson"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -1756,7 +1805,7 @@ function toggleMenu() {
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes",
     "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank",
     "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince",
-    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF", "Phoebe Bridgers",
+    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF", "Phoebe Bridgers", "Janet Jackson",
     "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee",
     "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown", "6ix9ine", "Bryson Tiller",
     "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin",
