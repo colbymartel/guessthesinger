@@ -836,7 +836,7 @@ background: linear-gradient(135deg, #f44336, #e57373); /* Red gradient */
 .stats-container {
 display: flex;
 padding: 20px 10px;
-margin-top: -90px;
+margin-top: -120px;
 margin-bottom: 50px;
 font: bold;
 }
