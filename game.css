@@ -16,29 +16,29 @@ align-items: center; /* Vertical centering */
 height: 100vh; /* Make the body height fill the viewport */
 }
 
-header {
-background-color: #4682b4;
-display: flex; /* Use flexbox */
-justify-content: center; /* Center horizontally */
-align-items: center; /* Center vertically */
-height: 150px; /* Set a fixed height if needed */
-padding: 40px;
-}
-
-.logo img {
-    height: auto; /* Maintain aspect ratio */
-    max-height: 100px; /* Maximum height */
-    width: auto; /* Maintain width automatically */
-    max-width: 100%; /* Prevents exceeding the container */
-    display: block; /* Ensures proper centering */
-}
-
-/* Adjust for smaller screens */
-@media screen and (max-width: 768px) {
-    .logo img {
-        max-height: 80px; /* Reduce height for smaller screens */
+    /* Header */
+    .header {
+        background-color: #4682b4;
+        padding: 30px;
+        text-align: center;
+        color: white;
     }
-}
+
+    /* Logo Styling */
+    .header .logo img {
+        width: 20%; /* Set a default width */
+        margin-bottom: 10px;
+        height: auto; /* Maintain aspect ratio */
+        display: block; /* Ensures proper centering */
+        margin: 0 auto; /* Centers horizontally */
+    }
+
+    /* Responsive Design for Smaller Screens */
+    @media (max-width: 768px) {
+        .header .logo img {
+            width: 60%; /* Reduce the size for smaller screens */
+        }
+    }
 
 /* Navbar Styling */
 .navbar {
