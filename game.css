@@ -26,11 +26,18 @@ padding: 40px;
 }
 
 .logo img {
-height: 100px; /* Adjust this to the desired size */
-width: auto; /* Maintain aspect ratio */
-margin-top: 50px;
-margin-bottom: 50px;
-max-width: 100%; /* Prevent it from exceeding its container width */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 100px; /* Maximum height */
+    width: auto; /* Maintain width automatically */
+    max-width: 100%; /* Prevents exceeding the container */
+    display: block; /* Ensures proper centering */
+}
+
+/* Adjust for smaller screens */
+@media screen and (max-width: 768px) {
+    .logo img {
+        max-height: 80px; /* Reduce height for smaller screens */
+    }
 }
 
 /* Navbar Styling */
@@ -899,13 +906,6 @@ background: rgba(255, 202, 202, 0.47);
 box-shadow: 0px 4px 0px 0px #ffacb1;
 }
 
-
-/* Adjust logo size on smaller screens */
-@media screen and (max-width: 768px) {
-.navbar .logo img {
-height: 65px; /* Maintain aspect ratio */
-}
-}
 /* Example base styling for your game container */
 .game-container {
 max-width: 600px;
