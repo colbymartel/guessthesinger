@@ -1098,6 +1098,83 @@ document.addEventListener('click', function(e) {
     document.getElementById('dropdownContent').style.display = 'none';
   }
 });
+function updateGameStats(userId, statsUpdate) {
+  // statsUpdate is an object that has the incremental stats, e.g.:
+  // { totalGamesPlayed: 1, guessCount: 3, hintCount: 1, questionCount: 5, ... }
+
+  // Reference to the user's stats node
+  const statsRef = ref(database, "stats/" + userId);
+
+  // We'll first fetch current stats, then merge with new updates
+  get(statsRef)
+    .then((snapshot) => {
+      const currentStats = snapshot.val() || {};
+      
+      // Combine old stats with newly updated stats
+      // For example, increment totalGamesPlayed by 1, add guessCount, etc.
+      // The below example merges “statsUpdate” into “currentStats”.
+      // Adjust the logic as you see fit for your needs. E.g., add or overwrite.
+      
+      const mergedStats = {
+        // if you previously had stats like streak, bestScore, etc., keep them
+        ...currentStats,
+
+        // if your stats are cumulative, you can add them:
+        totalGamesPlayed: (currentStats.totalGamesPlayed || 0) + (statsUpdate.totalGamesPlayed || 0),
+        totalGuesses: (currentStats.totalGuesses || 0) + (statsUpdate.guessCount || 0),
+        totalQuestions: (currentStats.totalQuestions || 0) + (statsUpdate.questionCount || 0),
+        totalHints: (currentStats.totalHints || 0) + (statsUpdate.hintCount || 0),
+
+        // or store the last game date, guessCount, etc.
+        lastGameDate: statsUpdate.lastGameDate || currentStats.lastGameDate,
+      };
+
+      // Update DB
+      return update(statsRef, mergedStats);
+    })
+    .then(() => {
+      console.log("Stats updated successfully.");
+    })
+    .catch((err) => {
+      console.error("Error updating stats:", err);
+    });
+}
+if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
+  guessResponse.textContent = `Correct! ...`;
+  showCelebrationPopup(correctAnswer);
+  
+  const userId = localStorage.getItem("userId"); // or auth.currentUser?.uid
+  if (userId) {
+    const statsUpdate = {
+      totalGamesPlayed: 1,          // +1 game
+      guessCount: guessCount,       // how many guesses they used in this game
+      hintCount: hintCount,         // how many hints used
+      questionCount: questionCount, // total questions asked
+      lastGameDate: new Date().toISOString()
+    };
+    updateGameStats(userId, statsUpdate);
+  } else {
+    console.warn("No userId found in localStorage. Ensure user is logged in.");
+  }
+}
+function showGiveUpPopup(correctAnswer) {
+  // ...
+  // Then call updateGameStats if you want to record that they played but didn’t solve it
+  const userId = localStorage.getItem("userId");
+  if (userId) {
+    const statsUpdate = {
+      totalGamesPlayed: 1,         
+      guessCount: guessCount,
+      hintCount: hintCount,
+      questionCount: questionCount,
+      lastGameDate: new Date().toISOString()
+    };
+    updateGameStats(userId, statsUpdate);
+  }
+  
+  // Show your “Give Up” popup
+  giveupPopup.style.display = "flex";
+}
 
 </script>
 </body>
