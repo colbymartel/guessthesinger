@@ -189,8 +189,8 @@ const database = getDatabase(app);
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>Congratulations!🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">blackbear</strong>!</p>
-            <img src="/images/blackbear.png" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Lil Mosey</strong>!</p>
+            <img src="/images/lilmosey.jpg" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -212,8 +212,8 @@ const database = getDatabase(app);
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">blackbear</strong>!</p>
-        <img src="/images/blackbear.png">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Lil Mosey</strong>!</p>
+        <img src="/images/lilmosey.jpg">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
@@ -237,7 +237,7 @@ const database = getDatabase(app);
             <li>Try to minimize the number of questions and hints you use!</li>
             <li>If you're stumped... you can click "Give Up" after 4 hints.</li>
             <li>Have fun and share your results with friends!⭐🎉</li>
-            <li>Today's artist was recommended by Tori!</li>
+            <li>Today's artist was recommended by Dominic!</li>
         </ul>
     </div>
 </div>
@@ -350,15 +350,15 @@ const shareContainer = document.getElementById("share-container");
 const shareButton = document.getElementById("share-button");
 const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
-// Hints for blackbear
+
 const hints = [
-  "Hint: They are known for a mix of hip-hop, R&B, and pop-punk influences.",
-  "Hint: He's done many collaborations, most successfully with mgk.",
-  "Hint: His most popular song is called 'hot girl bummer'.",
-  "Hint: His name starts with 'B' and is a type of animal."
+  "Hint: One of their most popular songs includes the name of a fruit.",
+  "Hint: He recently turned 23 years old.",
+  "Hint: His most popular song is called 'Blueberry Faygo'",
+  "Hint: His first name is 'Lil' and his last starts with 'M''."
 ];
 
-// Predefined Answers for blackbear
+// Predefined Answers for Lil Mosey
 const predefinedAnswers = {
   // Basic Info
   "is this a male artist?": "Yes!",
@@ -366,11 +366,11 @@ const predefinedAnswers = {
   "are they still alive?": "Yes!",
   "are they over 50 years old?": "No!",
   "are they over 40 years old?": "No!",
-  "are they over 30 years old?": "Yes!",
+  "are they over 30 years old?": "No!",
   "debut before 2000?": "No!",
   "debut before 2010?": "No!",
   "debut before 2020?": "Yes!",
-  "album release in last 2 years?": "No!",
+  "album release in last 2 years?": "Yes!",
   "are they touring?": "No!",
   "are they married?": "No!",
   "divorced?": "No!",
@@ -387,19 +387,19 @@ const predefinedAnswers = {
   "are they from south america?": "No!",
 
   // Ethnicity Questions
-  "are they of african descent?": "No!",
+  "are they of african descent?": "Yes!",
   "are they of asian descent?": "No!",
   "are they of european descent?": "Yes!",
   "are they of latin american descent?": "No!",
-  "are they of mixed ethnicity?": "No!",
+  "are they of mixed ethnicity?": "Yes!",
 
   // Music Style
   "different languages?": "No!",
   "are they spanish?": "No!",
   "do they perform pop music?": "Yes!",
   "do they perform rap music?": "Yes!",
-  "do they perform R&B music?": "Yes!",
-  "do they perform rock music?": "Yes!",
+  "do they perform R&B music?": "No!",
+  "do they perform rock music?": "No!",
   "do they perform country music?": "No!",
   "do they perform jazz music?": "No!",
   "do they perform party music?": "Yes!",
@@ -411,7 +411,7 @@ const predefinedAnswers = {
   "singing competition?": "No!",
   "have they won a grammy?": "No!",
   "super bowl?": "No!",
-  "coachella?": "Yes!",
+  "coachella?": "No!",
   "song over one billion streams?": "Yes!",
   "do they have more than 10M TikTok followers?": "No!",
   "do they have more than 10M Instagram followers?": "No!",
@@ -420,17 +420,17 @@ const predefinedAnswers = {
   "were they ever in a band?": "No!",
 
   // Appearance
-  "do they have dark hair?": "Sometimes!",
-  "do they have blond hair?": "Sometimes!",
-  "over 5.5 feet tall?": "Yes!",  // Around 5'8"
+  "do they have dark hair?": "Yes!",
+  "do they have blond hair?": "No!",
+  "over 5.5 feet tall?": "Yes!",
   "over 6 feet tall?": "No!",
   "do they have tattoos?": "Yes!",
   "do they wear glasses?": "No!",
   "do they go by their birth name?": "No!",
-  "do they go by one word?": "Yes!",
-  "do they go by two words?": "No!",
+  "do they go by one word?": "No!",
+  "do they go by two words?": "Yes!",
   "do they have a common first name?": "No!",
-  "name starts A-M?": "Yes!"  
+  "name starts A-M?": "Yes!"
 };
 
 // Lock the hint button (visual state only)
@@ -591,7 +591,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("blackbear"); // Replace with the dynamic answer
+        showGiveUpPopup("Lil Mosey"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -656,7 +656,7 @@ submitGuess.addEventListener("click", () => {
     guessCount++;
     updateProgress();
 
-    const correctAnswer = "blackbear"; // Example correct answer
+    const correctAnswer = "Lil Mosey"; // Example correct answer
 
     if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
         guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
@@ -812,7 +812,7 @@ function toggleMenu() {
 
         const artists = [
         "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran",
-    "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd",
+    "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd", "Lil Mosey",
     "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber",
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear",
     "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan",
