@@ -1157,24 +1157,6 @@ if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
     console.warn("No userId found in localStorage. Ensure user is logged in.");
   }
 }
-function showGiveUpPopup(correctAnswer) {
-  // ...
-  // Then call updateGameStats if you want to record that they played but didn’t solve it
-  const userId = localStorage.getItem("userId");
-  if (userId) {
-    const statsUpdate = {
-      totalGamesPlayed: 1,         
-      guessCount: guessCount,
-      hintCount: hintCount,
-      questionCount: questionCount,
-      lastGameDate: new Date().toISOString()
-    };
-    updateGameStats(userId, statsUpdate);
-  }
-  
-  // Show your “Give Up” popup
-  giveupPopup.style.display = "flex";
-}
 
 </script>
 </body>

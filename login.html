@@ -1,63 +1,98 @@
 <!-- login.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Guess The Singer: Create an account...">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GuessTheSinger.com - Log In</title>
-    <link rel="icon" href="/favicon.ico">
-
-    <!-- Font Awesome, Google Fonts, your CSS, etc. -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./signup.css">
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer: Create an account...">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GuessTheSinger.com - Log In</title>
+  <link rel="icon" href="/favicon.ico">
+  
+  <!-- Font Awesome, Google Fonts, your CSS, etc. -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./signup.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+
+  <!-- Main Section with Login Form -->
+  <main class="main">
+    <div class="auth-container">
+      <h2>Log Into Your Account</h2>
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" name="loginEmail" placeholder="Your email" required>
         </div>
-    </header>
-
-    <!-- Main Section with Login Form -->
-    <main class="main">
-        <div class="auth-container">
-            <h2>Log Into Your Account</h2>
-            <!-- Renamed the form ID to loginForm -->
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" name="loginEmail" placeholder="Your email" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" name="loginPassword" placeholder="Your password" required>
-                </div>
-                
-                <button type="submit" class="btn">Log-In</button>
-                
-                <p class="redirect">
-                  Don’t have an account?
-                  <a href="signup.html">Sign-Up</a>
-                </p>
-            </form>
+        
+        <div class="input-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" name="loginPassword" placeholder="Your password" required>
         </div>
-    </main>
+        
+        <button type="submit" class="btn">Log-In</button>
+        
+        <p class="redirect">
+          Don’t have an account?
+          <a href="signup.html">Sign-Up</a>
+        </p>
+      </form>
+    </div>
+  </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        &copy; 2024 Colby Martel | 
-        <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-        <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    </footer>
+  <!-- Footer -->
+  <footer class="footer">
+      &copy; 2024 Colby Martel |
+      <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+  </footer>
 
-    <!-- Updated to use login.js -->
-    <script type="module" src="login.js"></script>
+  <!-- Use type="module" so we can import Firebase libraries -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+    // Provide your own Firebase config or import { app } from "/signup.js" if it exports a configured Firebase app
+    const firebaseConfig = {
+      apiKey: "...",
+      authDomain: "...",
+      projectId: "...",
+      // etc...
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Grab the login form
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent default form submission
+        console.log("Form submitted; preventing default.");
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        // Attempt Firebase Auth login
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            console.log("Successfully logged in:", userCredential.user);
+            // Force user to Game #75
+            window.location.href = '/HISTORY/day75.html';
+          })
+          .catch((error) => {
+            console.error("Error logging in:", error.code, error.message);
+            alert("Login failed. " + error.message);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
