@@ -17,6 +17,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+console.log("ref:", ref);
+
 
 // Your Firebase configuration – replace with your own project's credentials
 const firebaseConfig = {
@@ -60,7 +62,7 @@ const database = getDatabase(app);
             </nav>
     <section class="game-section">
         <div class="text-box">
-            <h1>Game #76</h1>       
+            <h1>Game #75</h1>       
             <div class="game-container">
                 <div class="custom-dropdown" id="customDropdown">
                   <div class="dropdown-header" id="dropdownHeader">
@@ -189,8 +191,8 @@ const database = getDatabase(app);
         <div class="popup-content">
             <button class="close-popup" id="close-celebration-popup">&times;</button>
             <h2>Congratulations!🎉</h2>
-            <p>You correctly guessed <strong id="correct-artist-name">Whitney Houston</strong>!</p>
-            <img src="/images/whitneyhouston.png" alt="Celebration Image">
+            <p>You correctly guessed <strong id="correct-artist-name">Lil Mosey</strong>!</p>
+            <img src="/images/lilmosey.jpg" alt="Celebration Image">
 
             <p>Questions used: <span id="questions-used-popup">0</span></p>
             <p>Guesses made: <span id="guesses-made-popup">0</span></p>
@@ -201,7 +203,7 @@ const database = getDatabase(app);
     
             <div class="celebration-buttons">
                 <button id="share-result-button" class="celebration-button">Share with Friends!</button>
-                <button id="enter-raffle-button" class="celebration-button">Join Discord</button>
+                <button id="enter-raffle-button" class="celebration-button">See Stats</button>
             </div>
         </div>
     </div>
@@ -212,14 +214,14 @@ const database = getDatabase(app);
     <div class="popup-content">
         <button class="close-popup" id="close-giveup-popup">&times;</button>
         <h2>Better Luck Tomorrow! 🎉</h2>
-        <p>The correct answer is <strong id="giveup-correct-artist-name">Whitney Houston</strong>!</p>
-        <img src="/images/whitneyhouston.png">
+        <p>The correct answer is <strong id="giveup-correct-artist-name">Lil Mosey</strong>!</p>
+        <img src="/images/lilmosey.jpg">
         <p>Questions used: <span id="giveup-questions-used-popup">0</span></p>
         <p>Guesses made: <span id="giveup-guesses-made-popup">0</span></p>
         <p>Hints used: <span id="giveup-hints-used-popup">0</span></p>
         <div class="celebration-buttons">
             <button id="giveup-share-button">Share with Friends!</button>
-            <button id="giveup-enter-raffle-button">Join Discord</button>
+            <button id="giveup-enter-raffle-button">See Stats</button>
         </div>
     </div>
 </div>
@@ -230,14 +232,14 @@ const database = getDatabase(app);
 <div class="rules-popup" id="rules-popup">
     <div class="rules-content">
         <button class="close-popup" id="close-popup">&times;</button>
-        <h2>Happy Valentine's Day!💕</h2>
+        <h2>🎉Welcome!🎉</h2>
         <p>To play:</p>
         <ul>
             <li>Select yes/no questions to figure out today's mystery artist.</li>
             <li>Try to minimize the number of questions and hints you use!</li>
             <li>If you're stumped... you can click "Give Up" after 4 hints.</li>
             <li>Have fun and share your results with friends!⭐🎉</li>
-            <li>Today's artist was recommended by Lily K!</li>
+            <li>Today's artist was recommended by Dominic!</li>
         </ul>
     </div>
 </div>
@@ -352,28 +354,28 @@ const raffleButton = document.getElementById("raffle-button");
 const countdownPopup = document.getElementById("countdown-popup");
 
 const hints = [
-  "Hint: They have several love songs on their discography.",
-  "Hint: In 2023, Rolling Stone ranked her as the second greatest singer of all-time.",
-  "Hint: Her most streamed song is about her desire to dance with somebody.",
-  "Hint: Her first name starts with 'W' and last starts with 'H'."
+  "Hint: One of their most popular songs includes the name of a fruit.",
+  "Hint: He recently turned 23 years old.",
+  "Hint: His most popular song is called 'Blueberry Faygo'",
+  "Hint: His first name is 'Lil' and his last starts with 'M''."
 ];
 
-// Predefined Answers for Whitney Houston
+// Predefined Answers for Lil Mosey
 const predefinedAnswers = {
   // Basic Info
-  "is this a male artist?": "No!",
-  "is this a female artist?": "Yes!",
-  "are they still alive?": "No!",
-  "are they over 50 years old?": "Yes!", 
-  "are they over 40 years old?": "Yes!",
-  "are they over 30 years old?": "Yes!",
-  "debut before 2000?": "Yes!",
-  "debut before 2010?": "Yes!",
+  "is this a male artist?": "Yes!",
+  "is this a female artist?": "No!",
+  "are they still alive?": "Yes!",
+  "are they over 50 years old?": "No!",
+  "are they over 40 years old?": "No!",
+  "are they over 30 years old?": "No!",
+  "debut before 2000?": "No!",
+  "debut before 2010?": "No!",
   "debut before 2020?": "Yes!",
-  "album release in last 2 years?": "No!",
+  "album release in last 2 years?": "Yes!",
   "are they touring?": "No!",
   "are they married?": "No!",
-  "divorced?": "Yes!", 
+  "divorced?": "No!",
   "LGBTQ?": "No!",
 
   // Geographic Information
@@ -397,8 +399,8 @@ const predefinedAnswers = {
   "different languages?": "No!",
   "are they spanish?": "No!",
   "do they perform pop music?": "Yes!",
-  "do they perform rap music?": "No!",
-  "do they perform R&B music?": "Yes!",
+  "do they perform rap music?": "Yes!",
+  "do they perform R&B music?": "No!",
   "do they perform rock music?": "No!",
   "do they perform country music?": "No!",
   "do they perform jazz music?": "No!",
@@ -406,16 +408,16 @@ const predefinedAnswers = {
   "do they perform sad music?": "Yes!",
 
   // Career and Popularity
-  "are they also an actor?": "Yes!", // She starred in films like The Bodyguard
+  "are they also an actor?": "No!",
   "disney or nick?": "No!",
   "singing competition?": "No!",
-  "have they won a grammy?": "Yes!",
+  "have they won a grammy?": "No!",
   "super bowl?": "No!",
   "coachella?": "No!",
   "song over one billion streams?": "Yes!",
   "do they have more than 10M TikTok followers?": "No!",
   "do they have more than 10M Instagram followers?": "No!",
-  "do they have more than 20M listeners?": "Yes!",
+  "do they have more than 20M listeners?": "No!",
   "do they have more than 50M listeners?": "No!",
   "were they ever in a band?": "No!",
 
@@ -424,13 +426,13 @@ const predefinedAnswers = {
   "do they have blond hair?": "No!",
   "over 5.5 feet tall?": "Yes!",
   "over 6 feet tall?": "No!",
-  "do they have tattoos?": "No!",
+  "do they have tattoos?": "Yes!",
   "do they wear glasses?": "No!",
-  "do they go by their birth name?": "Yes!",
+  "do they go by their birth name?": "No!",
   "do they go by one word?": "No!",
   "do they go by two words?": "Yes!",
-  "do they have a common first name?": "Yes!",
-  "name starts A-M?": "No!" // 'Whitney' starts with W, which is not in A-M
+  "do they have a common first name?": "No!",
+  "name starts A-M?": "Yes!"
 };
 
 // Lock the hint button (visual state only)
@@ -591,7 +593,7 @@ function transformHintToGiveUp() {
 
     // Attach the "Give Up" functionality to the new button
     giveUpButton.addEventListener("click", () => {
-        showGiveUpPopup("Whitney Houston"); // Replace with the dynamic answer
+        showGiveUpPopup("Lil Mosey"); // Replace with the dynamic answer
         endGame(); // End the game logic
     });
 }
@@ -638,59 +640,61 @@ giveupShareButton.addEventListener("click", () => {
 // Add Raffle functionality for the Give Up popup
 const giveupEnterRaffleButton = document.getElementById("giveup-enter-raffle-button");
 giveupEnterRaffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/oAZMPM18uhoqhssk6", "_blank"); // Replace with your Google Form URL
+    window.open("../stats.html", "_blank"); // Replace with your Google Form URL
 });
 
 // Handle artist guess submission
 submitGuess.addEventListener("click", () => {
-    const guessInput = document.getElementById("artist-guess"); // Select the input box
-    const guess = guessInput.value.trim();
+  const guessInput = document.getElementById("artist-guess");
+  const guess = guessInput.value.trim();
 
-    if (!guess) {
-        guessResponse.textContent = "Please enter a guess!";
-        guessResponse.className = "response guess-response"; // Default styling
-        guessInput.style.border = "2px solid red"; // Highlight the input box
-        return;
-    }
+  if (!guess) {
+    guessResponse.textContent = "Please enter a guess!";
+    guessResponse.className = "response guess-response";
+    guessInput.style.border = "2px solid red";
+    return;
+  }
 
-    guessCount++;
-    updateProgress();
+  guessCount++;
+  updateProgress();
 
-    const correctAnswer = "Whitney Houston"; // Example correct answer
+  const correctAnswer = "Lil Mosey"; // your correct answer
 
-    if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
-        guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
-        guessResponse.className = "response guess-response correct";
-        guessInput.style.border = "2px solid green"; // Green border for correct guess
-        guessInput.placeholder = "You got it!"; // Optional: Set a success message in the placeholder
-        // Show the celebration popup
-        showCelebrationPopup(correctAnswer);
-        const userId = localStorage.getItem("userId"); // Assuming UID was stored upon login
-        if (userId) {
-            // Prepare the stats update object. Here, we increment totalGamesPlayed by 1.
-            const statsUpdate = {
-              totalGamesPlayed: 1,         // Increase by 1 game
-              guessCount: guessCount,        // Total guesses made in this game
-              hintCount: hintCount,          // Total hints used in this game
-              questionCount: questionCount,  // Total questions asked in this game
-              lastGameDate: new Date().toISOString() // Record completion date/time
-            };
-            updateGameStats(userId, statsUpdate);
-        } else {
-            console.warn("No userId found in localStorage. Ensure user is logged in.");
-        }
-    } else {
-        guessResponse.textContent = "Incorrect! Keep trying.";
-        guessResponse.className = "response guess-response incorrect";
-        guessInput.style.border = "2px solid red"; // Red border for incorrect guess
-        guessInput.value = ""; // Clear the input field
-        guessInput.placeholder = "Incorrect! Guess again!"; // Set the placeholder to "That is incorrect!"
-    }
+  if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
+    guessResponse.textContent = `Correct! The artist is ${correctAnswer}. 🎉`;
+    guessResponse.className = "response guess-response correct";
+    guessInput.style.border = "2px solid green";
+    console.log("Correct guess detected – updating stats now...");
 
-    setTimeout(() => {
-        guessInput.style.border = ""; // Reset border after 2 seconds
-        guessInput.placeholder = "Type your guess here..."; // Reset placeholder after 2 seconds
-    }, 2000);
+    // Show celebration popup
+    showCelebrationPopup(correctAnswer);
+
+    // Update Firebase stats
+    const userId = localStorage.getItem("userId"); // or user.uid from onAuthStateChanged
+  if (userId) {
+    const statsUpdate = {
+      totalGamesPlayed: 1,
+      guessCount: guessCount,
+      hintCount: hintCount,
+      questionCount: questionCount
+    };
+    console.log("Stats update object:", statsUpdate);
+    updateGameStats(userId, statsUpdate);
+  } else {
+    console.warn("User ID not found.");
+  }
+  } else {
+    guessResponse.textContent = "Incorrect! Keep trying.";
+    guessResponse.className = "response guess-response incorrect";
+    guessInput.style.border = "2px solid red";
+    guessInput.value = "";
+    guessInput.placeholder = "Incorrect! Guess again!";
+  }
+
+  setTimeout(() => {
+    guessInput.style.border = "";
+    guessInput.placeholder = "Type your guess here...";
+  }, 2000);
 });
 
 // Share functionality
@@ -760,14 +764,14 @@ const submitRaffle = document.getElementById("submit-raffle");
 
 // Show the raffle container when the "Enter Raffle" button is clicked
 raffleButton.addEventListener("click", () => {
-    window.open("https://forms.gle/8UoyYgQNeD78Feq48", "_blank"); // Replace with your Google Form URL
+    window.open("../stats.html", "_blank"); // Replace with your Google Form URL
 });
 // Raffle functionality for the celebration popup
 const enterRaffleButton = document.getElementById("enter-raffle-button");
 
 enterRaffleButton.addEventListener("click", () => {
     // Replace this URL with your actual Google Form link
-    const raffleFormURL = "https://forms.gle/8UoyYgQNeD78Feq48"; 
+    const raffleFormURL = "../stats.html"; 
     window.open(raffleFormURL, "_blank"); // Opens the Google Form in a new tab
 });
 // Get the popup and close button elements
@@ -813,7 +817,7 @@ function toggleMenu() {
         const artists = [
         "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran",
     "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd", "Lil Mosey",
-    "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston",
+    "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber",
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear",
     "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan",
     "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv",
@@ -1059,7 +1063,6 @@ function closeCelebrationPopup() {
 const closeCelebrationPopupButton = document.getElementById("close-celebration-popup");
 closeCelebrationPopupButton.addEventListener("click", closeCelebrationPopup);
 
-
 // Get the close button for the "Give Up" popup
 const closeGiveUpPopupButton = document.getElementById("close-giveup-popup");
 
@@ -1068,6 +1071,7 @@ closeGiveUpPopupButton.addEventListener("click", () => {
     const giveupPopup = document.getElementById("giveup-popup");
     giveupPopup.style.display = "none";
 });
+
 // Toggle the entire dropdown when header is clicked
 const dropdownHeader = document.getElementById('dropdownHeader');
 const customDropdown = document.getElementById('customDropdown');
@@ -1098,38 +1102,25 @@ document.addEventListener('click', function(e) {
     document.getElementById('dropdownContent').style.display = 'none';
   }
 });
+
 function updateGameStats(userId, statsUpdate) {
-  // statsUpdate is an object that has the incremental stats, e.g.:
-  // { totalGamesPlayed: 1, guessCount: 3, hintCount: 1, questionCount: 5, ... }
-
-  // Reference to the user's stats node
   const statsRef = ref(database, "stats/" + userId);
+  console.log("Updating stats at:", "stats/" + userId);
 
-  // We'll first fetch current stats, then merge with new updates
   get(statsRef)
     .then((snapshot) => {
       const currentStats = snapshot.val() || {};
-      
-      // Combine old stats with newly updated stats
-      // For example, increment totalGamesPlayed by 1, add guessCount, etc.
-      // The below example merges “statsUpdate” into “currentStats”.
-      // Adjust the logic as you see fit for your needs. E.g., add or overwrite.
-      
-      const mergedStats = {
-        // if you previously had stats like streak, bestScore, etc., keep them
-        ...currentStats,
+      console.log("Current stats from DB:", currentStats);
 
-        // if your stats are cumulative, you can add them:
+      const mergedStats = {
         totalGamesPlayed: (currentStats.totalGamesPlayed || 0) + (statsUpdate.totalGamesPlayed || 0),
         totalGuesses: (currentStats.totalGuesses || 0) + (statsUpdate.guessCount || 0),
-        totalQuestions: (currentStats.totalQuestions || 0) + (statsUpdate.questionCount || 0),
         totalHints: (currentStats.totalHints || 0) + (statsUpdate.hintCount || 0),
-
-        // or store the last game date, guessCount, etc.
-        lastGameDate: statsUpdate.lastGameDate || currentStats.lastGameDate,
+        totalQuestions: (currentStats.totalQuestions || 0) + (statsUpdate.questionCount || 0),
+        lastGameDate: new Date().toISOString()
       };
 
-      // Update DB
+      console.log("Merged stats to update:", mergedStats);
       return update(statsRef, mergedStats);
     })
     .then(() => {
@@ -1139,24 +1130,7 @@ function updateGameStats(userId, statsUpdate) {
       console.error("Error updating stats:", err);
     });
 }
-if (guess.toLowerCase() === correctAnswer.toLowerCase()) {
-  guessResponse.textContent = `Correct! ...`;
-  showCelebrationPopup(correctAnswer);
-  
-  const userId = localStorage.getItem("userId"); // or auth.currentUser?.uid
-  if (userId) {
-    const statsUpdate = {
-      totalGamesPlayed: 1,          // +1 game
-      guessCount: guessCount,       // how many guesses they used in this game
-      hintCount: hintCount,         // how many hints used
-      questionCount: questionCount, // total questions asked
-      lastGameDate: new Date().toISOString()
-    };
-    updateGameStats(userId, statsUpdate);
-  } else {
-    console.warn("No userId found in localStorage. Ensure user is logged in.");
-  }
-}
+
 
 </script>
 </body>

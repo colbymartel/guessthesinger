@@ -62,11 +62,16 @@
 
     // Provide your own Firebase config or import { app } from "/signup.js" if it exports a configured Firebase app
     const firebaseConfig = {
-      apiKey: "...",
-      authDomain: "...",
-      projectId: "...",
-      // etc...
-    };
+  apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+  authDomain: "guessthesinger10.firebaseapp.com",
+  databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
+  projectId: "guessthesinger10",
+  storageBucket: "guessthesinger10.firebasestorage.app",
+  messagingSenderId: "97201023235",
+  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+  measurementId: "G-3R005HTKEW"
+};
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
@@ -85,7 +90,7 @@
           .then((userCredential) => {
             console.log("Successfully logged in:", userCredential.user);
             // Force user to Game #75
-            window.location.href = '/HISTORY/day75.html';
+            window.location.href = '/HISTORY/day76.html';
           })
           .catch((error) => {
             console.error("Error logging in:", error.code, error.message);
