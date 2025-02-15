@@ -438,7 +438,7 @@ margin-top: 15px;
 .guess-response.hint {
 margin: auto; /* Reduce margin below hints */
 margin-top: 25px;
-margin-bottom: -45px;
+margin-bottom: -15px;
 font-size: 1.3rem; /* Optional: Slightly smaller font for hints */
 color: #4682b4;
 }
