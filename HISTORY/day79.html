@@ -65,9 +65,8 @@ padding: 8px;
       transition: width 0.3s ease;
     }
     @media (max-width: 768px) {
-  .questions-progress-bar{
-margin-left: 8px;
-margin-right: 8px;
+  .questions-progress-container{
+margin-right: 10px;
   }
   }
 
@@ -90,10 +89,28 @@ margin-right: 8px;
       font-weight: bold;
     }
     @media (max-width: 768px) {
-  .mystery-title {
-    margin-top: -50px; /* Adjust as needed */
+.mystery-title{
+    margin-top:-70px;
+}
+  /* Reserve space at the top so main content doesn't get hidden by the fixed title,
+     and reserve bottom space for the hints */
+  .main {
+    padding-top: calc(60px + 20px + 50px); /* navbar + gap + title height (adjust 50px as needed) */
+    padding-bottom: 120px; /* Reserve enough space for hints */
+  }
+  
+  /* Fix the hints container at the bottom so it doesn't push content upward */
+  .hint-container {
+    position: flex;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    z-index: 9;
   }
 }
+
     /* Question Box & Custom Dropdown */
     .question-box {
       background: #fff;
@@ -468,7 +485,7 @@ background-color: #4682b4;
   <!-- Header -->
   <header class="header">
     <div class="logo">
-      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
     </div>
     
   </header>
@@ -559,7 +576,7 @@ background-color: #4682b4;
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
       <p>You correctly guessed <strong id="correct-artist-name">Whitney Houston</strong>!</p>
-      <img src="images/whitneyhouston.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <img src="../images/whitneyhouston.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p>Questions used: <span id="questions-used-popup">0</span></p>
       <p>Hints used: <span id="hints-used-popup">0</span></p>
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">Time to Guess: 0m 0s</p>
@@ -576,7 +593,7 @@ background-color: #4682b4;
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
       <p>Today's singer was <strong id="correct-artist-name">Whitney Houston</strong>!</p>
-      <img src="images/whitneyhouston.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <img src="../images/whitneyhouston.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p>Questions used: <span id="questions-used-popup">0</span></p>
       <p>Hints used: <span id="hints-used-popup">0</span></p>      <div class="celebration-buttons">
         <button id="share-result-button" class="celebration-button">Share with Friends!</button>
@@ -940,24 +957,47 @@ background-color: #4682b4;
         }
       });
       // Share buttons (unchanged)
-      document.getElementById("share-result-button").addEventListener("click", function() {
-        const questionCount = questionsAsked;
-        const currentGuessCount = guessCount;
-        const hintCount = getHintsUsed();
-        const storedResults = `I guessed today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
-        navigator.clipboard.writeText(storedResults)
-          .then(() => { alert('Results copied to clipboard!'); })
-          .catch(err => { console.error('Failed to copy text: ', err); });
-      });
-      document.getElementById("share-failure-button").addEventListener("click", function() {
-        const questionCount = questionsAsked;
-        const currentGuessCount = guessCount;
-        const hintCount = getHintsUsed();
-        const storedResults = `I attempted today's mystery singer game using ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
-        navigator.clipboard.writeText(storedResults)
-          .then(() => { alert('Results copied to clipboard!'); })
-          .catch(err => { console.error('Failed to copy text: ', err); });
-      });
+      function copyTextToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    // Use the Clipboard API if available in a secure context.
+    return navigator.clipboard.writeText(text);
+  } else {
+    // Fallback for older browsers/insecure contexts.
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // Place the textarea off-screen.
+    textArea.style.position = "fixed";
+    textArea.style.top = "-9999px";
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      return successful ? Promise.resolve() : Promise.reject('Copy command unsuccessful');
+    } catch (err) {
+      document.body.removeChild(textArea);
+      return Promise.reject(err);
+    }
+  }
+}
+
+// Then change your share event listener to use this function:
+document.getElementById("share-result-button").addEventListener("click", function() {
+  const questionCount = questionsAsked;
+  const hintCount = getHintsUsed();
+  const storedResults = `I guessed today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
+  copyTextToClipboard(storedResults)
+    .then(() => {
+      alert('Results copied to clipboard!');
+    })
+    .catch(err => {
+      console.error('Failed to copy text: ', err);
+    });
+});
+
     });
     
     // Simple function to open the guess modal.
