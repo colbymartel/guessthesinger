@@ -704,10 +704,17 @@
 
       // Update progress bar and hint boxes
       function updateProgressBar() {
-        const progressText = document.getElementById("questionsProgressText");
-        const progressBar = document.getElementById("questionsProgressBar");
-        progressText.textContent = `Questions Asked: ${questionsAsked} of ${maxQuestions}`;
-        progressBar.style.width = (questionsAsked / maxQuestions) * 100 + "%";
+  const progressText = document.getElementById("questionsProgressText");
+  const progressBar = document.getElementById("questionsProgressBar");
+  progressText.textContent = `Questions Asked: ${questionsAsked} of ${maxQuestions}`;
+  progressBar.style.width = (questionsAsked / maxQuestions) * 100 + "%";
+
+  // When 14 questions are asked, open the guess modal automatically.
+  if (questionsAsked === 14) {
+    const answerDisplay = document.getElementById("answerDisplay");
+    answerDisplay.textContent = "Only one more question! Make a final guess!";
+    openGuessModal();
+  }
 
         // Unlock hint 1 at 4 questions
         if (questionsAsked >= hintThresholds[0]) {
@@ -738,36 +745,38 @@
           }
         }
         reorderHintBoxes();
-        
-        // When 14 questions have been asked, show a final message and force open the guess modal.
-        if (questionsAsked === 14) {
-          const answerDisplay = document.getElementById("answerDisplay");
-          answerDisplay.textContent = "Only one more question! Make a final guess!";
-          openGuessModal();
-        }
+         
       }
 
       // Create a new locked hint box
       function createHintBox(hintNumber) {
-        const box = document.createElement("div");
-        box.id = "hintBox-" + hintNumber;
-        box.className = "hint-box locked";
-        box.dataset.revealed = "false";
-        box.innerHTML = "Hint " + hintNumber + " Locked";
-        box.addEventListener("click", function() {
-          // For hints beyond the first, allow click only if hintBox-1 was revealed.
-          if (hintNumber > 1) {
-            const firstHint = document.getElementById("hintBox-1");
-            if (!firstHint || firstHint.dataset.revealed !== "true") {
-              return;
-            }
-          }
-          if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
-            revealHint(box, hintNumber - 1);
-          }
-        });
-        hintContainer.appendChild(box);
+  const box = document.createElement("div");
+  box.id = "hintBox-" + hintNumber;
+  box.className = "hint-box locked";
+  box.dataset.revealed = "false";
+  box.innerHTML = "Hint " + hintNumber + " Locked";
+  box.addEventListener("click", function() {
+    // For hints beyond the first, only allow a click if hint 1 was revealed.
+    if (hintNumber > 1) {
+      const hint1 = document.getElementById("hintBox-1");
+      if (!hint1 || hint1.dataset.revealed !== "true") {
+        return;
       }
+    }
+    // For hint 3, also check that hint 2 is revealed.
+    if (hintNumber === 3) {
+      const hint2 = document.getElementById("hintBox-2");
+      if (!hint2 || hint2.dataset.revealed !== "true") {
+        return;
+      }
+    }
+    if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
+      revealHint(box, hintNumber - 1);
+    }
+  });
+  hintContainer.appendChild(box);
+}
+
 
       // Unlock a hint box
       function unlockHintBox(boxId, idx) {
@@ -836,62 +845,104 @@
         });
       });
 
-      // Ask Question
-      window.askQuestion = function() {
-        const answerDisplay = document.getElementById("answerDisplay");
-        if (!selectedValue) {
-          answerDisplay.textContent = "Please select a question.";
-          return;
-        }
-        questionsAsked++;
-        updateProgressBar();
-        const responseText = responses[selectedValue] || "Sorry, no answer available.";
-        answerDisplay.textContent = responseText;
+function showFailure() {
+  // This function should display your failure (Game Over) popup.
+  const failurePopup = document.getElementById("failure-popup");
+  failurePopup.style.display = "flex";
+  setTimeout(() => {
+    failurePopup.classList.add("show");
+  }, 10);
+  // Optionally, disable your buttons to block further input.
+  document.querySelectorAll(".cta-button").forEach(btn => btn.disabled = true);
+}
 
-        if (responseText.trim().toLowerCase().startsWith("yes")) {
-          answerDisplay.style.borderColor = "green";
-        } else if (responseText.trim().toLowerCase().startsWith("no")) {
-          answerDisplay.style.borderColor = "red";
-        } else {
-          answerDisplay.style.borderColor = "#ddd";
-        }
+window.askQuestion = function() {
+  // If the game is over or the limit is reached, do nothing.
+  if (gameEnded || questionsAsked >= maxQuestions) {
+    if (!gameEnded) {
+      gameEnded = true;
+      showFailure();
+    }
+    return;
+  }
+  
+  // Ensure a question is selected.
+  const answerDisplay = document.getElementById("answerDisplay");
+  if (!selectedValue) {
+    answerDisplay.textContent = "Please select a question.";
+    return;
+  }
+  
+  // Increment question count.
+  questionsAsked++;
+  updateProgressBar();
+  
+  // Process the selected question.
+  const responseText = responses[selectedValue] || "Sorry, no answer available.";
+  answerDisplay.textContent = responseText;
+  if (responseText.trim().toLowerCase().startsWith("yes")) {
+    answerDisplay.style.borderColor = "green";
+  } else if (responseText.trim().toLowerCase().startsWith("no")) {
+    answerDisplay.style.borderColor = "red";
+  } else {
+    answerDisplay.style.borderColor = "#ddd";
+  }
+  
+  // Mark the question as asked.
+  if (selectedElement) {
+    selectedElement.classList.add("asked");
+    if (responseText.trim().toLowerCase().startsWith("yes")) {
+      selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
+    } else if (responseText.trim().toLowerCase().startsWith("no")) {
+      selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
+    }
+  }
+  selectedValue = "";
+  selectedElement = null;
+  dropdownHeader.innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
+  
+  // Immediately check if we reached the limit.
+  if (questionsAsked >= maxQuestions) {
+    gameEnded = true;
+    showFailure();
+  }
+};
 
-        if (selectedElement) {
-          selectedElement.classList.add("asked");
-          if (responseText.trim().toLowerCase().startsWith("yes")) {
-            selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
-          } else if (responseText.trim().toLowerCase().startsWith("no")) {
-            selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
-          }
-        }
-        selectedValue = "";
-        selectedElement = null;
-        dropdownHeader.innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
-      };
-
-      // Guess Modal functions
-      window.openGuessModal = function() {
-        document.getElementById("guessModal").style.display = "block";
-      };
-      window.closeGuessModal = function() {
-        document.getElementById("guessModal").style.display = "none";
-      };
-      window.submitGuess = function() {
-        const guessInput = document.getElementById("guessInput");
-        const guess = guessInput.value.trim().toLowerCase();
-        guessCount++;
-        questionsAsked++;
-        updateProgressBar();
-        closeGuessModal();
-        guessInput.value = "";
-
-        const correctAnswer = "Whitney Houston";
-        if (guess === correctAnswer.toLowerCase()) {
-          showCelebration();
-        } else {
-          alert("That's not correct. Try asking more questions or guess again!");
-        }
-      };
+window.submitGuess = function() {
+  // If the game is over or the limit is reached, do nothing.
+  if (gameEnded || questionsAsked >= maxQuestions) {
+    if (!gameEnded) {
+      gameEnded = true;
+      showFailure();
+    }
+    return;
+  }
+  
+  const guessInput = document.getElementById("guessInput");
+  const guess = guessInput.value.trim().toLowerCase();
+  
+  // Increment question count (guess counts as a question) and update progress.
+  questionsAsked++;
+  guessCount++;
+  updateProgressBar();
+  
+  closeGuessModal();
+  guessInput.value = "";
+  
+  const correctAnswer = "whitney houston";
+  if (guess === correctAnswer) {
+    showCelebration();
+    return; // Correct guess ends the game.
+  } else {
+    alert("That's not correct. Try asking more questions or guess again!");
+  }
+  
+  // After processing the guess, if we've reached the limit, display game over.
+  if (questionsAsked >= maxQuestions) {
+    gameEnded = true;
+    showFailure();
+  }
+};
 
       function showCelebration() {
         gameEnded = true;
@@ -912,17 +963,7 @@
           popup.classList.add("show");
         }, 10);
       }
-
-      // Failure Popup
-      function showFailure() {
-        gameEnded = true;
-        const failurePopup = document.getElementById("failure-popup");
-        failurePopup.style.display = "flex";
-        setTimeout(() => {
-          failurePopup.classList.add("show");
-        }, 10);
-      }
-
+     
       // Close Celebration Popup
       document.getElementById("close-celebration-popup").addEventListener("click", function() {
         const popup = document.getElementById("celebration-popup");
@@ -1032,6 +1073,13 @@
           });
       });
     });
+    function checkGameOver() {
+  if (questionsAsked >= maxQuestions && !gameEnded) {
+    gameEnded = true;
+    showFailure();
+  }
+}
+
   </script>
 </body>
 </html>
