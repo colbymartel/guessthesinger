@@ -18,7 +18,7 @@
   <!-- Header -->
   <header class="header">
     <div class="logo">
-      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
     </div>
   </header>
 
@@ -59,10 +59,9 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-
-    // Provide your own Firebase config or import { app } from "/signup.js" if it exports a configured Firebase app
+  
     const firebaseConfig = {
-  apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
   authDomain: "guessthesinger10.firebaseapp.com",
   databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
   projectId: "guessthesinger10",
@@ -71,26 +70,21 @@
   appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
   measurementId: "G-3R005HTKEW"
 };
-
+  
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
-    // Grab the login form
+  
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
       loginForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Prevent default form submission
-        console.log("Form submitted; preventing default.");
-
+        e.preventDefault();
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
-
-        // Attempt Firebase Auth login
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             console.log("Successfully logged in:", userCredential.user);
-            // Force user to Game #75
-            window.location.href = '/HISTORY/day76.html';
+            // Redirect to game page.
+            window.location.href = 'HISTORY/update.html';
           })
           .catch((error) => {
             console.error("Error logging in:", error.code, error.message);
