@@ -217,7 +217,7 @@ margin-top: 5px;
       transform: scale(1.05);
     }
     .results-button {
-  background-color: #3CB371; /* Green background for results */
+  background-color: #3CB371;
   color: #fff;
   border: none;
   padding: 12px 20px;
@@ -227,7 +227,20 @@ margin-top: 5px;
   transition: background-color 0.3s ease, transform 0.2s ease;
   margin-top: 10px;
   margin-bottom: 10px;
+  white-space: nowrap; /* ensure text doesn't wrap */
 }
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+  .results-button {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: auto;
+    padding: 10px 15px;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+}
+
 
 .results-button:hover {
   background-color: #2e8b57; /* Darker green on hover */
@@ -944,7 +957,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day116"; // replace with the current game id
+    const gameId = "day131"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
