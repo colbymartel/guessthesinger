@@ -322,40 +322,51 @@ margin-top: 5px;
       color: white;
     }
     /* Autocomplete Styles for Guess Modal */
-    #autocomplete-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 10%;
-      width: 80%;
-      background: #fff;
-      border: 1px solid #87cefa;
-      border-radius: 8px;
-      z-index: 9999;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      font-size: 16px;
-      color: #315f85;
-      max-height: 200px;
-      overflow-y: auto;
-      display: none;
-    }
-    #autocomplete-list.visible {
-      display: block;
-    }
-    #autocomplete-list li {
-      padding: 10px;
-      cursor: pointer;
-      border-bottom: 1px solid #eee;
-    }
-    #autocomplete-list li:last-child {
-      border-bottom: none;
-    }
-    #autocomplete-list li:hover {
-      background-color: #f0f8ff;
-      color: #315f85;
-    }
+    .autocomplete-container {
+  position: relative; /* Container as the reference point */
+  width: 100%; /* Adjust as needed */
+  margin: 0 auto;
+}
+
+#autocomplete-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%; /* Places it right below the input */
+  left: 0;
+  width: 100%; /* Same width as the container */
+  background: #fff;
+  border: 1px solid #87cefa;
+  border-radius: 8px;
+  z-index: 9999;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #315f85;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+
+#autocomplete-list.visible {
+  display: block;
+}
+
+#autocomplete-list li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+#autocomplete-list li:last-child {
+  border-bottom: none;
+}
+
+#autocomplete-list li:hover {
+  background-color: #f0f8ff;
+  color: #315f85;
+}
+
     /* Celebration Popup */
     .celebration-popup {
       position: fixed;
@@ -400,7 +411,18 @@ margin-top: 5px;
       gap: 15px;
       margin-top: 20px;
     }
-    .celebration-popup .celebration-button {
+    .celebration-popup .share-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      background: rgb(19, 126, 19);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .celebration-popup .discord-button {
       padding: 10px 20px;
       font-size: 1rem;
       font-weight: bold;
@@ -411,8 +433,10 @@ margin-top: 5px;
       cursor: pointer;
       transition: background 0.3s ease, transform 0.2s ease;
     }
-    .celebration-popup .celebration-button:hover {
-      background: #315f85;
+    .celebration-popup .share-button:hover {
+      transform: scale(1.05);
+    }
+    .celebration-popup .discord-button:hover {
       transform: scale(1.05);
     }
     .celebration-popup .close-popup {
@@ -454,13 +478,14 @@ display: flex;
 justify-content: center;
 gap: 20px;
 background-color: #315f85;
-padding: 10px 0;
+padding: 15px 0;
 font-weight: bold;
 }
 
 .navbar ul {
 list-style: none;
 display: flex;
+font-size: 16px;
 gap: 15px;
 margin: 0;
 padding: 0;
@@ -631,9 +656,11 @@ background-color: #4682b4;
   <div id="guessModal" class="modal">
     <div class="modal-content">
       <h2>Guess the Artist</h2>
-      <input type="text" id="guessInput" placeholder="Enter artist's name" autocomplete="off" />
-      <ul id="autocomplete-list"></ul>
-      <div>
+      <div class="autocomplete-container">
+        <input type="text" id="guessInput" placeholder="Enter artist's name" autocomplete="off" />
+        <ul id="autocomplete-list"></ul>
+      </div>
+      
         <button class="submit-btn" onclick="submitGuess()">Submit</button>
         <button class="cancel-btn" onclick="closeGuessModal()">Cancel</button>
       </div>
@@ -645,32 +672,34 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">Whitney Houston</strong>!</p>
-      <img src="../images/whitneyhouston.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Childish Gambino</strong>!</p>
+      <img src="../images/childishgambino.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p>Questions used: <span id="questions-used-popup">0</span></p>
       <p>Hints used: <span id="hints-used-popup">0</span></p>
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">Time to Guess: 0m 0s</p>
       <div class="celebration-buttons">
-        <button id="share-result-button" class="celebration-button">Share with Friends!</button>
-        <button id="enter-raffle-button" class="celebration-button">Join Discord</button>
+        <button id="share-result-button" class="share-button">Share with Friends!</button>
+        <button id="enter-raffle-button" class="discord-button">Join Discord</button>
       </div>
     </div>
   </div>
 
-  <!-- Failure Popup -->
-  <div id="failure-popup" class="celebration-popup">
+<!-- Failure Popup -->
+<div id="failure-popup" class="celebration-popup">
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name">Whitney Houston</strong>!</p>
-      <img src="../images/whitneyhouston.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
-      <p>Questions used: <span id="questions-used-popup">0</span></p>
-      <p>Hints used: <span id="hints-used-popup">0</span></p>      <div class="celebration-buttons">
-        <button id="share-result-button" class="celebration-button">Share with Friends!</button>
-        <button id="enter-raffle-button" class="celebration-button">Join Discord</button>
+      <p>Today's singer was <strong id="correct-artist-name-failure">Childish Gambino</strong>!</p>
+      <img src="../images/childishgambino.png" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Questions used: <span id="failure-questions-used">0</span></p>
+      <p>Hints used: <span id="failure-hints-used">0</span></p>      
+      <div class="celebration-buttons">
+        <button id="share-result-button-failure" class="share-button">Share with Friends!</button>
+        <button id="enter-raffle-button-failure" class="discord-button">Join Discord</button>
       </div>
     </div>
   </div>
+  
   
   <!-- Footer -->
   <footer class="footer">
@@ -678,6 +707,7 @@ background-color: #4682b4;
     <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
     <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
     <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://forms.gle/8UoyYgQNeD78Feq48" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
   </footer>
 
   <script>
@@ -685,20 +715,20 @@ background-color: #4682b4;
       // Predefined question responses
       const responses = {
         // General Questions
-  "is this a male artist?": "No, the mystery artist is not male.",
-  "is this a female artist?": "Yes, the mystery artist is female.",
-  "are they still alive?": "No, they are no longer alive.",
+"is this a male artist?": "Yes, the mystery artist is male.",
+  "is this a female artist?": "No, the mystery artist is not female.",
+  "are they still alive?": "Yes, they are still alive.",
   "are they over 30 years old?": "Yes, they are over 30 years old.",
   "are they over 40 years old?": "Yes, they are over 40 years old.",
-  "are they over 50 years old?": "Yes, they are over 50 years old.",
-  "debut before 2000?": "Yes, they debuted before 2000.",
-  "debut before 2010?": "Yes, they debuted before 2010.",
+  "are they over 50 years old?": "No, they are not over 50 years old.",
+  "debut before 2000?": "No, they debuted after 2000.",
+  "debut before 2010?": "Yes, they began releasing music before 2010.",
   "debut before 2020?": "Yes, they debuted before 2020.",
-  "album release in last 2 years?": "No, they did not release an album in the last 2 years.",
-  "are they touring?": "No, they are not touring.",
-  "are they married?": "No, they are not currently married.",
-  "divorced?": "Yes, they were divorced at one time.",
-  "LGBTQ?": "No, they did not publicly identify as LGBTQ+.",
+  "album release in last 2 years?": "Yes, they did release an album in the last 2 years.",
+  "are they touring?": "No, they are not touring at the moment.",
+  "are they married?": "Yes, they are currently married.",
+  "divorced?": "No, they have not been divorced.",
+  "LGBTQ?": "No, they have not publicly identified as LGBTQ+.",
 
   // Geographic Questions
   "are they from north america?": "Yes, they were born in North America.",
@@ -711,58 +741,58 @@ background-color: #4682b4;
   "are they from aftrica?": "No, they were not born in Africa.",
 
   // Background Questions
-  "are they of african descent?": "Yes, they were of African descent.",
-  "are they of european descent?": "Yes, they were partially of European descent.",
-  "are they of latin american descent?": "No, they were not of Latin American descent.",
-  "are they of asian descent?": "No, they were not of Asian descent.",
-  "are they of mixed ethnicity?": "Yes, they were of mixed ethnicity.",
+  "are they of african descent?": "Yes, they are of African descent.",
+  "are they of european descent?": "Yes, they are partially of European descent.",
+  "are they of latin american descent?": "No, they are not of Latin American descent.",
+  "are they of asian descent?": "No, they are not of Asian descent.",
+  "are they of mixed ethnicity?": "Yes, they are of mixed ethnicity.",
 
   // Music Style Questions
-  "different languages?": "No, they primarily performed in English.",
-  "are they spanish?": "No, they did not primarily perform Spanish music.",
-  "do they perform pop music?": "Yes, they performed pop music.",
-  "do they perform rap music?": "No, they did not perform rap music.",
-  "do they perform R&B music?": "Yes, they performed R&B music.",
-  "do they perform rock music?": "No, they did not perform rock music.",
-  "do they perform country music?": "No, they did not perform country music.",
-  "do they perform jazz music?": "No, they did not primarily perform jazz music.",
-  "do they perform party music?": "Yes, some of their tracks were upbeat and danceable.",
-  "do they perform sad music?": "Yes, they were known for their emotional ballads.",
+  "different languages?": "No, they primarily perform in English.",
+  "are they spanish?": "No, they do not primarily perform Spanish music.",
+  "do they perform pop music?": "Yes, elements of pop can be found in their music.",
+  "do they perform rap music?": "Yes, they perform rap music.",
+  "do they perform R&B music?": "Yes, there are strong R&B influences in their work.",
+  "do they perform rock music?": "No, they do not perform rock music.",
+  "do they perform country music?": "No, they do not perform country music.",
+  "do they perform jazz music?": "No, they do not primarily perform jazz music.",
+  "do they perform party music?": "Yes, some tracks are upbeat and danceable.",
+  "do they perform sad music?": "Yes, they have crafted introspective and emotional songs.",
 
   // Career and Popularity Questions
-  "are they also an actor?": "Yes, they also acted in films.",
+  "are they also an actor?": "Yes, they are also an actor.",
   "disney or nick?": "No, they were not featured on Disney Channel or Nickelodeon.",
   "singing competition?": "No, they did not compete in a TV singing competition.",
-  "have they won a grammy?": "Yes, they won multiple Grammy Awards.",
-  "super bowl?": "No, they never performed at a Super Bowl Halftime Show.",
-  "coachella?": "No, they never performed at Coachella.",
-  "song over one billion streams?": "Yes, two of their songs have exceeded one billion Spotify streams.",
-  "do they have more than 10M TikTok followers?": "No, they do not have TikTok followers.",
+  "have they won a grammy?": "Yes, they have won multiple Grammy Awards.",
+  "super bowl?": "No, they have never performed at a Super Bowl Halftime Show.",
+  "coachella?": "Yes, they have performed at Coachella.",
+  "song over one billion streams?": "Yes, one of their songs has exceeded one billion Spotify streams.",
+  "do they have more than 10M TikTok followers?": "No, they do not have over 10M TikTok followers.",
   "do they have more than 10M Instagram followers?": "No, they do not have over 10M Instagram followers.",
   "do they have more than 20M listeners?": "Yes, they currently have over 20M monthly Spotify listeners.",
   "do they have more than 50M listeners?": "No, they do not currently have over 50M monthly Spotify listeners.",
-  "were they ever in a band?": "No, they were a solo artist.",
+  "were they ever in a band?": "No, they have always been a solo artist.",
 
   // Name and Appearance Questions
-  "do they have dark hair?": "Sometimes!",
-  "do they have blond hair?": "Sometimes!",
-  "over 5.5 feet tall?": "Yes, they were over 5 1/2 feet tall.",
-  "over 6 feet tall?": "No, they were not over 6 feet tall.",
-  "do they have tattoos?": "No, they did not have visible tattoos.",
-  "do they wear glasses?": "No, they were not known for wearing glasses.",
-  "do they go by their birth name?": "Yes, they went by their birth name.",
-  "do they go by one word?": "No, they did not go by one word.",
+  "do they have dark hair?": "Yes, they have dark hair.",
+  "do they have blond hair?": "No, they do not typically have blond hair.",
+  "over 5.5 feet tall?": "Yes, they are over 5.5 feet tall.",
+  "over 6 feet tall?": "No, they are not over 6 feet tall.",
+  "do they have tattoos?": "No, they do not have visible tattoos.",
+  "do they wear glasses?": "No, they are not known for wearing glasses.",
+  "do they go by their birth name?": "No, they perform under a stage name.",
+  "do they go by one word?": "No, they do not go by one word.",
   "do they go by two words?": "Yes, they go by two words.",
-  "do they have a common first name?": "Yes, their first name is considered a relatively common.",
-  "name starts A-M?": "No, their name does not start with a letter between A and M."
+  "do they have a common first name?": "No, their stage name is not common.",
+  "name starts A-M?": "Yes, their name starts with a letter between A and M."
 };
 
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-        "Hint 1: They have several love songs on their discography.",
-        "Hint 2: In 2023, Rolling Stone ranked her as the second greatest singer of all-time.",
-        "Hint 3: Her most streamed song is about her desire to dance with somebody."
+        "Hint 1: They majored in dramatic writing at New York University.",
+        "Hint 2: He is also a well-known actor, where he is credited under his birth name.",
+        "Hint 3: One of his most famous songs is called 'This is America'."
       ];
       const maxQuestions = 15;
       let questionsAsked = 0;
@@ -924,16 +954,21 @@ background-color: #4682b4;
 
       // Show failure popup (Game Over). Only disable the Ask Question button.
       function showFailure() {
-        const failurePopup = document.getElementById("failure-popup");
-        failurePopup.style.display = "flex";
-        setTimeout(() => {
-          failurePopup.classList.add("show");
-        }, 10);
-        const askQuestionBtn = document.querySelector(".cta-button.ask-question");
-        if (askQuestionBtn) {
-          askQuestionBtn.disabled = true;
-        }
-      }
+  // Update counts for failure popup using unique IDs
+  document.getElementById("failure-questions-used").textContent = questionsAsked;
+  document.getElementById("failure-hints-used").textContent = getHintsUsed();
+
+  const failurePopup = document.getElementById("failure-popup");
+  failurePopup.style.display = "flex";
+  setTimeout(() => {
+    failurePopup.classList.add("show");
+  }, 10);
+  const askQuestionBtn = document.querySelector(".cta-button.ask-question");
+  if (askQuestionBtn) {
+    askQuestionBtn.disabled = true;
+  }
+}
+
 
       // Ask Question function.
       window.askQuestion = function() {
@@ -991,7 +1026,7 @@ background-color: #4682b4;
         updateProgressBar();
         closeGuessModal();
         guessInput.value = "";
-        const correctAnswer = "whitney houston";
+        const correctAnswer = "childish gambino";
         if (guess === correctAnswer) {
           showCelebration();
           return;
@@ -1003,6 +1038,9 @@ background-color: #4682b4;
           showFailure();
         }
       };
+      document.getElementById("enter-raffle-button").addEventListener("click", function() {
+  window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Replace with your actual Google Form URL
+});
 
       function showCelebration() {
         gameEnded = true;
@@ -1010,7 +1048,7 @@ background-color: #4682b4;
         const minutes = Math.floor(elapsedMs / 60000);
         const seconds = Math.floor((elapsedMs % 60000) / 1000);
         const timeText = `${minutes}m ${seconds}s`;
-        document.getElementById("correct-artist-name").textContent = "Whitney Houston";
+        document.getElementById("correct-artist-name").textContent = "Childish Gambino";
         document.getElementById("questions-used-popup").textContent = questionsAsked;
         document.getElementById("hints-used-popup").textContent = getHintsUsed();
         document.getElementById("celebration-time").textContent = "Time to Guess: " + timeText;
@@ -1029,6 +1067,22 @@ background-color: #4682b4;
           popup.style.display = "none";
         }, 500);
       });
+      document.getElementById("share-result-button-failure").addEventListener("click", function() {
+  const questionCount = questionsAsked;
+  const hintCount = getHintsUsed();
+  const storedResults = `I couldn't guess today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
+  copyTextToClipboard(storedResults)
+    .then(() => {
+      alert('Results copied to clipboard!');
+    })
+    .catch(err => {
+      console.error('Failed to copy text: ', err);
+    });
+});
+
+document.getElementById("enter-raffle-button-failure").addEventListener("click", function() {
+  window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Use your actual URL
+});
 
       // Close Failure Popup
       document.getElementById("close-failure-popup").addEventListener("click", function() {
@@ -1044,15 +1098,33 @@ background-color: #4682b4;
       const inputField = document.getElementById("guessInput");
       const autocompleteList = document.getElementById("autocomplete-list");
       const artists = [
-        "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran",
-        "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd", "Lil Mosey",
-        "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston",
-        "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear",
-        "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan",
-        "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv",
-        "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF", "Phoebe Bridgers", "Janet Jackson",
-        "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee"
-      ];
+      "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran", "Kehlani", "Polo G",
+    "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd", "Lil Mosey",
+    "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston",
+    "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear",
+    "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan",
+    "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv",
+    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF", "Phoebe Bridgers", "Janet Jackson",
+    "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee",
+    "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown", "6ix9ine", "Bryson Tiller",
+    "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin",
+    "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube", "Rex Orange County",
+    "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", "Lorde", "Tove Lo",
+    "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future", "Melanie Martinez",
+    "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti", "2Pac", "David Kushner",
+    "Daddy Yankee", "Tyler, The Creator", "One Direction", "GloRilla", "Adam Levine", "Don Toliver", "OneRepublic",
+    "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone", "Joji", "Chelsea Cutler",
+    "21 Savage", "Teddy Swims", "Gwen Stefani", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
+    "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", "Noah Kahan", "beabadoobee", "Morgan Wallen",
+    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave", "Carrie Underwood",
+    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller", "Iggy Azalea", "Mel B",
+    "Shreya Ghoshal", "Tate McRae", "Pritam", "Zach Bryan", "Lauren Spencer-Smith",
+    "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas",
+    "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", "Childish Gambino",
+    "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent",
+    "Bebe Rexha", "Ava Max", "Ne-Yo", "J. Cole", "Tyla",
+    "Cris Mj", "A$AP Rocky", "James Arthur", "Ty Dolla $ign", "Alec Benjamin", "Swae Lee"
+];
       inputField.addEventListener("input", () => {
         const query = inputField.value.trim().toLowerCase();
         autocompleteList.innerHTML = "";
@@ -1137,5 +1209,7 @@ document.getElementById("share-result-button").addEventListener("click", functio
       modal.style.display = "none";
     }
   </script>
+          <script src="../test.js" type="module"></script>
+
 </body>
 </html>
