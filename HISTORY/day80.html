@@ -79,6 +79,8 @@ margin-right: 10px;
       align-items: center;
       text-align: center;
       padding: 20px;
+      padding-top: calc(60px + 20px + 50px); /* navbar + gap + title height (adjust 50px as needed) */
+      padding-bottom: 120px; /* Reserve enough space for hints */
     }
     .mystery-title {
       font-size: 1.6rem;
@@ -235,6 +237,11 @@ margin-top: 5px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      position: flex;
+    bottom: 0;
+    left: 50%;
+    padding: 10px;
+    z-index: 9;
     }
     .hint-box {
       font-size: 1.1rem;
@@ -636,7 +643,7 @@ background-color: #4682b4;
       <div class="button-group">
         <!-- Give the Ask Question button a special class -->
         <button class="cta-button ask-question" onclick="askQuestion()">Ask Question</button>
-        <button class="cta-button" onclick="openGuessModal()">Guess the Artist</button>
+        <button class="cta-button" onclick="openGuessModal()">Guess the Singer</button>
       </div>
     </div>
 
