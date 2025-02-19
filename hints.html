@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer - Locked Hints Page">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Locked Hints</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* General Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding-bottom: 40px;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+      }
+    }
+    /* Navigation */
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+    }
+    .hints-container {
+      padding-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);  /* 4 per row */
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto 30px;
+    }
+    .hint-item {
+      background: #ddd;
+      border-radius: 50px;
+      padding: 40px;
+      text-align: center;
+      font-size: 1.5rem;
+      color: #555;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .hint-item:hover {
+      background: #ccc;
+      transform: scale(1.05);
+    }
+    /* When locked, a lock icon is shown before the text */
+    .hint-item.locked::before {
+      content: "\f023"; /* Font Awesome lock icon */
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      margin-right: 8px;
+    }
+    /* When revealed, turn green */
+    .hint-item.revealed {
+      background: #c8e6c9;
+      color: #2e7d32;
+    }
+    /* Container for hint responses */
+    .hint-responses-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 0 10px;
+    }
+    .hint-response {
+      background: #fff;
+      border: 2px solid #4682b4;
+      border-radius: 10px;
+      padding: 30px;
+      font-size: 2rem;
+      color: #333;
+      min-height: 50px;
+    }
+    /* Locked response box style */
+    .hint-response.locked {
+      background: #e0e0e0;
+      color: #555;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+  <nav class="navbar">
+    <ul>
+      <li><a href="/questions.html">Questions</a></li>
+      <li><a href="/hints.html">Hints</a></li>
+      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/audience.html">Audience</a></li>
+      <li><a href="/trivia.html">Trivia</a></li>
+      <li><a href="/wheel.html">Wheel</a></li>
+    </ul>
+  </nav>
+  <div class="hints-container" id="hintsContainer">
+    <!-- Hint items will be generated here -->
+  </div>
+  <div class="hint-responses-container" id="hintResponses">
+    <!-- Hint response boxes will be generated here -->
+  </div>
+
+  <script>
+    // Array of hint texts – adjust as needed.
+    const hints = [
+      "The singer has a powerful vocal range.",
+      "They have won multiple Grammy Awards.",
+      "Known for energetic live performances.",
+      "Their style mixes pop with R&B influences.",
+      "They started their career as a teenager.",
+    ];
+
+    const hintsContainer = document.getElementById("hintsContainer");
+    const hintResponsesContainer = document.getElementById("hintResponses");
+
+    // Retrieve the persisted state from localStorage (if any)
+    let revealedHints = JSON.parse(localStorage.getItem("revealedHints")) || {};
+
+    // Function to save the state
+    function saveState() {
+      localStorage.setItem("revealedHints", JSON.stringify(revealedHints));
+    }
+
+    // Function to create a hint response box.
+    // If revealText is provided, display it; otherwise, show locked text.
+    function createHintResponse(index, revealText = null) {
+      const responseBox = document.createElement("div");
+      responseBox.classList.add("hint-response");
+      if (revealText === null) {
+        responseBox.classList.add("locked");
+        responseBox.textContent = `Hint ${index + 1} Locked`;
+      } else {
+        responseBox.textContent = revealText;
+      }
+      responseBox.id = `hintResponse-${index+1}`;
+      return responseBox;
+    }
+
+    // Function to update or create the response box for a given index.
+    function updateResponseBox(index, isRevealed, hintText) {
+      let responseBox = document.getElementById(`hintResponse-${index+1}`);
+      if (!responseBox) {
+        responseBox = createHintResponse(index);
+        hintResponsesContainer.appendChild(responseBox);
+      }
+      if (isRevealed) {
+        responseBox.classList.remove("locked");
+        responseBox.textContent = hintText;
+      } else {
+        responseBox.classList.add("locked");
+        responseBox.textContent = `Hint ${index + 1} Locked`;
+      }
+    }
+
+    // Generate the hint items.
+    hints.forEach((hintText, index) => {
+      const hintItem = document.createElement("div");
+      hintItem.classList.add("hint-item");
+      
+      // For the first hint, it's always clickable.
+      if (index === 0) {
+        hintItem.classList.add("locked");
+      } else {
+        // For other hints, only allow toggling if previous hint is revealed.
+        if (revealedHints[index]) {
+          hintItem.classList.add("revealed");
+        } else {
+          hintItem.classList.add("locked");
+        }
+      }
+      
+      hintItem.textContent = `Hint ${index + 1}`;
+      // Save the hint text and its index in data attributes.
+      hintItem.setAttribute("data-hint", hintText);
+      hintItem.setAttribute("data-index", index);
+      
+      hintItem.addEventListener("click", function() {
+        const currentIndex = parseInt(this.getAttribute("data-index"));
+        // For hints beyond the first, check if previous hint is revealed.
+        if (currentIndex > 0 && !revealedHints[currentIndex - 1]) {
+          // Optionally, you can alert the user or simply do nothing.
+          return;
+        }
+        // Toggle the reveal state.
+        if (revealedHints[currentIndex]) {
+          // Hide the hint.
+          revealedHints[currentIndex] = false;
+          this.classList.remove("revealed");
+          this.classList.add("locked");
+          updateResponseBox(currentIndex, false);
+        } else {
+          // Reveal the hint.
+          revealedHints[currentIndex] = true;
+          this.classList.remove("locked");
+          this.classList.add("revealed");
+          updateResponseBox(currentIndex, true, this.getAttribute("data-hint"));
+          // If there's a next hint and its response box doesn't exist, add it.
+          if (currentIndex + 1 < hints.length && !document.getElementById(`hintResponse-${currentIndex+2}`)) {
+            const nextResponse = createHintResponse(currentIndex + 1);
+            hintResponsesContainer.appendChild(nextResponse);
+          }
+        }
+        saveState();
+      });
+      
+      hintsContainer.appendChild(hintItem);
+      // For each hint, update the response box based on the persisted state.
+      updateResponseBox(index, revealedHints[index] || false, hintText);
+    });
+  </script>
+</body>
+</html>

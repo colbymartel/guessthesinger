@@ -2,235 +2,217 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Guess The Singer Live Game Shows: Experience the ultimate college campus event hosted by Colby Martel. Join us for live music challenges, interactive games, and unforgettable performances!">
+  <meta name="description" content="Guess The Singer - Search for your favorite singer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guess The Singer Live Game Shows</title>
+  <title>Guess The Singer</title>
   <link rel="icon" href="/favicon.ico">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <style>
-    /* General Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', Arial, sans-serif;
-      background: url(/images/bg-top.png) no-repeat;
-      background-size: cover;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      background: #f4f4f4;
+      padding-bottom: 40px;
     }
-
-    /* Header */
-    .header {
+    header {
       background-color: #4682b4;
-      padding: 30px;
-      text-align: center;
-      color: white;
-    }
-
-    .header .logo img {
-      width: 20%;
-      margin-bottom: 10px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-
-    @media (max-width: 768px) {
-      .header .logo img {
-        width: 60%;
-      }
-    }
-
-    /* Hero Section */
-    .hero {
-      background: url('/images/campus-event-bg.jpg') no-repeat center center;
-      background-size: cover;
-      color: white;
-      padding: 100px 20px;
-      text-align: center;
-      position: relative;
-    }
-    .hero::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-    }
-    .hero .hero-content {
-      position: relative;
-      z-index: 1;
-    }
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      line-height: 1.5;
-    }
-    .hero .cta-button {
-      background-color: #ff914d;
-      color: white;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-    }
-    .hero .cta-button:hover {
-      background-color: #e07a3b;
-      transform: scale(1.05);
-    }
-
-    /* Main Section */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
+      color: #fff;
       padding: 20px;
-      background: white;
+      text-align: center;
     }
-    .main h2 {
+    header h1 {
       font-size: 2rem;
-      margin-bottom: 10px;
-      color: #4682b4;
     }
-    .main p {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      color: #555;
+    .search-container {
+      text-align: center;
+      margin: 20px;
     }
-    .main .cta-button {
-      background-color: #4682b4;
-      color: white;
-      padding: 15px 30px;
+    .search-container input {
+      width: 80%;
+      max-width: 500px;
+      padding: 10px;
       font-size: 1.2rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
-    .main .cta-button:hover {
-      background-color: #315f85;
-      transform: scale(1.05);
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 65px; /* Adds 20px gap between items both vertically and horizontally */
+      max-width: 1200px;
+      margin: 0 auto;
+      justify-content: center; /* Center the grid */
     }
-
-    /* Feature Section */
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      padding: 40px 20px;
-      background: #f8f8f8;
-    }
-    .feature-item {
-      max-width: 300px;
+    .gallery-item {
+      background: #fff;
+      padding: 10px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       text-align: center;
-      padding: 20px;
-      border: 1px solid #ddd;
+      margin-bottom: -30px;
+  width: 200px;
+  height: 232px;
+  background-color: #eee; /* Just for visibility */
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect: Scale up by 5% */
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-      background: white;
     }
-    .feature-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-    }
-    .feature-item h3 {
-      font-size: 1.5rem;
-      color: #4682b4;
-      margin-bottom: 10px;
-    }
-    .feature-item p {
+    .singer-name {
+      margin-top: 8px;
+      font-weight: bold;
       font-size: 1rem;
-      color: #555;
+      color: #333;
     }
+    .navbar {
+  background-color: #315f85;
+  padding: 15px 0;
+  text-align: center;
+}
 
-    /* Footer */
-    .footer {
-      background-color: #315f85;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 1rem;
-    }
-    .footer a {
-      color: white;
-      text-decoration: none;
-      margin: 0 6px;
-      font-size: 1rem;
-      transition: color 0.3s ease;
-    }
-    .footer a:hover {
-      color: #ff914d;
-    }
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.navbar ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  transition: background 0.3s ease;
+}
+
+.navbar ul li a:hover {
+  background-color: #4682b4;
+  border-radius: 5px;
+}
+.gallery-item {
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+}
+
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <div class="logo">
-      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
-    </div>
+  <header>
+    <h1>Guess The Singer</h1>
   </header>
+  <nav class="navbar">
+    <ul>
+      <li><a href="/questions.html">Questions</a></li>
+      <li><a href="/hints.html">Hints</a></li>
+      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/audience.html">Audience</a></li>
+    </ul>
+  </nav>  
+  <div class="search-container">
+    <input type="text" id="searchBar" placeholder="Type singer's name...">
+  </div>
+  <div class="gallery" id="gallery">
+    <!-- Gallery items will be generated by JavaScript -->
+  </div>
+  
+  <script>
+    // Array of singer objects – update image paths and names as needed.
+    const singers = [
+      { name: "Billie Eilish", img: "images/billieeilish.png" },
+      { name: "Beyoncé", img: "images/beyonce.jpg" },
+      { name: "Ariana Grande", img: "images/arianagrande.jpg" },
+      { name: "Drake", img: "images/drake.jpg" },
+      { name: "Ed Sheeran", img: "images/ed_sheeran.jpg" },
+      { name: "Taylor Swift", img: "images/taylor_swift.jpg" },
+      { name: "Lady Gaga", img: "images/lady_gaga.jpg" },
+      { name: "Kanye West", img: "images/kanye_west.jpg" },
+      { name: "Rihanna", img: "images/rihanna.png" },
+      { name: "The Weeknd", img: "images/theweeknd.png" },
+      { name: "Bruno Mars", img: "images/brunomars.jpg" },
+      { name: "Adele", img: "images/adele.jpg" },
+      { name: "Shawn Mendes", img: "images/shawn_mendes.jpg" },
+      { name: "Selena Gomez", img: "images/selenagomez.png" },
+      { name: "Justin Bieber", img: "images/justin_bieber.jpg" },
+      { name: "Dua Lipa", img: "images/dua_lipa.jpg" },
+      { name: "Camila Cabello", img: "images/camila_cabello.jpg" },
+      { name: "Sam Smith", img: "images/sam_smith.jpg" },
+      { name: "Olivia Rodrigo", img: "images/olivia_rodrigo.jpg" },
+      { name: "Katy Perry", img: "images/katy_perry.jpg" },
+      { name: "Harry Styles", img: "images/harry_styles.jpg" },
+      { name: "Lizzo", img: "images/lizzo.jpg" },
+      { name: "Doja Cat", img: "images/doja_cat.jpg" },
+      { name: "Post Malone", img: "images/post_malone.jpg" },
+      { name: "Miley Cyrus", img: "images/miley_cyrus.jpg" },
+      { name: "Sia", img: "images/sia.jpg" },
+      { name: "Imagine Dragons", img: "images/imagine_dragons.jpg" },
+      { name: "Halsey", img: "images/halsey.jpg" },
+      { name: "Rita Ora", img: "images/rita_ora.jpg" },
+      { name: "Nicki Minaj", img: "images/nicki_minaj.jpg" },
+      { name: "Jason Derulo", img: "images/jason_derulo.jpg" },
+      { name: "Cardi B", img: "images/cardi_b.jpg" },
+      { name: "Travis Scott", img: "images/travis_scott.jpg" },
+      { name: "Maroon 5", img: "images/maroon_5.jpg" },
+      { name: "Lana Del Rey", img: "images/lana_del_rey.jpg" },
+      { name: "NF", img: "images/nf.jpg" },
+      { name: "Phoebe Bridgers", img: "images/phoebe_bridgers.jpg" },
+      { name: "Janet Jackson", img: "images/janet_jackson.jpg" },
+      { name: "Khalid", img: "images/khalid.jpg" },
+      { name: "John Legend", img: "images/john_legend.jpg" },
+      { name: "Charlie Puth", img: "images/charlie_puth.jpg" },
+      { name: "Rosé", img: "images/rose.jpg" },
+      { name: "Elton John", img: "images/elton_john.jpg" },
+      { name: "Calvin Harris", img: "images/calvin_harris.jpg" },
+      { name: "Lorde", img: "images/lorde.jpg" },
+      { name: "Tove Lo", img: "images/tove_lo.jpg" },
+      { name: "J Balvin", img: "images/j_balvin.jpg" },
+      { name: "KAROL G", img: "images/karol_g.jpg" },
+      { name: "Madonna", img: "images/madonna.jpg" }
+    ];
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Guess The Singer Live Game Shows</h1>
-      <p>Join Colby Martel on campus for an electrifying experience of live music challenges, interactive games, and unforgettable performances!</p>
-      <button class="cta-button" onclick="window.location.href='tickets.html'">Get Tickets</button>
-    </div>
-  </section>
+    const gallery = document.getElementById("gallery");
 
-  <!-- Main Section (Event Info) -->
-  <main class="main">
-    <h2>Experience the Excitement</h2>
-    <p>Witness live performances, engage in interactive challenges, and compete for exclusive prizes at our campus event. Don't miss the musical event of the year!</p>
-    <button class="cta-button" onclick="window.location.href='learn-more.html'">Learn More</button>
-  </main>
-
-  <!-- Feature Section -->
-  <section class="features">
-    <div class="feature-item">
-      <h3>Live Music</h3>
-      <p>Enjoy dynamic performances and live battles between emerging and established artists.</p>
-    </div>
-    <div class="feature-item">
-      <h3>Interactive Games</h3>
-      <p>Test your music knowledge with fun challenges and on-the-spot quizzes.</p>
-    </div>
-    <div class="feature-item">
-      <h3>Exclusive Prizes</h3>
-      <p>Win tickets, merchandise, and other exclusive rewards through event contests.</p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    &copy; 2024 Colby Martel | 
-    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-  </footer>
+    // Function to render the gallery based on a filter string.
+    function renderGallery(filterText = "") {
+      gallery.innerHTML = "";
+      singers.forEach(singer => {
+        if (singer.name.toLowerCase().includes(filterText.toLowerCase())) {
+          const item = document.createElement("div");
+          item.classList.add("gallery-item");
+          item.innerHTML = `
+            <img src="${singer.img}" alt="${singer.name}">
+            <div class="singer-name">${singer.name}</div>
+          `;
+          gallery.appendChild(item);
+        }
+      });
+    }
+    
+    // Initial render of all singers.
+    renderGallery();
+    
+    // Attach input event listener to search bar.
+    const searchBar = document.getElementById("searchBar");
+    searchBar.addEventListener("input", function() {
+      renderGallery(this.value);
+    });
+  </script>
 </body>
 </html>

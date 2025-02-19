@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Poll: Vote on which contestant will be eliminated">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elimination Poll</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Basic Reset */
+    /* General Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding-bottom: 40px;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+      }
+    }
+
+    /* Navigation */
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+    }
+    .container {
+  max-width: 600px;
+  margin: 100px auto 0; /* top margin 100px and auto left/right */
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+    .qr-code {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .qr-code img {
+      width: 200px;
+      height: auto;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .option {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #fafafa;
+      transition: background 0.3s ease;
+    }
+    .option:hover {
+      background: #e9e9e9;
+    }
+    .results {
+      margin-top: 20px;
+    }
+    .result {
+      margin-bottom: 15px;
+    }
+    .result strong {
+      margin-right: 5px;
+    }
+    .progress-container {
+      background: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 20px;
+      margin-top: 5px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #4682b4;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+   
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+        </div>
+      </header>
+    <nav class="navbar">
+        <ul>
+          <li><a href="/questions.html">Questions</a></li>
+          <li><a href="/hints.html">Hints</a></li>
+          <li><a href="/guesses.html">Guesses</a></li>
+          <li><a href="/audience.html">Audience</a></li>
+          <li><a href="/trivia.html">Trivia</a></li>
+          <li><a href="/wheel.html">Wheel</a></li>
+        </ul>
+      </nav>
+      <div class="container">
+
+    <!-- QR Code (replace src with your own QR image) -->
+    <div class="qr-code">
+      <img src="qr_placeholder.png" alt="Scan QR Code">
+    </div>
+    
+    <!-- Voting Options -->
+    <div class="options">
+      <div class="option" data-option="option1">Contestant A</div>
+      <div class="option" data-option="option2">Contestant B</div>
+      <div class="option" data-option="option3">Contestant C</div>
+    </div>
+    
+    <!-- Voting Results -->
+    <div class="results">
+      <div class="result">
+        <strong>Contestant A:</strong>
+        <div class="progress-container">
+          <div id="bar-option1" class="progress-bar"></div>
+        </div>
+        <span id="percent-option1">0%</span>
+      </div>
+      <div class="result">
+        <strong>Contestant B:</strong>
+        <div class="progress-container">
+          <div id="bar-option2" class="progress-bar"></div>
+        </div>
+        <span id="percent-option2">0%</span>
+      </div>
+      <div class="result">
+        <strong>Contestant C:</strong>
+        <div class="progress-container">
+          <div id="bar-option3" class="progress-bar"></div>
+        </div>
+        <span id="percent-option3">0%</span>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // In a real implementation, you would use Firebase or another backend to store and update votes.
+    // For demonstration purposes, we'll simulate vote counts with a simple JavaScript object.
+    
+    let votes = { option1: 0, option2: 0, option3: 0 };
+    
+    // Function to update progress bars based on vote counts.
+    function updateProgress() {
+  const totalVotes = votes.option1 + votes.option2 + votes.option3;
+  
+  function calcPercent(option) {
+    return totalVotes > 0 ? Math.round((votes[option] / totalVotes) * 100) : 0;
+  }
+  
+  const percent1 = calcPercent('option1');
+  const percent2 = calcPercent('option2');
+  const percent3 = calcPercent('option3');
+  
+  document.getElementById("bar-option1").style.width = percent1 + "%";
+  document.getElementById("bar-option2").style.width = percent2 + "%";
+  document.getElementById("bar-option3").style.width = percent3 + "%";
+  
+  document.getElementById("percent-option1").textContent = percent1 + "% (" + votes.option1 + " votes)";
+  document.getElementById("percent-option2").textContent = percent2 + "% (" + votes.option2 + " votes)";
+  document.getElementById("percent-option3").textContent = percent3 + "% (" + votes.option3 + " votes)";
+}
+
+    
+    // Add click event listeners for the voting options.
+    document.querySelectorAll(".option").forEach(item => {
+      item.addEventListener("click", function() {
+        const option = this.getAttribute("data-option");
+        // Increment the vote count for the selected option.
+        votes[option]++;
+        updateProgress();
+        // Here you would also update your backend (e.g., Firebase) so that all users see real-time results.
+      });
+    });
+    
+    // For real-time updates, you could attach a listener to your backend
+    // (for example, using Firebase's onValue listener) and call updateProgress() accordingly.
+  </script>
+</body>
+</html>

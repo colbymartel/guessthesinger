@@ -9,29 +9,49 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <style>
     /* General Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', Arial, sans-serif;
-      background: url(/images/bg-top.png) no-repeat;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      background: #f4f4f4;
+      padding-bottom: 40px;
     }
-
-    /* Header */
-    .header {
+    header {
       background-color: #4682b4;
-      padding: 30px;
+      color: #fff;
+      padding: 20px;
       text-align: center;
-      color: white;
     }
-
+    header h1 {
+      font-size: 2rem;
+    }
+    /* Navigation */
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+    }
     /* Logo Styling */
     .header .logo img {
       width: 20%;
@@ -146,7 +166,17 @@
       <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
     </div>
   </header>
+  <nav class="navbar">
+    <ul>
+      <li><a href="/questions.html">Questions</a></li>
+      <li><a href="/hints.html">Hints</a></li>
+      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/audience.html">Audience</a></li>
+      <li><a href="/trivia.html">Trivia</a></li>
+      <li><a href="/wheel.html">Wheel</a></li>
 
+    </ul>
+  </nav>
   <!-- Main Section -->
   <main class="main">
     <!-- Progress Bar -->
@@ -167,14 +197,6 @@
       <!-- Answer options will be injected here -->
     </div>
   </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    &copy; 2024 Colby Martel | 
-    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-  </footer>
 
   <script>
     // Array of 10 questions
