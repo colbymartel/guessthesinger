@@ -1814,19 +1814,58 @@ function showCelebration() {
       popup.style.display = "none";
     }, 500);
   });
+  document.addEventListener("DOMContentLoaded", () => {
+  const shareBtn = document.getElementById("share-result-button");
+  if (!shareBtn) {
+    console.error("Share button not found!");
+    return;
+  }
+  shareBtn.addEventListener("click", async function () {
+    console.log("Share button clicked");
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      console.error("No user logged in");
+      return;
+    }
+    try {
+      const userGameRef = dbRef(database, `userGames/${currentUser.uid}/${gameId}`);
+      const snapshot = await get(userGameRef);
+      if (!snapshot.exists()) {
+        alert("No game record found for today.");
+        return;
+      }
+      const data = snapshot.val();
+      const questionCount = data.questionsUsed;
+      const hintCount = data.hintsUsed || 0;
+      const storedResults = `I guessed today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
+      console.log("Attempting to copy:", storedResults);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(storedResults);
+        alert("Results copied to clipboard!");
+      } else {
+        // Fallback method
+        const textArea = document.createElement("textarea");
+        textArea.value = storedResults;
+        textArea.style.position = "fixed";
+        textArea.style.top = "-9999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const successful = document.execCommand("copy");
+        document.body.removeChild(textArea);
+        if (successful) {
+          alert("Results copied to clipboard!");
+        } else {
+          alert("Failed to copy text.");
+        }
+      }
+    } catch (err) {
+      console.error("Error during copy:", err);
+      alert("An error occurred while copying the results.");
+    }
+  });
+});
 
-  document.getElementById("share-result-button-failure").addEventListener("click", function() {
-const questionCount = questionsAsked;
-const hintCount = getHintsUsed();
-const storedResults = `I couldn't guess today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
-copyTextToClipboard(storedResults)
-.then(() => {
-  alert('Results copied to clipboard!');
-})
-.catch(err => {
-  console.error('Failed to copy text: ', err);
-});
-});
 
 document.getElementById("enter-raffle-button-failure").addEventListener("click", function() {
 window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Use your actual URL
