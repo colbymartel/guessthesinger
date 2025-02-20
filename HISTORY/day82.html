@@ -151,7 +151,7 @@ margin-right: 10px;
       background: #fff;
       margin-bottom: 15px;
       text-align: left;
-      width: 400px;
+      width: 450px;
       max-width: 100%;
     }
     @media (max-width: 768px) {
@@ -984,7 +984,7 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: He is a member of a famous boy band.",
+    "Hint 1: They have more than 50 million Instagram followers",
         "Hint 2: He was born in South Korea.",
         "Hint 3: He's a member of BTS and his name starts with 'J'."
       ];
@@ -1014,7 +1014,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day82"; // replace with the current game id
+    const gameId = "day95"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
@@ -1113,11 +1113,15 @@ function viewCelebrationFromRecord() {
       }
     })
     .catch((err) => console.error("Error retrieving game record:", err));
+    saveProgress();
+
 }
 
 
 // Listen for auth state changes so "auth.currentUser" is defined.
     document.addEventListener("DOMContentLoaded", function() {
+        loadProgress();
+
       // Predefined question responses
       const responses = {
         // General Questions
@@ -1196,62 +1200,51 @@ function viewCelebrationFromRecord() {
 
 // Ask Question function.
 window.askQuestion = function() {
-    if (gameEnded || questionsAsked >= maxQuestions) {
-      if (!gameEnded) {
-        gameEnded = true;
-        showFailure();
-      }
-      return;
-    }
-    const answerDisplay = document.getElementById("answerDisplay");
-    if (!selectedValue) {
-      answerDisplay.textContent = "Please select a question.";
-      return;
-    }
-    // Increment questions count and update UI.
-    questionsAsked++;
-    updateProgressBar();
-
-    // Get the response based on the selected question.
-    const responseText = responses[selectedValue] || "Sorry, no answer available.";
-    answerDisplay.textContent = responseText;
-    
-    // Change border color based on a "Yes" or "No" response.
-    if (responseText.trim().toLowerCase().startsWith("yes")) {
-      answerDisplay.style.borderColor = "green";
-    } else if (responseText.trim().toLowerCase().startsWith("no")) {
-      answerDisplay.style.borderColor = "red";
-    } else {
-      answerDisplay.style.borderColor = "#ddd";
-    }
-    
-    // Mark the selected element as "asked"
-    if (selectedElement) {
-      selectedElement.classList.add("asked");
-      if (responseText.trim().toLowerCase().startsWith("yes")) {
-        selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
-      } else if (responseText.trim().toLowerCase().startsWith("no")) {
-        selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
-      }
-    }
-    
-    // Clear the selection.
-    selectedValue = "";
-    selectedElement = null;
-    document.getElementById("dropdownHeader").innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
-
-    // End game if max questions reached.
-    if (questionsAsked >= maxQuestions) {
+  if (gameEnded || questionsAsked >= maxQuestions) {
+    if (!gameEnded) {
       gameEnded = true;
       showFailure();
     }
-  };
+    return;
+  }
+  const answerDisplay = document.getElementById("answerDisplay");
+  if (!selectedValue) {
+    answerDisplay.textContent = "Please select a question.";
+    return;
+  }
+  
+  questionsAsked++;
+  updateProgressBar();
+  saveProgress(); // Save after updating questionsAsked
 
+  const responseText = responses[selectedValue] || "Sorry, no answer available.";
+  answerDisplay.textContent = responseText;
+  
+  // Add the checkmark/cross to the selected dropdown item
+  if (selectedElement) {
+    selectedElement.classList.add("asked");
+    if (responseText.trim().toLowerCase().startsWith("yes")) {
+      selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
+    } else if (responseText.trim().toLowerCase().startsWith("no")) {
+      selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
+    }
+  }
+  saveProgress();
+
+  selectedValue = "";
+  selectedElement = null;
+  document.getElementById("dropdownHeader").innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
+  
+  if (questionsAsked >= maxQuestions) {
+    gameEnded = true;
+    showFailure();
+  }
+};
 
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: He is a member of a famous boy band.",
+      "Hint 1: They have more than 50 million Instagram followers",
         "Hint 2: He was born in South Korea.",
         "Hint 3: He's a member of BTS and his name starts with 'J'."
       ];
@@ -1418,15 +1411,16 @@ window.askQuestion = function() {
 
       // Reveal a hint.
       function revealHint(box, idx) {
-        if (box.dataset.revealed === "false") {
-          box.innerHTML = "<i class='fas fa-lightbulb'></i> " + hintsArray[idx];
-          box.dataset.revealed = "true";
-          if (idx < hintsArray.length - 1 && !document.getElementById("hintBox-" + (idx + 2))) {
-            createHintBox(idx + 2);
-          }
-          reorderHintBoxes();
-        }
-      }
+  if (box.dataset.revealed === "false") {
+    box.innerHTML = "<i class='fas fa-lightbulb'></i> " + hintsArray[idx];
+    box.dataset.revealed = "true";
+    if (idx < hintsArray.length - 1 && !document.getElementById("hintBox-" + (idx + 2))) {
+      createHintBox(idx + 2);
+    }
+    reorderHintBoxes();
+    saveProgress(); // Save progress after hint is revealed.
+  }
+}
 
       // Custom dropdown interactions.
       const customDropdown = document.getElementById("customDropdown");
@@ -1832,65 +1826,53 @@ function showCelebration() {
   });
   
   document.addEventListener("DOMContentLoaded", () => {
+  // Existing code for the celebration share button
   const shareBtn = document.getElementById("share-result-button");
-  if (!shareBtn) {
-    console.error("Share button not found!");
-    return;
+  if (shareBtn) {
+    const clipboard = new ClipboardJS('#share-result-button', {
+      text: function(trigger) {
+        return trigger.getAttribute("data-clipboard-text") || "";
+      }
+    });
+    clipboard.on("success", function(e) {
+      alert("Results copied to clipboard!");
+      e.clearSelection();
+    });
+    clipboard.on("error", function(e) {
+      alert("Copy failed. Please try again.");
+    });
+    shareBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      const storedResults = `I guessed today's mystery singer in ${questionsAsked} questions and ${getHintsUsed()} hints! 🌟 Try it at guessthesinger.com`;
+      shareBtn.setAttribute("data-clipboard-text", storedResults);
+    });
   }
 
-  // Instantiate ClipboardJS on the share button.
-  // Use a dynamic text function that returns the button's data attribute.
-  const clipboard = new ClipboardJS('#share-result-button', {
-    text: function(trigger) {
-      return trigger.getAttribute("data-clipboard-text") || "";
-    }
-  });
-
-  // Listen for a successful copy.
-  clipboard.on("success", function(e) {
-    alert("Results copied to clipboard!");
-    e.clearSelection();
-  });
-
-  clipboard.on("error", function(e) {
-    alert("Copy failed. Please try again.");
-  });
-
-  // When the share button is clicked, fetch the game result and update the clipboard text.
-  shareBtn.addEventListener("click", async function(e) {
-    console.log("Share button clicked");
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
-      console.error("No user logged in");
-      return;
-    }
-    try {
-      const userGameRef = dbRef(database, `userGames/${currentUser.uid}/${gameId}`);
-      const snapshot = await get(userGameRef);
-      if (!snapshot.exists()) {
-        alert("No game record found for today.");
-        return;
+  // Bind similar functionality for the failure popup share button.
+  const failureShareBtn = document.getElementById("share-result-button-failure");
+  if (failureShareBtn) {
+    const clipboardFailure = new ClipboardJS('#share-result-button-failure', {
+      text: function(trigger) {
+        return trigger.getAttribute("data-clipboard-text") || "";
       }
-      const data = snapshot.val();
-      const questionCount = data.questionsUsed;
-      const hintCount = data.hintsUsed || 0;
-      const storedResults = `I guessed today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
-      console.log("Updating clipboard text:", storedResults);
-      
-      // Update the button's data attribute.
-      shareBtn.setAttribute("data-clipboard-text", storedResults);
-      
-      /* 
-         Since ClipboardJS listens for the click event, updating the attribute before
-         the copy action should allow ClipboardJS to pick up the correct text.
-         (The copy will occur automatically on the same user tap.)
-      */
-    } catch (err) {
-      console.error("Error during copy:", err);
-    }
-  });
+    });
+    clipboardFailure.on("success", function(e) {
+      alert("Results copied to clipboard!");
+      e.clearSelection();
+    });
+    clipboardFailure.on("error", function(e) {
+      alert("Copy failed. Please try again.");
+    });
+    failureShareBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      // Use failure popup elements to determine the counts.
+      const questionCount = document.getElementById("failure-questions-used").textContent;
+      const hintCount = document.getElementById("failure-hints-used").textContent;
+      const storedResults = `I couldn't guess today's mystery singer in ${questionCount} questions and ${hintCount} hints! 😢 Try it at guessthesinger.com`;
+      failureShareBtn.setAttribute("data-clipboard-text", storedResults);
+    });
+  }
 });
-
 
 
 document.getElementById("enter-raffle-button-failure").addEventListener("click", function() {
@@ -1921,6 +1903,101 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// Make sure gameId is defined, e.g.:
+const progressKey = `gameProgress_${gameId}`;
+function saveProgress() {
+  // Save state of hint boxes
+  const hintBoxes = Array.from(document.querySelectorAll("#hintContainer .hint-box")).map(box => ({
+    id: box.id,
+    unlocked: box.classList.contains("unlocked"),
+    revealed: box.dataset.revealed === "true",
+    innerHTML: box.innerHTML
+  }));
+
+  // Save state of dropdown items that have been asked.
+  const askedDropdownItems = Array.from(document.querySelectorAll(".dropdown-item.asked")).map(item => ({
+    dataValue: item.getAttribute("data-value"),
+    innerHTML: item.innerHTML
+  }));
+
+  const progress = {
+    questionsAsked,
+    guessCount,
+    startTime: startTime.toISOString(),
+    gameEnded,
+    hintsProgress: hintBoxes,
+    askedDropdownItems // new property to store dropdown state
+  };
+
+  localStorage.setItem(progressKey, JSON.stringify(progress));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem(progressKey);
+  if (saved) {
+    const progress = JSON.parse(saved);
+    questionsAsked = progress.questionsAsked;
+    guessCount = progress.guessCount;
+    startTime = new Date(progress.startTime);
+    gameEnded = progress.gameEnded;
+    
+    updateProgressBar();
+    closeGuessModal();
+    
+    if (progress.hintsProgress && Array.isArray(progress.hintsProgress)) {
+      restoreHintsProgress(progress.hintsProgress);
+    }
+    
+    if (progress.askedDropdownItems && Array.isArray(progress.askedDropdownItems)) {
+      restoreDropdownState(progress.askedDropdownItems);
+    }
+    
+    if (gameEnded) {
+      document.getElementById("answerDisplay").textContent =
+        "You have already played today's game!";
+      disableGame();
+    }
+  }
+}
+
+
+function restoreHintsProgress(hintsData) {
+  const container = document.getElementById("hintContainer");
+  container.innerHTML = ""; // Clear existing hints
+
+  hintsData.forEach(savedHint => {
+    const box = document.createElement("div");
+    box.id = savedHint.id;
+    // Set the appropriate classes based on saved state
+    box.className = "hint-box " + (savedHint.unlocked ? "unlocked" : "locked");
+    box.dataset.revealed = savedHint.revealed ? "true" : "false";
+    box.innerHTML = savedHint.innerHTML;
+
+    // Rebind the event listener to enable revealing hints
+    box.addEventListener("click", function() {
+      const hintNumber = parseInt(box.id.replace("hintBox-", ""));
+      if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
+        revealHint(box, hintNumber - 1);
+      }
+    });
+
+    container.appendChild(box);
+  });
+}
+function restoreDropdownState(askedItems) {
+  // Loop over each saved asked item.
+  askedItems.forEach(savedItem => {
+    // Find the dropdown item in the DOM by matching data-value.
+    const item = document.querySelector(`.dropdown-item[data-value="${savedItem.dataValue}"]`);
+    if (item) {
+      // Add the asked class and update the innerHTML (which includes emojis).
+      item.classList.add("asked");
+      item.innerHTML = savedItem.innerHTML;
+    }
+  });
+}
+
     </script>
+    
 </body>
 </html>
