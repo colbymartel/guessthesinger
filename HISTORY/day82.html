@@ -18,13 +18,28 @@
       flex-direction: column;
       min-height: 100vh;
     }
+    :root {
+  --header-height: 140px; /* adjust as needed for your design */
+}
+@media (max-width: 768px) {
+      :root {
+        --header-height: 100px; /* adjust as needed for your design */
+      } }
+
     /* Header */
     .header {
-      background-color: #4682b4;
-      padding: 30px;
-      text-align: center;
-      color: white;
-    }
+  background-color: #4682b4;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 10;
+}
+
     .header .logo img {
       width: 20%;
       margin-bottom: 10px;
@@ -70,35 +85,32 @@ margin-right: 10px;
   }
   }
 
-    /* Main Section */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
+  .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align items to the top */
+  align-items: center;
+  text-align: center;
+  padding-top: 280px; /* navbar + gap + title height (adjust 50px as needed) */
+  padding-bottom: 120px; /* Reserve enough space for hints */
+}
 
-    }
     .mystery-title {
-      font-size: 1.6rem;
-      margin-top: -100px;
-      margin-bottom: 10px;
-      line-height: 1.4;
-      color: #4682b4;
-      font-weight: bold;
-    }
+  font-size: 1.6rem;
+  margin-top: 0;  /* remove negative margin */
+  margin-bottom: 10px;
+  line-height: 1.4;
+  color: #4682b4;
+  font-weight: bold;
+}
+
     @media (max-width: 768px) {
 .mystery-title{
     margin-top:-70px;
 }
   /* Reserve space at the top so main content doesn't get hidden by the fixed title,
      and reserve bottom space for the hints */
-  .main {
-    padding-top: calc(60px + 20px + 50px); /* navbar + gap + title height (adjust 50px as needed) */
-    padding-bottom: 120px; /* Reserve enough space for hints */
-  }
   
   /* Fix the hints container at the bottom so it doesn't push content upward */
   .hint-container {
@@ -123,6 +135,13 @@ margin-right: 10px;
       margin-bottom: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+    @media (max-width: 768px) {
+  .question-box {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
     .custom-dropdown {
       border: 1px solid #ddd;
       border-radius: 5px;
@@ -132,13 +151,20 @@ margin-right: 10px;
       background: #fff;
       margin-bottom: 15px;
       text-align: left;
+      width: 400px;
+      max-width: 100%;
     }
+    @media (max-width: 768px) {
+        .custom-dropdown {
+        width: 300px;
+        max-width: 100%;
+    }}
     .dropdown-header {
       font-size: 1.1rem;
       color: #333;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: left;
     }
     .dropdown-header i { transition: transform 0.3s; }
     .custom-dropdown.active .dropdown-header i {
@@ -171,7 +197,7 @@ margin-right: 10px;
       padding: 5px 10px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: left;
     }
     .dropdown-group summary::-webkit-details-marker { display: none; }
     .dropdown-group summary .toggle-icon { transition: transform 0.3s; }
@@ -260,15 +286,31 @@ margin-top: 5px;
       width: 100%;
       max-width: 500px;
     }
+    @media (max-width: 768px) {
+  .answer-display {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
     /* Hint Container & Boxes */
     .hint-container {
       width: 100%;
-      max-width: 500px;
+      max-width: 450px;
       margin-top: 15px;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+    @media (max-width: 768px) {
+  .hint-container {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+   
     .hint-box {
       font-size: 1.1rem;
       padding: 10px;
@@ -513,6 +555,11 @@ gap: 20px;
 background-color: #315f85;
 padding: 15px 0;
 font-weight: bold;
+position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: 100%;
+  z-index: 9; /* or higher if needed */
 }
 
 .navbar ul {
@@ -685,8 +732,6 @@ background-color: #4682b4;
 #close-stats-popup:hover {
   color: #ff4d4d;
 }
-
-
   </style>
 </head>
 <body>
@@ -969,7 +1014,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day82"; // replace with the current game id
+    const gameId = "day86"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
