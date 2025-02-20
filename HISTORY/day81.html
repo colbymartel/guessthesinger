@@ -866,8 +866,8 @@ background-color: #4682b4;
         Time to Guess: <span style="font-weight: normal;">0 Minutes 0 Seconds</span>
       </p>
             <div class="celebration-buttons">
-        <button id="share-result-button" class="share-button">Share with Friends!</button>
-        <button id="enter-raffle-button" class="discord-button">Join Discord</button>
+              <button id="share-result-button" class="share-button" data-clipboard-text="">Share Results</button>
+              <button id="enter-raffle-button" class="discord-button">Join Discord</button>
       </div>
     </div>
   </div>
@@ -945,6 +945,7 @@ background-color: #4682b4;
       ];
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
    <script type="module">
     // Import Firebase modules for App, Database, and Auth.
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
@@ -1546,35 +1547,6 @@ function showFailure() {
     }
   }
 }
-
-// Then change your share event listener to use this function:
-document.getElementById("share-result-button").addEventListener("click", function() {
-  const currentUser = auth.currentUser;
-  if (!currentUser) return;
-  const userGameRef = dbRef(database, `userGames/${currentUser.uid}/${gameId}`);
-  get(userGameRef)
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        // Use stored values from the record
-        const questionCount = data.questionsUsed;
-        const hintCount = data.hintsUsed || 0;
-        const storedResults = `I guessed today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
-        copyTextToClipboard(storedResults)
-          .then(() => {
-            alert('Results copied to clipboard!');
-          })
-          .catch(err => {
-            console.error('Failed to copy text: ', err);
-          });
-      } else {
-        alert("No game record found for today.");
-      }
-    })
-    .catch(err => console.error("Error retrieving game record:", err));
-});
-
-
     
     // Simple function to open the guess modal.
     function openGuessModal() {
@@ -1805,7 +1777,6 @@ function showCelebration() {
   showUserStatsPopup();
 }
 
-
   // Close Celebration Popup
   document.getElementById("close-celebration-popup").addEventListener("click", function() {
     const popup = document.getElementById("celebration-popup");
@@ -1814,13 +1785,34 @@ function showCelebration() {
       popup.style.display = "none";
     }, 500);
   });
+  
   document.addEventListener("DOMContentLoaded", () => {
   const shareBtn = document.getElementById("share-result-button");
   if (!shareBtn) {
     console.error("Share button not found!");
     return;
   }
-  shareBtn.addEventListener("click", async function () {
+
+  // Instantiate ClipboardJS on the share button.
+  const clipboard = new ClipboardJS('#share-result-button', {
+    text: function(trigger) {
+      return trigger.getAttribute("data-clipboard-text") || "";
+    }
+  });
+
+  clipboard.on("success", function(e) {
+    alert("Results copied to clipboard!");
+    e.clearSelection();
+  });
+
+  clipboard.on("error", function(e) {
+    alert("Copy failed. Please try manually.");
+  });
+
+  // On click, first fetch the result then trigger a manual copy.
+  shareBtn.addEventListener("click", async function(e) {
+    e.preventDefault(); // Prevent default action
+
     console.log("Share button clicked");
     const currentUser = auth.currentUser;
     if (!currentUser) {
@@ -1838,12 +1830,25 @@ function showCelebration() {
       const questionCount = data.questionsUsed;
       const hintCount = data.hintsUsed || 0;
       const storedResults = `I guessed today's mystery singer in ${questionCount} questions and ${hintCount} hints! 🌟 Try it at guessthesinger.com`;
-      console.log("Attempting to copy:", storedResults);
+      console.log("Updating clipboard text:", storedResults);
+      
+      // Update the button's data attribute.
+      shareBtn.setAttribute("data-clipboard-text", storedResults);
+      
+      // After updating, manually trigger a click event on the button that ClipboardJS can handle.
+      // Since we're already in the click handler, we can call clipboard.writeText directly.
       if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(storedResults);
-        alert("Results copied to clipboard!");
+        // Directly use ClipboardJS's method to write text.
+        navigator.clipboard.writeText(storedResults)
+          .then(() => alert("Results copied to clipboard!"))
+          .catch(err => {
+            console.error("Clipboard API error:", err);
+            alert("Copy failed. Please try manually.");
+          });
       } else {
-        // Fallback method
+        // Fallback for older browsers.
+        // This fallback shouldn't be needed if ClipboardJS is properly handling it,
+        // but you can simulate a manual copy here if desired.
         const textArea = document.createElement("textarea");
         textArea.value = storedResults;
         textArea.style.position = "fixed";
@@ -1856,7 +1861,7 @@ function showCelebration() {
         if (successful) {
           alert("Results copied to clipboard!");
         } else {
-          alert("Failed to copy text.");
+          alert("Copy failed. Please try manually.");
         }
       }
     } catch (err) {
@@ -1864,6 +1869,8 @@ function showCelebration() {
     }
   });
 });
+
+
 
 
 document.getElementById("enter-raffle-button-failure").addEventListener("click", function() {
