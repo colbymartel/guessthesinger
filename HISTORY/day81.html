@@ -1141,7 +1141,7 @@ function viewCelebrationFromRecord() {
   "over 6 feet tall?": "No, they were not over 6 feet tall.",
   "do they have tattoos?": "No, they were not known to have tattoos.",
   "do they wear glasses?": "No, they were not typically seen wearing glasses.",
-  "do they go by their birth name?": "Yes, but mostly performed under a band name.",
+  "do they go by their birth name?": "No, they do not go by their birth name.",
   "do they go by one word?": "No, their name is not one word.",
   "do they go by two words?": "Yes, their name is two words.",
   "do they have a common first name?": "Yes, they have a relatively common first name.",
@@ -1794,25 +1794,25 @@ function showCelebration() {
   }
 
   // Instantiate ClipboardJS on the share button.
+  // Use a dynamic text function that returns the button's data attribute.
   const clipboard = new ClipboardJS('#share-result-button', {
     text: function(trigger) {
       return trigger.getAttribute("data-clipboard-text") || "";
     }
   });
 
+  // Listen for a successful copy.
   clipboard.on("success", function(e) {
     alert("Results copied to clipboard!");
     e.clearSelection();
   });
 
   clipboard.on("error", function(e) {
-    alert("Copy failed. Please try manually.");
+    alert("Copy failed. Please try again.");
   });
 
-  // On click, first fetch the result then trigger a manual copy.
+  // When the share button is clicked, fetch the game result and update the clipboard text.
   shareBtn.addEventListener("click", async function(e) {
-    e.preventDefault(); // Prevent default action
-
     console.log("Share button clicked");
     const currentUser = auth.currentUser;
     if (!currentUser) {
@@ -1835,41 +1835,16 @@ function showCelebration() {
       // Update the button's data attribute.
       shareBtn.setAttribute("data-clipboard-text", storedResults);
       
-      // After updating, manually trigger a click event on the button that ClipboardJS can handle.
-      // Since we're already in the click handler, we can call clipboard.writeText directly.
-      if (navigator.clipboard && window.isSecureContext) {
-        // Directly use ClipboardJS's method to write text.
-        navigator.clipboard.writeText(storedResults)
-          .then(() => alert("Results copied to clipboard!"))
-          .catch(err => {
-            console.error("Clipboard API error:", err);
-            alert("Copy failed. Please try manually.");
-          });
-      } else {
-        // Fallback for older browsers.
-        // This fallback shouldn't be needed if ClipboardJS is properly handling it,
-        // but you can simulate a manual copy here if desired.
-        const textArea = document.createElement("textarea");
-        textArea.value = storedResults;
-        textArea.style.position = "fixed";
-        textArea.style.top = "-9999px";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        const successful = document.execCommand("copy");
-        document.body.removeChild(textArea);
-        if (successful) {
-          alert("Results copied to clipboard!");
-        } else {
-          alert("Copy failed. Please try manually.");
-        }
-      }
+      /* 
+         Since ClipboardJS listens for the click event, updating the attribute before
+         the copy action should allow ClipboardJS to pick up the correct text.
+         (The copy will occur automatically on the same user tap.)
+      */
     } catch (err) {
       console.error("Error during copy:", err);
     }
   });
 });
-
 
 
 
