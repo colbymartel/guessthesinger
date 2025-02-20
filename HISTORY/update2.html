@@ -18,13 +18,28 @@
       flex-direction: column;
       min-height: 100vh;
     }
+    :root {
+  --header-height: 140px; /* adjust as needed for your design */
+}
+@media (max-width: 768px) {
+      :root {
+        --header-height: 100px; /* adjust as needed for your design */
+      } }
+
     /* Header */
     .header {
-      background-color: #4682b4;
-      padding: 30px;
-      text-align: center;
-      color: white;
-    }
+  background-color: #4682b4;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 10;
+}
+
     .header .logo img {
       width: 20%;
       margin-bottom: 10px;
@@ -70,35 +85,32 @@ margin-right: 10px;
   }
   }
 
-    /* Main Section */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
+  .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align items to the top */
+  align-items: center;
+  text-align: center;
+  padding-top: 280px; /* navbar + gap + title height (adjust 50px as needed) */
+  padding-bottom: 120px; /* Reserve enough space for hints */
+}
 
-    }
     .mystery-title {
-      font-size: 1.6rem;
-      margin-top: -100px;
-      margin-bottom: 10px;
-      line-height: 1.4;
-      color: #4682b4;
-      font-weight: bold;
-    }
+  font-size: 1.6rem;
+  margin-top: 0;  /* remove negative margin */
+  margin-bottom: 10px;
+  line-height: 1.4;
+  color: #4682b4;
+  font-weight: bold;
+}
+
     @media (max-width: 768px) {
 .mystery-title{
     margin-top:-70px;
 }
   /* Reserve space at the top so main content doesn't get hidden by the fixed title,
      and reserve bottom space for the hints */
-  .main {
-    padding-top: calc(60px + 20px + 50px); /* navbar + gap + title height (adjust 50px as needed) */
-    padding-bottom: 120px; /* Reserve enough space for hints */
-  }
   
   /* Fix the hints container at the bottom so it doesn't push content upward */
   .hint-container {
@@ -123,6 +135,13 @@ margin-right: 10px;
       margin-bottom: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+    @media (max-width: 768px) {
+  .question-box {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
     .custom-dropdown {
       border: 1px solid #ddd;
       border-radius: 5px;
@@ -132,13 +151,20 @@ margin-right: 10px;
       background: #fff;
       margin-bottom: 15px;
       text-align: left;
+      width: 400px;
+      max-width: 100%;
     }
+    @media (max-width: 768px) {
+        .custom-dropdown {
+        width: 300px;
+        max-width: 100%;
+    }}
     .dropdown-header {
       font-size: 1.1rem;
       color: #333;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: left;
     }
     .dropdown-header i { transition: transform 0.3s; }
     .custom-dropdown.active .dropdown-header i {
@@ -171,7 +197,7 @@ margin-right: 10px;
       padding: 5px 10px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: left;
     }
     .dropdown-group summary::-webkit-details-marker { display: none; }
     .dropdown-group summary .toggle-icon { transition: transform 0.3s; }
@@ -260,15 +286,31 @@ margin-top: 5px;
       width: 100%;
       max-width: 500px;
     }
+    @media (max-width: 768px) {
+  .answer-display {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
     /* Hint Container & Boxes */
     .hint-container {
       width: 100%;
-      max-width: 500px;
+      max-width: 450px;
       margin-top: 15px;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+    @media (max-width: 768px) {
+  .hint-container {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+   
     .hint-box {
       font-size: 1.1rem;
       padding: 10px;
@@ -513,6 +555,11 @@ gap: 20px;
 background-color: #315f85;
 padding: 15px 0;
 font-weight: bold;
+position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: 100%;
+  z-index: 9; /* or higher if needed */
 }
 
 .navbar ul {
@@ -709,8 +756,8 @@ background-color: #4682b4;
   
   <!-- Main Section -->
   <main class="main">
-    <div class="mystery-title">Game #82</div>
-
+    <div class="content-wrapper">
+      <div class="mystery-title">Game #82</div>
     <!-- Questions Progress Bar -->
     <div class="questions-progress-wrapper">
       <div class="questions-progress-text" id="questionsProgressText">Questions Asked: 0 of 15</div>
@@ -822,13 +869,13 @@ background-color: #4682b4;
       <div class="button-group">
         <!-- Give the Ask Question button a special class -->
         <button class="cta-button ask-question" onclick="askQuestion()">Ask Question</button>
-        <button class="cta-button guess-artist" onclick="openGuessModal()">Guess the Artist</button>
+        <button class="cta-button guess-artist" onclick="openGuessModal()">Guess the Singer</button>
     </div>
     </div>
 
     <!-- Answer Display -->
     <div class="answer-display" id="answerDisplay"></div>
-
+</div>
     <!-- Hint Container -->
     <div class="hint-container" id="hintContainer">
       <!-- Begin with a section labeled "Hint Locked" -->
@@ -841,7 +888,7 @@ background-color: #4682b4;
   <!-- Modal for Artist Guess -->
   <div id="guessModal" class="modal">
     <div class="modal-content">
-      <h2>Guess the Artist</h2>
+      <h2>Guess the Singer</h2>
       <div class="autocomplete-container">
         <input type="text" id="guessInput" placeholder="Enter artist's name" autocomplete="off" />
         <ul id="autocomplete-list"></ul>
@@ -939,7 +986,7 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: He is a member of a famous boy band.",
+        "Hint 1: He is a member of a famous boy band.",
         "Hint 2: He was born in South Korea.",
         "Hint 3: He's a member of BTS and his name starts with 'J'."
       ];
@@ -1073,10 +1120,13 @@ function viewCelebrationFromRecord() {
 
 // Listen for auth state changes so "auth.currentUser" is defined.
     document.addEventListener("DOMContentLoaded", function() {
+  loadProgress();
+  // ... your existing DOMContentLoaded code ...
+
       // Predefined question responses
       const responses = {
         // General Questions
-        "is this a male artist?": "Yes, the mystery singer is male.",
+  "is this a male artist?": "Yes, the mystery singer is male.",
   "is this a female artist?": "No, the mystery singer is male.",
   "are they still alive?": "Yes, they are very much alive.",
   "are they over 30 years old?": "No, they are under 30 years old.",
@@ -1148,67 +1198,63 @@ function viewCelebrationFromRecord() {
   "name starts A-M?": "Yes, their name starts with a letter between A and M."
 };
 
-
-// Ask Question function.
 window.askQuestion = function() {
-    if (gameEnded || questionsAsked >= maxQuestions) {
-      if (!gameEnded) {
-        gameEnded = true;
-        showFailure();
-      }
-      return;
-    }
-    const answerDisplay = document.getElementById("answerDisplay");
-    if (!selectedValue) {
-      answerDisplay.textContent = "Please select a question.";
-      return;
-    }
-    // Increment questions count and update UI.
-    questionsAsked++;
-    updateProgressBar();
-
-    // Get the response based on the selected question.
-    const responseText = responses[selectedValue] || "Sorry, no answer available.";
-    answerDisplay.textContent = responseText;
-    
-    // Change border color based on a "Yes" or "No" response.
-    if (responseText.trim().toLowerCase().startsWith("yes")) {
-      answerDisplay.style.borderColor = "green";
-    } else if (responseText.trim().toLowerCase().startsWith("no")) {
-      answerDisplay.style.borderColor = "red";
-    } else {
-      answerDisplay.style.borderColor = "#ddd";
-    }
-    
-    // Mark the selected element as "asked"
-    if (selectedElement) {
-      selectedElement.classList.add("asked");
-      if (responseText.trim().toLowerCase().startsWith("yes")) {
-        selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
-      } else if (responseText.trim().toLowerCase().startsWith("no")) {
-        selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
-      }
-    }
-    
-    // Clear the selection.
-    selectedValue = "";
-    selectedElement = null;
-    document.getElementById("dropdownHeader").innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
-
-    // End game if max questions reached.
-    if (questionsAsked >= maxQuestions) {
+  if (gameEnded || questionsAsked >= maxQuestions) {
+    if (!gameEnded) {
       gameEnded = true;
       showFailure();
     }
-  };
+    return;
+  }
+  const answerDisplay = document.getElementById("answerDisplay");
+  if (!selectedValue) {
+    answerDisplay.textContent = "Please select a question.";
+    return;
+  }
+  
+  questionsAsked++;
+  updateProgressBar();
 
+  // Get and display the response.
+  const responseText = responses[selectedValue] || "Sorry, no answer available.";
+  answerDisplay.textContent = responseText;
+  
+  if (responseText.trim().toLowerCase().startsWith("yes")) {
+    answerDisplay.style.borderColor = "green";
+  } else if (responseText.trim().toLowerCase().startsWith("no")) {
+    answerDisplay.style.borderColor = "red";
+  } else {
+    answerDisplay.style.borderColor = "#ddd";
+  }
+  
+  if (selectedElement) {
+    selectedElement.classList.add("asked");
+    if (responseText.trim().toLowerCase().startsWith("yes")) {
+      selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
+    } else if (responseText.trim().toLowerCase().startsWith("no")) {
+      selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
+    }
+  }
+  
+  selectedValue = "";
+  selectedElement = null;
+  document.getElementById("dropdownHeader").innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
+
+  if (questionsAsked >= maxQuestions) {
+    gameEnded = true;
+    showFailure();
+  }
+  
+  // Save progress after processing the question.
+  saveProgress();
+};
 
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: He is a member of a famous boy band.",
+        "Hint 1: They are a solo artist, and a member of a famous band.",
         "Hint 2: He was born in South Korea.",
-        "Hint 3: He's a member of BTS and his name starts with 'J'."
+        "Hint 3: He is a member of BTS and his name starts with 'J'."
       ];
 
 });
@@ -1373,15 +1419,17 @@ window.askQuestion = function() {
 
       // Reveal a hint.
       function revealHint(box, idx) {
-        if (box.dataset.revealed === "false") {
-          box.innerHTML = "<i class='fas fa-lightbulb'></i> " + hintsArray[idx];
-          box.dataset.revealed = "true";
-          if (idx < hintsArray.length - 1 && !document.getElementById("hintBox-" + (idx + 2))) {
-            createHintBox(idx + 2);
-          }
-          reorderHintBoxes();
-        }
-      }
+  if (box.dataset.revealed === "false") {
+    box.innerHTML = "<i class='fas fa-lightbulb'></i> " + hintsArray[idx];
+    box.dataset.revealed = "true";
+    if (idx < hintsArray.length - 1 && !document.getElementById("hintBox-" + (idx + 2))) {
+      createHintBox(idx + 2);
+    }
+    reorderHintBoxes();
+    saveProgress(); // Save after revealing a hint.
+  }
+}
+
 
       // Custom dropdown interactions.
       const customDropdown = document.getElementById("customDropdown");
@@ -1428,37 +1476,39 @@ window.askQuestion = function() {
   }
 }
 
+
 function showFailure() {
+  // Close guess modal if open
+  closeGuessModal();
+
   gameEnded = true;
   const elapsedMs = new Date() - startTime;
   const minutes = Math.floor(elapsedMs / 60000);
   const seconds = Math.floor((elapsedMs % 60000) / 1000);
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
-  // Populate the failure popup with stats
+  // Populate failure popup content
   document.getElementById("correct-artist-name-failure").textContent = "Jimin";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
-  "<strong>Time to Guess:</strong> <span style='font-weight: normal;'>" + timeText + "</span>";
+    "<strong>Time to Guess:</strong> <span style='font-weight: normal;'>" + timeText + "</span>";
 
-  // Disable game controls (if needed)
+  // Disable game controls
   disableGameControls();
 
-  // Show the failure popup
-  const popup = document.getElementById("failure-popup");
-  popup.style.display = "flex";
+  const failurePopup = document.getElementById("failure-popup");
+  failurePopup.style.display = "flex";
   setTimeout(() => {
-    popup.classList.add("show");
+    failurePopup.classList.add("show");
   }, 10);
 
-  // Record failure in the database (with duration)
+  // Record failure, update streak and show stats
   recordUserGameResult(questionsAsked, elapsedMs, "fail");
   recordGameResult(questionsAsked, "fail", elapsedMs);
   updateStreak();
   showUserStatsPopup();
 }
-
 
       // Autocomplete for Guess Modal.
       const inputField = document.getElementById("guessInput");
@@ -1550,9 +1600,11 @@ function showFailure() {
     
     // Simple function to open the guess modal.
     function openGuessModal() {
-      const modal = document.getElementById("guessModal");
-      modal.style.display = "block";
-    }
+  if (gameEnded) return; // Prevent modal from opening if game is over.
+  const modal = document.getElementById("guessModal");
+  modal.style.display = "block";
+}
+
     // Close guess modal.
     function closeGuessModal() {
       const modal = document.getElementById("guessModal");
@@ -1751,6 +1803,9 @@ function recordGameResult(questionsUsed, status, duration) {
     });
 }
 function showCelebration() {
+  // Close guess modal if open
+  closeGuessModal();
+
   gameEnded = true;
   const elapsedMs = new Date() - startTime;
   const minutes = Math.floor(elapsedMs / 60000);
@@ -1761,7 +1816,8 @@ function showCelebration() {
   document.getElementById("correct-artist-name").textContent = "Jimin";
   document.getElementById("questions-used-popup").textContent = questionsAsked;
   document.getElementById("hints-used-popup").textContent = getHintsUsed();
-  document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
+  document.getElementById("celebration-time").innerHTML =
+    "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
 
   const popup = document.getElementById("celebration-popup");
   popup.style.display = "flex";
@@ -1769,10 +1825,9 @@ function showCelebration() {
     popup.classList.add("show");
   }, 10);
 
-  // Record the win (pass "win" as the status)
+  // Record win, update streak and show stats
   recordUserGameResult(questionsAsked, elapsedMs, "win");
   recordGameResult(questionsAsked, "win", elapsedMs);
-
   updateStreak();
   showUserStatsPopup();
 }
@@ -1876,6 +1931,77 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+function saveProgress() {
+  const hintBoxes = Array.from(document.querySelectorAll("#hintContainer .hint-box")).map(box => ({
+    id: box.id,
+    unlocked: box.classList.contains("unlocked"),
+    revealed: box.dataset.revealed === "true",
+    innerHTML: box.innerHTML
+  }));
+
+  const progress = {
+    questionsAsked,
+    guessCount,
+    startTime: startTime.toISOString(),
+    gameEnded,
+    hintsProgress: hintBoxes
+  };
+
+  localStorage.setItem(progressKey, JSON.stringify(progress));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem(progressKey);
+
+  if (saved) {
+    const progress = JSON.parse(saved);
+    questionsAsked = progress.questionsAsked;
+    guessCount = progress.guessCount;
+    startTime = new Date(progress.startTime);
+    gameEnded = progress.gameEnded;
+    
+    updateProgressBar();
+    closeGuessModal();
+
+    if (progress.hintsProgress && Array.isArray(progress.hintsProgress)) {
+      restoreHintsProgress(progress.hintsProgress);
+    }
+    
+    if (gameEnded) {
+      document.getElementById("answerDisplay").textContent =
+        "You have already played today's game!";
+      disableGame();
+    }
+  }
+}
+
+function restoreHintsProgress(hintsData) {
+  const container = document.getElementById("hintContainer");
+  container.innerHTML = ""; // Clear existing hints
+
+  hintsData.forEach(savedHint => {
+    const box = document.createElement("div");
+    box.id = savedHint.id;
+    // Set the appropriate classes
+    box.className = "hint-box " + (savedHint.unlocked ? "unlocked" : "locked");
+    box.dataset.revealed = savedHint.revealed ? "true" : "false";
+    box.innerHTML = savedHint.innerHTML;
+
+    // Rebind the event listener. 
+    // Adjust this if your revealHint() function needs additional context.
+    box.addEventListener("click", function() {
+      // For this example, we assume the hint number corresponds to the numeric part of the id.
+      const hintNumber = parseInt(box.id.replace("hintBox-", ""));
+      if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
+        revealHint(box, hintNumber - 1);
+      }
+    });
+
+    container.appendChild(box);
+  });
+}
+
+
     </script>
 </body>
 </html>
