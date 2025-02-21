@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guess The Singer</title>
+  <!-- Import Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    /* General Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', Arial, sans-serif;
+        background: url('../images/bg-top.png') no-repeat center center fixed;
+        background-size: cover; /* Ensure the background covers the entire viewport */
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+        background-color: #4682b4;
+        padding: 30px;
+        text-align: center;
+        color: white;
+    }
+
+    .header .logo img {
+        width: 20%;
+        margin-bottom: 10px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Responsive Design for Smaller Screens */
+    @media (max-width: 768px) {
+        .header .logo img {
+            width: 60%;
+        }
+    }
+
+    /* Main Section */
+    .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* Button Group */
+    .button-group {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 15px 25px;
+        background-color: #4682b4;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .btn:hover {
+        background-color: #315f85;
+        transform: translateY(-2px);
+    }
+
+    /* Footer */
+    .footer {
+        background-color: #315f85;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    .footer a {
+        color: white;
+        text-decoration: none;
+        margin: 0 6px;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+        color: #ff914d;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="logo">
+      <!-- Replace src with the actual path to your logo image -->
+      <img src="images/logo.png" alt="Guess The Singer Logo">
+    </div>
+  </header>
+
+  <!-- Main Section -->
+  <main class="main">
+    <h2>Select a Round</h2>
+    <div class="button-group">
+        <button class="btn" id="round1" onclick="window.location.href='trivia.html';">Round 1</button>
+        <button class="btn" id="round2">Round 2</button>
+      <button class="btn" id="round3">Round 3</button>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <p>&copy; 2025 Guess The Singer. All rights reserved.</p>
+  </footer>
+</body>
+</html>
