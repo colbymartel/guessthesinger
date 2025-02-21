@@ -764,7 +764,7 @@ background-color: #4682b4;
   
   <!-- Main Section -->
   <main class="main">
-    <div class="mystery-title">Game #1</div>
+    <div class="mystery-title">Game #83</div>
 
     <!-- Questions Progress Bar -->
     <div class="questions-progress-wrapper">
@@ -913,8 +913,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">Billie Eilish</strong>!</p>
-      <img src="../images/billieeilish.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Chord Overstreet</strong>!</p>
+      <img src="../images/chordoverstreet.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
       <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
@@ -932,8 +932,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name-failure">Billie Eilish</strong>!</p>
-      <img src="../images/billieeilish.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Today's singer was <strong id="correct-artist-name-failure">Chord Overstreet</strong>!</p>
+      <img src="../images/chordoverstreet.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
 <p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
 <p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
@@ -976,7 +976,7 @@ background-color: #4682b4;
     <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
     <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
     <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://discord.gg/dBmJY48u" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+    <a href="https://forms.gle/8UoyYgQNeD78Feq48" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
   </footer>
 <script>
     
@@ -994,9 +994,9 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-    "Hint 1: They have more than 50 million Instagram followers",
-        "Hint 2: He was born in South Korea.",
-        "Hint 3: He's a member of BTS and his name starts with 'J'."
+      "Hint 1: They were born in Tennessee.",
+        "Hint 2: He only has one song with more than 100,000 Spotify streams.",
+        "Hint 3: He is best known for his role as Sam Evans on the TV series Glee."
       ];
 
 </script>
@@ -1024,7 +1024,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day1"; // replace with the current game id
+    const gameId = "day83"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
@@ -1089,7 +1089,7 @@ function viewCelebrationFromRecord() {
         // Check the result status. If "fail", populate failure popup; else, celebration popup.
         if (data.result && data.result === "fail") {
           // Populate failure popup elements.
-          document.getElementById("correct-artist-name-failure").textContent = "Billie Eilish";
+          document.getElementById("correct-artist-name-failure").textContent = "Chord Overstreet";
           document.getElementById("failure-questions-used").textContent = data.questionsUsed;
           document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
           // Assume your failure popup has an element with id "failure-time" for duration.
@@ -1106,7 +1106,7 @@ function viewCelebrationFromRecord() {
           }, 10);
         } else {
           // Populate celebration popup elements.
-          document.getElementById("correct-artist-name").textContent = "Billie Eilish";
+          document.getElementById("correct-artist-name").textContent = "Chord Overstreet";
           document.getElementById("questions-used-popup").textContent = data.questionsUsed;
           document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
           document.getElementById("celebration-time").innerHTML =
@@ -1138,76 +1138,76 @@ function viewCelebrationFromRecord() {
         "is this a male artist?": "Yes, the mystery singer is male.",
   "is this a female artist?": "No, the mystery singer is male.",
   "are they still alive?": "Yes, they are very much alive.",
-  "are they over 30 years old?": "No, they are under 30 years old.",
+  "are they over 30 years old?": "Yes, they are over 30 years old.",
   "are they over 40 years old?": "No, they are not over 40 years old.",
-  "are they over 50 years old?": "No, they are far from 50.",
-  "debut before 2000?": "No, they debuted well after 2000.",
-  "debut before 2010?": "No, they debuted in the 2010s.",
+  "are they over 50 years old?": "No, they are not over 50 years old.",
+
+  // Career Debut
+  "debut before 2000?": "No, they debuted after 2000.",
+  "debut before 2010?": "No, they did not debut before 2010.",
   "debut before 2020?": "Yes, they started their career before 2020.",
-  "album release in last 2 years?": "Yes, they have released solo work recently.",
+  "album release in last 2 years?": "No, they did not release an album in the last 2 years.",
   "are they touring?": "No, they are not currently touring.",
   "are they married?": "No, they are not married.",
   "divorced?": "No, they have never been divorced.",
   "LGBTQ?": "No, they have not publicly identified as LGBTQ+.",
 
   // Geographic Questions
-  "are they from north america?": "No, they were not born in North America.",
-  "are they from the united states?": "No, they were not born in the United States.",
+  "are they from north america?": "Yes, they were born in North America.",
+  "are they from the united states?": "Yes, they were born in the United States.",
   "are they from canada?": "No, they were not born in Canada.",
   "are they from europe?": "No, they were not born in Europe.",
-  "are they from asia?": "Yes, they were born and raised in South Korea.",
+  "are they from asia?": "No, they were not born in Asia.",
   "are they from south america?": "No, they are not from South America.",
   "are they from australia?": "No, they were not born in Australia.",
-  "are they from aftrica?": "No, they are not from Africa.",
+  "are they from aftrica?": "No, they were not born in Africa.",
 
-  // Background Questions
+  // Ethnicity and Background
   "are they of african descent?": "No, they are not of African descent.",
-  "are they of european descent?": "No, they are not of European descent.",
+  "are they of european descent?": "Yes, they are of European descent.",
   "are they of latin american descent?": "No, they are not of Latin American descent.",
-  "are they of asian descent?": "Yes, they are of Asian descent.",
+  "are they of asian descent?": "No, they are not of Asian descent.",
   "are they of mixed ethnicity?": "No, they are not of mixed ethnicity.",
 
-  // Music Style Questions
-  "different languages?": "Yes, they perform songs in different languages.",
-  "are they spanish?": "No, they do not primarily perform Spanish music.",
+  // Music Style
+  "different languages?": "No, they primarily perform in English.",
+  "are they spanish?": "No, they do not perform primarily in Spanish.",
   "do they perform pop music?": "Yes, their music is rooted in pop.",
   "do they perform rap music?": "No, rapping isn’t their specialty.",
-  "do they perform R&B music?": "Yes, elements of R&B can be heard in their songs.",
-  "do they perform rock music?": "No, they do not perform rock music.",
-  "do they perform country music?": "No, they don’t perform country music.",
+  "do they perform R&B music?": "No, R&B isn’t a major part of their style.",
+  "do they perform rock music?": "No, some elements are rock, but not primarily.",
+  "do they perform country music?": "No, their music is not classified as country.",
   "do they perform jazz music?": "No, jazz isn’t part of their style.",
   "do they perform party music?": "Yes, some of their tracks are upbeat and energetic.",
-  "do they perform sad music?": "Yes, they also have soulful ballads.",
+  "do they perform sad music?": "Yes, they have soulful ballads.",
 
-  // Career and Popularity Questions
-  "are they also an actor?": "No, they are known primarily as a singer and performer.",
-  "disney or nick?": "No, they have not been featured on Disney Channel or Nickelodeon.",
+  // Career and Popularity
+  "are they also an actor?": "Yes, they are also known as an actor.",
+  "disney or nick?": "No, they were not discovered through Disney or Nickelodeon.",
   "singing competition?": "No, they did not emerge from a TV singing competition.",
-  "have they won a grammy?": "No, they haven’t won a Grammy yet.",
+  "have they won a grammy?": "No, they haven’t won a Grammy.",
   "super bowl?": "No, they haven’t performed at a Super Bowl Halftime Show.",
   "coachella?": "No, they haven’t been part of Coachella.",
-  "song over one billion streams?": "Yes, they have songs with more than one billion streams.",
+  "song over one billion streams?": "No, they do not have a song with over one billion streams.",
   "do they have more than 10M TikTok followers?": "No, they do not have over 10M TikTok followers.",
-  "do they have more than 10M Instagram followers?": "Yes, they have over 10M Instagram followers.",
+  "do they have more than 10M Instagram followers?": "No, they do not have over 10M Instagram followers.",
   "do they have more than 20M listeners?": "No, they do not have over 20M monthly listeners as a solo artist.",
   "do they have more than 50M listeners?": "No, they do not have over 50M monthly Spotify listeners.",
-  "were they ever in a band?": "Yes, they are a member of a band.",
+  "were they ever in a band?": "Yes, kind of... but are primarily a solo artist now.",
 
-  // Name and Appearance Questions
-  "do they have dark hair?": "Yes, they sometimes have dark hair.",
-  "do they have blond hair?": "Yes, they sometimes have blond hair.",
+  // Name and Appearance
+  "do they have dark hair?": "Yes, they have been seen with dark hair.",
+  "do they have blond hair?": "Yes, they have sported blond hair at times.",
   "over 5.5 feet tall?": "Yes, they are over 5.5 feet tall.",
-  "over 6 feet tall?": "No, they are not over 6 feet tall.",
+  "over 6 feet tall?": "No, they are exactly 6 feet tall.",
   "do they have tattoos?": "No, they don’t have visible tattoos.",
   "do they wear glasses?": "No, they are rarely seen wearing glasses.",
-  "do they go by their birth name?": "No, not quite, but somewhat.",
-  "do they go by one word?": "Yes, they are widely known by one name.",
-  "do they go by two words?": "No, they are not known by two words.",
-  "do they have a common first name?": "Yes, their first name is common in one part of the world.",
+  "do they go by their birth name?": "Yes, they go by their birth name.",
+  "do they go by one word?": "No, they are known by two names.",
+  "do they go by two words?": "Yes, they are known by two words.",
+  "do they have a common first name?": "No, their first name is quite unique.",
   "name starts A-M?": "Yes, their name starts with a letter between A and M."
 };
-
-
 // Ask Question function.
 window.askQuestion = function() {
   if (gameEnded || questionsAsked >= maxQuestions) {
@@ -1254,9 +1254,9 @@ window.askQuestion = function() {
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They have more than 50 million Instagram followers",
-        "Hint 2: He was born in South Korea.",
-        "Hint 3: He's a member of BTS and his name starts with 'J'."
+      "Hint 1: They were born in Tennessee.",
+        "Hint 2: He only has one song with more than 100,000 Spotify streams.",
+        "Hint 3: He is best known for his role as Sam Evans on the TV series Glee."
       ];
 
 });
@@ -1281,7 +1281,7 @@ window.askQuestion = function() {
         updateProgressBar();
         closeGuessModal();
         guessInput.value = "";
-        const correctAnswer = "billie eilish";
+        const correctAnswer = "chord overstreet";
         if (guess === correctAnswer) {
           showCelebration();
           return;
@@ -1298,7 +1298,7 @@ window.askQuestion = function() {
   }
       };
       document.getElementById("enter-raffle-button").addEventListener("click", function() {
-  window.location.href = "https://discord.gg/dBmJY48u"; // Replace with your actual Google Form URL
+  window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Replace with your actual Google Form URL
 });
 
 
@@ -1485,7 +1485,7 @@ function showFailure() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Populate the failure popup with stats
-  document.getElementById("correct-artist-name-failure").textContent = "Billie Eilish";
+  document.getElementById("correct-artist-name-failure").textContent = "Chord Overstreet";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
@@ -1535,7 +1535,7 @@ function showFailure() {
     "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller", "Iggy Azalea", "Mel B",
     "Shreya Ghoshal", "Tate McRae", "Pritam", "Zach Bryan", "Lauren Spencer-Smith", "Jimin", "Jungkook", "J-Hope", "Jin", "V",
     "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas", "Freddie Mercury",
-    "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", "Childish Gambino",
+    "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", "Childish Gambino", "Chord Overstreet",
     "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent",
     "Bebe Rexha", "Ava Max", "Ne-Yo", "J. Cole", "Tyla",
     "Cris Mj", "A$AP Rocky", "James Arthur", "Ty Dolla $ign", "Alec Benjamin", "Swae Lee"
@@ -1807,7 +1807,7 @@ function showCelebration() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Update popup content
-  document.getElementById("correct-artist-name").textContent = "Billie Eilish";
+  document.getElementById("correct-artist-name").textContent = "Chord Overstreet";
   document.getElementById("questions-used-popup").textContent = questionsAsked;
   document.getElementById("hints-used-popup").textContent = getHintsUsed();
   document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
@@ -1886,7 +1886,7 @@ function showCelebration() {
 
 
 document.getElementById("enter-raffle-button-failure").addEventListener("click", function() {
-window.location.href = "https://discord.gg/dBmJY48u"; // Use your actual URL
+window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Use your actual URL
 });
 
   // Close Failure Popup
@@ -1904,11 +1904,15 @@ window.location.href = "https://discord.gg/dBmJY48u"; // Use your actual URL
 document.getElementById("close-failure-popup").addEventListener("click", function() {
   window.location.reload();
 });
-document.getElementById("stats-btn").addEventListener("click", (e) => {
-  e.preventDefault();
-  window.location.href = "../stats.html";
+document.addEventListener("DOMContentLoaded", () => {
+  const statsBtn = document.getElementById("stats-btn");
+  if (statsBtn) {
+    statsBtn.addEventListener("click", (e) => {
+      e.preventDefault(); // Prevent any default link behavior
+      showUserStatsPopup();
+    });
+  }
 });
-
 // Make sure gameId is defined, e.g.:
 const progressKey = `gameProgress_${gameId}`;
 function saveProgress() {

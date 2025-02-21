@@ -976,7 +976,7 @@ background-color: #4682b4;
     <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
     <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
     <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://forms.gle/8UoyYgQNeD78Feq48" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+    <a href="https://discord.gg/dBmJY48u" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
   </footer>
 <script>
     
@@ -994,7 +994,7 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-    "Hint 1: They have more than 50 million Instagram followers",
+    "Hint 1: They have more than 50 million Instagram followers.",
         "Hint 2: He was born in South Korea.",
         "Hint 3: He's a member of BTS and his name starts with 'J'."
       ];
@@ -1254,7 +1254,7 @@ window.askQuestion = function() {
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They have more than 50 million Instagram followers",
+      "Hint 1: They have more than 50 million Instagram followers.",
         "Hint 2: He was born in South Korea.",
         "Hint 3: He's a member of BTS and his name starts with 'J'."
       ];
@@ -1298,7 +1298,7 @@ window.askQuestion = function() {
   }
       };
       document.getElementById("enter-raffle-button").addEventListener("click", function() {
-  window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Replace with your actual Google Form URL
+  window.location.href = "https://discord.gg/dBmJY48u"; // Replace with your actual Google Form URL
 });
 
 
@@ -1886,7 +1886,7 @@ function showCelebration() {
 
 
 document.getElementById("enter-raffle-button-failure").addEventListener("click", function() {
-window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Use your actual URL
+window.location.href = "https://discord.gg/dBmJY48u"; // Use your actual URL
 });
 
   // Close Failure Popup
@@ -1904,15 +1904,11 @@ window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Use your actual
 document.getElementById("close-failure-popup").addEventListener("click", function() {
   window.location.reload();
 });
-document.addEventListener("DOMContentLoaded", () => {
-  const statsBtn = document.getElementById("stats-btn");
-  if (statsBtn) {
-    statsBtn.addEventListener("click", (e) => {
-      e.preventDefault(); // Prevent any default link behavior
-      showUserStatsPopup();
-    });
-  }
+document.getElementById("stats-btn").addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = "../stats.html";
 });
+
 // Make sure gameId is defined, e.g.:
 const progressKey = `gameProgress_${gameId}`;
 function saveProgress() {
