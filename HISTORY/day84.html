@@ -1747,23 +1747,31 @@ function updateStreak() {
   }
   
   const userStatsRef = dbRef(database, `userStats/${currentUser.uid}`);
+  // Get today's local date string in "YYYY-MM-DD" format.
   const today = new Date();
-  const todayString = today.toISOString().split("T")[0];
+  const todayString = today.toLocaleDateString('en-CA'); // e.g., "2025-02-22"
   console.log("Today string:", todayString);
   
   get(userStatsRef)
     .then(snapshot => {
+      // Start new streak at 1 by default.
       let newStreak = 1;
       if (snapshot.exists()) {
         const data = snapshot.val();
         console.log("Existing streak data:", data);
         const lastPlayed = data.lastPlayed; // stored as "YYYY-MM-DD"
-        const currentStreak = data.streak || 0;
+        // Ensure current streak defaults to 1 if not already set.
+        const currentStreak = data.streak || 1;
         
-        // Parse the last played date.
+        // Create Date objects for lastPlayed and today, normalizing both to midnight.
         const lastDate = new Date(lastPlayed);
-        const diffTime = today - lastDate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        lastDate.setHours(0, 0, 0, 0);
+        const todayDate = new Date(todayString);
+        todayDate.setHours(0, 0, 0, 0);
+        
+        // Calculate the difference in days.
+        const diffTime = todayDate - lastDate;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
         console.log("Days difference:", diffDays);
         
         if (diffDays === 1) {
@@ -1771,10 +1779,11 @@ function updateStreak() {
         } else if (diffDays === 0) {
           newStreak = currentStreak;
         } else {
+          // If one or more days are missed, reset the streak to 1.
           newStreak = 1;
         }
       } else {
-        console.log("No existing streak record found; starting new streak.");
+        console.log("No existing streak record found; starting new streak at 1.");
       }
       
       console.log("New streak will be:", newStreak);
@@ -1785,11 +1794,13 @@ function updateStreak() {
     })
     .then(newStreak => {
       console.log("User streak updated to:", newStreak);
+      // Optionally update your UI here with the new streak value.
     })
     .catch(err => {
       console.error("Error updating streak:", err);
     });
 }
+
 
 
 function recordGameResult(questionsUsed, status, duration) {
