@@ -764,7 +764,7 @@ background-color: #4682b4;
   
   <!-- Main Section -->
   <main class="main">
-    <div class="mystery-title">Game #83</div>
+    <div class="mystery-title">Game #84</div>
 
     <!-- Questions Progress Bar -->
     <div class="questions-progress-wrapper">
@@ -913,8 +913,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">Chord Overstreet</strong>!</p>
-      <img src="../images/chordoverstreet.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Remi Wolf</strong>!</p>
+      <img src="../images/remiwolf.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
       <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
@@ -932,8 +932,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name-failure">Chord Overstreet</strong>!</p>
-      <img src="../images/chordoverstreet.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Today's singer was <strong id="correct-artist-name-failure">Remi Wolf</strong>!</p>
+      <img src="../images/remiwolf.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
 <p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
 <p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
@@ -994,9 +994,9 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They were born in Tennessee.",
-        "Hint 2: He is best known for his role as on the TV series Glee.",
-        "Hint 3: He has one song with nearly 1 billion Spotify streams, called Hold On."
+      "Hint 1: Their first album was released within the past five years.",
+        "Hint 2: She shares her last name with an animal.",
+        "Hint 3: She opened for Olivia Rodrigo during the GUTS tour."
       ];
 
 </script>
@@ -1024,7 +1024,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day83"; // replace with the current game id
+    const gameId = "day84"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
@@ -1089,7 +1089,7 @@ function viewCelebrationFromRecord() {
         // Check the result status. If "fail", populate failure popup; else, celebration popup.
         if (data.result && data.result === "fail") {
           // Populate failure popup elements.
-          document.getElementById("correct-artist-name-failure").textContent = "Chord Overstreet";
+          document.getElementById("correct-artist-name-failure").textContent = "Remi Wolf";
           document.getElementById("failure-questions-used").textContent = data.questionsUsed;
           document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
           // Assume your failure popup has an element with id "failure-time" for duration.
@@ -1106,7 +1106,7 @@ function viewCelebrationFromRecord() {
           }, 10);
         } else {
           // Populate celebration popup elements.
-          document.getElementById("correct-artist-name").textContent = "Chord Overstreet";
+          document.getElementById("correct-artist-name").textContent = "Remi Wolf";
           document.getElementById("questions-used-popup").textContent = data.questionsUsed;
           document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
           document.getElementById("celebration-time").innerHTML =
@@ -1135,10 +1135,10 @@ function viewCelebrationFromRecord() {
       // Predefined question responses
       const responses = {
         // General Questions
-        "is this a male artist?": "Yes, the mystery singer is male.",
-  "is this a female artist?": "No, the mystery singer is male.",
+ "is this a male artist?": "No, the mystery singer does not identify as male.",
+  "is this a female artist?": "Yes, the mystery singer identifies as female.",
   "are they still alive?": "Yes, they are very much alive.",
-  "are they over 30 years old?": "Yes, they are over 30 years old.",
+  "are they over 30 years old?": "No, they are under 30 years old.",
   "are they over 40 years old?": "No, they are not over 40 years old.",
   "are they over 50 years old?": "No, they are not over 50 years old.",
 
@@ -1146,11 +1146,11 @@ function viewCelebrationFromRecord() {
   "debut before 2000?": "No, they debuted after 2000.",
   "debut before 2010?": "No, they did not debut before 2010.",
   "debut before 2020?": "Yes, they started their career before 2020.",
-  "album release in last 2 years?": "No, they did not release an album in the last 2 years.",
+  "album release in last 2 years?": "Yes, they did release an album in the last 2 years.",
   "are they touring?": "No, they are not currently touring.",
   "are they married?": "No, they are not married.",
   "divorced?": "No, they have never been divorced.",
-  "LGBTQ?": "No, they have not publicly identified as LGBTQ+.",
+  "LGBTQ?": "Yes, they have publicly identified as LGBTQ+.",
 
   // Geographic Questions
   "are they from north america?": "Yes, they were born in North America.",
@@ -1174,41 +1174,42 @@ function viewCelebrationFromRecord() {
   "are they spanish?": "No, they do not perform primarily in Spanish.",
   "do they perform pop music?": "Yes, their music is rooted in pop.",
   "do they perform rap music?": "No, rapping isn’t their specialty.",
-  "do they perform R&B music?": "No, R&B isn’t a major part of their style.",
-  "do they perform rock music?": "No, some elements are rock, but not primarily.",
-  "do they perform country music?": "No, their music is not classified as country.",
+  "do they perform R&B music?": "Yes, their music is sometimes referred to as contemporary R&B.",
+  "do they perform rock music?": "No, their music is not classified as rock music.",
+  "do they perform country music?": "No, their music is not classified as country music.",
   "do they perform jazz music?": "No, jazz isn’t part of their style.",
   "do they perform party music?": "Yes, some of their tracks are upbeat and energetic.",
   "do they perform sad music?": "Yes, they have soulful ballads.",
 
   // Career and Popularity
-  "are they also an actor?": "Yes, they are also known as an actor.",
+  "are they also an actor?": "No, they are primarily known as a singer.",
   "disney or nick?": "No, they were not discovered through Disney or Nickelodeon.",
-  "singing competition?": "No, they did not emerge from a TV singing competition.",
+  "singing competition?": "She, they did compete on a TV singing competition.",
   "have they won a grammy?": "No, they haven’t won a Grammy.",
   "super bowl?": "No, they haven’t performed at a Super Bowl Halftime Show.",
-  "coachella?": "No, they haven’t been part of Coachella.",
+  "coachella?": "Yes, they have been part of Coachella.",
   "song over one billion streams?": "No, they do not have a song with over one billion streams.",
   "do they have more than 10M TikTok followers?": "No, they do not have over 10M TikTok followers.",
   "do they have more than 10M Instagram followers?": "No, they do not have over 10M Instagram followers.",
   "do they have more than 20M listeners?": "No, they do not have over 20M monthly listeners as a solo artist.",
   "do they have more than 50M listeners?": "No, they do not have over 50M monthly Spotify listeners.",
-  "were they ever in a band?": "Yes, kind of... but are primarily a solo artist now.",
+  "were they ever in a band?": "No, they are a solo artist.",
 
   // Name and Appearance
   "do they have dark hair?": "Yes, they have been seen with dark hair.",
   "do they have blond hair?": "Yes, they have sported blond hair at times.",
   "over 5.5 feet tall?": "Yes, they are over 5.5 feet tall.",
-  "over 6 feet tall?": "No, they are exactly 6 feet tall.",
-  "do they have tattoos?": "No, they don’t have visible tattoos.",
+  "over 6 feet tall?": "No, they are under 6 feet tall.",
+  "do they have tattoos?": "Yes, they have some visible tattoos.",
   "do they wear glasses?": "No, they are rarely seen wearing glasses.",
   "do they go by their birth name?": "Yes, they go by their birth name.",
   "do they go by one word?": "No, they are known by two names.",
   "do they go by two words?": "Yes, they are known by two words.",
   "do they have a common first name?": "No, their first name is quite unique.",
-  "name starts A-M?": "Yes, their name starts with a letter between A and M."
+  "name starts A-M?": "No, their name does not start with a letter between A and M."
 };
 // Ask Question function.
+// Inside your askQuestion function:
 window.askQuestion = function() {
   if (gameEnded || questionsAsked >= maxQuestions) {
     if (!gameEnded) {
@@ -1220,6 +1221,8 @@ window.askQuestion = function() {
   const answerDisplay = document.getElementById("answerDisplay");
   if (!selectedValue) {
     answerDisplay.textContent = "Please select a question.";
+    // Reset border color if no selection is made.
+    answerDisplay.style.borderColor = "#ddd";
     return;
   }
   
@@ -1229,13 +1232,23 @@ window.askQuestion = function() {
 
   const responseText = responses[selectedValue] || "Sorry, no answer available.";
   answerDisplay.textContent = responseText;
+
+  // Change border color based on answer content.
+  const normalizedText = responseText.trim().toLowerCase();
+  if (normalizedText.startsWith("yes")) {
+    answerDisplay.style.borderColor = "green";
+  } else if (normalizedText.startsWith("no")) {
+    answerDisplay.style.borderColor = "red";
+  } else {
+    answerDisplay.style.borderColor = "#ddd"; // Default color
+  }
   
-  // Add the checkmark/cross to the selected dropdown item
+  // Add the checkmark/cross to the selected dropdown item.
   if (selectedElement) {
     selectedElement.classList.add("asked");
-    if (responseText.trim().toLowerCase().startsWith("yes")) {
+    if (normalizedText.startsWith("yes")) {
       selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
-    } else if (responseText.trim().toLowerCase().startsWith("no")) {
+    } else if (normalizedText.startsWith("no")) {
       selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
     }
   }
@@ -1251,12 +1264,13 @@ window.askQuestion = function() {
   }
 };
 
+
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They were born in Tennessee.",
-        "Hint 2: He is best known for his role as on the TV series Glee.",
-        "Hint 3: He has one song with nearly 1 billion Spotify streams, called Hold On."
+      "Hint 1: Their first album was released within the past five years.",
+        "Hint 2: She shares her last name with an animal.",
+        "Hint 3: She opened for Olivia Rodrigo during the GUTS tour."
       ];
 
 });
@@ -1281,7 +1295,7 @@ window.askQuestion = function() {
         updateProgressBar();
         closeGuessModal();
         guessInput.value = "";
-        const correctAnswer = "chord overstreet";
+        const correctAnswer = "remi wolf";
         if (guess === correctAnswer) {
           showCelebration();
           return;
@@ -1485,7 +1499,7 @@ function showFailure() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Populate the failure popup with stats
-  document.getElementById("correct-artist-name-failure").textContent = "Chord Overstreet";
+  document.getElementById("correct-artist-name-failure").textContent = "Remi Wolf";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
@@ -1536,7 +1550,7 @@ function showFailure() {
     "Shreya Ghoshal", "Tate McRae", "Pritam", "Zach Bryan", "Lauren Spencer-Smith", "Jimin", "Jungkook", "J-Hope", "Jin", "V",
     "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas", "Freddie Mercury",
     "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", "Childish Gambino", "Chord Overstreet",
-    "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent",
+    "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent", "Remi Wolf",
     "Bebe Rexha", "Ava Max", "Ne-Yo", "J. Cole", "Tyla",
     "Cris Mj", "A$AP Rocky", "James Arthur", "Ty Dolla $ign", "Alec Benjamin", "Swae Lee"
 ];
@@ -1733,37 +1747,40 @@ function updateStreak() {
   }
   
   const userStatsRef = dbRef(database, `userStats/${currentUser.uid}`);
+  // Get today's date as a local date string in "YYYY-MM-DD" format.
   const today = new Date();
-  const todayString = today.toISOString().split("T")[0];
-  console.log("Today string:", todayString);
+  const todayString = today.toLocaleDateString('en-CA'); // e.g., "2025-02-22"
   
   get(userStatsRef)
     .then(snapshot => {
+      // Start new streak at 1 by default.
       let newStreak = 1;
       if (snapshot.exists()) {
         const data = snapshot.val();
-        console.log("Existing streak data:", data);
-        const lastPlayed = data.lastPlayed; // stored as "YYYY-MM-DD"
-        const currentStreak = data.streak || 0;
+        const lastPlayedString = data.lastPlayed; // stored as "YYYY-MM-DD"
+        const currentStreak = data.streak || 1;
         
-        // Parse the last played date.
-        const lastDate = new Date(lastPlayed);
-        const diffTime = today - lastDate;
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        console.log("Days difference:", diffDays);
+        // Create Date objects for lastPlayed and today, and set both to midnight.
+        const lastPlayedDate = new Date(lastPlayedString);
+        lastPlayedDate.setHours(0, 0, 0, 0);
+        const todayDate = new Date(today);
+        todayDate.setHours(0, 0, 0, 0);
+        
+        // Calculate the difference in days.
+        const diffTime = todayDate - lastPlayedDate;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
         
         if (diffDays === 1) {
           newStreak = currentStreak + 1;
         } else if (diffDays === 0) {
+          // Same day play keeps the current streak.
           newStreak = currentStreak;
         } else {
+          // Any gap resets the streak to 1.
           newStreak = 1;
         }
-      } else {
-        console.log("No existing streak record found; starting new streak.");
       }
       
-      console.log("New streak will be:", newStreak);
       return set(userStatsRef, {
         lastPlayed: todayString,
         streak: newStreak
@@ -1771,11 +1788,13 @@ function updateStreak() {
     })
     .then(newStreak => {
       console.log("User streak updated to:", newStreak);
+      // Optionally, update your UI with the new streak value here.
     })
     .catch(err => {
       console.error("Error updating streak:", err);
     });
 }
+
 
 function recordGameResult(questionsUsed, status, duration) {
   const currentUser = auth.currentUser;
@@ -1807,7 +1826,7 @@ function showCelebration() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Update popup content
-  document.getElementById("correct-artist-name").textContent = "Chord Overstreet";
+  document.getElementById("correct-artist-name").textContent = "Remi Wolf";
   document.getElementById("questions-used-popup").textContent = questionsAsked;
   document.getElementById("hints-used-popup").textContent = getHintsUsed();
   document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
