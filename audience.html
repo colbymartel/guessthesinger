@@ -123,7 +123,14 @@
       width: 0%;
       transition: width 0.3s ease;
     }
-   
+    h1{
+      
+  display: flex;
+  justify-content: center; /* centers horizontally */
+  align-items: center;    /* centers vertically */
+  padding: 20px;
+}
+
   </style>
 </head>
 <body>
@@ -143,11 +150,9 @@
         </ul>
       </nav>
       <div class="container">
-
-    <!-- QR Code (replace src with your own QR image) -->
-    <div class="qr-code">
-      <img src="qr_placeholder.png" alt="Scan QR Code">
-    </div>
+<h1>
+  Vote
+</h1>
     
     <!-- Voting Options -->
     <div class="options">
@@ -156,73 +161,40 @@
       <div class="option" data-option="option3">Contestant C</div>
     </div>
     
-    <!-- Voting Results -->
-    <div class="results">
-      <div class="result">
-        <strong>Contestant A:</strong>
-        <div class="progress-container">
-          <div id="bar-option1" class="progress-bar"></div>
-        </div>
-        <span id="percent-option1">0%</span>
-      </div>
-      <div class="result">
-        <strong>Contestant B:</strong>
-        <div class="progress-container">
-          <div id="bar-option2" class="progress-bar"></div>
-        </div>
-        <span id="percent-option2">0%</span>
-      </div>
-      <div class="result">
-        <strong>Contestant C:</strong>
-        <div class="progress-container">
-          <div id="bar-option3" class="progress-bar"></div>
-        </div>
-        <span id="percent-option3">0%</span>
-      </div>
-    </div>
-  </div>
   
-  <script>
-    // In a real implementation, you would use Firebase or another backend to store and update votes.
-    // For demonstration purposes, we'll simulate vote counts with a simple JavaScript object.
-    
-    let votes = { option1: 0, option2: 0, option3: 0 };
-    
-    // Function to update progress bars based on vote counts.
-    function updateProgress() {
-  const totalVotes = votes.option1 + votes.option2 + votes.option3;
-  
-  function calcPercent(option) {
-    return totalVotes > 0 ? Math.round((votes[option] / totalVotes) * 100) : 0;
-  }
-  
-  const percent1 = calcPercent('option1');
-  const percent2 = calcPercent('option2');
-  const percent3 = calcPercent('option3');
-  
-  document.getElementById("bar-option1").style.width = percent1 + "%";
-  document.getElementById("bar-option2").style.width = percent2 + "%";
-  document.getElementById("bar-option3").style.width = percent3 + "%";
-  
-  document.getElementById("percent-option1").textContent = percent1 + "% (" + votes.option1 + " votes)";
-  document.getElementById("percent-option2").textContent = percent2 + "% (" + votes.option2 + " votes)";
-  document.getElementById("percent-option3").textContent = percent3 + "% (" + votes.option3 + " votes)";
-}
 
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
     
-    // Add click event listeners for the voting options.
-    document.querySelectorAll(".option").forEach(item => {
-      item.addEventListener("click", function() {
-        const option = this.getAttribute("data-option");
-        // Increment the vote count for the selected option.
-        votes[option]++;
-        updateProgress();
-        // Here you would also update your backend (e.g., Firebase) so that all users see real-time results.
+    <script>
+      // Firebase configuration (replace with your own config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+  authDomain: "guessthesinger10.firebaseapp.com",
+  databaseURL: "https://guessthesinger10.firebaseio.com",
+  projectId: "guessthesinger10",
+  storageBucket: "guessthesinger10.firebasestorage.app",
+  messagingSenderId: "97201023235",
+  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+  measurementId: "G-3R005HTKEW"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
+      const votesRef = db.ref('votes');
+      
+      // Add click event listeners for the voting options.
+      document.querySelectorAll(".option").forEach(item => {
+        item.addEventListener("click", function() {
+          const option = this.getAttribute("data-option");
+          // Use a transaction to increment the vote count
+          const voteRef = votesRef.child(option);
+          voteRef.transaction(currentVotes => {
+            return (currentVotes || 0) + 1;
+          });
+        });
       });
-    });
-    
-    // For real-time updates, you could attach a listener to your backend
-    // (for example, using Firebase's onValue listener) and call updateProgress() accordingly.
-  </script>
+    </script>
 </body>
 </html>
