@@ -1721,22 +1721,7 @@ function showFailure() {
 }
     const resultsRef = ref(database, "gameResults");
     
-// Record that the current user has played this game
-function recordUserGameResult(questionsUsed, durationMs, status) {
-  const currentUser = auth.currentUser;
-  if (!currentUser) return;
-  const hintsUsed = getHintsUsed();
-  const userGameRef = ref(database, `userGames/${currentUser.uid}/${gameId}`);
-  set(userGameRef, {
-    questionsUsed: questionsUsed,
-    hintsUsed: hintsUsed,
-    duration: durationMs, // duration in milliseconds
-    result: status,       // store "win" or "fail"
-    timestamp: new Date().toISOString()
-  })
-  .then(() => console.log("User game result recorded"))
-  .catch(err => console.error("Error recording result:", err));
-}
+
 
 // Call this function after the user successfully completes a game.
 function updateStreak() {
@@ -1802,7 +1787,22 @@ function updateStreak() {
       console.error("Error updating streak:", err);
     });
 }
-
+// Record that the current user has played this game
+function recordUserGameResult(questionsUsed, durationMs, status) {
+  const currentUser = auth.currentUser;
+  if (!currentUser) return;
+  const hintsUsed = getHintsUsed();
+  const userGameRef = ref(database, `userGames/${currentUser.uid}/${gameId}`);
+  set(userGameRef, {
+    questionsUsed: questionsUsed,
+    hintsUsed: hintsUsed,
+    duration: durationMs, // duration in milliseconds
+    result: status,       // store "win" or "fail"
+    timestamp: new Date().toISOString()
+  })
+  .then(() => console.log("User game result recorded"))
+  .catch(err => console.error("Error recording result:", err));
+}
 
 function recordGameResult(questionsUsed, status, duration) {
   const currentUser = auth.currentUser;
