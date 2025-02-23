@@ -1754,8 +1754,7 @@ function updateStreak() {
   
   get(userStatsRef)
     .then(snapshot => {
-      // Default new streak is 1.
-      let newStreak = 1;
+      let newStreak = 1; // default new streak is 1
       if (snapshot.exists()) {
         const data = snapshot.val();
         console.log("Existing streak data:", data);
@@ -1785,6 +1784,9 @@ function updateStreak() {
       } else {
         console.log("No existing streak record found; starting new streak at 1.");
       }
+      
+      // Ensure the new streak is never below 1.
+      newStreak = Math.max(newStreak, 1);
       
       console.log("New streak will be:", newStreak);
       return set(userStatsRef, {
