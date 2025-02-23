@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer Trivia: Type the name of the singer shown on screen.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess The Singer Trivia</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    /* General Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .progress {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #4682b4;
+    }
+    .singer-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 4px solid #4682b4;
+    }
+    .question-text {
+      font-size: 1.6rem;
+      color: #4682b4;
+      margin-bottom: 20px;
+    }
+    .answer-input {
+      width: 80%;
+      padding: 10px;
+      font-size: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .submit-btn {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background-color: #4682b4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .submit-btn:hover {
+      background-color: #315f85;
+    }
+    .result {
+      font-size: 1.4rem;
+      color: #4682b4;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Guess The Singer Trivia</h1>
+  </header>
+  <div class="quiz-container">
+    <div class="progress" id="progressText">Question 1 of 10</div>
+    <!-- Singer image will be displayed here -->
+    <img id="singerImage" class="singer-image" src="" alt="Singer Image">
+    <!-- Instruction -->
+    <div class="question-text" id="questionText">Who is this singer?</div>
+    <!-- Answer input -->
+    <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer here">
+    <br>
+    <button class="submit-btn" onclick="handleAnswer()">Submit Answer</button>
+    <div class="result" id="resultText"></div>
+  </div>
+
+  <script>
+    // Trivia question set – adjust image paths as needed.
+    const triviaQuestions = [
+      {
+        image: "images/madonna.jpg",
+        correctAnswer: "Madonna"
+      },
+      {
+        image: "images/michael_jackson.jpg",
+        correctAnswer: "Michael Jackson"
+      },
+      {
+        image: "images/beyonce.jpg",
+        correctAnswer: "Beyoncé"
+      },
+      {
+        image: "images/elvis.jpg",
+        correctAnswer: "Elvis Presley"
+      },
+      {
+        image: "images/lady_gaga.jpg",
+        correctAnswer: "Lady Gaga"
+      },
+      {
+        image: "images/adele.jpg",
+        correctAnswer: "Adele"
+      },
+      {
+        image: "images/bruno_mars.jpg",
+        correctAnswer: "Bruno Mars"
+      },
+      {
+        image: "images/taylor_swift.jpg",
+        correctAnswer: "Taylor Swift"
+      },
+      {
+        image: "images/the_weeknd.jpg",
+        correctAnswer: "The Weeknd"
+      },
+      {
+        image: "images/rihanna.jpg",
+        correctAnswer: "Rihanna"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let correctCount = 0;
+    let startTime = null;
+
+    // DOM elements
+    const progressText = document.getElementById("progressText");
+    const singerImage = document.getElementById("singerImage");
+    const questionText = document.getElementById("questionText");
+    const answerInput = document.getElementById("answerInput");
+    const resultText = document.getElementById("resultText");
+
+    function loadQuestion() {
+      // Set the start time on the first question.
+      if (currentQuestionIndex === 0 && !startTime) {
+        startTime = new Date();
+      }
+      // Update progress text.
+      progressText.textContent = `Question ${currentQuestionIndex + 1} of ${triviaQuestions.length}`;
+      // Get current question.
+      const currentData = triviaQuestions[currentQuestionIndex];
+      singerImage.src = currentData.image;
+      singerImage.alt = "Singer Image";
+      questionText.textContent = "Who is this singer?";
+      // Clear previous answer and result.
+      answerInput.value = "";
+      resultText.textContent = "";
+    }
+
+    function handleAnswer() {
+      const userAnswer = answerInput.value.trim().toLowerCase();
+      const correctAnswer = triviaQuestions[currentQuestionIndex].correctAnswer.toLowerCase();
+      
+      if (userAnswer === "") {
+        alert("Please enter an answer.");
+        return;
+      }
+
+      // Provide feedback.
+      if (userAnswer === correctAnswer) {
+        correctCount++;
+        resultText.textContent = "Correct!";
+      } else {
+        resultText.textContent = `Incorrect. The correct answer was "${triviaQuestions[currentQuestionIndex].correctAnswer}".`;
+      }
+
+      // Move to next question after a brief delay.
+      setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < triviaQuestions.length) {
+          loadQuestion();
+        } else {
+          endQuiz();
+        }
+      }, 1000);
+    }
+
+    function endQuiz() {
+      const endTime = new Date();
+      const timeTaken = Math.floor((endTime - startTime) / 1000);
+      progressText.textContent = "Quiz Completed!";
+      singerImage.style.display = "none";
+      questionText.innerHTML = `<strong>You got ${correctCount} out of ${triviaQuestions.length} correct.</strong><br>Your time: ${timeTaken} seconds.`;
+      answerInput.style.display = "none";
+      document.querySelector(".submit-btn").style.display = "none";
+    }
+
+    // Initialize quiz.
+    loadQuestion();
+  </script>
+</body>
+</html>
