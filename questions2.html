@@ -206,9 +206,9 @@
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/questions.html">Questions</a></li>
-      <li><a href="/hints.html">Hints</a></li>
-      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/questions2.html">Questions</a></li>
+      <li><a href="/hints2.html">Hints</a></li>
+      <li><a href="/guesses2.html">Guesses</a></li>
       <li><a href="/results.html">Audience</a></li>
       <li><a href="/trivia.html">Trivia</a></li>
       <li><a href="/wheel.html">Wheel</a></li>
@@ -249,72 +249,73 @@
   <script>
     // Global state variables.
     const questions = [
-      // General Questions
-      { id: 1, question: "Is this a male artist?", answer: "No, the singer is not male." },
-      { id: 2, question: "Is this a female artist?", answer: "Yes, the singer is female." },
-      { id: 3, question: "Are they still alive?", answer: "Yes, the singer is still alive." },
-      { id: 4, question: "Are they over 30 years old?", answer: "Yes, the singer is over 30 years old." },
-      { id: 5, question: "Are they over 40 years old?", answer: "No, the singer is not over 40 years old." },
-      { id: 6, question: "Are they over 50 years old?", answer: "No, the singer is not over 50 years old." },
-      { id: 7, question: "Did they debut before 2000?", answer: "No, the singer debuted after 2000." },
-      { id: 8, question: "Did they debut before 2010?", answer: "No, the singer debuted after 2000." },
-      { id: 9, question: "Did they debut before 2020?", answer: "Yes, the singer debuted before 2020." },
-      { id: 10, question: "Did they release an album within the last 2 years?", answer: "Yes, the singer has released an album within the last 2 years." },
-      { id: 11, question: "Are they currently on tour?", answer: "No, the singer is not currently on tour." },
-      { id: 12, question: "Are they currently married?", answer: "No, the singer is not currently married." },
-      { id: 13, question: "Were they ever divorced?", answer: "Yes, the singer has been divorced." },
-      { id: 14, question: "Do they identify as LGBTQ+?", answer: "No, the singer does not publicly identify as LGBTQ+." },
-      // Geographic Questions
-      { id: 15, question: "Were they born in North America?", answer: "Yes, the singer was born in North America." },
-      { id: 16, question: "Were they born in the United States?", answer: "Yes, the singer was born in the United States." },
-      { id: 17, question: "Were they born in Canada?", answer: "No, the singer was not born in Canada." },
-      { id: 18, question: "Were they born in Europe?", answer: "No, the singer was not born in Europe." },
-      { id: 19, question: "Were they born in Asia?", answer: "No, the singer was not born in Asia." },
-      { id: 20, question: "Were they born in South America?", answer: "No, the singer was not born in South America." },
-      { id: 21, question: "Were they born in Australia?", answer: "No, the singer was not born in Australia." },
-      { id: 22, question: "Were they born in Africa?", answer: "No, the singer was not born in Africa." },
-      // Background Questions
-      { id: 23, question: "Are they of African descent?", answer: "No, the singer is not of African descent." },
-      { id: 24, question: "Are they of European descent?", answer: "Yes, the singer is of European descent." },
-      { id: 25, question: "Are they of Latin America descent?", answer: "No, the singer is not of Latin American descent." },
-      { id: 26, question: "Are they of Asian descent?", answer: "No, the singer is not of Asian descent." },
-      { id: 27, question: "Are they of mixed ethnicities?", answer: "No, the singer is not of mixed ethnicities." },
-      // Music Style Questions
-      { id: 28, question: "Do they perform songs in different languages?", answer: "No, the singer primarily performs in English." },
-      { id: 29, question: "Do they perform Spanish music?", answer: "No, the singer does not primarily perform Spanish music." },
-      { id: 30, question: "Do they perform pop music?", answer: "Yes, the singer performs pop music." },
-      { id: 31, question: "Do they perform rap music?", answer: "No, the singer does not perform rap music." },
-      { id: 32, question: "Do they perform R&B music?", answer: "No, but the singer's music is influenced by R&B." },
-      { id: 33, question: "Do they perform rock music?", answer: "No, the singer does not perform rock music." },
-      { id: 34, question: "Do they perform country music?", answer: "No, the singer does not perform country music." },
-      { id: 35, question: "Do they perform jazz music?", answer: "No, the singer does not primarily perform jazz music." },
-      { id: 36, question: "Do they perform party music?", answer: "Yes, the singer has upbeat party tracks." },
-      { id: 37, question: "Do they perform sad music?", answer: "Yes, the singer performs soulful ballads." },
-      // Career and Popularity Questions
-      { id: 38, question: "Are they also an actor?", answer: "Yes, the singer has acted in various TV shows and films." },
-      { id: 39, question: "Were they ever on Disney Channel or Nickelodeon?", answer: "Yes, the singer was featured on Disney Channel or Nickelodeon." },
-      { id: 40, question: "Have they ever competed in a TV Singing Competition?", answer: "No, the singer did not compete in a TV singing competition." },
-      { id: 41, question: "Have they ever won a Grammy?", answer: "Yes, the singer has won multiple Grammy Awards." },
-      { id: 42, question: "Have they ever performed at a Super Bowl Halftime Show?", answer: "No, the singer has not performed at a Super Bowl Halftime Show yet." },
-      { id: 43, question: "Have they ever performed at Coachella?", answer: "Yes, the singer has performed at Coachella." },
-      { id: 44, question: "Do they have song(s) with over 1 Billion Spotify streams?", answer: "Yes, the singer has achieved over 1 Billion Spotify streams with at least one song." },
-      { id: 45, question: "Do they have more than 10M TikTok followers?", answer: "Yes, the singer has more than 10M TikTok followers." },
-      { id: 46, question: "Do they have more than 10M Instagram followers?", answer: "Yes, the singer has more than 10M Instagram followers." },
-      { id: 47, question: "Do they have more than 20M monthly Spotify listeners?", answer: "Yes, the singer has more than 20M monthly Spotify listeners." },
-      { id: 48, question: "Do they have more than 50M monthly Spotify listeners?", answer: "Yes, the singer does have more than 50M monthly Spotify listeners." },
-      { id: 49, question: "Are/were they ever in a band?", answer: "No, the singer has always been a solo artist." },
-      // Name and Appearance Questions
-      { id: 50, question: "Do they have dark hair?", answer: "Yes, the singer sometimes has dark hair." },
-      { id: 51, question: "Do they have blond hair?", answer: "Yes, the singer sometimes has blond hair." },
-      { id: 52, question: "Are they over 5.5 feet tall?", answer: "No, the singer is not over 5.5 feet tall." },
-      { id: 53, question: "Are they over 6 feet tall?", answer: "No, the singer is not over 6 feet tall." },
-      { id: 54, question: "Do they have visible tattoos?", answer: "Yes, the singer has some visible tattoos." },
-      { id: 55, question: "Do they wear glasses?", answer: "No, the singer does not typically wear glasses." },
-      { id: 56, question: "Do they go by their birth name?", answer: "Yes, the singer performs under her birth name." },
-      { id: 57, question: "Do they go by one word?", answer: "No, the singer's name consists of more than one word." },
-      { id: 58, question: "Do they go by two words?", answer: "Yes, the singer's name consists of two words." },
-      { id: 59, question: "Do they have a common first name?", answer: "Yes, the singer's first name is quite common." },
-      { id: 60, question: "Does their name start with a letter A-M?", answer: "Yes, the singer's name starts with a letter between A and M." }
+    // General Questions
+{ id: 1, question: "Is this a male artist?", answer: "No, the artist is not male." },
+{ id: 2, question: "Is this a female artist?", answer: "Yes, the artist is identified as female." },
+{ id: 3, question: "Are they still alive?", answer: "Yes, the artist is still alive." },
+{ id: 4, question: "Are they over 30 years old?", answer: "No, the artist is not over 30 years old." },
+{ id: 5, question: "Are they over 40 years old?", answer: "No, the artist is not over 40 years old." },
+{ id: 6, question: "Are they over 50 years old?", answer: "No, the artist is not over 50 years old." },
+{ id: 7, question: "Did they debut before 2000?", answer: "No, the artist debuted after 2000." },
+{ id: 8, question: "Did they debut before 2010?", answer: "No, the artist debuted after 2010." },
+{ id: 9, question: "Did they debut before 2020?", answer: "Yes, the artist debuted before 2020." },
+{ id: 10, question: "Did they release an album within the last 2 years?", answer: "Yes, the artist has released an album within the last 2 years." },
+{ id: 11, question: "Are they currently on tour?", answer: "No, the artist is not currently on tour." },
+{ id: 12, question: "Are they currently married?", answer: "No, the artist is not currently married." },
+{ id: 13, question: "Were they ever divorced?", answer: "No, the artist has not been divorced." },
+{ id: 14, question: "Do they identify as LGBTQ+?", answer: "No, the artist does not publicly identify as LGBTQ+." },
+// Geographic Questions
+{ id: 15, question: "Were they born in North America?", answer: "No, the artist was not born in North America." },
+{ id: 16, question: "Were they born in the United States?", answer: "No, the artist was not born in the United States." },
+{ id: 17, question: "Were they born in Canada?", answer: "No, the artist was not born in Canada." },
+{ id: 18, question: "Were they born in Europe?", answer: "Yes, the artist was born in Europe." },
+{ id: 19, question: "Were they born in Asia?", answer: "No, the artist was not born in Asia." },
+{ id: 20, question: "Were they born in South America?", answer: "No, the artist was not born in South America." },
+{ id: 21, question: "Were they born in Australia?", answer: "No, the artist was not born in Australia." },
+{ id: 22, question: "Were they born in Africa?", answer: "No, the artist was not born in Africa." },
+// Background Questions
+{ id: 23, question: "Are they of African descent?", answer: "No, the artist is not of African descent." },
+{ id: 24, question: "Are they of European descent?", answer: "Yes, the artist is of European descent." },
+{ id: 25, question: "Are they of Latin American descent?", answer: "No, the artist is not of Latin American descent." },
+{ id: 26, question: "Are they of Asian descent?", answer: "No, the artist is not of Asian descent." },
+{ id: 27, question: "Are they of mixed ethnicities?", answer: "No, the artist is not of mixed ethnicities." },
+// Music Style Questions
+{ id: 28, question: "Do they perform songs in different languages?", answer: "No, the artist primarily performs in English." },
+{ id: 29, question: "Do they perform Spanish music?", answer: "No, the artist does not primarily perform Spanish music." },
+{ id: 30, question: "Do they perform pop music?", answer: "Yes, the artist performs pop music." },
+{ id: 31, question: "Do they perform rap music?", answer: "No, the artist does not perform rap music." },
+{ id: 32, question: "Do they perform R&B music?", answer: "No, but the artist’s music is influenced by R&B." },
+{ id: 33, question: "Do they perform rock music?", answer: "No, the artist does not perform rock music." },
+{ id: 34, question: "Do they perform country music?", answer: "No, the artist does not perform country music." },
+{ id: 35, question: "Do they perform jazz music?", answer: "No, the artist does not primarily perform jazz music." },
+{ id: 36, question: "Do they perform party music?", answer: "Yes, the artist is known for upbeat, danceable tracks." },
+{ id: 37, question: "Do they perform sad music?", answer: "Yes, the artist also performs soulful ballads." },
+// Career and Popularity Questions
+{ id: 38, question: "Are they also an actor?", answer: "No, the artist is primarily known for music." },
+{ id: 39, question: "Were they ever on Disney Channel or Nickelodeon?", answer: "No, the artist was not featured on Disney Channel or Nickelodeon." },
+{ id: 40, question: "Have they ever competed in a TV Singing Competition?", answer: "No, the artist did not compete in a TV singing competition." },
+{ id: 41, question: "Have they ever won a Grammy?", answer: "Yes, the artist has won multiple Grammy Awards." },
+{ id: 42, question: "Have they ever performed at a Super Bowl Halftime Show?", answer: "No, the artist has not performed at a Super Bowl Halftime Show." },
+{ id: 43, question: "Have they ever performed at Coachella?", answer: "Yes, the artist has performed at Coachella." },
+{ id: 44, question: "Do they have song(s) with over 1 Billion Spotify streams?", answer: "Yes, the artist has achieved over 1 Billion Spotify streams with at least one song." },
+{ id: 45, question: "Do they have more than 10M TikTok followers?", answer: "Yes, the artist has more than 10M TikTok followers." },
+{ id: 46, question: "Do they have more than 10M Instagram followers?", answer: "Yes, the artist has more than 10M Instagram followers." },
+{ id: 47, question: "Do they have more than 20M monthly Spotify listeners?", answer: "Yes, the artist has more than 20M monthly Spotify listeners." },
+{ id: 48, question: "Do they have more than 50M monthly Spotify listeners?", answer: "Yes, the artist has more than 50M monthly Spotify listeners." },
+{ id: 49, question: "Are/were they ever in a band?", answer: "No, the artist has always been a solo act." },
+// Name and Appearance Questions
+{ id: 50, question: "Do they have dark hair?", answer: "Yes, the artist is known to have dark hair at times." },
+{ id: 51, question: "Do they have blond hair?", answer: "Yes, the artist is seen with blond hair on occasion." },
+{ id: 52, question: "Are they over 5.5 feet tall?", answer: "Yes, the artist is over 5.5 feet tall." },
+{ id: 53, question: "Are they over 6 feet tall?", answer: "No, the artist is not over 6 feet tall." },
+{ id: 54, question: "Do they have visible tattoos?", answer: "Yes, the artist has some visible tattoos." },
+{ id: 55, question: "Do they wear glasses?", answer: "No, the artist does not typically wear glasses." },
+{ id: 56, question: "Do they go by their birth name?", answer: "Yes, the artist performs under their birth name." },
+{ id: 57, question: "Do they go by one word?", answer: "No, the artist’s name consists of more than one word." },
+{ id: 58, question: "Do they go by two words?", answer: "Yes, the artist’s name consists of two words." },
+{ id: 59, question: "Do they have a common first name?", answer: "No, the artist’s first name is unique rather than common." },
+{ id: 60, question: "Does their name start with a letter A-M?", answer: "Yes, the artist’s name starts with a letter between A and M." }
+
     ];
     
     // Global state variables.

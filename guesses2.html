@@ -182,9 +182,9 @@
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/questions.html">Questions</a></li>
-      <li><a href="/hints.html">Hints</a></li>
-      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/questions2.html">Questions</a></li>
+      <li><a href="/hints2.html">Hints</a></li>
+      <li><a href="/guesses2.html">Guesses</a></li>
       <li><a href="/results.html">Audience</a></li>
       <li><a href="/trivia.html">Trivia</a></li>
       <li><a href="/wheel.html">Wheel</a></li>
@@ -221,7 +221,7 @@
   
   <script>
     // Set the correct singer (all comparisons in lowercase)
-    const correctSinger = "ariana grande";
+    const correctSinger = "dua lipa";
 
     // Array of singer objects (50 items)
     const singers = [
@@ -298,7 +298,7 @@
             const chosenImg = this.getAttribute("data-img");
             if (chosenSinger === correctSinger) {
               // Set popup text and border (green) for correct.
-              document.getElementById("celebrationName").textContent = "Ariana Grande";
+              document.getElementById("celebrationName").textContent = "Dua Lipa";
               showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
             } else {
               showPopup(document.getElementById("failurePopup"), chosenImg, false);
