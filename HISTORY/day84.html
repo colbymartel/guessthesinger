@@ -1024,7 +1024,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day84"; // replace with the current game id
+    const gameId = "day98"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
@@ -1739,7 +1739,7 @@ function recordUserGameResult(questionsUsed, durationMs, status) {
 }
 
 // Call this function after the user successfully completes a game.
-function updateStreak(result) {
+function updateStreak() {
   const currentUser = auth.currentUser;
   if (!currentUser) {
     console.error("No user logged in; cannot update streak.");
@@ -1747,42 +1747,43 @@ function updateStreak(result) {
   }
   
   const userStatsRef = dbRef(database, `userStats/${currentUser.uid}`);
-  // Normalize today's date to midnight.
+  // Get today's local date string in "YYYY-MM-DD" format.
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const todayString = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
+  const todayString = today.toLocaleDateString('en-CA'); // e.g., "2025-02-22"
+  console.log("Today string:", todayString);
   
-  // Calculate yesterday's date as a string.
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayString = yesterday.toISOString().split('T')[0];
-
   get(userStatsRef)
     .then(snapshot => {
-      let newStreak;
-      if (result === "fail") {
-        // Reset streak on failure.
-        newStreak = 0;
-      } else {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          const lastPlayed = data.lastPlayed; // Expected to be in "YYYY-MM-DD" format.
-          const currentStreak = data.streak || 1; // Default to 1 if not set.
-          
-          if (lastPlayed === yesterdayString) {
-            // Played yesterday – increment streak.
-            newStreak = currentStreak + 1;
-          } else if (lastPlayed === todayString) {
-            // Already played today; keep the same streak.
-            newStreak = currentStreak;
-          } else {
-            // Not consecutive – start over at 1.
-            newStreak = 1;
-          }
+      // Default new streak is 1.
+      let newStreak = 1;
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        console.log("Existing streak data:", data);
+        const lastPlayed = data.lastPlayed; // stored as "YYYY-MM-DD"
+        // Force current streak to be at least 1.
+        const currentStreak = (data.streak && data.streak > 0) ? data.streak : 1;
+        
+        // Create Date objects for lastPlayed and today, normalizing both to midnight.
+        const lastDate = new Date(lastPlayed);
+        lastDate.setHours(0, 0, 0, 0);
+        const todayDate = new Date(todayString);
+        todayDate.setHours(0, 0, 0, 0);
+        
+        // Calculate the difference in days.
+        const diffTime = todayDate - lastDate;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+        console.log("Days difference:", diffDays);
+        
+        if (diffDays === 1) {
+          newStreak = currentStreak + 1;
+        } else if (diffDays === 0) {
+          newStreak = currentStreak;
         } else {
-          // No record exists, so start at 1.
+          // If one or more days are missed, reset the streak to 1.
           newStreak = 1;
         }
+      } else {
+        console.log("No existing streak record found; starting new streak at 1.");
       }
       
       console.log("New streak will be:", newStreak);
@@ -1793,12 +1794,12 @@ function updateStreak(result) {
     })
     .then(newStreak => {
       console.log("User streak updated to:", newStreak);
+      // Optionally update your UI with the new streak value here.
     })
     .catch(err => {
       console.error("Error updating streak:", err);
     });
 }
-
 
 
 function recordGameResult(questionsUsed, status, duration) {
