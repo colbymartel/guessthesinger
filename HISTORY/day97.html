@@ -913,8 +913,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">Cuco</strong>!</p>
-      <img src="../images/cuco.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Lin-Manuel Miranda</strong>!</p>
+      <img src="../images/linmanuel.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
       <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
@@ -932,8 +932,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name-failure">Cuco</strong>!</p>
-      <img src="../images/cuco.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Today's singer was <strong id="correct-artist-name-failure">Lin-Manuel Miranda</strong>!</p>
+      <img src="../images/linmanuel.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
 <p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
 <p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
@@ -994,9 +994,9 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They were signed by a record label after posting songs on MySpace.",
-        "Hint 2: They were born in Cambridge.",
-        "Hint 3: She won Best Dance/Electronic Album at the 2025 Grammy Awards."
+      "Hint 1: They grew up in a Hispanic neighborhood in northern Manhattan.",
+        "Hint 2: He contributed to multiple Disney soundtracks.",
+        "Hint 3: He created the Broadway show, Hamilton, and played the lead role in the movie."
       ];
 
 </script>
@@ -1089,7 +1089,7 @@ function viewCelebrationFromRecord() {
         // Check the result status. If "fail", populate failure popup; else, celebration popup.
         if (data.result && data.result === "fail") {
           // Populate failure popup elements.
-          document.getElementById("correct-artist-name-failure").textContent = "Cuco";
+          document.getElementById("correct-artist-name-failure").textContent = "Lin-Manuel Miranda";
           document.getElementById("failure-questions-used").textContent = data.questionsUsed;
           document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
           // Assume your failure popup has an element with id "failure-time" for duration.
@@ -1106,7 +1106,7 @@ function viewCelebrationFromRecord() {
           }, 10);
         } else {
           // Populate celebration popup elements.
-          document.getElementById("correct-artist-name").textContent = "Cuco";
+          document.getElementById("correct-artist-name").textContent = "Lin-Manuel Miranda";
           document.getElementById("questions-used-popup").textContent = data.questionsUsed;
           document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
           document.getElementById("celebration-time").innerHTML =
@@ -1137,18 +1137,18 @@ function viewCelebrationFromRecord() {
     "is this a male artist?": "Yes, they do identify as male.",
     "is this a female artist?": "No, they do not identify as female.",
     "are they still alive?": "Yes, they are alive.",
-    "are they over 30 years old?": "No, they are not over 30 years old.",
-    "are they over 40 years old?": "No, they are not over 40.",
+    "are they over 30 years old?": "Yes, they are over 30 years old.",
+    "are they over 40 years old?": "Yes, they are over 40.",
     "are they over 50 years old?": "No, they are not over 50.",
 
     "debut before 2000?": "No, their debut occurred after 2000.",
-    "debut before 2010?": "No, their career did not begin before 2010.",
+    "debut before 2010?": "Yes, their career began before 2010.",
     "debut before 2020?": "Yes, they began their career before 2020.",
-    "album release in last 2 years?": "Yes, they have released an album in the last two years.",
-    "are they touring?": "Yes, they are currently touring.",
-    "are they married?": "No, they are not married.",
+    "album release in last 2 years?": "Yes, they have been part of a recent album release.",
+    "are they touring?": "No, they are not currently touring in the traditional sense.",
+    "are they married?": "Yes, they are married.",
     "divorced?": "No, they have not been divorced.",
-    "LGBTQ?": "Yes, they publicly identify as LGBTQ+.",
+    "LGBTQ?": "No, they do not publicly identify as LGBTQ+.",
 
     "are they from north america?": "Yes, they were born in North America.",
     "are they from the united states?": "Yes, they were born in the United States.",
@@ -1165,42 +1165,41 @@ function viewCelebrationFromRecord() {
     "are they of asian descent?": "No, they are not of Asian descent.",
     "are they of mixed ethnicity?": "No, they are not of mixed ethnicity.",
 
-    "different languages?": "Yes, they perform in both English and Spanish.",
-    "are they spanish?": "Yes, they do perform in Spanish as well as English.",
-    "do they perform pop music?": "Yes, they perform pop music with an indie and bedroom pop twist.",
-    "do they perform rap music?": "No, they do not perform rap music.",
-    "do they perform R&B music?": "No, they do not primarily perform R&B music.",
+    "different languages?": "Yes, they perform in multiple langugages.",
+    "are they spanish?": "Yes, they do perform in Spanish as well as English in some of their works.",
+    "do they perform pop music?": "No, they are primarily known as a pop singer.",
+    "do they perform rap music?": "Yes, they incorporate rap into their style.",
+    "do they perform R&B music?": "No, but their work sometimes includes R&B elements.",
     "do they perform rock music?": "No, they do not perform rock music.",
     "do they perform country music?": "No, they are not known as a country artist.",
     "do they perform jazz music?": "No, they do not perform jazz music.",
-    "do they perform party music?": "Yes, they perform music that’s well-suited for parties.",
-    "do they perform sad music?": "Yes, they have some introspective and melancholic tracks.",
+    "do they perform party music?": "No, but some of their numbers are high-energy.",
+    "do they perform sad music?": "Yes, they have written introspective and emotional pieces.",
 
-    "are they also an actor?": "No, they are primarily known for their music.",
+    "are they also an actor?": "Yes, they are also an actor and have appeared in films and on stage.",
     "disney or nick?": "No, they were not discovered through Disney or Nickelodeon.",
     "singing competition?": "No, they did not rise to fame via a TV singing competition.",
-    "have they won a grammy?": "No, they have not won a Grammy Award.",
+    "have they won a grammy?": "Yes, they have won Grammy Awards for their work.",
     "super bowl?": "No, they have not performed at a Super Bowl Halftime Show.",
-    "coachella?": "Yes, they have performed at Coachella.",
-    "song over one billion streams?": "Yes, one of their songs has just barely surpassed one billion streams.",
+    "coachella?": "No, they have not performed at Coachella.",
+    "song over one billion streams?": "No, they do not have a song that has surpassed one billion streams.",
     "do they have more than 10M TikTok followers?": "No, they do not have over 10 million TikTok followers.",
     "do they have more than 10M Instagram followers?": "No, they do not have over 10 million Instagram followers.",
-    "do they have more than 20M listeners?": "Yes, they do have over 20 million monthly Spotify listeners.",
+    "do they have more than 20M listeners?": "No, they do not have over 20 million monthly Spotify listeners.",
     "do they have more than 50M listeners?": "No, they do not have over 50 million monthly Spotify listeners.",
-    "were they ever in a band?": "No, they have always been a solo artist.",
+    "were they ever in a band?": "No, they have primarily worked as a solo artist.",
 
-    "do they have dark hair?": "Yes, they typically have dark hair.",
-    "do they have blond hair?": "No, they don't typically have blond hair.",
+    "do they have dark hair?": "Yes, they have dark hair.",
+    "do they have blond hair?": "No, they don't have blond hair.",
     "over 5.5 feet tall?": "Yes, they are over 5 1/2 feet tall.",
     "over 6 feet tall?": "No, they are not over 6 feet tall.",
-    "do they have tattoos?": "Yes, they have visible tattoos.",
+    "do they have tattoos?": "No, they do not have visible tattoos.",
     "do they wear glasses?": "No, they are not typically seen wearing glasses.",
-    "do they go by their birth name?": "No, they perform under a stage name.",
-    "do they go by one word?": "Yes, they go by one word.",
-    "do they go by two words?": "No, they do not go by two words.",
-    "do they have a common first name?": "Yes, their birth name is common.",
+    "do they go by their birth name?": "Yes, they go by their birth name.",
+    "do they go by one word?": "No, they do not go by one word.",
+    "do they go by two words?": "Yes, they go by two words.",
+    "do they have a common first name?": "No, their first name is not very common.",
     "name starts A-M?": "Yes, their name starts with a letter between A and M."
-
 };
 // Ask Question function.
 // Inside your askQuestion function:
@@ -1262,9 +1261,9 @@ window.askQuestion = function() {
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They were signed by a record label after posting songs on MySpace.",
-        "Hint 2: They were born in Cambridge.",
-        "Hint 3: She won Best Dance/Electronic Album at the 2025 Grammy Awards."
+      "Hint 1: They grew up in a Hispanic neighborhood in northern Manhattan.",
+        "Hint 2: He contributed to multiple Disney soundtracks.",
+        "Hint 3: He created the Broadway show, Hamilton, and played the lead role in the movie."
       ];
 
 });
@@ -1289,7 +1288,7 @@ window.askQuestion = function() {
         updateProgressBar();
         closeGuessModal();
         guessInput.value = "";
-        const correctAnswer = "cuco";
+        const correctAnswer = "lin-manuel miranda";
         
         if (guess === correctAnswer) {
           showCelebration();
@@ -1494,7 +1493,7 @@ function showFailure() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Populate the failure popup with stats
-  document.getElementById("correct-artist-name-failure").textContent = "Cuco";
+  document.getElementById("correct-artist-name-failure").textContent = "Lin-Manuel Miranda";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
@@ -1532,7 +1531,7 @@ function showFailure() {
     "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin", "BoyWithUke",
     "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube", "Rex Orange County", "Cordae",
     "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", "Lorde", "Tove Lo", "Tyler Childers",
-    "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future", "Melanie Martinez", "Cuco",
+    "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future", "Melanie Martinez", "Cuco", "Lin-Manuel Miranda",
     "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti", "2Pac", "David Kushner", "Isabel LaRosa",
     "Daddy Yankee", "Tyler, The Creator", "One Direction", "GloRilla", "Adam Levine", "Don Toliver", "OneRepublic",
     "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone", "Joji", "Chelsea Cutler",
@@ -1827,7 +1826,7 @@ function showCelebration() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Update popup content
-  document.getElementById("correct-artist-name").textContent = "Cuco";
+  document.getElementById("correct-artist-name").textContent = "Lin-Manuel Miranda";
   document.getElementById("questions-used-popup").textContent = questionsAsked;
   document.getElementById("hints-used-popup").textContent = getHintsUsed();
   document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
