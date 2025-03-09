@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T42NG5C994"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T42NG5C994');
+</script>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer Mystery: Ask questions about our mystery artist using the custom dropdown.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess The Mystery Artist</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* General Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: url(/images/bg-top.png) no-repeat;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    :root {
+  --header-height: 140px; /* adjust as needed for your design */
+}
+@media (max-width: 768px) {
+      :root {
+        --header-height: 100px; /* adjust as needed for your design */
+      } }
+
+    /* Header */
+    .header {
+  background-color: #4682b4;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 10;
+}
+
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .header .logo img { width: 60%; }
+    }
+    /* Questions Progress Bar */
+    .questions-progress-wrapper {
+      width: 100%;
+      max-width: 500px;
+      margin: 20px auto;
+      text-align: left;
+    }
+    .questions-progress-text {
+      font-size: 1.1rem;
+      color: #4682b4;
+      margin-bottom: 5px;
+    }
+    @media (max-width: 768px) {
+  .questions-progress-text{
+padding: 8px;
+  }
+  }
+    .questions-progress-container {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .questions-progress-bar {
+      height: 30px;
+      background-color: #4682b4;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    @media (max-width: 768px) {
+  .questions-progress-container{
+margin-right: 10px;
+  }
+  }
+
+  .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* align items to the top */
+  align-items: center;
+  text-align: center;
+  padding-top: 280px; /* navbar + gap + title height (adjust 50px as needed) */
+  padding-bottom: 120px; /* Reserve enough space for hints */
+}
+
+    .mystery-title {
+  font-size: 1.6rem;
+  margin-top: 0;  /* remove negative margin */
+  margin-bottom: 10px;
+  line-height: 1.4;
+  color: #4682b4;
+  font-weight: bold;
+}
+
+    @media (max-width: 768px) {
+.mystery-title{
+    margin-top:-70px;
+}
+  /* Reserve space at the top so main content doesn't get hidden by the fixed title,
+     and reserve bottom space for the hints */
+  
+  /* Fix the hints container at the bottom so it doesn't push content upward */
+  .hint-container {
+    position: flex;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    max-width: 500px;
+    padding: 10px;
+    z-index: 9;
+  }
+}
+
+    /* Question Box & Custom Dropdown */
+    .question-box {
+      background: #fff;
+      border: 2px solid #4682b4;
+      border-radius: 10px;
+      padding: 20px;
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 768px) {
+  .question-box {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
+    .custom-dropdown {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 10px;
+      position: relative;
+      background: #fff;
+      margin-bottom: 15px;
+      text-align: left;
+      width: 450px;
+      max-width: 100%;
+    }
+    @media (max-width: 768px) {
+        .custom-dropdown {
+        width: 300px;
+        max-width: 100%;
+    }}
+    .dropdown-header {
+      font-size: 1.1rem;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: left;
+    }
+    .dropdown-header i { transition: transform 0.3s; }
+    .custom-dropdown.active .dropdown-header i {
+      transform: rotate(180deg);
+    }
+    .dropdown-content {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 10;
+      display: none;
+    }
+    .custom-dropdown.active .dropdown-content { display: block; }
+    .dropdown-group {
+      border-top: 1px solid #eee;
+      padding: 5px 0;
+    }
+    .dropdown-group:first-of-type { border-top: none; }
+    .dropdown-group summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 5px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: left;
+    }
+    .dropdown-group summary::-webkit-details-marker { display: none; }
+    .dropdown-group summary .toggle-icon { transition: transform 0.3s; }
+    details[open] summary .toggle-icon { transform: rotate(180deg); }
+    .dropdown-item {
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .dropdown-item:hover { background: #f0f8ff; }
+    .dropdown-item.asked { pointer-events: none; opacity: 0.5; }
+    /* Button Group */
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    /* We add a specific class for the Ask Question button */
+    .cta-button {
+        width: 200px;
+height: 48px;
+justify-content: center;
+border-radius: 12px;
+background-color: #4682b4;
+box-shadow: 0px 4px 0px 0px #315f85;
+color: #fff;
+font-size: 18px;
+font-weight: 400;
+border: none;
+outline: none;
+margin-top: 5px;
+    }
+    @media (max-width: 768px) {
+  .cta-button {
+    height:48px; /* Adjust as needed */
+    width: 45%;
+    font-size: 16px;
+  }
+}
+    .cta-button:hover {
+      background: #315f85;
+      transform: scale(1.05);
+    }
+    .results-button {
+  background-color: #3CB371;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: nowrap; /* ensure text doesn't wrap */
+}
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+  .results-button {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: auto;
+    padding: 10px 15px;
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+}
+
+
+.results-button:hover {
+  background-color: #2e8b57; /* Darker green on hover */
+  transform: scale(1.05);
+}
+
+
+    /* Answer Display */
+    .answer-display {
+      font-size: 1.2rem;
+      color: #555;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background: #f9f9f9;
+      width: 100%;
+      max-width: 500px;
+    }
+    @media (max-width: 768px) {
+  .answer-display {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
+    /* Hint Container & Boxes */
+    .hint-container {
+      width: 100%;
+      max-width: 450px;
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    @media (max-width: 768px) {
+  .hint-container {
+    /* Instead of full-width, let it shrink to fit its content */
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+   
+    .hint-box {
+      font-size: 1.1rem;
+      padding: 10px;
+      border: 1px dashed #aaa;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .hint-box.locked {
+      background: #f0f0f0;
+      color: #777;
+      cursor: not-allowed;
+    }
+    .hint-box.unlocked {
+      background: #c8e6c9;
+      color: #2e7d32;
+    }
+    .hint-box i { margin-right: 8px; }
+    /* When hintBox-4 is locked, make it invisible */
+    #hintBox-4.locked {
+      display: none;
+    }
+    /* Modal for Guess Input */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+    }
+    @media (max-width: 768px) {
+  .modal {
+    margin-top: 260px; /* Adjust as needed */
+  }
+}
+
+    .modal-content {
+      background: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content input {
+      width: 80%;
+      padding: 10px;
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+    .modal-content button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+        height: 40px;
+        justify-content: center;
+        border-radius: 12px;
+        background-color: #4682b4;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 400;
+        border: none;
+        outline: none;
+        margin-top: 5px;
+    }
+    .modal-content button:hover {
+      transform: scale(1.05);
+    }
+    .modal-content .submit-btn {
+      background: #4682b4;
+      color: white;
+    }
+    .modal-content .cancel-btn {
+      background: #aaa;
+      color: white;
+    }
+    /* Autocomplete Styles for Guess Modal */
+    .autocomplete-container {
+  position: relative; /* Container as the reference point */
+  width: 100%; /* Adjust as needed */
+  margin: 0 auto;
+}
+
+#autocomplete-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 100%; /* Places it right below the input */
+  left: 0;
+  width: 100%; /* Same width as the container */
+  background: #fff;
+  border: 1px solid #87cefa;
+  border-radius: 8px;
+  z-index: 9999;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #315f85;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+
+#autocomplete-list.visible {
+  display: block;
+}
+
+#autocomplete-list li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+#autocomplete-list li:last-child {
+  border-bottom: none;
+}
+
+#autocomplete-list li:hover {
+  background-color: #f0f8ff;
+  color: #315f85;
+}
+
+    /* Celebration Popup */
+    .celebration-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      display: none;
+    }
+    .celebration-popup.show {
+      opacity: 1;
+    }
+    .celebration-popup .popup-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .celebration-popup h2 {
+      font-size: 2rem;
+      color: #4682b4;
+      margin-bottom: 15px;
+    }
+    .celebration-popup p {
+      font-size: 1.2rem;
+      margin: 10px 0;
+      color: #333;
+    }
+    .celebration-popup .celebration-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .celebration-popup .share-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      background: rgb(19, 126, 19);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .celebration-popup .discord-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: white;
+      background: #4682b4;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .celebration-popup .share-button:hover {
+      transform: scale(1.05);
+    }
+    .celebration-popup .discord-button:hover {
+      transform: scale(1.05);
+    }
+    .celebration-popup .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4682b4;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .celebration-popup .close-popup:hover {
+      color: #ff4d4d;
+    }
+    /* Footer */
+    .footer {
+      background: #315f85;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 1rem;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 6px;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    .footer a:hover {
+      color: #ff914d;
+    }
+    /* Navbar Styling */
+.navbar {
+display: flex;
+justify-content: center;
+gap: 20px;
+background-color: #315f85;
+padding: 15px 0;
+font-weight: bold;
+position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: 100%;
+  z-index: 9; /* or higher if needed */
+}
+
+.navbar ul {
+list-style: none;
+display: flex;
+font-size: 16px;
+gap: 15px;
+margin: 0;
+padding: 0;
+}
+
+.navbar ul li a {
+text-decoration: none;
+color: white;
+font-size: 1rem;
+padding: 5px 10px;
+border-radius: 5px;
+transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+background-color: #4682b4;
+}
+/* Stats Popup Container: just the popup box */
+/* Stats Popup Overlay Container */
+#stats-popup {
+  display: none; /* Hidden by default; show with JavaScript */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Popup Content Box */
+/* Stats Popup Content Box */
+#stats-popup-content {
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  text-align: center; /* Center text inside the popup */
+  margin: 0 auto; /* Ensure the content is centered */
+}
+
+/* Stats Chart Container */
+#stats-popup-content .stats-chart {
+  width: 100%;
+  max-width: 400px;  /* Adjust if needed */
+  margin: 20px auto; /* Center the chart container */
+  text-align: center;
+}
+
+/* Each Stats Row */
+#stats-popup-content .stats-row {
+  display: flex;
+  justify-content: center; /* Center row contents */
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Optional: If you want the label and count to be centered as well */
+#stats-popup-content .stats-label,
+#stats-popup-content .stats-row > div:last-child {
+  text-align: center;
+}
+
+
+/* Title Styling */
+#stats-popup-content h2 {
+  font-size: 2rem;
+  color: #4682b4;
+  margin-bottom: 10px;
+}
+
+/* Streak Styling */
+.stats-streak {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 15px 0;
+  color: #e25822;
+}
+.stats-streak span {
+  margin-left: 10px;
+}
+
+/* Overall Stats Text */
+#stats-popup-content p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+/* Stats Chart Styling */
+.stats-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center the content horizontally */
+  gap: 10px;
+  margin: 20px auto; /* center the chart container */
+  width: 90%; /* adjust width as needed */
+}
+
+.stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* center the row content */
+  gap: 10px;
+  width: 100%;
+}
+
+.stats-label {
+  width: 100px;
+  text-align: right;
+  font-weight: bold;
+  color: #4682b4;
+}
+.stats-bar-container {
+  flex: 1;
+  background: #ddd;
+  height: 25px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.stats-bar {
+  background: #3CB371;
+  height: 100%;
+  width: 0;
+  border-radius: 5px;
+  transition: width 1s ease;
+}
+
+/* Button Styling inside Popup */
+#stats-popup-content button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #4682b4;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+#stats-popup-content button:hover {
+  background: #315f85;
+  transform: scale(1.05);
+}
+
+/* Close "X" Button in the Top-Right Corner */
+#close-stats-popup {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4682b4;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+#close-stats-popup:hover {
+  color: #ff4d4d;
+}
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+    
+  </header>
+  <nav class="navbar">
+    <ul>
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/calendar.html">History</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="#" id="stats-btn">Stats</a></li>
+    </ul>
+  </nav>
+  
+  
+  <!-- Main Section -->
+  <main class="main">
+    <div class="mystery-title">Game #99</div>
+
+    <!-- Questions Progress Bar -->
+    <div class="questions-progress-wrapper">
+      <div class="questions-progress-text" id="questionsProgressText">Questions Asked: 0 of 15</div>
+      <div class="questions-progress-container">
+        <div class="questions-progress-bar" id="questionsProgressBar"></div>
+      </div>
+    </div>
+    
+    <!-- Question Box with Custom Dropdown -->
+    <div class="question-box">
+      <div class="custom-dropdown" id="customDropdown">
+        <div class="dropdown-header" id="dropdownHeader">
+          Select a question... <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="dropdown-content" id="dropdownContent">
+          <!-- General Questions Section -->
+          <details class="dropdown-group">
+            <summary>
+                General Questions <i class="fas fa-chevron-down toggle-icon"></i>
+            </summary>
+            <div class="dropdown-item" data-value="is this a male artist?">Is this a male artist?</div>
+            <div class="dropdown-item" data-value="is this a female artist?">Is this a female artist?</div>
+            <div class="dropdown-item" data-value="are they still alive?">Are they still alive?</div>
+            <div class="dropdown-item" data-value="are they over 30 years old?">Are they over 30 years old?</div>
+            <div class="dropdown-item" data-value="are they over 40 years old?">Are they over 40 years old?</div>
+            <div class="dropdown-item" data-value="are they over 50 years old?">Are they over 50 years old?</div>
+            <div class="dropdown-item" data-value="debut before 2000?">Did they debut before 2000?</div>
+            <div class="dropdown-item" data-value="debut before 2010?">Did they debut before 2010?</div>
+            <div class="dropdown-item" data-value="debut before 2020?">Did they debut before 2020?</div>
+            <div class="dropdown-item" data-value="album release in last 2 years?">Did they release an album within the last 2 years?</div>
+            <div class="dropdown-item" data-value="are they touring?">Are they currently on tour?</div>
+            <div class="dropdown-item" data-value="are they married?">Are they currently married?</div>
+            <div class="dropdown-item" data-value="divorced?">Were they ever divorced?</div>
+            <div class="dropdown-item" data-value="LGBTQ?">Do they identify as LGBTQ+?</div>
+          </details>
+
+                    <!-- Geographic Questions Section -->
+                    <details class="dropdown-group">
+                        <summary>Geographic Questions<i class="fas fa-chevron-down toggle-icon"></i></summary>
+                        <div class="dropdown-item" data-value="are they from north america?">Were they born in North America?</div>
+                        <div class="dropdown-item" data-value="are they from the united states?">Were they born in the United States?</div>
+                        <div class="dropdown-item" data-value="are they from canada?">Were they born in Canada?</div>
+                        <div class="dropdown-item" data-value="are they from europe?">Were they born in Europe?</div>
+                        <div class="dropdown-item" data-value="are they from asia?">Were they born in Asia?</div>
+                        <div class="dropdown-item" data-value="are they from south america?">Were they born in South America?</div>
+                        <div class="dropdown-item" data-value="are they from australia?">Were they born in Australia?</div>
+                        <div class="dropdown-item" data-value="are they from aftrica?">Were they born in Africa?</div>
+                      </details>
+                      
+                      <!-- Background Questions Section -->
+                      <details class="dropdown-group">
+                          <summary>Background Questions<i class="fas fa-chevron-down toggle-icon"></i></summary>
+                          <div class="dropdown-item" data-value="are they of african descent?">Are they of African descent?</div>
+                          <div class="dropdown-item" data-value="are they of european descent?">Are they of European descent?</div>
+                          <div class="dropdown-item" data-value="are they of latin american descent?">Are they of Latin America descent?</div>
+                          <div class="dropdown-item" data-value="are they of asian descent?">Are they of Asian descent?</div>
+                          <div class="dropdown-item" data-value="are they of mixed ethnicity?">Are they of mixed ethnicities?</div>
+                        </details>
+  
+                      <!-- Music Style Questions Section -->
+                      <details class="dropdown-group">
+                          <summary>Music Style Questions<i class="fas fa-chevron-down toggle-icon"></i></summary>
+                          <div class="dropdown-item" data-value="different languages?">Do they perform songs in different languages?</div>
+                          <div class="dropdown-item" data-value="are they spanish?">Do they perform Spanish music?</div>
+                          <div class="dropdown-item" data-value="do they perform pop music?">Do they perform pop music?</div>
+                          <div class="dropdown-item" data-value="do they perform rap music?">Do they perform rap music?</div>
+                          <div class="dropdown-item" data-value="do they perform R&B music?">Do they perform R&B music?</div>
+                          <div class="dropdown-item" data-value="do they perform rock music?">Do they perform rock music?</div>
+                          <div class="dropdown-item" data-value="do they perform country music?">Do they perform country music?</div>
+                          <div class="dropdown-item" data-value="do they perform jazz music?">Do they perform jazz music?</div>
+                          <div class="dropdown-item" data-value="do they perform party music?">Do they perform party music?</div>
+                          <div class="dropdown-item" data-value="do they perform sad music?">Do they perform sad music?</div>
+                        </details>
+  
+                      <!-- Career and Popularity Questions Section -->
+                      <details class="dropdown-group">
+                          <summary>Career and Popularity Questions<i class="fas fa-chevron-down toggle-icon"></i></summary>
+                          <div class="dropdown-item" data-value="are they also an actor?">Are they also an actor?</div>
+                          <div class="dropdown-item" data-value="disney or nick?">Were they ever on Disney Channel or Nickelodeon?</div>
+                          <div class="dropdown-item" data-value="singing competition?">Have they ever competed in a TV Singing Competition?</div>
+                          <div class="dropdown-item" data-value="have they won a grammy?">Have they ever won a Grammy?</div>
+                          <div class="dropdown-item" data-value="super bowl?">Have they ever performed at a Super Bowl Halftime Show?</div>
+                          <div class="dropdown-item" data-value="coachella?">Have they ever performed at Coachella?</div>
+                          <div class="dropdown-item" data-value="song over one billion streams?">Do they have song(s) with over 1 Billion Spotify streams?</div>
+                          <div class="dropdown-item" data-value="do they have more than 10M TikTok followers?">Do they have more than 10M TikTok followers?</div>
+                          <div class="dropdown-item" data-value="do they have more than 10M Instagram followers?">Do they have more than 10M Instagram followers?</div>
+                          <div class="dropdown-item" data-value="do they have more than 20M listeners?">Do they have more than 20M monthly Spotify listeners?</div>
+                          <div class="dropdown-item" data-value="do they have more than 50M listeners?">Do they have more than 50M monthly Spotify listeners?</div>
+                          <div class="dropdown-item" data-value="were they ever in a band?">Are/were they ever in a band?</div>
+                        </details>
+  
+                      <!-- Name and Appearance Questions Section -->
+                      <details class="dropdown-group">
+                          <summary>Name and Appearance Questions<i class="fas fa-chevron-down toggle-icon"></i></summary>
+                          <div class="dropdown-item" data-value="do they have dark hair?">Do they have black or brown hair?</div>
+                          <div class="dropdown-item" data-value="do they have blond hair?">Do they have blond hair?</div>
+                          <div class="dropdown-item" data-value="over 5.5 feet tall?">Are they over 5 1/2 feet tall?</div>
+                          <div class="dropdown-item" data-value="over 6 feet tall?">Are they over 6 feet tall?</div>
+                          <div class="dropdown-item" data-value="do they have tattoos?">Do they have visible tattoos?</div>
+                          <div class="dropdown-item" data-value="do they wear glasses?">Do they wear glasses?</div>
+                          <div class="dropdown-item" data-value="do they go by their birth name?">Do they go by their birth name?</div>
+                          <div class="dropdown-item" data-value="do they go by one word?">Do they go by one word?</div>
+                          <div class="dropdown-item" data-value="do they go by two words?">Do they go by two words?</div>
+                          <div class="dropdown-item" data-value="do they have a common first name?">Do they have a common first name?</div>
+                          <div class="dropdown-item" data-value="name starts A-M?">Does their name starts with a letter A-M?</div>
+                        </details>
+        </div>
+      </div>
+      <div class="button-group">
+        <!-- Give the Ask Question button a special class -->
+        <button class="cta-button ask-question" onclick="askQuestion()">Ask Question</button>
+        <button class="cta-button guess-artist" onclick="openGuessModal()">Guess the Artist</button>
+    </div>
+    </div>
+
+    <!-- Answer Display -->
+    <div class="answer-display" id="answerDisplay"></div>
+
+    <!-- Hint Container -->
+    <div class="hint-container" id="hintContainer">
+      <!-- Begin with a section labeled "Hint Locked" -->
+      <div id="hintBox-1" class="hint-box locked" data-revealed="false">
+        <i class="fas fa-lock"></i> Hint Locked
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal for Artist Guess -->
+  <div id="guessModal" class="modal">
+    <div class="modal-content">
+      <h2>Guess the Artist</h2>
+      <div class="autocomplete-container">
+        <input type="text" id="guessInput" placeholder="Enter artist's name" autocomplete="off" />
+        <ul id="autocomplete-list"></ul>
+      </div>
+      
+        <button class="submit-btn" onclick="submitGuess()">Submit</button>
+        <button class="cancel-btn" onclick="closeGuessModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Celebration Popup -->
+  <div id="celebration-popup" class="celebration-popup">
+    <div class="popup-content">
+      <button class="close-popup" id="close-celebration-popup">&times;</button>
+      <h2>Congratulations! 🎉</h2>
+      <p>You correctly guessed <strong id="correct-artist-name">Duncan Laurence</strong>!</p>
+      <img src="../images/duncanlaurence.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
+      <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
+      <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
+        Time to Guess: <span style="font-weight: normal;">0 Minutes 0 Seconds</span>
+      </p>
+            <div class="celebration-buttons">
+              <button id="share-result-button" class="share-button" data-clipboard-text="">Share Results</button>
+              <button id="enter-raffle-button" class="discord-button">Join Discord</button>
+      </div>
+    </div>
+  </div>
+
+<!-- Failure Popup -->
+<div id="failure-popup" class="celebration-popup">
+    <div class="popup-content">
+      <button class="close-popup" id="close-failure-popup">&times;</button>
+      <h2>Game Over!</h2>
+      <p>Today's singer was <strong id="correct-artist-name-failure">Duncan Laurence</strong>!</p>
+      <img src="../images/duncanlaurence.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
+<p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
+<p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
+  Time to Guess: <span style="font-weight: normal;">0 Minutes 0 Seconds</span>
+</p>
+   
+      <div class="celebration-buttons">
+        <button id="share-result-button-failure" class="share-button">Share with Friends!</button>
+        <button id="enter-raffle-button-failure" class="discord-button">Join Discord</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Popup Container -->
+  <div id="stats-popup">
+    <div id="stats-popup-content">
+      <button id="close-stats-popup">&times;</button>
+    <h2>Your Stats</h2>
+    <p>Total Games Played: <span id="total-games">0</span></p>
+    <p class="stats-streak">
+      Current Streak: <span id="current-streak">0</span> 🔥
+    </p>
+    <div class="stats-chart">
+      <!-- Example row for categories -->
+      <div class="stats-row">
+        <div class="stats-label">1-3</div>
+        <div class="stats-bar-container">
+          <div class="stats-bar" style="width: 0px;" data-target-width="0px"></div>
+        </div>
+        <div id="count-1-3">0</div>
+      </div>
+      <!-- Add additional rows as needed -->
+    </div>
+  </div>
+</div>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2024 Colby Martel | 
+    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://discord.gg/AEH92GCs" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+  </footer>
+<script>
+    
+    // Simple function to open the guess modal.
+    function openGuessModal() {
+      const modal = document.getElementById("guessModal");
+      modal.style.display = "block";
+    }
+    // Close guess modal.
+    function closeGuessModal() {
+      const modal = document.getElementById("guessModal");
+      modal.style.display = "none";
+    }
+
+      // Hints
+      const hintThresholds = [4, 8, 12];
+      const hintsArray = [
+      "Hint 1: They were born in the Netherlands.",
+        "Hint 2: He competed on The Voice in the 2010s.",
+        "Hint 3: His song 'Arcade' won him the 2019 Eurovision Song Contest."
+      ];
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+   <script type="module">
+    // Import Firebase modules for App, Database, and Auth.
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    import { getDatabase, ref, push, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+    import { ref as dbRef, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+
+    // Firebase configuration – replace with your actual settings.
+    const firebaseConfig = {
+        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+  authDomain: "guessthesinger10.firebaseapp.com",
+  databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
+  projectId: "guessthesinger10",
+  storageBucket: "guessthesinger10.firebasestorage.app",
+  messagingSenderId: "97201023235",
+  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+  measurementId: "G-3R005HTKEW"
+    };
+
+    // Initialize Firebase App, Database, and Auth.
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+    const gameId = "day99"; // replace with the current game id
+    onAuthStateChanged(auth, (user) => {
+  if (user) {
+    checkIfPlayed();
+  } else {
+    console.error("No user is logged in!");
+    // Optionally, redirect to your login page
+  }
+});
+
+// Check if the current user has already played this game
+function checkIfPlayed() {
+  const currentUser = auth.currentUser;
+  if (!currentUser) return;
+  const userGameRef = dbRef(database, `userGames/${currentUser.uid}/${gameId}`);
+  get(userGameRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        disableGame();
+      }
+    })
+    .catch(err => console.error("Error checking game status:", err));
+}
+
+// Disable the game controls and show a message to the user
+function disableGame() {
+  // Disable game controls.
+  document.querySelectorAll(".cta-button").forEach(btn => btn.disabled = true);
+  const answerDisplay = document.getElementById("answerDisplay");
+  answerDisplay.textContent = "You have already played today's game!";
+  
+  // Create and add a button to view the result.
+  const viewResultBtn = document.createElement("button");
+viewResultBtn.textContent = "View Your Result";
+// You can add both classes if needed:
+viewResultBtn.classList.add("cta-button", "results-button");
+viewResultBtn.addEventListener("click", () => {
+  viewCelebrationFromRecord();
+});
+
+  // Append the button below the message.
+  answerDisplay.appendChild(document.createElement("br"));
+  answerDisplay.appendChild(viewResultBtn);
+}
+
+function viewCelebrationFromRecord() {
+  const currentUser = auth.currentUser;
+  if (!currentUser) return;
+  const userGameRef = dbRef(database, `userGames/${currentUser.uid}/${gameId}`);
+  get(userGameRef)
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        // Convert stored duration (ms) to minutes and seconds
+        const durationMs = data.duration;
+        let durationText = "N/A";
+        if (durationMs) {
+          const minutes = Math.floor(durationMs / 60000);
+          const seconds = Math.floor((durationMs % 60000) / 1000);
+          durationText = `${minutes} Minutes ${seconds} Seconds`;
+        }
+        
+        // Check the result status. If "fail", populate failure popup; else, celebration popup.
+        if (data.result && data.result === "fail") {
+          // Populate failure popup elements.
+          document.getElementById("correct-artist-name-failure").textContent = "Duncan Laurence";
+          document.getElementById("failure-questions-used").textContent = data.questionsUsed;
+          document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
+          // Assume your failure popup has an element with id "failure-time" for duration.
+          if (document.getElementById("failure-time")) {
+            document.getElementById("failure-time").innerHTML =
+  "<strong>Time to Guess:</strong> <span style='font-weight: normal;'>" + durationText + "</span>";
+
+          }
+          // Display the failure popup.
+          const failurePopup = document.getElementById("failure-popup");
+          failurePopup.style.display = "flex";
+          setTimeout(() => {
+            failurePopup.classList.add("show");
+          }, 10);
+        } else {
+          // Populate celebration popup elements.
+          document.getElementById("correct-artist-name").textContent = "Duncan Laurence";
+          document.getElementById("questions-used-popup").textContent = data.questionsUsed;
+          document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
+          document.getElementById("celebration-time").innerHTML =
+          "<strong>Time to Guess:</strong> <span style='font-weight: normal;'>" + durationText + "</span>";
+          // Display the celebration popup.
+          const celebrationPopup = document.getElementById("celebration-popup");
+          celebrationPopup.style.display = "flex";
+          setTimeout(() => {
+            celebrationPopup.classList.add("show");
+          }, 10);
+        }
+      } else {
+        alert("No game result found for today.");
+      }
+    })
+    .catch((err) => console.error("Error retrieving game record:", err));
+    saveProgress();
+
+}
+
+
+// Listen for auth state changes so "auth.currentUser" is defined.
+    document.addEventListener("DOMContentLoaded", function() {
+        loadProgress();
+
+      // Predefined question responses
+      const responses = {
+    "is this a male artist?": "Yes, they do identify as male.",
+    "is this a female artist?": "No, they do not identify as female.",
+    "are they still alive?": "Yes, they are alive.",
+    "are they over 30 years old?": "No, they are not over 30 years old.",
+    "are they over 40 years old?": "No, they are not over 40 years old.",
+    "are they over 50 years old?": "No, they are not over 50 years old.",
+
+    "debut before 2000?": "No, their debut occurred after 2000.",
+    "debut before 2010?": "No, their career began after 2010.",
+    "debut before 2020?": "Yes, they began their career before 2020.",
+    "album release in last 2 years?": "Yes, they have released an album in the last 2 years.",
+    "are they touring?": "No, they are not currently touring.",
+    "are they married?": "Yes, they are currently married.",
+    "divorced?": "No, they have not been divorced.",
+    "LGBTQ?": "Yes, they do publicly identify as LGBTQ+.",
+
+    "are they from north america?": "No, they were not born in North America.",
+    "are they from the united states?": "No, they were not born in the United States.",
+    "are they from canada?": "No, they were not born in Canada.",
+    "are they from europe?": "Yes, they were born in Europe.",
+    "are they from asia?": "No, they were not born in Asia.",
+    "are they from south america?": "No, they were not born in South America.",
+    "are they from australia?": "No, they were not born in Australia.",
+    "are they from aftrica?": "No, they were not born in Africa.",
+
+    "are they of african descent?": "No, they are not of African descent.",
+    "are they of european descent?": "Yes, they are of European descent.",
+    "are they of latin american descent?": "No, they are not of Latin American descent.",
+    "are they of asian descent?": "No, they are not of Asian descent.",
+    "are they of mixed ethnicity?": "No, they are not of mixed ethnicity.",
+
+    "different languages?": "No, they do not perform in multiple langugages.",
+    "are they spanish?": "No, they only perform in English.",
+    "do they perform pop music?": "Yes, they are considered a pop singer.",
+    "do they perform rap music?": "No, they are not a rap artist.",
+    "do they perform R&B music?": "No, they are not considered an R&B singer.",
+    "do they perform rock music?": "No, they are not considered a rock artist.",
+    "do they perform country music?": "No, they are not known as a country artist.",
+    "do they perform jazz music?": "No, they do not perform jazz music.",
+    "do they perform party music?": "No, they do not perform traditional party music.",
+    "do they perform sad music?": "Yes, they have written introspective and emotional pieces.",
+
+    "are they also an actor?": "No, they are not also an actor.",
+    "disney or nick?": "No, they were not discovered through Disney or Nickelodeon.",
+    "singing competition?": "Yes, they did comepete on a TV singing competition.",
+    "have they won a grammy?": "No, they have won any Grammy Awards for their work.",
+    "super bowl?": "No, they have not performed at a Super Bowl Halftime Show.",
+    "coachella?": "No, they have not performed at Coachella.",
+    "song over one billion streams?": "Yes, they do have a song that has surpassed one billion streams.",
+    "do they have more than 10M TikTok followers?": "No, they do not have over 10 million TikTok followers.",
+    "do they have more than 10M Instagram followers?": "No, they do not have over 10 million Instagram followers.",
+    "do they have more than 20M listeners?": "No, they do not have over 20 million monthly Spotify listeners.",
+    "do they have more than 50M listeners?": "No, they do not have over 50 million monthly Spotify listeners.",
+    "were they ever in a band?": "No, they are a solo artist.",
+
+    "do they have dark hair?": "Yes, they have dark hair.",
+    "do they have blond hair?": "No, they don't have blond hair.",
+    "over 5.5 feet tall?": "Yes, they are over 5 1/2 feet tall.",
+    "over 6 feet tall?": "No, they are not over 6 feet tall.",
+    "do they have tattoos?": "No, they do not have visible tattoos.",
+    "do they wear glasses?": "No, they are not typically seen wearing glasses.",
+    "do they go by their birth name?": "Yes, they go by their birth name.",
+    "do they go by one word?": "No, they do not go by one word.",
+    "do they go by two words?": "Yes, they go by two words.",
+    "do they have a common first name?": "Yes, their first name is somewhat common.",
+    "name starts A-M?": "Yes, their name starts with a letter between A and M."
+};
+// Ask Question function.
+// Inside your askQuestion function:
+window.askQuestion = function() {
+  if (gameEnded || questionsAsked >= maxQuestions) {
+    if (!gameEnded) {
+      gameEnded = true;
+      showFailure();
+    }
+    return;
+  }
+  const answerDisplay = document.getElementById("answerDisplay");
+  if (!selectedValue) {
+    answerDisplay.textContent = "Please select a question.";
+    // Reset border color if no selection is made.
+    answerDisplay.style.borderColor = "#ddd";
+    return;
+  }
+  
+  questionsAsked++;
+  updateProgressBar();
+  saveProgress(); // Save after updating questionsAsked
+
+  const responseText = responses[selectedValue] || "Sorry, no answer available.";
+  answerDisplay.textContent = responseText;
+
+  // Change border color based on answer content.
+  const normalizedText = responseText.trim().toLowerCase();
+  if (normalizedText.startsWith("yes")) {
+    answerDisplay.style.borderColor = "green";
+  } else if (normalizedText.startsWith("no")) {
+    answerDisplay.style.borderColor = "red";
+  } else {
+    answerDisplay.style.borderColor = "#ddd"; // Default color
+  }
+  
+  // Add the checkmark/cross to the selected dropdown item.
+  if (selectedElement) {
+    selectedElement.classList.add("asked");
+    if (normalizedText.startsWith("yes")) {
+      selectedElement.innerHTML += " <span style='color:green;'>✅</span>";
+    } else if (normalizedText.startsWith("no")) {
+      selectedElement.innerHTML += " <span style='color:red;'>❌</span>";
+    }
+  }
+  saveProgress();
+
+  selectedValue = "";
+  selectedElement = null;
+  document.getElementById("dropdownHeader").innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
+  
+  if (questionsAsked >= maxQuestions) {
+    gameEnded = true;
+    showFailure();
+  }
+};
+
+
+    // Hints
+    const hintThresholds = [4, 8, 12];
+      const hintsArray = [
+      "Hint 1: They were born in the Netherlands.",
+        "Hint 2: He competed on The Voice in the 2010s.",
+        "Hint 3: His song 'Arcade' won him the 2019 Eurovision Song Contest."
+      ];
+
+});
+ 
+    // Create a database reference to "gameResults".
+    const maxQuestions = 15;
+      let questionsAsked = 0;
+      let guessCount = 0;
+      let selectedValue = "";
+      let selectedElement = null;
+      let startTime = new Date();
+      let gameEnded = false; // track game status
+ 
+      // Submit Guess function.
+      window.submitGuess = function() {
+        // Do not block guess modal—guesses can be made anytime.
+        const guessInput = document.getElementById("guessInput");
+        const guess = guessInput.value.trim().toLowerCase();
+        // Count guess as a question.
+        questionsAsked++;
+        guessCount++;
+        updateProgressBar();
+        closeGuessModal();
+        guessInput.value = "";
+        const correctAnswer = "duncan laurence";
+        
+        if (guess === correctAnswer) {
+          showCelebration();
+          return;
+
+        } else {
+          alert("That's not correct. Try asking more questions or guess again!");
+        }
+        if (questionsAsked >= maxQuestions) {
+          gameEnded = true;
+          showFailure();
+        }
+  if (gameEnded) {
+    return; // If game has ended, do nothing.
+  }
+      };
+      document.getElementById("enter-raffle-button").addEventListener("click", function() {
+  window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Replace with your actual Google Form URL
+});
+
+
+
+      function getHintsUsed() {
+        return document.querySelectorAll(".hint-box.unlocked[data-revealed='true']").length;
+      }
+
+      // Hint container
+      const hintContainer = document.getElementById("hintContainer");
+
+      // Setup initial hint box click (for hintBox-1)
+      const initialHintBox = document.getElementById("hintBox-1");
+      initialHintBox.addEventListener("click", function() {
+        if (this.classList.contains("unlocked") && this.dataset.revealed === "false") {
+          revealHint(this, 0);
+        }
+      });
+
+      // Update progress bar and hint boxes
+      function updateProgressBar() {
+        const progressText = document.getElementById("questionsProgressText");
+        const progressBar = document.getElementById("questionsProgressBar");
+        progressText.textContent = `Questions Asked: ${questionsAsked} of ${maxQuestions}`;
+        progressBar.style.width = (questionsAsked / maxQuestions) * 100 + "%";
+        
+        // When 14 questions are reached, open the guess modal.
+        if (questionsAsked === 14) {
+          const answerDisplay = document.getElementById("answerDisplay");
+          answerDisplay.textContent = "Only one more question! Make a final guess!";
+          openGuessModal();
+        }
+        
+        // Unlock hints as needed.
+        if (questionsAsked >= hintThresholds[0]) {
+          unlockHintBox("hintBox-1", 0);
+          if (!document.getElementById("hintBox-2")) {
+            createHintBox(2);
+          }
+        }
+        hintThresholds.slice(1).forEach((threshold, idx) => {
+          if (questionsAsked >= threshold) {
+            let boxId = "hintBox-" + (idx + 2);
+            let box = document.getElementById(boxId);
+            if (box && box.classList.contains("locked")) {
+              unlockHintBox(boxId, idx + 1);
+              if (idx < hintThresholds.length - 1 && !document.getElementById("hintBox-" + (idx + 3))) {
+                createHintBox(idx + 3);
+              }
+            }
+          }
+        });
+        if (questionsAsked >= maxQuestions) {
+          if (!document.getElementById("hintBox-3")) {
+            createHintBox(3);
+          } else {
+            unlockHintBox("hintBox-3", 2);
+          }
+        }
+        reorderHintBoxes();
+      }
+
+      // Create a new locked hint box
+      function createHintBox(hintNumber) {
+        const box = document.createElement("div");
+        box.id = "hintBox-" + hintNumber;
+        box.className = "hint-box locked";
+        box.dataset.revealed = "false";
+        box.innerHTML = "Hint " + hintNumber + " Locked";
+        box.addEventListener("click", function() {
+          if (hintNumber > 1) {
+            const hint1 = document.getElementById("hintBox-1");
+            if (!hint1 || hint1.dataset.revealed !== "true") {
+              return;
+            }
+          }
+          if (hintNumber === 3) {
+            const hint2 = document.getElementById("hintBox-2");
+            if (!hint2 || hint2.dataset.revealed !== "true") {
+              return;
+            }
+          }
+          if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
+            revealHint(box, hintNumber - 1);
+          }
+        });
+        hintContainer.appendChild(box);
+      }
+
+      // Unlock a hint box
+      function unlockHintBox(boxId, idx) {
+        let box = document.getElementById(boxId);
+        if (box && box.classList.contains("locked")) {
+          if (boxId === "hintBox-4") {
+            box.style.display = "none";
+            return;
+          }
+          box.classList.remove("locked");
+          box.classList.add("unlocked");
+          box.innerHTML = "<i class='fas fa-unlock'></i> Hint Unlocked! (Click to reveal)";
+          box.dataset.revealed = "false";
+          box.style.display = "";
+        }
+      }
+
+      // Reorder hint boxes so unlocked ones appear first.
+      function reorderHintBoxes() {
+        let boxes = Array.from(hintContainer.children);
+        boxes.sort((a, b) => {
+          const aUnlocked = a.classList.contains("unlocked");
+          const bUnlocked = b.classList.contains("unlocked");
+          if (aUnlocked && !bUnlocked) return -1;
+          if (!aUnlocked && bUnlocked) return 1;
+          let aNum = parseInt(a.id.replace("hintBox-", ""));
+          let bNum = parseInt(b.id.replace("hintBox-", ""));
+          return aNum - bNum;
+        });
+        boxes.forEach(box => hintContainer.appendChild(box));
+      }
+
+      // Reveal a hint.
+      function revealHint(box, idx) {
+  if (box.dataset.revealed === "false") {
+    box.innerHTML = "<i class='fas fa-lightbulb'></i> " + hintsArray[idx];
+    box.dataset.revealed = "true";
+    if (idx < hintsArray.length - 1 && !document.getElementById("hintBox-" + (idx + 2))) {
+      createHintBox(idx + 2);
+    }
+    reorderHintBoxes();
+    saveProgress(); // Save progress after hint is revealed.
+  }
+}
+
+      // Custom dropdown interactions.
+      const customDropdown = document.getElementById("customDropdown");
+      const dropdownHeader = document.getElementById("dropdownHeader");
+      customDropdown.addEventListener("click", function(e) {
+        if (e.target.closest(".dropdown-header")) {
+          customDropdown.classList.toggle("active");
+        }
+      });
+      document.querySelectorAll("details summary").forEach(summary => {
+        summary.addEventListener("click", function(e) { e.stopPropagation(); });
+      });
+      document.querySelectorAll(".dropdown-item").forEach(item => {
+        item.addEventListener("click", function(e) {
+          if (this.classList.contains("asked")) return;
+          e.stopPropagation();
+          selectedValue = this.getAttribute("data-value");
+          selectedElement = this;
+          dropdownHeader.innerHTML = this.textContent + " <i class='fas fa-chevron-down'></i>";
+          customDropdown.classList.remove("active");
+        });
+      });
+
+      // Show failure popup (Game Over). Only disable the Ask Question button.
+      function disableGameControls() {
+  const askBtn = document.querySelector(".cta-button.ask-question");
+  const guessBtn = document.querySelector(".cta-button.guess-artist");
+
+  if (askBtn) {
+    askBtn.onclick = function(e) {
+      e.preventDefault();
+      return false;
+    };
+    askBtn.style.pointerEvents = "none";
+    askBtn.style.opacity = "0.5"; // optional, to visually show it's disabled
+  }
+  if (guessBtn) {
+    guessBtn.onclick = function(e) {
+      e.preventDefault();
+      return false;
+    };
+    guessBtn.style.pointerEvents = "none";
+    guessBtn.style.opacity = "0.5";
+  }
+}
+
+function showFailure() {
+  gameEnded = true;
+  const elapsedMs = new Date() - startTime;
+  const minutes = Math.floor(elapsedMs / 60000);
+  const seconds = Math.floor((elapsedMs % 60000) / 1000);
+  const timeText = `${minutes} Minutes ${seconds} Seconds`;
+
+  // Populate the failure popup with stats
+  document.getElementById("correct-artist-name-failure").textContent = "Duncan Laurence";
+  document.getElementById("failure-questions-used").textContent = questionsAsked;
+  document.getElementById("failure-hints-used").textContent = getHintsUsed();
+  document.getElementById("failure-time").innerHTML =
+  "<strong>Time to Guess:</strong> <span style='font-weight: normal;'>" + timeText + "</span>";
+
+  // Disable game controls (if needed)
+  disableGameControls();
+
+  // Show the failure popup
+  const popup = document.getElementById("failure-popup");
+  popup.style.display = "flex";
+  setTimeout(() => {
+    popup.classList.add("show");
+  }, 10);
+
+  // Record failure in the database (with duration)
+  recordUserGameResult(questionsAsked, elapsedMs, "fail");
+  recordGameResult(questionsAsked, "fail", elapsedMs);
+  updateStreak("fail");
+  showUserStatsPopup();
+}
+      // Autocomplete for Guess Modal.
+      const inputField = document.getElementById("guessInput");
+      const autocompleteList = document.getElementById("autocomplete-list");
+      const artists = [
+      "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran", "Kehlani", "Polo G",
+    "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd", "Lil Mosey", "Ashnikko",
+    "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston",
+    "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear", "Charli xcx",
+    "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan",
+    "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv",
+    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF", "Phoebe Bridgers", "Janet Jackson",
+    "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee", "Lil Peep",
+    "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown", "6ix9ine", "Bryson Tiller",
+    "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin", "BoyWithUke",
+    "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube", "Rex Orange County", "Cordae",
+    "David Guetta", "ROSÉ", "Shakira", "Elton John", "Calvin Harris", "Lorde", "Tove Lo", "Tyler Childers",
+    "J Balvin", "KAROL G", "Marshmello", "Arctic Monkeys", "Future", "Melanie Martinez", "Cuco", "Lin-Manuel Miranda",
+    "Queen", "Linkin Park", "Wham!", "Rauw Alejandro", "Playboi Carti", "2Pac", "David Kushner", "Isabel LaRosa",
+    "Daddy Yankee", "Tyler, The Creator", "One Direction", "GloRilla", "Adam Levine", "Don Toliver", "OneRepublic",
+    "Metro Boomin", "Michael Bublé", "Lil Wayne", "Hozier", "Benson Boone", "Joji", "Chelsea Cutler", "Adrianne Lenker",
+    "21 Savage", "Teddy Swims", "Gwen Stefani", "The Chainsmokers", "Maluma", "Britney Spears", "Conan Gray",
+    "Peso Pluma", "The Kid LAROI", "Brenda Lee", "Kelly Clarkson", "Noah Kahan", "beabadoobee", "Morgan Wallen",
+    "Michael Jackson", "The Neighbourhood", "Myke Towers", "Feid", "Kesha", "Rod Wave", "Carrie Underwood", "Duncan Laurence",
+    "Frank Sinatra", "Gracie Abrams", "XXXTENTACION", "Arijit Singh", "Mac Miller", "Iggy Azalea", "Mel B",
+    "Shreya Ghoshal", "Tate McRae", "Pritam", "Zach Bryan", "Lauren Spencer-Smith", "Jimin", "Jungkook", "J-Hope", "Jin", "V",
+    "Dean Martin", "USHER", "Elvis Presley", "Ozuna", "Alan Walker", "Black Eyed Peas", "Freddie Mercury", "Dhruv", 
+    "Bobby Helms", "Daniel Caesar", "Justin Timberlake", "Gunna", "Childish Gambino", "Chord Overstreet", "Reneé Rapp",
+    "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent", "Remi Wolf", "George Michael",
+    "Bebe Rexha", "Ava Max", "Ne-Yo", "J. Cole", "Tyla",
+    "Cris Mj", "A$AP Rocky", "James Arthur", "Ty Dolla $ign", "Alec Benjamin", "Swae Lee"
+];
+      inputField.addEventListener("input", () => {
+        const query = inputField.value.trim().toLowerCase();
+        autocompleteList.innerHTML = "";
+        if (query.length >= 3) {
+          const matches = artists.filter(name => name.toLowerCase().includes(query));
+          if (matches.length > 0) {
+            matches.forEach(match => {
+              const li = document.createElement("li");
+              li.textContent = match;
+              li.addEventListener("click", () => {
+                inputField.value = match;
+                autocompleteList.innerHTML = "";
+                autocompleteList.style.display = "none";
+              });
+              autocompleteList.appendChild(li);
+            });
+            autocompleteList.style.display = "block";
+          } else {
+            autocompleteList.style.display = "none";
+          }
+        } else {
+          autocompleteList.style.display = "none";
+        }
+      });
+      document.addEventListener("click", (e) => {
+        if (!autocompleteList.contains(e.target) && e.target !== inputField) {
+          autocompleteList.style.display = "none";
+        }
+      });
+      // Share buttons (unchanged)
+      function copyTextToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    // Use the Clipboard API if available in a secure context.
+    return navigator.clipboard.writeText(text);
+  } else {
+    // Fallback for older browsers/insecure contexts.
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // Place the textarea off-screen.
+    textArea.style.position = "fixed";
+    textArea.style.top = "-9999px";
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      return successful ? Promise.resolve() : Promise.reject('Copy command unsuccessful');
+    } catch (err) {
+      document.body.removeChild(textArea);
+      return Promise.reject(err);
+    }
+  }
+}
+    
+    // Simple function to open the guess modal.
+    function openGuessModal() {
+      const modal = document.getElementById("guessModal");
+      modal.style.display = "block";
+    }
+    // Close guess modal.
+    function closeGuessModal() {
+      const modal = document.getElementById("guessModal");
+      modal.style.display = "none";
+    }
+
+     
+    // Function to fetch and display user stats in a popup with an animated bar chart.
+    function showUserStatsPopup() {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    console.error("No user is currently logged in. Cannot fetch stats.");
+    return;
+  }
+  const userId = currentUser.uid;
+  // Query the results for the current user.
+  const userResultsQuery = query(resultsRef, orderByChild("userId"), equalTo(userId));
+  
+  // Also get the user's streak.
+  const userStatsRef = dbRef(database, `userStats/${userId}`);
+
+  Promise.all([get(userResultsQuery), get(userStatsRef)])
+    .then(([resultsSnapshot, statsSnapshot]) => {
+      let totalGames = 0;
+      const categories = {
+        "1-3": 0,
+        "4-6": 0,
+        "7-9": 0,
+        "10-12": 0,
+        "13-15": 0,
+        "Fail": 0
+      };
+
+      if (resultsSnapshot.exists()) {
+        const resultsData = resultsSnapshot.val();
+        for (let key in resultsData) {
+          totalGames++;
+          const record = resultsData[key];
+          if (record.result === "fail") {
+            categories["Fail"]++;
+          } else {
+            const qs = record.questionsUsed;
+            if (qs >= 1 && qs <= 3) {
+              categories["1-3"]++;
+            } else if (qs >= 4 && qs <= 6) {
+              categories["4-6"]++;
+            } else if (qs >= 7 && qs <= 9) {
+              categories["7-9"]++;
+            } else if (qs >= 10 && qs <= 12) {
+              categories["10-12"]++;
+            } else if (qs >= 13 && qs <= 15) {
+              categories["13-15"]++;
+            }
+          }
+        }
+      }
+
+      let chartHtml = `<h2>Your Stats</h2>
+        <p>Total Games Played: ${totalGames}</p>`;
+
+      let streakText = "";
+      if (statsSnapshot.exists()) {
+        const statsData = statsSnapshot.val();
+        const streak = statsData.streak || 1;
+        streakText = `<p>Current Streak: ${streak}🔥</p>`;
+      } else {
+        streakText = `<p>Current Streak: 0</p>`;
+      }
+      chartHtml += streakText;
+      
+      chartHtml += `<div class="stats-chart">`;
+      for (let cat in categories) {
+        const count = categories[cat];
+        const barWidth = count * 20;
+        chartHtml += `
+          <div class="stats-row">
+            <div class="stats-label">${cat}</div>
+            <div class="stats-bar-container">
+              <div class="stats-bar" style="width: 0px;" data-target-width="${barWidth}px"></div>
+            </div>
+            <div>${count}</div>
+          </div>`;
+      }
+      chartHtml += `</div>
+        <button id="close-stats-popup">Close</button>`;
+      
+      const statsPopupContent = document.getElementById("stats-popup-content");
+      statsPopupContent.innerHTML = chartHtml;
+      const statsPopup = document.getElementById("stats-popup");
+      statsPopup.style.display = "flex";
+      document.querySelectorAll(".stats-bar").forEach(bar => {
+        const targetWidth = bar.getAttribute("data-target-width");
+        setTimeout(() => {
+          bar.style.width = targetWidth;
+        }, 100);
+      });
+      
+      document.getElementById("close-stats-popup").addEventListener("click", () => {
+        statsPopup.style.display = "none";
+      });
+    })
+    .catch(err => console.error("Error fetching stats:", err));
+}
+    const resultsRef = ref(database, "gameResults");
+    
+
+
+// Call this function after the user successfully completes a game.
+function updateStreak() {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    console.error("No user logged in; cannot update streak.");
+    return;
+  }
+  
+  const userStatsRef = dbRef(database, `userStats/${currentUser.uid}`);
+  // Get today's local date string in "YYYY-MM-DD" format.
+  const today = new Date();
+  const todayString = today.toLocaleDateString('en-CA'); // e.g., "2025-02-22"
+  console.log("Today string:", todayString);
+  
+  get(userStatsRef)
+    .then(snapshot => {
+      let newStreak = 1; // default new streak is 1
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        console.log("Existing streak data:", data);
+        const lastPlayed = data.lastPlayed; // stored as "YYYY-MM-DD"
+        // Force current streak to be at least 1.
+        const currentStreak = (data.streak && data.streak > 0) ? data.streak : 1;
+        
+        // Create Date objects for lastPlayed and today, normalizing both to midnight.
+        const lastDate = new Date(lastPlayed);
+        lastDate.setHours(0, 0, 0, 0);
+        const todayDate = new Date(todayString);
+        todayDate.setHours(0, 0, 0, 0);
+        
+        // Calculate the difference in days.
+        const diffTime = todayDate - lastDate;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24);
+        console.log("Days difference:", diffDays);
+        
+        if (diffDays === 1) {
+          newStreak = currentStreak + 1;
+        } else if (diffDays === 0) {
+          newStreak = currentStreak;
+        } else {
+          // If one or more days are missed, reset the streak to 1.
+          newStreak = 1;
+        }
+      } else {
+        console.log("No existing streak record found; starting new streak at 1.");
+      }
+      
+      // Ensure the new streak is never below 1.
+      newStreak = Math.max(newStreak, 1);
+      
+      console.log("New streak will be:", newStreak);
+      return set(userStatsRef, {
+        lastPlayed: todayString,
+        streak: newStreak
+      }).then(() => newStreak);
+    })
+    .then(newStreak => {
+      console.log("User streak updated to:", newStreak);
+      // Optionally update your UI with the new streak value here.
+    })
+    .catch(err => {
+      console.error("Error updating streak:", err);
+    });
+}
+// Record that the current user has played this game
+function recordUserGameResult(questionsUsed, durationMs, status) {
+  const currentUser = auth.currentUser;
+  if (!currentUser) return;
+  const hintsUsed = getHintsUsed();
+  const userGameRef = ref(database, `userGames/${currentUser.uid}/${gameId}`);
+  set(userGameRef, {
+    questionsUsed: questionsUsed,
+    hintsUsed: hintsUsed,
+    duration: durationMs, // duration in milliseconds
+    result: status,       // store "win" or "fail"
+    timestamp: new Date().toISOString()
+  })
+  .then(() => console.log("User game result recorded"))
+  .catch(err => console.error("Error recording result:", err));
+}
+
+function recordGameResult(questionsUsed, status, duration) {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    console.error("No user is currently logged in.");
+    return;
+  }
+  const resultData = {
+    userId: currentUser.uid,
+    questionsUsed: questionsUsed,
+    result: status, // "win" or "fail"
+    duration: duration, // include the duration here as well
+    timestamp: new Date().toISOString()
+  };
+
+  push(resultsRef, resultData)
+    .then(() => {
+      console.log("Game result recorded:", resultData);
+    })
+    .catch((err) => {
+      console.error("Failed to record game result:", err);
+    });
+}
+function showCelebration() {
+  gameEnded = true;
+  const elapsedMs = new Date() - startTime;
+  const minutes = Math.floor(elapsedMs / 60000);
+  const seconds = Math.floor((elapsedMs % 60000) / 1000);
+  const timeText = `${minutes} Minutes ${seconds} Seconds`;
+
+  // Update popup content
+  document.getElementById("correct-artist-name").textContent = "Duncan Laurence";
+  document.getElementById("questions-used-popup").textContent = questionsAsked;
+  document.getElementById("hints-used-popup").textContent = getHintsUsed();
+  document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
+
+  const popup = document.getElementById("celebration-popup");
+  popup.style.display = "flex";
+  setTimeout(() => {
+    popup.classList.add("show");
+  }, 10);
+
+  // Record the win (pass "win" as the status)
+  recordUserGameResult(questionsAsked, elapsedMs, "win");
+  recordGameResult(questionsAsked, "win", elapsedMs);
+  updateStreak("win");
+
+  showUserStatsPopup();
+}
+
+  // Close Celebration Popup
+  document.getElementById("close-celebration-popup").addEventListener("click", function() {
+    const popup = document.getElementById("celebration-popup");
+    popup.classList.remove("show");
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 500);
+  });
+  
+  document.addEventListener("DOMContentLoaded", () => {
+  // Existing code for the celebration share button
+  const shareBtn = document.getElementById("share-result-button");
+  if (shareBtn) {
+    const clipboard = new ClipboardJS('#share-result-button', {
+      text: function(trigger) {
+        return trigger.getAttribute("data-clipboard-text") || "";
+      }
+    });
+    clipboard.on("success", function(e) {
+      alert("Results copied to clipboard!");
+      e.clearSelection();
+    });
+    clipboard.on("error", function(e) {
+      alert("Copy failed. Please try again.");
+    });
+    shareBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      const storedResults = `I guessed today's mystery singer in ${questionsAsked} questions and ${getHintsUsed()} hints! 🌟 Try it at guessthesinger.com`;
+      shareBtn.setAttribute("data-clipboard-text", storedResults);
+    });
+  }
+
+  // Bind similar functionality for the failure popup share button.
+  const failureShareBtn = document.getElementById("share-result-button-failure");
+  if (failureShareBtn) {
+    const clipboardFailure = new ClipboardJS('#share-result-button-failure', {
+      text: function(trigger) {
+        return trigger.getAttribute("data-clipboard-text") || "";
+      }
+    });
+    clipboardFailure.on("success", function(e) {
+      alert("Results copied to clipboard!");
+      e.clearSelection();
+    });
+    clipboardFailure.on("error", function(e) {
+      alert("Copy failed. Please try again.");
+    });
+    failureShareBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      // Use failure popup elements to determine the counts.
+      const questionCount = document.getElementById("failure-questions-used").textContent;
+      const hintCount = document.getElementById("failure-hints-used").textContent;
+      const storedResults = `I couldn't guess today's mystery singer in ${questionCount} questions and ${hintCount} hints! 😢 Try it at guessthesinger.com`;
+      failureShareBtn.setAttribute("data-clipboard-text", storedResults);
+    });
+  }
+});
+
+
+document.getElementById("enter-raffle-button-failure").addEventListener("click", function() {
+window.location.href = "https://forms.gle/8UoyYgQNeD78Feq48"; // Use your actual URL
+});
+
+  // Close Failure Popup
+  document.getElementById("close-failure-popup").addEventListener("click", function() {
+    const failurePopup = document.getElementById("failure-popup");
+    failurePopup.classList.remove("show");
+    setTimeout(() => {
+      failurePopup.style.display = "none";
+    }, 500);
+  });
+  document.getElementById("close-celebration-popup").addEventListener("click", function() {
+  window.location.reload();
+});
+
+document.getElementById("close-failure-popup").addEventListener("click", function() {
+  window.location.reload();
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const statsBtn = document.getElementById("stats-btn");
+  if (statsBtn) {
+    statsBtn.addEventListener("click", (e) => {
+      e.preventDefault(); // Prevent any default link behavior
+      showUserStatsPopup();
+    });
+  }
+});
+// Make sure gameId is defined, e.g.:
+const progressKey = `gameProgress_${gameId}`;
+function saveProgress() {
+  // Save state of hint boxes
+  const hintBoxes = Array.from(document.querySelectorAll("#hintContainer .hint-box")).map(box => ({
+    id: box.id,
+    unlocked: box.classList.contains("unlocked"),
+    revealed: box.dataset.revealed === "true",
+    innerHTML: box.innerHTML
+  }));
+
+  // Save state of dropdown items that have been asked.
+  const askedDropdownItems = Array.from(document.querySelectorAll(".dropdown-item.asked")).map(item => ({
+    dataValue: item.getAttribute("data-value"),
+    innerHTML: item.innerHTML
+  }));
+
+  const progress = {
+    questionsAsked,
+    guessCount,
+    startTime: startTime.toISOString(),
+    gameEnded,
+    hintsProgress: hintBoxes,
+    askedDropdownItems // new property to store dropdown state
+  };
+
+  localStorage.setItem(progressKey, JSON.stringify(progress));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem(progressKey);
+  if (saved) {
+    const progress = JSON.parse(saved);
+    questionsAsked = progress.questionsAsked;
+    guessCount = progress.guessCount;
+    startTime = new Date(progress.startTime);
+    gameEnded = progress.gameEnded;
+    
+    updateProgressBar();
+    closeGuessModal();
+    
+    if (progress.hintsProgress && Array.isArray(progress.hintsProgress)) {
+      restoreHintsProgress(progress.hintsProgress);
+    }
+    
+    if (progress.askedDropdownItems && Array.isArray(progress.askedDropdownItems)) {
+      restoreDropdownState(progress.askedDropdownItems);
+    }
+    
+    if (gameEnded) {
+      document.getElementById("answerDisplay").textContent =
+        "You have already played today's game!";
+      disableGame();
+    }
+  }
+}
+
+
+function restoreHintsProgress(hintsData) {
+  const container = document.getElementById("hintContainer");
+  container.innerHTML = ""; // Clear existing hints
+
+  hintsData.forEach(savedHint => {
+    const box = document.createElement("div");
+    box.id = savedHint.id;
+    // Set the appropriate classes based on saved state
+    box.className = "hint-box " + (savedHint.unlocked ? "unlocked" : "locked");
+    box.dataset.revealed = savedHint.revealed ? "true" : "false";
+    box.innerHTML = savedHint.innerHTML;
+
+    // Rebind the event listener to enable revealing hints
+    box.addEventListener("click", function() {
+      const hintNumber = parseInt(box.id.replace("hintBox-", ""));
+      if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
+        revealHint(box, hintNumber - 1);
+      }
+    });
+
+    container.appendChild(box);
+  });
+}
+function restoreDropdownState(askedItems) {
+  // Loop over each saved asked item.
+  askedItems.forEach(savedItem => {
+    // Find the dropdown item in the DOM by matching data-value.
+    const item = document.querySelector(`.dropdown-item[data-value="${savedItem.dataValue}"]`);
+    if (item) {
+      // Add the asked class and update the innerHTML (which includes emojis).
+      item.classList.add("asked");
+      item.innerHTML = savedItem.innerHTML;
+    }
+  });
+}
+
+    </script>
+    
+</body>
+</html>
