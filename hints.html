@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="description" content="Guess The Singer - Locked Hints Page">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Locked Hints</title>
+  <title>Hints Board</title>
   <link rel="icon" href="/favicon.ico">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <style>
@@ -32,9 +32,7 @@
       margin: 0 auto;
     }
     @media (max-width: 768px) {
-      .header .logo img {
-        width: 60%;
-      }
+      .header .logo img { width: 60%; }
     }
     /* Navigation */
     .navbar {
@@ -64,63 +62,88 @@
       background-color: #4682b4;
       border-radius: 5px;
     }
-    .hints-container {
-      padding-top: 40px;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);  /* 4 per row */
-      gap: 30px;
+    /* Board styling */
+    .board-container {
       max-width: 1200px;
-      margin: 0 auto 30px;
+      margin: 40px auto;
+      padding: 0 10px;
     }
-    .hint-item {
-      background: #ddd;
-      border-radius: 50px;
-      padding: 40px;
-      text-align: center;
+    .board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 150px;
+      gap: 10px;
+    }
+    .board-cell {
+      background: #222;
+      color: #fff;
+      border: 2px solid #4682b4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1.5rem;
-      color: #555;
+      text-align: center;
       cursor: pointer;
       transition: background 0.3s ease, transform 0.3s ease;
     }
-    .hint-item:hover {
-      background: #ccc;
+    .board-cell:hover {
+      background: #555;
       transform: scale(1.05);
     }
-    /* When locked, a lock icon is shown before the text */
-    .hint-item.locked::before {
-      content: "\f023"; /* Font Awesome lock icon */
-      font-family: "Font Awesome 5 Free";
-      font-weight: 900;
-      margin-right: 8px;
+    /* Category header cells */
+    .category-header {
+      background: #4682b4;
+      font-weight: bold;
+      font-size: 1.8rem;
+      cursor: default;
     }
-    /* When revealed, turn green */
-    .hint-item.revealed {
+    /* Locked and revealed styles */
+    .locked {
+      background: #333;
+      color: #ccc;
+    }
+    .revealed {
       background: #c8e6c9;
       color: #2e7d32;
+      cursor: default;
     }
-    /* Container for hint responses */
-    .hint-responses-container {
+    /* Gallery styling */
+    .gallery-container {
       max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+      margin: 20px auto;
       padding: 0 10px;
+      text-align: center;
     }
-    .hint-response {
-      background: #fff;
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .gallery-item {
+      background: #222;
       border: 2px solid #4682b4;
-      border-radius: 10px;
-      padding: 30px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 2rem;
-      color: #333;
-      min-height: 50px;
     }
-    /* Locked response box style */
-    .hint-response.locked {
-      background: #e0e0e0;
-      color: #555;
-      font-style: italic;
+    /* Reset button styling */
+    #resetBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background: #4682b4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #resetBtn:hover {
+      background: #315f85;
     }
   </style>
 </head>
@@ -140,120 +163,226 @@
       <li><a href="/wheel.html">Wheel</a></li>
     </ul>
   </nav>
-  <div class="hints-container" id="hintsContainer">
-    <!-- Hint items will be generated here -->
+  
+  <div class="board-container">
+    <div class="board" id="jeopardyBoard">
+      <!-- Board cells will be generated via JavaScript -->
+    </div>
+    <button id="resetBtn">Reset Board</button>
   </div>
-  <div class="hint-responses-container" id="hintResponses">
-    <!-- Hint response boxes will be generated here -->
+
+  <!-- Gallery Section -->
+  <div class="gallery-container">
+    <h2>Gallery</h2>
+    <div class="gallery" id="gallery">
+      <!-- Gallery items will be generated via JavaScript -->
+    </div>
   </div>
 
   <script>
-    // Array of hint texts – adjust as needed.
-    const hints = [
-      "They have been nominated for more than 10 Grammy Awards.",
-      "Her first studio album was released in Summer 2013.",
-      "She is about 5 feet tall.",
-      "She had a supporting role on a popular Nickelodeon TV Show.",
-      "Her last name is synonymous with a cup size at Starbucks.",
+    // Data for board: five categories with three hints each.
+    const boardData = [
+      { 
+        category: "Music Awards", 
+        hints: [
+          "Has won multiple Grammys",
+          "Nominated for a Billboard Award",
+          "Awarded Best New Artist"
+        ]
+      },
+      { 
+        category: "Debut", 
+        hints: [
+          "Debuted in the 2000s",
+          "First album was a hit",
+          "Known for breakout single"
+        ]
+      },
+      { 
+        category: "Physical Traits", 
+        hints: [
+          "Signature style icon",
+          "Recognizable hair color",
+          "Known for bold fashion"
+        ]
+      },
+      { 
+        category: "Career", 
+        hints: [
+          "Also acted in films",
+          "Famous for collaborations",
+          "Has a long-standing career"
+        ]
+      },
+      { 
+        category: "Social Media", 
+        hints: [
+          "Millions on Instagram",
+          "Viral on TikTok",
+          "Active on Twitter"
+        ]
+      }
     ];
-
-    const hintsContainer = document.getElementById("hintsContainer");
-    const hintResponsesContainer = document.getElementById("hintResponses");
-
-    // Retrieve the persisted state from localStorage (if any)
-    let revealedHints = JSON.parse(localStorage.getItem("revealedHints")) || {};
-
-    // Function to save the state
+    
+    // Local Storage key for tracking revealed hints.
+    const storageKey = "revealedHintsBoard";
+    
+    // revealedState maps category index to an array of booleans for the three hints.
+    let revealedState = JSON.parse(localStorage.getItem(storageKey)) || {};
+    boardData.forEach((cat, index) => {
+      if (!revealedState.hasOwnProperty(index)) {
+        revealedState[index] = [false, false, false];
+      }
+    });
+    
+    // Save revealedState to localStorage.
     function saveState() {
-      localStorage.setItem("revealedHints", JSON.stringify(revealedHints));
+      localStorage.setItem(storageKey, JSON.stringify(revealedState));
     }
-
-    // Function to create a hint response box.
-    // If revealText is provided, display it; otherwise, show locked text.
-    function createHintResponse(index, revealText = null) {
-      const responseBox = document.createElement("div");
-      responseBox.classList.add("hint-response");
-      if (revealText === null) {
-        responseBox.classList.add("locked");
-        responseBox.textContent = `Hint ${index + 1} Locked`;
-      } else {
-        responseBox.textContent = revealText;
-      }
-      responseBox.id = `hintResponse-${index+1}`;
-      return responseBox;
-    }
-
-    // Function to update or create the response box for a given index.
-    function updateResponseBox(index, isRevealed, hintText) {
-      let responseBox = document.getElementById(`hintResponse-${index+1}`);
-      if (!responseBox) {
-        responseBox = createHintResponse(index);
-        hintResponsesContainer.appendChild(responseBox);
-      }
-      if (isRevealed) {
-        responseBox.classList.remove("locked");
-        responseBox.textContent = hintText;
-      } else {
-        responseBox.classList.add("locked");
-        responseBox.textContent = `Hint ${index + 1} Locked`;
-      }
-    }
-
-    // Generate the hint items.
-    hints.forEach((hintText, index) => {
-      const hintItem = document.createElement("div");
-      hintItem.classList.add("hint-item");
+    
+    // Build the board.
+    function buildBoard() {
+      const boardElement = document.getElementById("jeopardyBoard");
+      boardElement.innerHTML = "";
       
-      // For the first hint, it's always clickable.
-      if (index === 0) {
-        hintItem.classList.add("locked");
-      } else {
-        // For other hints, only allow toggling if previous hint is revealed.
-        if (revealedHints[index]) {
-          hintItem.classList.add("revealed");
-        } else {
-          hintItem.classList.add("locked");
-        }
-      }
-      
-      hintItem.textContent = `Hint ${index + 1}`;
-      // Save the hint text and its index in data attributes.
-      hintItem.setAttribute("data-hint", hintText);
-      hintItem.setAttribute("data-index", index);
-      
-      hintItem.addEventListener("click", function() {
-        const currentIndex = parseInt(this.getAttribute("data-index"));
-        // For hints beyond the first, check if previous hint is revealed.
-        if (currentIndex > 0 && !revealedHints[currentIndex - 1]) {
-          // Optionally, you can alert the user or simply do nothing.
-          return;
-        }
-        // Toggle the reveal state.
-        if (revealedHints[currentIndex]) {
-          // Hide the hint.
-          revealedHints[currentIndex] = false;
-          this.classList.remove("revealed");
-          this.classList.add("locked");
-          updateResponseBox(currentIndex, false);
-        } else {
-          // Reveal the hint.
-          revealedHints[currentIndex] = true;
-          this.classList.remove("locked");
-          this.classList.add("revealed");
-          updateResponseBox(currentIndex, true, this.getAttribute("data-hint"));
-          // If there's a next hint and its response box doesn't exist, add it.
-          if (currentIndex + 1 < hints.length && !document.getElementById(`hintResponse-${currentIndex+2}`)) {
-            const nextResponse = createHintResponse(currentIndex + 1);
-            hintResponsesContainer.appendChild(nextResponse);
-          }
-        }
-        saveState();
+      // Create header row.
+      boardData.forEach(categoryObj => {
+        const headerCell = document.createElement("div");
+        headerCell.classList.add("board-cell", "category-header");
+        headerCell.textContent = categoryObj.category;
+        headerCell.style.cursor = "default";
+        boardElement.appendChild(headerCell);
       });
       
-      hintsContainer.appendChild(hintItem);
-      // For each hint, update the response box based on the persisted state.
-      updateResponseBox(index, revealedHints[index] || false, hintText);
+      // Create hint cells (3 rows x 5 columns).
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < boardData.length; col++) {
+          const hintText = boardData[col].hints[row];
+          const cell = document.createElement("div");
+          cell.classList.add("board-cell");
+          cell.setAttribute("data-category-index", col);
+          cell.setAttribute("data-hint-index", row);
+          
+          // If already revealed, show the hint.
+          if (revealedState[col] && revealedState[col][row]) {
+            cell.classList.add("revealed");
+            cell.textContent = hintText;
+          } else {
+            cell.classList.add("locked");
+            // Determine clickable state:
+            // Row 0 is always clickable.
+            // Row 1 is clickable if row 0 is revealed.
+            // Row 2 is clickable if row 1 is revealed.
+            let clickable = (row === 0) ||
+                            (row === 1 && revealedState[col][0]) ||
+                            (row === 2 && revealedState[col][1]);
+            cell.innerHTML = clickable 
+              ? '<i class="fas fa-unlock"></i>' 
+              : '<i class="fas fa-lock"></i>';
+          }
+          
+          // Reveal hint on click if dependencies are met.
+          cell.addEventListener("click", function() {
+            const catIdx = cell.getAttribute("data-category-index");
+            const hintIdx = parseInt(cell.getAttribute("data-hint-index"));
+            if (hintIdx === 1 && !revealedState[catIdx][0]) return;
+            if (hintIdx === 2 && !revealedState[catIdx][1]) return;
+            if (cell.classList.contains("revealed")) return;
+            
+            // Reveal the hint.
+            cell.classList.remove("locked");
+            cell.classList.add("revealed");
+            cell.textContent = hintText;
+            revealedState[catIdx][hintIdx] = true;
+            saveState();
+            
+            // After revealing, update gallery icons for this column.
+            updateGalleryColumnIcons(catIdx);
+            // Also update board icons for this column.
+            updateBoardColumnIcons(catIdx);
+          });
+          
+          boardElement.appendChild(cell);
+        }
+      }
+    }
+    
+    // Update board icons in a specific column.
+    function updateBoardColumnIcons(colIndex) {
+      const boardElement = document.getElementById("jeopardyBoard");
+      const headerCount = boardData.length;
+      for (let row = 0; row < 3; row++) {
+        const cellIndex = headerCount + colIndex + row * boardData.length;
+        const cell = boardElement.children[cellIndex];
+        if (!cell.classList.contains("revealed")) {
+          let clickable = (row === 0) ||
+                          (row === 1 && revealedState[colIndex][0]) ||
+                          (row === 2 && revealedState[colIndex][1]);
+          cell.innerHTML = clickable 
+            ? '<i class="fas fa-unlock"></i>' 
+            : '<i class="fas fa-lock"></i>';
+        }
+      }
+    }
+    
+    // Build the gallery.
+    function buildGallery() {
+      const galleryElement = document.getElementById("gallery");
+      galleryElement.innerHTML = "";
+      // Create gallery items (3 rows x 5 columns).
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < boardData.length; col++) {
+          const galleryItem = document.createElement("div");
+          galleryItem.classList.add("gallery-item");
+          galleryItem.setAttribute("data-category-index", col);
+          galleryItem.setAttribute("data-hint-index", row);
+          
+          // Determine clickable state for gallery:
+          // Row 0 is always unlocked (green).
+          // Row 1 unlocked if first hint is revealed.
+          // Row 2 unlocked if second hint is revealed.
+          let clickable = (row === 0) ||
+                          (row === 1 && revealedState[col][0]) ||
+                          (row === 2 && revealedState[col][1]);
+          galleryItem.innerHTML = clickable 
+            ? '<i class="fas fa-unlock" style="color: green;"></i>' 
+            : '<i class="fas fa-lock"></i>';
+          
+          galleryElement.appendChild(galleryItem);
+        }
+      }
+    }
+    
+    // Update the gallery icons in a specific column.
+    function updateGalleryColumnIcons(colIndex) {
+      const galleryElement = document.getElementById("gallery");
+      const itemsPerRow = boardData.length;
+      for (let row = 0; row < 3; row++) {
+         const cellIndex = colIndex + row * itemsPerRow;
+         const galleryItem = galleryElement.children[cellIndex];
+         let clickable = (row === 0) ||
+                         (row === 1 && revealedState[colIndex][0]) ||
+                         (row === 2 && revealedState[colIndex][1]);
+         galleryItem.innerHTML = clickable 
+            ? '<i class="fas fa-unlock" style="color: green;"></i>' 
+            : '<i class="fas fa-lock"></i>';
+      }
+    }
+    
+    // Reset button: clear state and rebuild board and gallery.
+    document.getElementById("resetBtn").addEventListener("click", function() {
+      revealedState = {};
+      boardData.forEach((cat, index) => {
+        revealedState[index] = [false, false, false];
+      });
+      saveState();
+      buildBoard();
+      buildGallery();
     });
+    
+    // Initial build.
+    buildBoard();
+    buildGallery();
   </script>
 </body>
 </html>

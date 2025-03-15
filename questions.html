@@ -88,13 +88,16 @@
     }
     /* Gallery Grid */
     .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      max-width: 1200px;
-      margin: 20px auto;
-      padding: 0 10px;
-    }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto; /* centers the container */
+  justify-content: center; /* centers grid items horizontally */
+  /* remove or adjust any padding that might offset centering */
+}
+
     .gallery-item {
       background: #fff;
       padding: 15px;
@@ -103,7 +106,8 @@
       text-align: center;
       transition: transform 0.3s ease;
       cursor: pointer;
-      min-height: 120px;
+      min-height: 200px;
+      min-width: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -334,7 +338,7 @@
     // On page load, choose 15 random questions.
     function initGallery() {
       const shuffled = shuffleArray([...questions]);
-      displayedQuestions = shuffled.slice(0, 15);
+      displayedQuestions = shuffled.slice(0, 12);
       renderGallery();
     }
     
