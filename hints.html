@@ -145,6 +145,12 @@
     #resetBtn:hover {
       background: #315f85;
     }
+    .navbar ul li a.active {
+  background-color: #4682b4; /* Or any color that stands out */
+  border-bottom: 3px solid #fff; /* Creates a visual underline */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
   </style>
 </head>
 <body>
@@ -156,7 +162,7 @@
   <nav class="navbar">
     <ul>
       <li><a href="/questions.html">Questions</a></li>
-      <li><a href="/hints.html">Hints</a></li>
+      <li><a href="/hints.html" class="active">Hints</a></li>
       <li><a href="/guesses.html">Guesses</a></li>
       <li><a href="/results.html">Audience</a></li>
       <li><a href="/trivia.html">Trivia</a></li>
