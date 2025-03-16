@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer Trivia: Answer 10 questions and test your music knowledge!">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess The Singer Trivia</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* General Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding-bottom: 40px;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    /* Navigation */
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+    }
+    /* Logo Styling */
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+      }
+    }
+
+    /* Progress Bar */
+    .progress-wrapper {
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto;
+      text-align: left;
+    }
+
+    .progress-text {
+      font-size: 1.2rem;
+      color: #4682b4;
+      margin-bottom: 5px;
+    }
+
+    .progress-container {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #4682b4;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Main Section */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .question {
+      font-size: 2rem;
+      margin: 30px 0;
+      color: #4682b4;
+    }
+
+    /* Answer Options Grid: 2 columns and 2 rows */
+    .answers {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .answer-box {
+      background-color: #fff;
+      border: 2px solid #4682b4;
+      border-radius: 10px;
+      padding: 20px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .answer-box:hover {
+      background-color: #f0f8ff;
+      transform: scale(1.03);
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #315f85;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 1rem;
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 6px;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+      color: #ff914d;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+  <nav class="navbar">
+    <ul>
+      <li><a href="/questions.html">Questions</a></li>
+      <li><a href="/hints.html">Hints</a></li>
+      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/results.html">Audience</a></li>
+      <li><a href="/trivia.html">Trivia</a></li>
+      <li><a href="/wheel.html">Wheel</a></li>
+
+    </ul>
+  </nav>
+  <!-- Main Section -->
+  <main class="main">
+    <!-- Progress Bar -->
+    <div class="progress-wrapper">
+      <div class="progress-text" id="progressText">Question 1 of 10</div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- Question -->
+    <div class="question" id="questionText">
+      <!-- Question text will be injected here -->
+    </div>
+
+    <!-- Answer Options -->
+    <div class="answers" id="answersContainer">
+      <!-- Answer options will be injected here -->
+    </div>
+  </main>
+
+  <script>
+    // Array of 10 questions
+    const questions = [
+      {
+        question: "Who is known as the 'Queen of Pop'?",
+        options: ["Madonna", "Beyoncé", "Lady Gaga", "Rihanna"],
+        correct: 0
+      },
+      {
+        question: "Which singer released the hit song 'Bad Romance'?",
+        options: ["Adele", "Lady Gaga", "Britney Spears", "Katy Perry"],
+        correct: 1
+      },
+      {
+        question: "Who is known as the 'King of Pop'?",
+        options: ["Elvis Presley", "Michael Jackson", "Prince", "Stevie Wonder"],
+        correct: 1
+      },
+      {
+        question: "Which artist is famous for the album 'Lemonade'?",
+        options: ["Beyoncé", "Rihanna", "Taylor Swift", "Alicia Keys"],
+        correct: 0
+      },
+      {
+        question: "Who performed the song 'Rolling in the Deep'?",
+        options: ["Adele", "Katy Perry", "Shakira", "Sia"],
+        correct: 0
+      },
+      {
+        question: "Which singer is known for the hit 'Uptown Funk'?",
+        options: ["Bruno Mars", "Justin Timberlake", "Pharrell Williams", "Ne-Yo"],
+        correct: 0
+      },
+      {
+        question: "Which artist is famous for the song 'Shake It Off'?",
+        options: ["Taylor Swift", "Katy Perry", "Selena Gomez", "Demi Lovato"],
+        correct: 0
+      },
+      {
+        question: "Who released the album 'FutureSex/LoveSounds'?",
+        options: ["Justin Bieber", "Usher", "Justin Timberlake", "Chris Brown"],
+        correct: 2
+      },
+      {
+        question: "Which singer is known for the song 'Single Ladies'?",
+        options: ["Beyoncé", "Nicki Minaj", "Miley Cyrus", "Alicia Keys"],
+        correct: 0
+      },
+      {
+        question: "Who is the artist behind 'Blinding Lights'?",
+        options: ["The Weeknd", "Drake", "Post Malone", "Travis Scott"],
+        correct: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let correctCount = 0;
+    let startTime = null;
+
+    // DOM Elements
+    const questionText = document.getElementById("questionText");
+    const answersContainer = document.getElementById("answersContainer");
+    const progressText = document.getElementById("progressText");
+    const progressBar = document.getElementById("progressBar");
+
+    // Load the current question
+    function loadQuestion() {
+      // Set start time at first question
+      if (currentQuestion === 0 && !startTime) {
+        startTime = new Date();
+      }
+
+      // Update progress text and progress bar width
+      progressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+      progressBar.style.width = ((currentQuestion) / questions.length) * 100 + "%";
+
+      // Get current question object
+      const currentData = questions[currentQuestion];
+      questionText.textContent = currentData.question;
+
+      // Clear previous answers
+      answersContainer.innerHTML = "";
+
+      // Create answer boxes
+      currentData.options.forEach((option, index) => {
+        const answerBox = document.createElement("div");
+        answerBox.classList.add("answer-box");
+        answerBox.textContent = option;
+        answerBox.onclick = () => handleAnswer(index);
+        answersContainer.appendChild(answerBox);
+      });
+    }
+
+    // Handle answer selection
+    function handleAnswer(selectedIndex) {
+      // Check if the selected answer is correct
+      if (selectedIndex === questions[currentQuestion].correct) {
+        correctCount++;
+      }
+
+      // Delay before moving to the next question
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          loadQuestion();
+        } else {
+          // Quiz completed; calculate time taken
+          const endTime = new Date();
+          const timeTaken = Math.floor((endTime - startTime) / 1000); // time in seconds
+
+          progressText.textContent = "Quiz Completed!";
+          progressBar.style.width = "100%";
+
+          questionText.innerHTML = `<strong>Congratulations!</strong><br>You got ${correctCount} out of ${questions.length} correct.<br>Your time: ${timeTaken} seconds.`;
+          answersContainer.innerHTML = "";
+        }
+      }, 500);
+    }
+
+    // Initialize the quiz
+    loadQuestion();
+  </script>
+</body>
+</html>

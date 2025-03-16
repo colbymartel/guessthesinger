@@ -135,19 +135,21 @@
     }
     /* Popup Box */
     .popup {
-      display: none;
-      position: fixed;
-      top: 40%; left: 44%;
-      transform-origin: center; /* Ensure animations occur from the center */
-      background: #fff;
-      border: 2px solid #4682b4;
-      border-radius: 10px;
-      padding: 20px;
-      z-index: 1000;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-  
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 2px solid #4682b4;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 1000;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+
 
     .popup h2 { margin-bottom: 15px; }
     .popup p { margin-bottom: 20px; font-size: 1.1rem; }
@@ -174,23 +176,23 @@
       transition: color 0.3s ease;
     }
     .popup .close-popup:hover { color: #ff4d4d; }
-    @keyframes popIn {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
+
 .pop-in {
   animation: popIn 0.5s ease-out;
 }
-
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  50% { transform: translateX(10px); }
-  75% { transform: translateX(-10px); }
-  100% { transform: translateX(0); }
+  0% { transform: translate(-50%, -50%) translateX(0); }
+  25% { transform: translate(-50%, -50%) translateX(-10px); }
+  50% { transform: translate(-50%, -50%) translateX(10px); }
+  75% { transform: translate(-50%, -50%) translateX(-10px); }
+  100% { transform: translate(-50%, -50%) translateX(0); }
 }
+
 .shake {
   animation: shake 0.5s ease;
+}
+.popup.longer.shake {
+  animation-duration: 1s !important;
 }
 
 /* Confetti styling */
@@ -222,6 +224,7 @@
   </header>
   <nav class="navbar">
     <ul>
+      <li><a href="/rounds.html">Rounds</a></li>
       <li><a href="/questions.html">Questions</a></li>
       <li><a href="/hints.html">Hints</a></li>
       <li><a href="/guesses.html" class="active">Guesses</a></li>
@@ -261,7 +264,7 @@
   
   <script>
     // Set the correct singer (all comparisons in lowercase)
-    const correctSinger = "ariana grande";
+    const correctSinger = "carrie underwood";
 
     // Array of singer objects (50 items)
     const singers = [
@@ -590,7 +593,7 @@
             const chosenImg = this.getAttribute("data-img");
             if (chosenSinger === correctSinger) {
               // Set popup text and border (green) for correct.
-              document.getElementById("celebrationName").textContent = "Ariana Grande";
+              document.getElementById("celebrationName").textContent = "Carrie Underwood";
               showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
             } else {
               showPopup(document.getElementById("failurePopup"), chosenImg, false);
@@ -626,20 +629,28 @@
   imgElem.style.border = "5px solid " + (isCorrect ? "green" : "red");
   
   // Remove any previous animation classes.
-  popupElement.classList.remove("pop-in", "shake");
+  popupElement.classList.remove("pop-in", "shake", "longer");
   
-  // Trigger the appropriate effect.
+  // For correct answers, add extra class to lengthen animations.
   if (isCorrect) {
-    popupElement.classList.add("pop-in");
-    triggerConfetti();
-  } else {
-    popupElement.classList.add("shake");
-  }
+  popupElement.classList.add("pop-in", "shake", "longer");
+  triggerConfetti();
+  // Set the page background to green (adjust opacity as needed)
+  document.body.style.backgroundColor = "rgba(76, 175, 80, 0.5)"; // Green with 50% opacity
+} else {
+  popupElement.classList.add("shake");
+  // Set the page background to red with 50% opacity.
+  document.body.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
+}
+
+
   
   // Show the overlay and popup.
   document.getElementById("overlay").style.display = "block";
   popupElement.style.display = "block";
 }
+
+
 
 // Create a temporary confetti shower for celebration.
 function triggerConfetti() {
@@ -657,30 +668,30 @@ function triggerConfetti() {
   for (let i = 0; i < 30; i++) {
     const confetti = document.createElement("div");
     confetti.className = "confetti";
-    // Random color from a preset palette.
     const colors = ["#FFC700", "#FF0000", "#2E3192", "#41BBC7", "#28a745"];
     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    // Random horizontal start position.
     confetti.style.left = Math.random() * 100 + "%";
-    // Start above the viewport.
     confetti.style.top = "-10px";
-    // Apply the falling animation.
-    confetti.style.animation = "fall 2s linear forwards";
+    // Extend the fall animation duration to 3 seconds.
+    confetti.style.animation = "fall 3s linear forwards";
     confetti.style.animationDelay = Math.random() + "s";
     confettiContainer.appendChild(confetti);
   }
-  // Remove the confetti container after 3 seconds.
+  // Remove the confetti container after 3.5 seconds (adjust as needed).
   setTimeout(() => {
     confettiContainer.remove();
-  }, 3000);
+  }, 3500);
 }
 
-    
-    function closePopup() {
-      document.getElementById("overlay").style.display = "none";
-      document.getElementById("celebrationPopup").style.display = "none";
-      document.getElementById("failurePopup").style.display = "none";
-    }
+
+function closePopup() {
+  document.getElementById("overlay").style.display = "none";
+  document.getElementById("celebrationPopup").style.display = "none";
+  document.getElementById("failurePopup").style.display = "none";
+  // Reset the page background.
+  document.body.style.backgroundColor = "";
+}
+
   </script>
 </body>
 </html>
