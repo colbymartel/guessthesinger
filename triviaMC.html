@@ -275,7 +275,7 @@
     let timerInterval = null;
     
     // Total time (2 minutes)
-    const totalTime = 120; // seconds
+    const totalTime = 60; // seconds
     
     // DOM Elements
     const progressText = document.getElementById("progressText");
@@ -343,7 +343,7 @@ function handleAnswer(selectedOption) {
     }, 1000);
   } else {
     resultText.style.color = "red";
-    resultText.textContent = "Incorrect! 5 seconds penalty.";
+    resultText.textContent = "Incorrect! 5 seconds penalty. Try again.";
     // Subtract 5 seconds from the global timeRemaining variable
     timeRemaining = Math.max(0, timeRemaining - 5);
     timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
