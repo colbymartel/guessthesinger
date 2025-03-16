@@ -312,47 +312,47 @@
       document.getElementById("startContainer").style.display = "none";
       document.getElementById("quizContainer").style.display = "block";
       startTime = new Date();
-      startTimer(totalTime);
+      startTimer();
       loadQuestion();
     }
     
-// Global variable for time remaining
-let timeRemaining = totalTime;
-
-function startTimer() {
-  timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
-  timerInterval = setInterval(() => {
-    timeRemaining--;
-    timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
-    if (timeRemaining <= 0) {
-      clearInterval(timerInterval);
-      endQuiz();
+    // Global variable for time remaining
+    let timeRemaining = totalTime;
+    
+    function startTimer() {
+      timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          endQuiz();
+        }
+      }, 1000);
     }
-  }, 1000);
-}
-
-function handleAnswer(selectedOption) {
-  const currentQ = triviaQuestions[currentQuestionIndex];
-  if (selectedOption === currentQ.correctAnswer) {
-    correctCount++;
-    resultText.style.color = "green";
-    resultText.textContent = "Correct!";
-    currentQuestionIndex++;
-    setTimeout(() => {
-      loadQuestion();
-    }, 1000);
-  } else {
-    resultText.style.color = "red";
-    resultText.textContent = "Incorrect! 5 seconds penalty. Try again.";
-    // Subtract 5 seconds from the global timeRemaining variable
-    timeRemaining = Math.max(0, timeRemaining - 5);
-    timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
-    if (timeRemaining <= 0) {
-      endQuiz();
+    
+    function handleAnswer(selectedOption) {
+      const currentQ = triviaQuestions[currentQuestionIndex];
+      if (selectedOption === currentQ.correctAnswer) {
+        correctCount++;
+        resultText.style.color = "green";
+        resultText.textContent = "Correct!";
+        currentQuestionIndex++;
+        setTimeout(() => {
+          loadQuestion();
+        }, 1000);
+      } else {
+        resultText.style.color = "red";
+        resultText.textContent = "Incorrect! 5 seconds penalty. Try again.";
+        // Subtract 5 seconds from the global timeRemaining variable
+        timeRemaining = Math.max(0, timeRemaining - 5);
+        timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+        if (timeRemaining <= 0) {
+          endQuiz();
+        }
+      }
     }
-  }
-}
-
+    
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
       const secs = seconds % 60;
@@ -380,12 +380,6 @@ function handleAnswer(selectedOption) {
       });
       resultText.textContent = "";
     }
-  
-    
-    function parseTime(timeStr) {
-      const parts = timeStr.split(":");
-      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
-    }
     
     function endQuiz() {
       clearInterval(timerInterval);
@@ -396,7 +390,19 @@ function handleAnswer(selectedOption) {
       progressText.style.display = "none";
       localStorage.setItem("played", "true");
       
-      // Optionally, update quiz session in Firestore here...
+      // Update quiz session in Firestore using a different ID "choicecount"
+      updateFirebaseChoiceCount();
+    }
+    
+    function updateFirebaseChoiceCount() {
+      const userName = localStorage.getItem("currentUser") || "Anonymous";
+      db.collection("quizSessions").doc("choicecount").set({
+        user: userName,
+        choiceCount: correctCount,
+        timestamp: new Date()
+      })
+      .then(() => console.log("Firebase updated with choicecount"))
+      .catch(error => console.error("Error updating Firebase:", error));
     }
     
     function resetLocalStorage() {
