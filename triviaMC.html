@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer Trivia: Multiple Choice Music Trivia Quiz">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess The Singer Trivia</title>
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    /* General Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding-bottom: 40px;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .header .logo img { width: 60%; }
+    }
+    /* Start Screen */
+    .start-container {
+      max-width: 600px;
+      margin: 100px auto 0;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .login-input {
+      width: 80%;
+      padding: 10px;
+      font-size: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .start-btn {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background-color: #4682b4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-right: 10px;
+    }
+    .start-btn:hover {
+      background-color: #315f85;
+    }
+    /* Quiz Container */
+    .quiz-container {
+      display: none;
+      max-width: 600px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .progress {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #4682b4;
+    }
+    .timer {
+      font-size: 1.4rem;
+      color: #4682b4;
+      margin-bottom: 15px;
+    }
+    .question-text {
+      font-size: 1.6rem;
+      color: #4682b4;
+      margin-bottom: 20px;
+    }
+    /* Enhanced Multiple Choice Options - Matching start-btn style */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .option {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background-color: #4682b4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .option:hover {
+      background-color: #315f85;
+    }
+    .result {
+      font-size: 1.4rem;
+      color: #4682b4;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+
+  <!-- Start/Login Screen -->
+  <div class="start-container" id="startContainer">
+    <p style="margin-bottom: 10px; font-size: 1.2rem; color: #4682b4;">
+      A 2-minute timer will start when you click "Start Quiz".
+    </p>
+    <input type="text" id="userName" class="login-input" placeholder="Enter your name">
+    <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+    <button class="start-btn" onclick="resetLocalStorage()">Reset Local Storage</button>
+  </div>
+
+  <!-- Quiz Container -->
+  <div class="quiz-container" id="quizContainer">
+    <div class="progress" id="progressText">Question 1 of 20</div>
+    <div class="timer" id="timerText">Time left: 02:00</div>
+    <div class="question-text" id="questionText">Question will appear here</div>
+    <div class="options" id="options">
+      <!-- Option buttons will be inserted here dynamically -->
+    </div>
+    <div class="result" id="resultText"></div>
+  </div>
+  
+  <!-- Firebase SDKs (for quiz session logging) -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script>
+    // Firebase configuration (replace with your own config if needed)
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.firebasestorage.app",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+      measurementId: "G-3R005HTKEW"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    
+    // --- Multiple-choice trivia question set (20 questions)
+    const triviaQuestions = [
+      {
+        question: "Which artist released the hit single 'Blinding Lights'?",
+        options: ["The Weeknd", "Drake", "Post Malone", "Travis Scott"],
+        correctAnswer: "The Weeknd"
+      },
+      {
+        question: "Who is known as the 'King of Pop'?",
+        options: ["Michael Jackson", "Elvis Presley", "Prince", "Freddie Mercury"],
+        correctAnswer: "Michael Jackson"
+      },
+      {
+        question: "Which band is famous for the song 'Bohemian Rhapsody'?",
+        options: ["Queen", "The Beatles", "Nirvana", "Led Zeppelin"],
+        correctAnswer: "Queen"
+      },
+      {
+        question: "Which singer is known for the hit 'Rolling in the Deep'?",
+        options: ["Adele", "Beyoncé", "Rihanna", "Taylor Swift"],
+        correctAnswer: "Adele"
+      },
+      {
+        question: "Into which genre did Taylor Swift transition from country music?",
+        options: ["Pop", "Rock", "Hip-Hop", "Electronic"],
+        correctAnswer: "Pop"
+      },
+      {
+        question: "Which band released the classic song 'Hey Jude'?",
+        options: ["The Beatles", "Rolling Stones", "Queen", "The Who"],
+        correctAnswer: "The Beatles"
+      },
+      {
+        question: "Which rapper is known for the song 'Lose Yourself'?",
+        options: ["Eminem", "Jay-Z", "Kanye West", "Lil Wayne"],
+        correctAnswer: "Eminem"
+      },
+      {
+        question: "Which band released the iconic 'Stairway to Heaven'?",
+        options: ["Led Zeppelin", "AC/DC", "Aerosmith", "The Doors"],
+        correctAnswer: "Led Zeppelin"
+      },
+      {
+        question: "Who is often referred to as the 'Queen of Pop'?",
+        options: ["Madonna", "Britney Spears", "Lady Gaga", "Rihanna"],
+        correctAnswer: "Madonna"
+      },
+      {
+        question: "Which artist released the album '25'?",
+        options: ["Adele", "Taylor Swift", "Beyoncé", "Rihanna"],
+        correctAnswer: "Adele"
+      },
+      {
+        question: "Which singer is nicknamed the 'Material Girl'?",
+        options: ["Madonna", "Lady Gaga", "Britney Spears", "Christina Aguilera"],
+        correctAnswer: "Madonna"
+      },
+      {
+        question: "Which rock band is known for the song 'Hotel California'?",
+        options: ["Eagles", "Fleetwood Mac", "The Doors", "The Rolling Stones"],
+        correctAnswer: "Eagles"
+      },
+      {
+        question: "Which album features Michael Jackson's hit 'Thriller'?",
+        options: ["Thriller", "Bad", "Off the Wall", "Dangerous"],
+        correctAnswer: "Thriller"
+      },
+      {
+        question: "Which band is famous for 'Smells Like Teen Spirit'?",
+        options: ["Nirvana", "Pearl Jam", "Soundgarden", "Foo Fighters"],
+        correctAnswer: "Nirvana"
+      },
+      {
+        question: "Which artist is known for the hit 'Uptown Funk'?",
+        options: ["Bruno Mars", "Justin Timberlake", "Pharrell Williams", "Usher"],
+        correctAnswer: "Bruno Mars"
+      },
+      {
+        question: "Who sang the hit song 'Shape of You'?",
+        options: ["Ed Sheeran", "Shawn Mendes", "Sam Smith", "Justin Bieber"],
+        correctAnswer: "Ed Sheeran"
+      },
+      {
+        question: "Which artist released the album 'Lemonade'?",
+        options: ["Beyoncé", "Rihanna", "Taylor Swift", "Ariana Grande"],
+        correctAnswer: "Beyoncé"
+      },
+      {
+        question: "Which band is known for the song 'Sweet Child O' Mine'?",
+        options: ["Guns N' Roses", "AC/DC", "Metallica", "Bon Jovi"],
+        correctAnswer: "Guns N' Roses"
+      },
+      {
+        question: "Who is often referred to as 'Queen Bey'?",
+        options: ["Beyoncé", "Rihanna", "Nicki Minaj", "Ariana Grande"],
+        correctAnswer: "Beyoncé"
+      },
+      {
+        question: "Which artist is known for the song 'Bad Romance'?",
+        options: ["Lady Gaga", "Katy Perry", "Rihanna", "Britney Spears"],
+        correctAnswer: "Lady Gaga"
+      }
+    ];
+    
+    // --- Global Variables
+    let currentQuestionIndex = 0;
+    let correctCount = 0;
+    let startTime = null;
+    let timerInterval = null;
+    
+    // Total time (2 minutes)
+    const totalTime = 120; // seconds
+    
+    // DOM Elements
+    const progressText = document.getElementById("progressText");
+    const timerText = document.getElementById("timerText");
+    const questionText = document.getElementById("questionText");
+    const optionsDiv = document.getElementById("options");
+    const resultText = document.getElementById("resultText");
+    
+    // Shuffle function (Fisher-Yates)
+    function shuffle(array) {
+      const arr = array.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    
+    // Start Quiz: Hide start container, show quiz container, start timer, load first question.
+    function startQuiz() {
+      const userName = document.getElementById("userName").value.trim();
+      if (!userName) {
+        alert("Please enter your name to start.");
+        return;
+      }
+      if (localStorage.getItem("played")) {
+        alert("You have already played this quiz on this device!");
+        return;
+      }
+      localStorage.setItem("currentUser", userName);
+      
+      // Optionally, log user and create quiz session using Firestore here...
+      
+      document.getElementById("startContainer").style.display = "none";
+      document.getElementById("quizContainer").style.display = "block";
+      startTime = new Date();
+      startTimer(totalTime);
+      loadQuestion();
+    }
+    
+// Global variable for time remaining
+let timeRemaining = totalTime;
+
+function startTimer() {
+  timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+  timerInterval = setInterval(() => {
+    timeRemaining--;
+    timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+    if (timeRemaining <= 0) {
+      clearInterval(timerInterval);
+      endQuiz();
+    }
+  }, 1000);
+}
+
+function handleAnswer(selectedOption) {
+  const currentQ = triviaQuestions[currentQuestionIndex];
+  if (selectedOption === currentQ.correctAnswer) {
+    correctCount++;
+    resultText.style.color = "green";
+    resultText.textContent = "Correct!";
+    currentQuestionIndex++;
+    setTimeout(() => {
+      loadQuestion();
+    }, 1000);
+  } else {
+    resultText.style.color = "red";
+    resultText.textContent = "Incorrect! 5 seconds penalty.";
+    // Subtract 5 seconds from the global timeRemaining variable
+    timeRemaining = Math.max(0, timeRemaining - 5);
+    timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+    if (timeRemaining <= 0) {
+      endQuiz();
+    }
+  }
+}
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function loadQuestion() {
+      if (currentQuestionIndex >= triviaQuestions.length) {
+        endQuiz();
+        return;
+      }
+      progressText.textContent = `Question ${currentQuestionIndex + 1} of ${triviaQuestions.length}`;
+      const currentQ = triviaQuestions[currentQuestionIndex];
+      questionText.textContent = currentQ.question;
+      // Clear previous options
+      optionsDiv.innerHTML = "";
+      // Shuffle options before displaying
+      const shuffledOptions = shuffle(currentQ.options);
+      shuffledOptions.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.classList.add("option");
+        btn.addEventListener("click", () => handleAnswer(option));
+        optionsDiv.appendChild(btn);
+      });
+      resultText.textContent = "";
+    }
+  
+    
+    function parseTime(timeStr) {
+      const parts = timeStr.split(":");
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    }
+    
+    function endQuiz() {
+      clearInterval(timerInterval);
+      questionText.innerHTML = `<strong>Quiz Completed!</strong><br>You got ${correctCount} out of ${triviaQuestions.length} correct.`;
+      optionsDiv.innerHTML = "";
+      resultText.textContent = "";
+      timerText.style.display = "none";
+      progressText.style.display = "none";
+      localStorage.setItem("played", "true");
+      
+      // Optionally, update quiz session in Firestore here...
+    }
+    
+    function resetLocalStorage() {
+      localStorage.clear();
+      alert("Local storage has been reset.");
+      // Optionally, reload the page.
+    }
+  </script>
+  
+</body>
+</html>

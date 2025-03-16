@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Live poll results for elimination vote">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Poll Results</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .results {
+      margin-top: 20px;
+    }
+    .result {
+      margin-bottom: 15px;
+    }
+    .result strong {
+      margin-right: 5px;
+    }
+    .progress-container {
+      background: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 20px;
+      margin-top: 5px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #4682b4;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .percent-text {
+      display: block;
+      text-align: right;
+      margin-top: 5px;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+      }
+    }
+    /* Navigation */
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+    }
+    .qr-code {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .qr-code img {
+      max-width: 200px;
+    }
+    /* Button Styling */
+    .reset-btn,
+    .lock-btn,
+    .toggle-results-btn,
+    .change-qr-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: -20px;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+      background-color: #4682b4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-right: 10px;
+    }
+    .reset-btn,
+    .lock-btn,
+    .toggle-results-btn{
+      margin-top: 20px;
+      margin-bottom: 0px;
+    }
+    .reset-btn:hover,
+    .lock-btn:hover,
+    .toggle-results-btn:hover,
+    .change-qr-btn:hover {
+      background-color: #315f85;
+    }
+    .qr-code img {
+  width: 400px; /* increased from 200px */
+}
+.navbar ul li a.active {
+  background-color: #4682b4; /* Or any color that stands out */
+  border-bottom: 3px solid #fff; /* Creates a visual underline */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+  <nav class="navbar">
+    <ul>
+        <li><a href="/rounds.html">Questions</a></li>
+      <li><a href="/questions3.html">Questions</a></li>
+      <li><a href="/hints3.html">Hints</a></li>
+      <li><a href="/guesses3.html">Guesses</a></li>
+      <li><a href="/results3.html" class="active">Audience</a></li>
+      <li><a href="/trivia3.html">Trivia</a></li>
+      <li><a href="/wheel3.html">Wheel</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <!-- QR Code area -->
+    <div class="qr-code">
+      <div><h1>Scan to Vote</h1></div>
+      <img id="qrImage" src="../images/PollQR.jpg" alt="Scan QR Code"><br><br>
+      <!-- Button to change QR Code image -->
+      <button id="changeQR" class="change-qr-btn">Change QR Code</button>
+    </div>
+    
+    <h1>Live Poll Results</h1>
+    <div id="resultsContainer" class="results">
+      <div class="result">
+        <strong>Contestant A:</strong>
+        <div class="progress-container">
+          <div id="bar-option1" class="progress-bar"></div>
+        </div>
+        <span id="percent-option1" class="percent-text">0% (0 votes)</span>
+      </div>
+      <div class="result">
+        <strong>Contestant B:</strong>
+        <div class="progress-container">
+          <div id="bar-option2" class="progress-bar"></div>
+        </div>
+        <span id="percent-option2" class="percent-text">0% (0 votes)</span>
+      </div>
+      <div class="result">
+        <strong>Contestant C:</strong>
+        <div class="progress-container">
+          <div id="bar-option3" class="progress-bar"></div>
+        </div>
+        <span id="percent-option3" class="percent-text">0% (0 votes)</span>
+      </div>
+    </div>
+    <!-- Buttons -->
+    <button class="reset-btn" onclick="resetPollResults()">Reset Poll Results</button>
+    <button id="lockVoting" class="lock-btn">Lock Voting</button>
+    <button id="toggleResults" class="toggle-results-btn">Hide Results</button>
+  </div>
+  
+  <!-- Include Firebase libraries -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+  <script>
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.firebasestorage.app",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+      measurementId: "G-3R005HTKEW"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const votesRef = db.ref('votes');
+
+    // Function to update the UI based on the votes
+    function updateProgress(votes) {
+      const totalVotes = (votes.option1 || 0) + (votes.option2 || 0) + (votes.option3 || 0);
+      function calcPercent(option) {
+        return totalVotes > 0 ? Math.round(((votes[option] || 0) / totalVotes) * 100) : 0;
+      }
+      
+      const percent1 = calcPercent('option1');
+      const percent2 = calcPercent('option2');
+      const percent3 = calcPercent('option3');
+      
+      document.getElementById("bar-option1").style.width = percent1 + "%";
+      document.getElementById("bar-option2").style.width = percent2 + "%";
+      document.getElementById("bar-option3").style.width = percent3 + "%";
+      
+      document.getElementById("percent-option1").textContent = percent1 + "% (" + (votes.option1 || 0) + " votes)";
+      document.getElementById("percent-option2").textContent = percent2 + "% (" + (votes.option2 || 0) + " votes)";
+      document.getElementById("percent-option3").textContent = percent3 + "% (" + (votes.option3 || 0) + " votes)";
+    }
+
+    // Define the votes listener callback.
+    const votesListener = snapshot => {
+      const votes = snapshot.val() || {};
+      updateProgress(votes);
+    };
+
+    // Attach the listener initially.
+    votesRef.on('value', votesListener);
+
+    // Function to reset poll results
+    function resetPollResults() {
+      votesRef.set({
+        option1: 0,
+        option2: 0,
+        option3: 0
+      })
+      .then(() => {
+        console.log("Poll results reset successfully.");
+      })
+      .catch((error) => {
+        console.error("Error resetting poll results:", error);
+      });
+    }
+
+    // Lock Voting button toggles freezing of live updates.
+    let votingLocked = false;
+    const lockVotingButton = document.getElementById("lockVoting");
+
+    lockVotingButton.addEventListener("click", function() {
+      if (!votingLocked) {
+        // Lock voting by detaching the listener.
+        votesRef.off('value', votesListener);
+        votingLocked = true;
+        alert("Voting has been locked. Live updates are frozen.");
+        lockVotingButton.textContent = "Unlock Voting";
+      } else {
+        // Unlock voting by reattaching the listener.
+        votesRef.on('value', votesListener);
+        votingLocked = false;
+        alert("Voting has been unlocked. Live updates resumed.");
+        lockVotingButton.textContent = "Lock Voting";
+      }
+    });
+
+    // Toggle Results Visibility button functionality.
+    let resultsVisible = true;
+    const resultsContainer = document.getElementById("resultsContainer");
+    const toggleResultsButton = document.getElementById("toggleResults");
+
+    toggleResultsButton.addEventListener("click", function() {
+      if (resultsVisible) {
+        resultsContainer.style.display = "none";
+        resultsVisible = false;
+        toggleResultsButton.textContent = "Show Results";
+      } else {
+        resultsContainer.style.display = "block";
+        resultsVisible = true;
+        toggleResultsButton.textContent = "Hide Results";
+      }
+    });
+
+    // Button to change the QR code image.
+    const changeQRButton = document.getElementById("changeQR");
+    const qrImage = document.getElementById("qrImage");
+    changeQRButton.addEventListener("click", function() {
+      // Change the QR image src to a new image URL.
+      qrImage.src = "../images/audienceqr2.png";
+    });
+  </script>
+</body>
+</html>
