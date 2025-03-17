@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Who Has More Grammys Quiz">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Who Has More Grammys?</title>
+  <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    /* Start Screen */
+    .start-container {
+      max-width: 600px;
+      margin: 100px auto 0;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .login-input {
+      width: 80%;
+      padding: 10px;
+      font-size: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .start-btn {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background-color: #4682b4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 10px;
+    }
+    .start-btn:hover {
+      background-color: #315f85;
+    }
+    /* Quiz Container */
+    .quiz-container {
+      display: none;
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .timer {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: #4682b4;
+    }
+    .pair-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px auto;
+    }
+    .singer {
+      position: relative;
+      width: 300px;
+      border: 5px solid transparent;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+    .singer img {
+      width: 100%;
+      display: block;
+      border-radius: 10px;
+    }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      display: none;
+    }
+    /* Final Screen */
+    .final-screen {
+      display: none;
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      font-size: 1.5rem;
+      color: #4682b4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Who Has More Grammys?</h1>
+  </header>
+  
+  <!-- Start Screen -->
+  <div class="start-container" id="startContainer">
+    <p style="margin-bottom: 10px; font-size: 1.2rem; color: #4682b4;">
+      Enter your name to start. A 2-minute timer will begin when you click "Start Quiz."
+    </p>
+    <input type="text" id="userName" class="login-input" placeholder="Enter your name">
+    <br>
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+        <button class="start-btn" onclick="resetLocalStorage()">Reset Local Storage</button>
+      </div>
+        </div>
+  
+  <!-- Quiz Container -->
+ <!-- Inside the Quiz Container -->
+<div class="quiz-container" id="quizContainer">
+    <div class="timer" id="timerDisplay">Time Left: 2:00</div>
+    <div class="pair-container" id="pairContainer">
+      <!-- Two singer faces will be loaded here -->
+    </div>
+    <!-- Feedback Section Below the Images -->
+    <div id="feedbackContainer" style="margin-top: 20px; font-size: 1.4rem; color: #4682b4;">
+      <div id="feedbackText"></div>
+      <div id="correctCounter">Correct Answers: 0</div>
+    </div>
+  </div>
+  
+  
+  <!-- Final Screen -->
+  <div class="final-screen" id="finalScreen">
+    <h2>Game Over</h2>
+    <p id="finalResults"></p>
+  </div>
+  
+  <!-- Firebase SDKs (using compat versions) -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script>
+    // Firebase configuration (replace with your own config)
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.firebasestorage.app",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+      measurementId: "G-3R005HTKEW"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    
+    // Array of singer objects with image paths, names, and Grammy counts.
+    const singers = [
+      { name: "Beyonce", image: "images/beyonce.jpg", grammys: 28 },
+      { name: "Lady Gaga", image: "images/ladygaga.jpg", grammys: 12 },
+      { name: "Adele", image: "images/adele.jpg", grammys: 15 },
+      { name: "Bruno Mars", image: "images/brunomars.jpg", grammys: 7 },
+      { name: "Taylor Swift", image: "images/taylorswift.jpg", grammys: 11 },
+      { name: "Ed Sheeran", image: "images/edsheeran.jpg", grammys: 4 }
+    ];
+    
+    // Global variables.
+    let timer = 120; // seconds
+    let timerInterval;
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let currentPair = [];
+    
+    // DOM elements.
+    const startContainer = document.getElementById("startContainer");
+    const quizContainer = document.getElementById("quizContainer");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const pairContainer = document.getElementById("pairContainer");
+    const finalScreen = document.getElementById("finalScreen");
+    const finalResults = document.getElementById("finalResults");
+    
+    let sessionId; // To store Firebase quiz session document ID.
+    
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString()}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function startTimer() {
+  timerDisplay.textContent = "Time Left: " + formatTime(timer);
+  timerInterval = setInterval(() => {
+    timer--;
+    timerDisplay.textContent = "Time Left: " + formatTime(timer);
+    if (timer <= 0) {
+      clearInterval(timerInterval);
+      endQuiz();
+    }
+  }, 1000);
+}
+
+    // Get two distinct random singers.
+    function getRandomPair() {
+      let index1 = Math.floor(Math.random() * singers.length);
+      let index2;
+      do {
+        index2 = Math.floor(Math.random() * singers.length);
+      } while (index2 === index1);
+      return [singers[index1], singers[index2]];
+    }
+    
+    // Load a new pair of singer faces.
+    function loadPair() {
+      if (timer <= 0) return; // do not load new pair if time is up
+      currentPair = getRandomPair();
+      pairContainer.innerHTML = "";
+      currentPair.forEach((singer, idx) => {
+        const singerDiv = document.createElement("div");
+        singerDiv.classList.add("singer");
+        singerDiv.dataset.index = idx;
+        singerDiv.innerHTML = `
+          <img src="${singer.image}" alt="${singer.name}">
+          <div class="overlay" id="overlay${idx}">${singer.grammys}</div>
+        `;
+        singerDiv.addEventListener("click", () => selectSinger(idx));
+        pairContainer.appendChild(singerDiv);
+      });
+    }
+    
+    // Handle selection of a singer.
+    function selectSinger(selectedIndex) {
+  // Reveal both overlays.
+  document.getElementById("overlay0").style.display = "flex";
+  document.getElementById("overlay1").style.display = "flex";
+  
+  // Determine correct answer.
+  let singerA = currentPair[0];
+  let singerB = currentPair[1];
+  let correctIndex = singerA.grammys > singerB.grammys ? 0 : 1;
+  
+  const singerDiv0 = document.querySelector('.singer[data-index="0"]');
+  const singerDiv1 = document.querySelector('.singer[data-index="1"]');
+  
+  let feedbackText = "";
+  
+  if (selectedIndex === correctIndex) {
+    correctCount++;
+    feedbackText = "Correct!";
+    singerDiv0.style.borderColor = "green";
+    singerDiv1.style.borderColor = "green";
+  } else {
+    incorrectCount++;
+    feedbackText = "Incorrect!";
+    if (selectedIndex === 0) {
+      singerDiv0.style.borderColor = "red";
+      singerDiv1.style.borderColor = "green";
+    } else {
+      singerDiv1.style.borderColor = "red";
+      singerDiv0.style.borderColor = "green";
+    }
+    // Deduct 5 seconds.
+    timer = Math.max(0, timer - 5);
+    timerDisplay.textContent = "Time Left: " + formatTime(timer);
+  }
+  
+  // Update the feedback container.
+  document.getElementById("feedbackText").textContent = feedbackText;
+  document.getElementById("correctCounter").textContent = "Correct Answers: " + correctCount;
+  
+  // Disable further clicks.
+  document.querySelectorAll(".singer").forEach(div => div.style.pointerEvents = "none");
+  
+  // After 1 second, load the next pair.
+  setTimeout(() => {
+    // Clear feedback text for the next round.
+    document.getElementById("feedbackText").textContent = "";
+    loadPair();
+  }, 1000);
+}
+
+      // Disable further clicks.
+      document.querySelectorAll(".singer").forEach(div => div.style.pointerEvents = "none");
+      
+      // After 1 second, load the next pair.
+      setTimeout(() => {
+        loadPair();
+      }, 1000);
+    
+    function endQuiz() {
+      clearInterval(timerInterval);
+      quizContainer.style.display = "none";
+      timerDisplay.style.display = "none";
+      finalResults.textContent = `Correct Answers: ${correctCount} | Incorrect Answers: ${incorrectCount}`;
+      finalScreen.style.display = "block";
+      
+      // Update Firebase quiz session with grammyCount (correct answers).
+      if (sessionId) {
+        db.collection("quizSessions").doc(sessionId).update({
+          grammyCount: correctCount,
+          totalQuestions: correctCount + incorrectCount,
+          endTime: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => console.log("Quiz session updated with grammyCount"))
+        .catch((error) => console.error("Error updating quiz session: ", error));
+      }
+    }
+    
+    function startQuiz() {
+      const userName = document.getElementById("userName").value.trim();
+      if (!userName) {
+        alert("Please enter your name to start.");
+        return;
+      }
+      if (localStorage.getItem("played")) {
+        alert("You have already played this quiz on this device!");
+        return;
+      }
+      localStorage.setItem("currentUser", userName);
+      
+      // Log user and create quiz session in Firebase.
+      db.collection("users").add({
+        name: userName,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => console.log("User logged:", userName))
+      .catch((error) => console.error("Error logging user:", error));
+      
+      db.collection("quizSessions").add({
+        userName: userName,
+        startTime: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then((docRef) => {
+        console.log("Quiz session created with ID:", docRef.id);
+        sessionId = docRef.id;
+        localStorage.setItem("quizSessionId", docRef.id);
+      })
+      .catch((error) => console.error("Error creating quiz session: ", error));
+      
+      // Hide start screen and show quiz container.
+      startContainer.style.display = "none";
+      quizContainer.style.display = "block";
+      
+      // Start timer and load first pair.
+      startTimer(timer);
+      loadPair();
+    }
+    
+    function resetLocalStorage() {
+      localStorage.clear();
+      alert("Local storage has been reset.");
+    }
+  </script>
+</body>
+</html>
