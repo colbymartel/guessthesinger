@@ -28,6 +28,8 @@
       color: #fff;
       padding: 20px;
       text-align: center;
+      
+      
     }
     header h1 {
       font-size: 2rem;
@@ -88,8 +90,9 @@
     }
     .leaderboard h2 {
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 25px;
       color: #4682b4;
+
     }
     .chart {
       display: flex;
@@ -100,6 +103,14 @@
       display: flex;
       align-items: center;
     }
+    .placement {
+      font-weight: bold;
+      width: 30px;
+      text-align: center;
+    }
+    .gold { color: #d4af37; }
+    .silver { color: #c0c0c0; }
+    .bronze { color: #cd7f32; }
     .chart-label {
       flex: 1;
       min-width: 80px;
@@ -127,6 +138,32 @@
       text-align: right;
       min-width: 30px;
     }
+    /* Reset Button Styling */
+    .reset-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 1rem;
+      background-color: #c0392b;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+  display: block;
+  margin: 20px auto;
+
+    }
+    .reset-btn:hover {
+      background-color: #a93226;
+    }
+    .navbar ul li a.active {
+  background-color: #4682b4; /* Or any color that stands out */
+  border-bottom: 3px solid #fff; /* Creates a visual underline */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
   </style>
 </head>
 <body>
@@ -137,21 +174,21 @@
   </header>
   <nav class="navbar">
     <ul>
+      <li><a href="/rounds.html">Rounds</a></li>
       <li><a href="/questions.html">Questions</a></li>
       <li><a href="/hints.html">Hints</a></li>
       <li><a href="/guesses.html">Guesses</a></li>
-      <li><a href="/results.html" >Audience</a></li>
-      <li><a href="/trivia.html"class="active">Trivia</a></li>
+      <li><a href="/results.html">Audience</a></li>
+      <li><a href="/trivia.html" class="active">Trivia</a></li>
       <li><a href="/wheel.html">Wheel</a></li>
     </ul>
   </nav>
   <div class="container">
-  
-    
     <!-- Leaderboard container -->
     <div class="leaderboard" id="leaderboard">
       <!-- Leaderboard chart will be injected here -->
     </div>
+    <button class="reset-btn" onclick="resetLeaderboard()">Reset Leaderboard</button>
   </div>
   
   <!-- Firebase SDKs -->
@@ -176,11 +213,12 @@
     // Initialize Firestore
     const db = firebase.firestore();
 
-    document.addEventListener('DOMContentLoaded', function() {
+    // Function to load leaderboard data
+    function loadLeaderboard() {
       const leaderboardDiv = document.getElementById("leaderboard");
 
       db.collection("quizSessions")
-        .orderBy("choiceCount", "desc")
+        .orderBy("correctCount", "desc")
         .limit(5)
         .get()
         .then((snapshot) => {
@@ -192,17 +230,24 @@
             snapshot.forEach((doc) => {
               const data = doc.data();
               leaderboardData.push({
-                user: data.user || "Anonymous",
-                correct: data.choiceCount || 0
+                user: data.userName || "Anonymous",
+                correct: data.correctCount || 0
               });
             });
             // Determine the maximum score for scaling
             const maxScore = Math.max(...leaderboardData.map(entry => entry.correct));
             leaderboardHtml += "<div class='chart'>";
-            leaderboardData.forEach((entry) => {
+            leaderboardData.forEach((entry, index) => {
               const percentage = maxScore > 0 ? (entry.correct / maxScore * 100).toFixed(0) : 0;
+              // Set medal classes for top three placements
+              let placementClass = "";
+              if (index === 0) placementClass = "gold";
+              else if (index === 1) placementClass = "silver";
+              else if (index === 2) placementClass = "bronze";
+
               leaderboardHtml += `
                 <div class='chart-entry'>
+                  <span class='placement ${placementClass}'>${index + 1}</span>
                   <span class='chart-label'>${entry.user}</span>
                   <div class='chart-bar-container'>
                     <div class='chart-bar' style='width: ${percentage}%;'></div>
@@ -219,7 +264,32 @@
           console.error("Error retrieving leaderboard:", error);
           leaderboardDiv.innerHTML = "<p>Error loading leaderboard data.</p>";
         });
-    });
+    }
+
+    // Call loadLeaderboard on page load
+    document.addEventListener('DOMContentLoaded', loadLeaderboard);
+
+    // Function to reset the leaderboard (delete all quizSessions)
+    function resetLeaderboard() {
+      if (!confirm("Are you sure you want to reset the leaderboard? This will delete all quiz session data.")) {
+        return;
+      }
+      db.collection("quizSessions").get().then((snapshot) => {
+        const batch = db.batch();
+        snapshot.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+        return batch.commit();
+      })
+      .then(() => {
+        alert("Leaderboard has been reset.");
+        loadLeaderboard();
+      })
+      .catch((error) => {
+        console.error("Error resetting leaderboard:", error);
+        alert("Failed to reset leaderboard.");
+      });
+    }
   </script>
 </body>
 </html>

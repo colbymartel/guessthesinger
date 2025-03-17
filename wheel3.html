@@ -6,9 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spinning Wheel App</title>
   <style>
-   
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding-bottom: 40px;
+      text-align: center;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .header .logo img { width: 60%; }
+    }
     h1 {
       margin-bottom: 20px;
+      margin-top: 50px;
+      text-align: center;
     }
     /* Wheel container centers the canvas and will be rotated */
     #wheelContainer {
@@ -16,7 +40,7 @@
       width: 500px;
       height: 500px;
       position: relative;
-      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+      /* Transition will be set dynamically for 10 seconds spin */
     }
     canvas {
       width: 100%;
@@ -24,7 +48,8 @@
       border-radius: 50%;
     }
     #spinButton {
-      margin-top: 20px;
+      margin: 20px auto;
+      display: block;
       padding: 10px 20px;
       font-size: 1.1rem;
       cursor: pointer;
@@ -42,22 +67,7 @@
       font-size: 1.2rem;
       font-weight: bold;
     }
-    body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: #f4f4f4;
-      padding-bottom: 40px;
-      text-align: center;
-    }
-    header {
-      background-color: #4682b4;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      font-size: 2rem;
-    }
-    /* Navigation */
+    /* Navigation (optional) */
     .navbar {
       background-color: #315f85;
       padding: 15px 0;
@@ -85,41 +95,31 @@
       background-color: #4682b4;
       border-radius: 5px;
     }
-    /* Logo Styling */
-    .header .logo img {
-      width: 20%;
-      margin-bottom: 10px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
+    .navbar ul li a.active {
+      background-color: #4682b4;
+      border-bottom: 3px solid #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
     }
-
-    @media (max-width: 768px) {
-      .header .logo img {
-        width: 60%;
-      }
-    }
-
   </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">
-          <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
-        </div>
-      </header>
-    <nav class="navbar">
-        <ul>
-          <li><a href="/rounds.html">Rounds</a></li>
-          <li><a href="/questions3.html">Questions</a></li>
-          <li><a href="/hints3.html">Hints</a></li>
-          <li><a href="/guesses3.html">Guesses</a></li>
-          <li><a href="/results3.html">Audience</a></li>
-          <li><a href="/trivia3.html">Trivia</a></li>
-          <li><a href="/wheel3.html">Wheel</a></li>
-    
-        </ul>
-      </nav>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+  <nav class="navbar">
+    <ul>
+      <li><a href="/rounds.html">Rounds</a></li>
+      <li><a href="/questions3.html">Questions</a></li>
+      <li><a href="/hints3.html">Hints</a></li>
+      <li><a href="/guesses3.html">Guesses</a></li>
+      <li><a href="/results3.html">Audience</a></li>
+      <li><a href="/trivia3.html">Trivia</a></li>
+      <li><a href="/wheel3.html" class="active">Wheel</a></li>
+    </ul>
+  </nav>
   <h1>Spinning Wheel</h1>
   <div id="wheelContainer">
     <canvas id="wheel" width="500" height="500"></canvas>
@@ -140,26 +140,32 @@
     const ctx = canvas.getContext("2d");
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const outerRadius = Math.min(centerX, centerY) - 10; // some padding
+    const outerRadius = Math.min(centerX, centerY) - 10; // padding
     const arcSize = (2 * Math.PI) / numSectors;
     
-    // Draw the wheel
-    function drawWheel() {
+    // Draw the wheel with an optional winningIndex to highlight
+    function drawWheel(winningIndex = -1) {
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < numSectors; i++) {
-        // Alternate colors for visibility
-        ctx.fillStyle = i % 2 === 0 ? "#ffecb3" : "#ffe0b2";
+        // Use a highlight color for the winning sector
+        if (i === winningIndex) {
+          ctx.fillStyle = "#add8e6"; // light blue highlight
+        } else {
+          ctx.fillStyle = i % 2 === 0 ? "#ffecb3" : "#ffe0b2";
+        }
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.arc(centerX, centerY, outerRadius, i * arcSize, (i + 1) * arcSize);
         ctx.closePath();
         ctx.fill();
         
-        // Draw sector border
-        ctx.strokeStyle = "#fff";
+        // Draw sector borders
+        ctx.strokeStyle = i === winningIndex ? "#ff0000" : "#fff";
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Add text in the middle of the sector
+        // Draw the label for each sector
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(i * arcSize + arcSize / 2);
@@ -171,6 +177,7 @@
       }
     }
     
+    // Initial draw (without a winning highlight)
     drawWheel();
     
     const wheelContainer = document.getElementById("wheelContainer");
@@ -184,29 +191,35 @@
       spinButton.disabled = true;
       resultDisplay.textContent = "";
       
-      // Pick a random spin: add between 3 and 6 full rotations + a random extra rotation
+      // Set the transition to 10 seconds
+      wheelContainer.style.transition = "transform 10s cubic-bezier(0.33, 1, 0.68, 1)";
+      
+      // Calculate random rotation: add between 3 and 6 full rotations + extra degrees
       const extraDegrees = Math.floor(Math.random() * 360);
       const fullRotations = 360 * (3 + Math.floor(Math.random() * 4)); // 3 to 6 rotations
       const totalDegrees = fullRotations + extraDegrees;
-      currentRotation += totalDegrees;
       
-      // Apply rotation
+      // Pre-calculate winning sector
+      // currentRotation + totalDegrees gives final rotation; we want the normalized angle.
+      let finalRotation = currentRotation + totalDegrees;
+      let normalizedRotation = finalRotation % 360;
+      // Adjust so that pointer (assumed at top, 0 degrees) lands on a sector
+      // Adding half of a sector (in degrees) so that boundaries are centered.
+      const sectorOffset = (arcSize * 180/Math.PI) / 2;
+      let pointerAngle = (360 - normalizedRotation + sectorOffset) % 360;
+      const winningIndex = Math.floor(pointerAngle / (360 / numSectors));
+      
+      // Redraw the wheel with the winning section highlighted
+      drawWheel(winningIndex);
+      
+      // Update the rotation value and apply transform
+      currentRotation = finalRotation;
       wheelContainer.style.transform = `rotate(${currentRotation}deg)`;
       
-      // After the transition ends (spin completes), calculate the result
+      // Listen for transition end (spin completes)
       wheelContainer.addEventListener("transitionend", function handler() {
-        // Remove the event listener so it only fires once
         wheelContainer.removeEventListener("transitionend", handler);
-        // Calculate the angle within a full circle (0 to 360)
-        const normalizedRotation = currentRotation % 360;
-        // The pointer is assumed to be at the top (0 degrees). We need to determine which sector that lands on.
-        // Since the wheel rotates clockwise, subtract normalizedRotation from 360.
-        const pointerAngle = (360 - normalizedRotation + (arcSize * 180/Math.PI)/2) % 360;
-        // Calculate the sector index (each sector is 360/numSectors degrees)
-        const sectorIndex = Math.floor(pointerAngle / (360 / numSectors));
-        const result = sectors[sectorIndex];
-        resultDisplay.textContent = "Result: " + result;
-        // Re-enable the spin button after spin completes
+        resultDisplay.textContent = "Result: " + sectors[winningIndex];
         spinButton.disabled = false;
       });
     });

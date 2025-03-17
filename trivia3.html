@@ -13,16 +13,7 @@
     body {
       font-family: 'Poppins', Arial, sans-serif;
       background: #f4f4f4;
-      padding: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
+      padding-bottom: 40px;
     }
     header {
       background-color: #4682b4;
@@ -41,9 +32,16 @@
       margin: 0 auto;
     }
     @media (max-width: 768px) {
-      .header .logo img {
-        width: 60%;
-      }
+      .header .logo img { width: 60%; }
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
     /* Navigation */
     .navbar {
@@ -78,10 +76,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 20px;
     }
     .qr-code img {
-      max-width: 200px;
+      min-width: 400px;
     }
     /* Button styling for leaderboard */
     .btn-leaderboard {
@@ -100,11 +97,11 @@
       background-color: #315f85;
     }
     .navbar ul li a.active {
-  background-color: #4682b4; /* Or any color that stands out */
-  border-bottom: 3px solid #fff; /* Creates a visual underline */
-  padding: 5px 10px;
-  border-radius: 5px;
-}
+      background-color: #4682b4; /* Or any color that stands out */
+      border-bottom: 3px solid #fff; /* Creates a visual underline */
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -115,22 +112,35 @@
   </header>
   <nav class="navbar">
     <ul>
-        <li><a href="/rounds.html">Hints</a></li>
-      <li><a href="/hints2.html">Hints</a></li>
-      <li><a href="/guesses2.html">Guesses</a></li>
-      <li><a href="/results2.html">Audience</a></li>
-      <li><a href="/trivia2.html" class="active">Trivia</a></li>
-      <li><a href="/wheel2.html">Wheel</a></li>
+        <li><a href="/rounds.html">Rounds</a></li>
+        <li><a href="/questions3.html">Questions</a></li>
+        <li><a href="/hints3.html">Hints</a></li>
+        <li><a href="/guesses3.html">Guesses</a></li>
+        <li><a href="/results3.html">Audience</a></li>
+        <li><a href="/trivia3.html" class="active">Trivia</a></li>
+        <li><a href="/wheel3.html">Wheel</a></li>
     </ul>
   </nav>
   <div class="container">
     <!-- QR Code area (optional) -->
     <div class="qr-code">
       <h1>Scan to begin</h1>
-      <img src="../images/triviaQR.png" alt="Scan QR Code">
+      <img id="qrImage" src="../images/feedbackQR.png" alt="Scan QR Code">
     </div>
     <!-- Leaderboard button -->
     <a class="btn-leaderboard" href="leaderboard.html">View Leaderboard</a>
+    <!-- Trivia QR Code button with id added -->
+    <a class="btn-leaderboard" id="triviaQRButton">Trivia QR Code</a>
   </div>
+  
+  <script>
+    // When the Trivia QR Code button is pressed, change the QR image src
+    document.getElementById("triviaQRButton").addEventListener("click", function(event) {
+      // Prevent the default link behavior if needed
+      // event.preventDefault();
+      const qrImage = document.getElementById("qrImage");
+      qrImage.src = "../images/triviasongs.png";
+    });
+  </script>
 </body>
 </html>
