@@ -93,13 +93,29 @@ header .logo img {
   text-align: center;
 }
 
-.progress,
-.timer {
+.progress{
   font-size: 1.3rem;
   font-weight: bold;
   color: #f1c40f;
   margin-bottom: 10px;
 }
+.timer{
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #3b7bbf, #254a6d);
+  padding: 14px 28px;
+  border-radius: 40px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2),
+              0 0 30px rgba(49, 95, 133, 0.4);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px #000;
+  transition: all 0.3s ease;
+  width: 20%;
+}
+
 
 .singer-image {
   max-width: 60%;
@@ -214,7 +230,7 @@ header .logo img {
   <!-- Quiz Container -->
   <div class="quiz-container" id="quizContainer">
     <div class="progress" id="progressText">Question 1 of 50</div>
-    <div class="timer" id="timerText">Time left: 02:00</div>
+    <div class="timer" id="timerText">02:00</div>
     <!-- Singer image will be displayed here -->
     <img id="singerImage" class="singer-image" src="" alt="Singer Image">
     <!-- Question text -->
@@ -402,11 +418,11 @@ function startQuiz() {
     
     function startTimer(duration) {
       let timeRemaining = duration;
-      timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+      timerText.textContent = `${formatTime(timeRemaining)}`;
       
       timerInterval = setInterval(() => {
         timeRemaining--;
-        timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+        timerText.textContent = `${formatTime(timeRemaining)}`;
         if (timeRemaining <= 0) {
           clearInterval(timerInterval);
           endQuiz();
