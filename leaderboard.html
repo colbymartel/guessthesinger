@@ -1,122 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Live poll results for elimination vote">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Poll Results</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trivia Leaderboard</title>
   <link rel="icon" href="/favicon.ico">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
-    /* Basic Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Poppins', Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
       background: #f4f4f4;
-      padding: 20px;
+      padding-bottom: 40px;
     }
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+
     header {
       background-color: #4682b4;
-      color: #fff;
       padding: 20px;
       text-align: center;
-      
-      
     }
-    header h1 {
-      font-size: 2rem;
+
+    header img {
+      width: 200px;
     }
-    .header .logo img {
-      width: 20%;
-      margin-bottom: 10px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-    @media (max-width: 768px) {
-      .header .logo img {
-        width: 60%;
-      }
-    }
-    /* Navigation */
+
     .navbar {
       background-color: #315f85;
       padding: 15px 0;
       text-align: center;
     }
+
     .navbar ul {
       list-style: none;
       display: inline-block;
-      margin: 0;
       padding: 0;
     }
-    .navbar ul li {
+
+    .navbar li {
       display: inline;
       margin: 0 15px;
     }
-    .navbar ul li a {
-      text-decoration: none;
+
+    .navbar a {
       color: #fff;
-      font-size: 1.1rem;
       font-weight: bold;
+      font-size: 1.1rem;
+      text-decoration: none;
       padding: 5px 10px;
-      transition: background 0.3s ease;
     }
-    .navbar ul li a:hover,
-    .navbar ul li a.active {
+
+    .navbar a:hover,
+    .navbar a.active {
       background-color: #4682b4;
       border-radius: 5px;
+      border-bottom: 3px solid #fff;
     }
-    .qr-code {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
+
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
     }
-    .qr-code img {
-      max-width: 200px;
-    }
-    /* Leaderboard Chart Styling */
-    .leaderboard {
-      margin-top: 20px;
-    }
+
     .leaderboard h2 {
       text-align: center;
       margin-bottom: 25px;
-      color: #4682b4;
-
+      color: #315f85;
+      font-size: 1.8rem;
     }
+
     .chart {
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
+
     .chart-entry {
       display: flex;
       align-items: center;
     }
+
     .placement {
       font-weight: bold;
       width: 30px;
       text-align: center;
+      font-size: 1.2rem;
     }
+
     .gold { color: #d4af37; }
     .silver { color: #c0c0c0; }
     .bronze { color: #cd7f32; }
+
     .chart-label {
       flex: 1;
-      min-width: 80px;
       font-weight: bold;
       color: #333;
     }
+
     .chart-bar-container {
       flex: 3;
       background: #ddd;
@@ -125,12 +108,14 @@
       margin: 0 10px;
       height: 25px;
     }
+
     .chart-bar {
       height: 100%;
       background: #4682b4;
       width: 0%;
       transition: width 0.3s ease;
     }
+
     .chart-value {
       flex: 0.5;
       font-weight: bold;
@@ -138,40 +123,34 @@
       text-align: right;
       min-width: 30px;
     }
-    /* Reset Button Styling */
-    .reset-btn {
-      display: inline-block;
-      padding: 10px 20px;
-      margin-top: 20px;
-      font-size: 1rem;
-      background-color: #c0392b;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-  display: block;
-  margin: 20px auto;
 
+    .reset-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 28px;
+      background-color: #4682b4;
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
+
     .reset-btn:hover {
-      background-color: #a93226;
+      background-color: #2f638f;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    .navbar ul li a.active {
-  background-color: #4682b4; /* Or any color that stands out */
-  border-bottom: 3px solid #fff; /* Creates a visual underline */
-  padding: 5px 10px;
-  border-radius: 5px;
-}
 
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="logo">
-      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
-    </div>
+
+  <header>
+    <img src="images/SingerLogo.png" alt="Guess the Singer Logo">
   </header>
+
   <nav class="navbar">
     <ul>
       <li><a href="/rounds.html">Rounds</a></li>
@@ -183,37 +162,31 @@
       <li><a href="/wheel.html">Wheel</a></li>
     </ul>
   </nav>
+
   <div class="container">
-    <!-- Leaderboard container -->
     <div class="leaderboard" id="leaderboard">
-      <!-- Leaderboard chart will be injected here -->
+      <!-- Leaderboard will be loaded here -->
     </div>
     <button class="reset-btn" onclick="resetLeaderboard()">Reset Leaderboard</button>
   </div>
-  
-  <!-- Firebase SDKs -->
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-  
   <script>
-    // Firebase configuration (replace with your own config)
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
       databaseURL: "https://guessthesinger10.firebaseio.com",
       projectId: "guessthesinger10",
-      storageBucket: "guessthesinger10.firebasestorage.app",
+      storageBucket: "guessthesinger10.appspot.com",
       messagingSenderId: "97201023235",
-      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
-      measurementId: "G-3R005HTKEW"
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    // Initialize Firestore
     const db = firebase.firestore();
 
-    // Function to load leaderboard data
     function loadLeaderboard() {
       const leaderboardDiv = document.getElementById("leaderboard");
 
@@ -221,75 +194,65 @@
         .orderBy("correctCount", "desc")
         .limit(5)
         .get()
-        .then((snapshot) => {
-          let leaderboardHtml = "<h2>Trivia Leaderboard</h2>";
+        .then(snapshot => {
+          let html = "<h2>Trivia Leaderboard</h2>";
           if (snapshot.empty) {
-            leaderboardHtml += "<p>No leaderboard data available.</p>";
+            html += "<p>No leaderboard data yet.</p>";
           } else {
-            let leaderboardData = [];
-            snapshot.forEach((doc) => {
-              const data = doc.data();
-              leaderboardData.push({
-                user: data.userName || "Anonymous",
-                correct: data.correctCount || 0
+            const data = [];
+            snapshot.forEach(doc => {
+              const userData = doc.data();
+              data.push({
+                user: userData.userName || "Anonymous",
+                correct: userData.correctCount || 0
               });
             });
-            // Determine the maximum score for scaling
-            const maxScore = Math.max(...leaderboardData.map(entry => entry.correct));
-            leaderboardHtml += "<div class='chart'>";
-            leaderboardData.forEach((entry, index) => {
-              const percentage = maxScore > 0 ? (entry.correct / maxScore * 100).toFixed(0) : 0;
-              // Set medal classes for top three placements
-              let placementClass = "";
-              if (index === 0) placementClass = "gold";
-              else if (index === 1) placementClass = "silver";
-              else if (index === 2) placementClass = "bronze";
 
-              leaderboardHtml += `
-                <div class='chart-entry'>
-                  <span class='placement ${placementClass}'>${index + 1}</span>
-                  <span class='chart-label'>${entry.user}</span>
-                  <div class='chart-bar-container'>
-                    <div class='chart-bar' style='width: ${percentage}%;'></div>
+            const max = Math.max(...data.map(d => d.correct));
+            html += `<div class='chart'>`;
+
+            data.forEach((entry, i) => {
+              const percent = max > 0 ? (entry.correct / max * 100).toFixed(0) : 0;
+              let medalClass = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
+
+              html += `
+                <div class="chart-entry">
+                  <span class="placement ${medalClass}">${i + 1}</span>
+                  <span class="chart-label">${entry.user}</span>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="width: ${percent}%"></div>
                   </div>
-                  <span class='chart-value'>${entry.correct}</span>
-                </div>
-              `;
+                  <span class="chart-value">${entry.correct}</span>
+                </div>`;
             });
-            leaderboardHtml += "</div>";
+
+            html += `</div>`;
           }
-          leaderboardDiv.innerHTML = leaderboardHtml;
+
+          leaderboardDiv.innerHTML = html;
         })
-        .catch((error) => {
-          console.error("Error retrieving leaderboard:", error);
-          leaderboardDiv.innerHTML = "<p>Error loading leaderboard data.</p>";
+        .catch(err => {
+          console.error("Error fetching leaderboard:", err);
+          leaderboardDiv.innerHTML = "<p>Error loading leaderboard.</p>";
         });
     }
 
-    // Call loadLeaderboard on page load
-    document.addEventListener('DOMContentLoaded', loadLeaderboard);
-
-    // Function to reset the leaderboard (delete all quizSessions)
     function resetLeaderboard() {
-      if (!confirm("Are you sure you want to reset the leaderboard? This will delete all quiz session data.")) {
-        return;
-      }
-      db.collection("quizSessions").get().then((snapshot) => {
+      if (!confirm("Are you sure you want to reset all quiz data?")) return;
+      db.collection("quizSessions").get().then(snapshot => {
         const batch = db.batch();
-        snapshot.forEach((doc) => {
-          batch.delete(doc.ref);
-        });
+        snapshot.forEach(doc => batch.delete(doc.ref));
         return batch.commit();
-      })
-      .then(() => {
-        alert("Leaderboard has been reset.");
+      }).then(() => {
+        alert("Leaderboard reset.");
         loadLeaderboard();
-      })
-      .catch((error) => {
-        console.error("Error resetting leaderboard:", error);
-        alert("Failed to reset leaderboard.");
+      }).catch(err => {
+        console.error("Error resetting leaderboard:", err);
+        alert("Error resetting leaderboard.");
       });
     }
+
+    document.addEventListener("DOMContentLoaded", loadLeaderboard);
   </script>
 </body>
 </html>

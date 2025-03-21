@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vote - Guess the Singer</title>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, doc, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.firebasestorage.app",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+      measurementId: "G-3R005HTKEW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const questions = [
+      {
+        category: "This or That",
+        question: "Whose voice is more iconic?",
+        options: ["Adele", "Whitney Houston"]
+      },
+      {
+        category: "Odd One Out",
+        question: "Eliminate one of their shows",
+        options: ["Selena Gomez", "Ariana Grande", "Miley Cyrus"]
+      },
+      {
+        category: "Battle of the Bests",
+        question: "Which rapper is better?",
+        options: ["Kendrick Lamar", "Drake"]
+      }
+    ];
+
+    let currentIndex = 0;
+
+    const startScreen = document.getElementById("startScreen");
+    const quizContent = document.getElementById("quizContent");
+    const startBtn = document.getElementById("startQuizBtn");
+
+    const questionEl = document.getElementById("questionText");
+    const optionsEl = document.getElementById("options");
+    const categoryTitleEl = document.getElementById("categoryTitle");
+    const container = document.getElementById("voteContainer");
+
+    startBtn.addEventListener("click", () => {
+      const name = document.getElementById("playerName").value.trim();
+      const error = document.getElementById("startError");
+
+      if (!name) {
+        error.textContent = "Please enter your name.";
+        return;
+      }
+
+      error.textContent = "";
+      localStorage.setItem("playerName", name);
+
+      startScreen.style.display = "none";
+      quizContent.style.display = "block";
+
+      showQuestion(currentIndex);
+    });
+
+    function showQuestion(index) {
+      const q = questions[index];
+      categoryTitleEl.textContent = q.category;
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "vote-btn";
+        btn.textContent = opt;
+        btn.onclick = () => submitVote(q.category, opt, btn);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    async function submitVote(category, option, btnElement) {
+      const ref = doc(db, "votes", category);
+      await runTransaction(db, async (tx) => {
+        const snap = await tx.get(ref);
+        const data = snap.exists() ? snap.data() : {};
+        const count = data[option] || 0;
+        tx.set(ref, { ...data, [option]: count + 1 });
+      });
+
+      btnElement.style.backgroundColor = "#4CAF50";
+      btnElement.style.color = "#fff";
+
+      const allButtons = document.querySelectorAll(".vote-btn");
+      allButtons.forEach(btn => btn.disabled = true);
+
+      setTimeout(() => {
+        currentIndex++;
+        if (currentIndex < questions.length) {
+          showQuestion(currentIndex);
+        } else {
+          container.innerHTML = `
+            <h2 style="color: #4CAF50;">✅ Thanks for voting!</h2>
+            <p style="margin-top: 10px;">Your responses were recorded.</p>
+          `;
+        }
+      }, 1000);
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .logo img {
+      width: 20%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .logo img { width: 60%; }
+    }
+
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+    }
+
+    .start-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+
+    .start-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .start-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .start-box input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .start-box button {
+      width: 100%;
+      padding: 12px;
+      background: #315f85;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .start-box button:hover {
+      background: #4682b4;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .vote-wrapper {
+      max-width: 700px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .vote-wrapper h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .vote-wrapper p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #555;
+    }
+
+    .vote-btn {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 10px auto;
+      padding: 12px;
+      background-color: #315f85;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .vote-btn:hover {
+      background-color: #4682b4;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy" />
+    </div>
+  </header>
+
+
+  <!-- Start screen -->
+  <div id="startScreen" class="start-screen">
+    <div class="start-box">
+      <h2>Welcome!</h2>
+      <input type="text" id="playerName" placeholder="Enter your name" />
+      <button id="startQuizBtn">Start Voting</button>
+      <p class="error" id="startError"></p>
+    </div>
+  </div>
+
+  <!-- Quiz content -->
+  <div id="quizContent" style="display: none;">
+    <div class="vote-wrapper" id="voteContainer">
+      <h2 id="categoryTitle"></h2>
+      <p id="questionText"></p>
+      <div id="options"></div>
+    </div>
+  </div>
+
+</body>
+</html>

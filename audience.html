@@ -1,197 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="description" content="Poll: Vote on which contestant will be eliminated">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Elimination Poll</title>
   <link rel="icon" href="/favicon.ico">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
-    /* Basic Reset */
-    /* General Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', Arial, sans-serif;
       background: #f4f4f4;
       padding-bottom: 40px;
     }
+
     header {
       background-color: #4682b4;
       color: #fff;
       padding: 20px;
       text-align: center;
     }
-    header h1 {
-      font-size: 2rem;
-    }
+
     .header .logo img {
-      width: 20%;
-      margin-bottom: 10px;
+      width: 200px;
       height: auto;
       display: block;
       margin: 0 auto;
     }
 
-    @media (max-width: 768px) {
-      .header .logo img {
-        width: 60%;
-      }
-    }
-
-    /* Navigation */
     .navbar {
       background-color: #315f85;
       padding: 15px 0;
       text-align: center;
     }
+
     .navbar ul {
       list-style: none;
       display: inline-block;
-      margin: 0;
       padding: 0;
     }
-    .navbar ul li {
+
+    .navbar li {
       display: inline;
       margin: 0 15px;
     }
-    .navbar ul li a {
-      text-decoration: none;
+
+    .navbar a {
       color: #fff;
-      font-size: 1.1rem;
       font-weight: bold;
+      font-size: 1.1rem;
+      text-decoration: none;
       padding: 5px 10px;
       transition: background 0.3s ease;
     }
-    .navbar ul li a:hover {
+
+    .navbar a:hover,
+    .navbar a.active {
       background-color: #4682b4;
       border-radius: 5px;
+      border-bottom: 3px solid #fff;
     }
-    .container {
-  max-width: 600px;
-  margin: 100px auto 0; /* top margin 100px and auto left/right */
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
 
-    .qr-code {
+    .container {
+      max-width: 350px;
+      margin: 60px auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 60px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
       text-align: center;
-      margin-bottom: 20px;
     }
-    .qr-code img {
-      width: 200px;
-      height: auto;
+
+    h1 {
+      color: #315f85;
+      font-size: 2rem;
+      margin-bottom: 30px;
     }
+
     .options {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      margin-bottom: 30px;
+      gap: 20px;
     }
-    .option {
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #fafafa;
-      transition: background 0.3s ease;
-    }
-    .option:hover {
-      background: #e9e9e9;
-    }
-    .results {
-      margin-top: 20px;
-    }
-    .result {
-      margin-bottom: 15px;
-    }
-    .result strong {
-      margin-right: 5px;
-    }
-    .progress-container {
-      background: #ddd;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 20px;
-      margin-top: 5px;
-    }
-    .progress-bar {
-      height: 100%;
-      background: #4682b4;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
-    h1{
-      
-  display: flex;
-  justify-content: center; /* centers horizontally */
-  align-items: center;    /* centers vertically */
-  padding: 20px;
-}
 
+    .option {
+      padding: 16px;
+      border-radius: 10px;
+      background: #4682b4;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .option:hover {
+      background: #315f85;
+      transform: scale(1.03);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .qr-code {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .qr-code img {
+      width: 200px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">
-          <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
-        </div>
-      </header>
- 
-      <div class="container">
-<h1>
-  Vote
-</h1>
-    
-    <!-- Voting Options -->
-    <div class="options">
-      <div class="option" data-option="option1">Contestant A</div>
-      <div class="option" data-option="option2">Contestant B</div>
-      <div class="option" data-option="option3">Contestant C</div>
-    </div>
-    
-  
 
-    <!-- Include Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" />
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Vote for Elimination</h1>
+    <div class="option" data-option="option1">
+      <div class="contestant-name" contenteditable="true">Contestant A</div>
+    </div>
+    <div class="option" data-option="option2">
+      <div class="contestant-name" contenteditable="true">Contestant B</div>
+    </div>
+    <div class="option" data-option="option3">
+      <div class="contestant-name" contenteditable="true">Contestant C</div>
+    </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const votesRef = db.ref('votes');
+    document.querySelectorAll('.contestant-name').forEach((el, index) => {
+    const key = `contestantName${index + 1}`;
     
-    <script>
-      // Firebase configuration (replace with your own config)
-      const firebaseConfig = {
-        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-  authDomain: "guessthesinger10.firebaseapp.com",
-  databaseURL: "https://guessthesinger10.firebaseio.com",
-  projectId: "guessthesinger10",
-  storageBucket: "guessthesinger10.firebasestorage.app",
-  messagingSenderId: "97201023235",
-  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
-  measurementId: "G-3R005HTKEW"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.database();
-      const votesRef = db.ref('votes');
-      
-      // Add click event listeners for the voting options.
-      document.querySelectorAll(".option").forEach(item => {
-  item.addEventListener("click", function() {
-    if (localStorage.getItem('voted')) {
-      alert("You have already voted on this device.");
-      return;
+    // Load saved name if exists
+    const savedName = localStorage.getItem(key);
+    if (savedName) {
+      el.textContent = savedName;
     }
-    const option = this.getAttribute("data-option");
-    const voteRef = votesRef.child(option);
-    voteRef.transaction(currentVotes => {
-      return (currentVotes || 0) + 1;
+
+    // Save to localStorage on input
+    el.addEventListener('input', () => {
+      localStorage.setItem(key, el.textContent.trim());
     });
-    localStorage.setItem('voted', 'true');
-    alert("Thanks for voting!");
   });
+    document.querySelectorAll(".option").forEach(item => {
+      item.addEventListener("click", function () {
+        if (localStorage.getItem('voted')) {
+          alert("You have already voted on this device.");
+          return;
+        }
+        const option = this.getAttribute("data-option");
+        const voteRef = votesRef.child(option);
+        voteRef.transaction(current => (current || 0) + 1);
+        localStorage.setItem('voted', 'true');
+        alert("Thanks for voting!");
+      });
+    });
+    const namesRef = db.ref("contestantNames");
+
+namesRef.once("value").then(snapshot => {
+  const names = snapshot.val();
+  if (names) {
+    document.querySelectorAll(".contestant-name").forEach((el, index) => {
+      const key = `option${index + 1}`;
+      if (names[key]) el.textContent = names[key];
+    });
+  }
 });
 
-    </script>
+  </script>
+
 </body>
 </html>

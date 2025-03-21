@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reveal Quiz</title>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #f4f4f4; }
+
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .logo img {
+      width: 20%;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .logo img { width: 60%; }
+    }
+
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+    }
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    .navbar ul li a {
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+      padding: 5px 10px;
+    }
+
+    .start-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 100px;
+      gap: 20px;
+      min-height: 30vh;
+    }
+    .start-container button {
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      background-color: #315f85;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .category-display, .question-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 150px);
+      text-align: center;
+      
+    }
+.question-container{
+  background: url(/images/bg-top.png) no-repeat;
+
+}
+    .category-display.active {
+      animation: popReveal 1s ease forwards, shake 0.6s ease 1s;
+    }
+    body.reveal-bg { background-color: #fff59d; transition: background-color 0.5s ease; }
+
+    .category-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: -150px;
+    }
+
+    .question-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 320px; /* 👈 Adjust as needed to fit your content */
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+        margin-top: -80px;
+
+}
+
+.question-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* OPTION BUTTONS */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.option {
+  background: #fff;
+  border: 2px solid #315f85;
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  color: #315f85;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.option:hover {
+  background: #315f85;
+  color: #fff;
+}
+
+.option.selected {
+  background-color: #ffeb3b;
+  color: #000;
+  border-color: #ffeb3b;
+}
+
+.option.correct {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.option.wrong {
+  background-color: #f44336;
+  color: white;
+  border-color: #f44336;
+}
+    .timer {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #315f85;
+  background: #e0ecf5;
+  padding: 8px 18px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-family: 'Courier New', Courier, monospace;
+}
+    #revealAnswerBtn, #askAnotherBtn, #resetStorageBtn {
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #315f85;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
+
+    @keyframes popReveal {
+      0% { transform: scale(0.5); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-5px); }
+    }
+    .button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy" />
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="/rounds.html">Rounds</a></li>
+      <li><a href="/questions.html">Questions</a></li>
+      <li><a href="/hints.html">Hints</a></li>
+      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/results.html">Audience</a></li>
+      <li><a href="/trivia.html">Trivia</a></li>
+      <li><a href="/wheel.html">Wheel</a></li>
+    </ul>
+  </nav>
+
+  <div class="start-container">
+    <button id="resetStorageBtn">Reset Game</button>
+  </div>
+
+  <div class="category-display">
+    <div class="category-box" id="categoryName"></div>
+  </div>
+
+  <div class="question-container">
+    <div class="question-inner">
+      <div class="timer" id="timer"></div>
+      <div class="question-text" id="questionText"></div>
+      <div class="options" id="optionsList"></div>
+    </div>
+    <div class="button-group">
+      <button id="revealAnswerBtn">Check Answer</button>
+      <button id="askAnotherBtn">Ask Another?</button>
+    </div>
+    
+
+  </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.firebasestorage.app",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+      measurementId: "G-3R005HTKEW"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  
+    const categories = ["This or That", "Odd One Out", "Battle of the Bests"];
+    const questions = {
+      "This or That": {
+        question: "Whose voice is more iconic?",
+        options: ["Adele", "Whitney Houston"]
+      },
+      "Odd One Out": {
+        question: "Eliminate one of their TV shows",
+        options: ["Selena Gomez", "Ariana Grande", "Miley Cyrus"]
+      },
+      "Battle of the Bests": {
+        question: "Whose side are you on?",
+        options: ["Kendrick Lamar", "Drake"]
+      }
+    };
+  
+    const startBtn = document.getElementById("startBtn");
+    const resetBtn = document.getElementById("resetStorageBtn");
+    const categoryDisplay = document.querySelector(".category-display");
+    const categoryName = document.getElementById("categoryName");
+    const questionContainer = document.querySelector(".question-container");
+    const questionText = document.getElementById("questionText");
+    const optionsList = document.getElementById("optionsList");
+    const revealAnswerBtn = document.getElementById("revealAnswerBtn");
+    const askAnotherBtn = document.getElementById("askAnotherBtn");
+    const timerDisplay = document.getElementById("timer");
+  
+    let selectedOption = null;
+    let timer;
+    let timeLeft = 20;
+    let currentCategory = "";
+    const askedQuestions = JSON.parse(localStorage.getItem("askedQuestions")) || [];
+  
+    function getRandomCategory() {
+      let available = categories.filter(cat => !askedQuestions.includes(cat));
+      if (available.length === 0) {
+        alert("You've seen all categories! Starting over.");
+        localStorage.removeItem("askedQuestions");
+        askedQuestions.length = 0;
+        available = [...categories];
+      }
+      return available[Math.floor(Math.random() * available.length)];
+    }
+  
+    function resetState() {
+      selectedOption = null;
+      clearInterval(timer);
+      revealAnswerBtn.style.display = "none";
+      askAnotherBtn.style.display = "none";
+      timerDisplay.textContent = "";
+    }
+  
+    function showCategory(category) {
+      currentCategory = category;
+      categoryName.textContent = category;
+      document.body.classList.add("reveal-bg");
+      categoryDisplay.style.display = "flex";
+      categoryDisplay.classList.add("active");
+      questionContainer.style.display = "none";
+      document.querySelector(".start-container").style.display = "none";
+  
+      setTimeout(() => {
+        categoryDisplay.style.display = "none";
+        document.body.classList.remove("reveal-bg");
+        showQuestion(category);
+      }, 3000);
+    }
+  
+    function showQuestion(category) {
+      const q = questions[category];
+      questionText.textContent = q.question;
+      optionsList.innerHTML = "";
+      questionContainer.style.display = "flex";
+      selectedOption = null;
+      timeLeft = 20;
+      const formatted = timeLeft < 10 ? `0:0${timeLeft}` : `0:${timeLeft}`;
+timerDisplay.textContent = formatted;
+  
+      q.options.forEach(opt => {
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.textContent = opt;
+        btn.addEventListener("click", () => {
+          if (selectedOption) return;
+          btn.classList.add("selected");
+          selectedOption = opt;
+          clearInterval(timer);
+          revealAnswerBtn.style.display = "block";
+        });
+        optionsList.appendChild(btn);
+      });
+  
+      startTimer();
+    }
+  
+    function startTimer() {
+  timer = setInterval(() => {
+    timeLeft--;
+    const formatted = timeLeft < 10 ? `0:0${timeLeft}` : `0:${timeLeft}`;
+    timerDisplay.textContent = formatted;
+
+    if (timeLeft === 0) {
+      clearInterval(timer);
+      // Only show the button (don’t reveal the answer yet)
+      revealAnswerBtn.style.display = "block";
+    }
+  }, 1000);
+}
+
+
+    async function fetchVotes(category) {
+      const ref = doc(db, "votes", category);
+      const snap = await getDoc(ref);
+      return snap.exists() ? snap.data() : {};
+    }
+  
+    revealAnswerBtn.addEventListener("click", async () => {
+      if (!selectedOption && timeLeft > 0) return;
+      revealAnswerBtn.style.display = "none";
+
+      const voteData = await fetchVotes(currentCategory);
+      const totalVotes = Object.values(voteData).reduce((sum, val) => sum + val, 0);
+  
+      // Determine top-voted option
+      let topOption = null;
+      let maxVotes = 0;
+      for (const [opt, count] of Object.entries(voteData)) {
+        if (count > maxVotes) {
+          maxVotes = count;
+          topOption = opt;
+        }
+      }
+  
+      document.querySelectorAll(".option").forEach(optEl => {
+        const label = optEl.textContent;
+        const isTopVoted = label === topOption;
+        const votes = voteData[label] || 0;
+        const percent = totalVotes ? ((votes / totalVotes) * 100).toFixed(1) : 0;
+  
+        if (label === selectedOption) {
+          optEl.classList.remove("selected");
+          optEl.classList.add(isTopVoted ? "correct" : "wrong");
+        } else if (isTopVoted) {
+          optEl.classList.add("correct");
+        }
+  
+        optEl.innerHTML += `<br><small>${votes} votes (${percent}%)</small>`;
+      });
+  
+      if (!askedQuestions.includes(currentCategory)) {
+        askedQuestions.push(currentCategory);
+        localStorage.setItem("askedQuestions", JSON.stringify(askedQuestions));
+      }
+  
+      askAnotherBtn.style.display = "block";
+    });
+  
+    askAnotherBtn.addEventListener("click", () => {
+      const next = getRandomCategory();
+      resetState();
+      showCategory(next);
+    });
+  
+    window.addEventListener("DOMContentLoaded", () => {
+  const cat = getRandomCategory();
+  showCategory(cat);
+});
+
+  
+    resetBtn.addEventListener("click", () => {
+      localStorage.removeItem("askedQuestions");
+      location.reload();
+    });
+  </script>
+  
+</body>
+</html>

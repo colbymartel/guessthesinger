@@ -26,7 +26,6 @@
     }
     .header .logo img {
       width: 20%;
-      margin-bottom: 10px;
       height: auto;
       display: block;
       margin: 0 auto;
@@ -35,81 +34,107 @@
       .header .logo img { width: 60%; }
     }
     .navbar {
-      background-color: #315f85;
-      padding: 15px 0;
-      text-align: center;
-    }
-    .navbar ul {
-      list-style: none;
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-    }
-    .navbar ul li {
-      display: inline;
-      margin: 0 15px;
-    }
-    .navbar ul li a {
-      text-decoration: none;
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: bold;
-      padding: 5px 10px;
-      transition: background 0.3s ease;
-    }
-    .navbar ul li a:hover {
-      background-color: #4682b4;
-      border-radius: 5px;
-    }
-    /* Category & Questions Grid */
-    .grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 0 10px;
+  background: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: inset 0 -2px 6px rgba(255,255,255,0.15);
 }
+.navbar ul {
+  list-style: none;
+}
+.navbar li {
+  display: inline;
+  margin: 0 12px;
+}
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
+
+    /* Category & Questions Grid */
+/* Game Show Style Grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
 .grid-item {
-  background: #fff;
-  padding: 15px;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: #4682b4;
+  color: #fff;
+  padding: 25px 15px;
+  border-radius: 12px;
+  border: 3px solid #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
   cursor: pointer;
-  transition: transform 0.3s ease;
-  min-height: 200px; /* or your preferred height */
-  max-width: 90%;
+  transition: all 0.25s ease-in-out;
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
 }
 
+.grid-item:hover {
+  transform: scale(1.06);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+  background: #2f638f;
+}
 
+ /* Container for buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 30px;
+}
 
-    .grid-item:hover {
-      transform: scale(1.05);
-    }
-    .grid-item h2 {
-      font-size: 1.2rem;
-      color: #333;
-    }
-    .back-button {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      font-size: 1.1rem;
-      background: #4682b4;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      width: 200px;
-    }
-    .back-button:hover {
-      background: #315f85;
-    }
+/* Game Show Style Button */
+.back-button {
+  background: #4682b4;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 14px 28px;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  min-width: 160px;
+  
+}
+
+/* Hover Effect */
+.back-button:hover {
+  background: #2f638f;
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+}
+
     /* Hide container by default */
     .hidden { display: none; }
     #questionContainer {
@@ -120,13 +145,38 @@
   margin: 20px auto;
   padding: 0 10px;
 }
-.navbar ul li a.active {
-  background-color: #4682b4; /* Or any color that stands out */
-  border-bottom: 3px solid #fff; /* Creates a visual underline */
-  padding: 5px 10px;
-  border-radius: 5px;
+
+/* Reduce height only for question grid items */
+#questionContainer .grid-item {
+  min-height: 200px; /* Adjust this to your preference */
+  padding: 10px; /* Reduce padding to make it more compact */
+}
+/* Maintain height for category grid items */
+#categoryContainer .grid-item {
+  min-height: 280px; /* Keep this as it is */
 }
 
+.button-container button {
+  border-radius: 0; /* Optional: Removes any rounding to make them touch perfectly */
+}
+
+/* Category Titles */
+.grid-item h2.category-text {
+  font-size: 1.5rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+
+}
+
+/* Question Titles */
+.grid-item h2.question-text {
+  font-size: 1.2rem;
+  color: #ffffff;
+
+}
+#testButton {
+  margin-top: -30px;
+}
   </style>
 </head>
 <body>
@@ -147,29 +197,30 @@
     </ul>
   </nav>
   
-  <!-- Category List -->
-  <div id="categoryContainer" class="grid-container">
-    <!-- Six categories will be rendered here -->
-  </div>
-  
-  <!-- Questions List (hidden by default) -->
-  <div id="questionContainer" class="grid-container hidden">
-    <!-- Questions for a category will be rendered here -->
-  </div>
-  
-  <!-- Back Button for questions view -->
-  <button id="backButton" class="back-button hidden">Back to Categories</button>
+ <!-- Categories (initially visible) -->
+<div id="categoryContainer" class="grid-container"></div>
+
+<!-- Questions (initially hidden) -->
+<div id="questionContainer" class="grid-container hidden"></div>
+
+<!-- Buttons -->
+<div class="button-container">
+  <button id="backButton" class="back-button">Back to Categories</button>
   <button id="resetButton" class="back-button">Reset Answers</button>
+  <a id="testButton" href="/pollings.html" class="back-button">Test</a>
+</div>
+
 
   <script>
     // Define categories. Note that our questions array below is structured by id ranges.
     const categories = [
-      { name: "General Questions", start: 1, end: 14 },
-      { name: "Geographic Questions", start: 15, end: 22 },
-      { name: "Background Questions", start: 23, end: 27 },
+      { name: "General Questions", start: 1, end: 12 },
+      { name: "Geographic Questions", start: 15, end: 27 },
       { name: "Music Style Questions", start: 28, end: 37 },
       { name: "Career & Popularity", start: 38, end: 49 },
-      { name: "Name & Appearance", start: 50, end: 60 }
+      { name: "Name & Appearance", start: 50, end: 60 },
+      { name: "Opinions", start: 61, end: 72 }
+
     ];
     
     // Questions array.
@@ -184,13 +235,10 @@
       { id: 8, question: "Did they debut before 2010?", answer: "Yes, the singer debuted before 2010." },
       { id: 9, question: "Did they debut before 2020?", answer: "Yes, the singer debuted before 2020." },
       { id: 10, question: "Did they release an album within the last 2 years?", answer: "Yes, the singer has released an album within the last 2 years." },
-      { id: 11, question: "Are they currently on tour?", answer: "No, the singer is not currently on tour." },
-      { id: 12, question: "Are they currently married?", answer: "Yes, the singer is currently married." },
-      { id: 13, question: "Were they ever divorced?", answer: "No, the singer has not been divorced." },
-      { id: 14, question: "Do they identify as LGBTQ+?", answer: "No, the singer does not publicly identify as LGBTQ+." },
+      { id: 11, question: "Are they currently married?", answer: "Yes, the singer is currently married." },
+      { id: 12, question: "Do they identify as LGBTQ+?", answer: "No, the singer does not publicly identify as LGBTQ+." },
       { id: 15, question: "Were they born in North America?", answer: "Yes, the singer was born in North America." },
       { id: 16, question: "Were they born in the United States?", answer: "Yes, the singer was born in the United States." },
-      { id: 17, question: "Were they born in Canada?", answer: "No, the singer was not born in Canada." },
       { id: 18, question: "Were they born in Europe?", answer: "No, the singer was not born in Europe." },
       { id: 19, question: "Were they born in Asia?", answer: "No, the singer was not born in Asia." },
       { id: 20, question: "Were they born in South America?", answer: "No, the singer was not born in South America." },
@@ -233,79 +281,92 @@
       { id: 57, question: "Do they go by one word?", answer: "No, the singer's name consists of more than one word." },
       { id: 58, question: "Do they go by two words?", answer: "Yes, the singer's name consists of two words." },
       { id: 59, question: "Do they have a common first name?", answer: "Yes, the singer's first name is quite common." },
-      { id: 60, question: "Does their name start with a letter A-M?", answer: "Yes, the singer's name starts with a letter between A and M." }
+      { id: 60, question: "Does their name start with a letter A-M?", answer: "Yes, the singer's name starts with a letter between A and M." },
+      { id: 61, question: "Could they portray a Disney prince/princess?", answer: "Yes, she’s basically Cinderella with a microphone." },
+{ id: 62, question: "Would you let them babysit your kid?", answer: "Yes, she'd have snacks, stories, and bedtime handled like a pro." },
+{ id: 63, question: "Would they be a good gym partner?", answer: "Yes. She’d push you through every squat with perfect form." },
+{ id: 64, question: "Could they win a dance battle?", answer: "No, but she'd give it heart—and heels." },
+{ id: 65, question: "Do they look like they steal fries off your plate?", answer: "No. She’d offer you hers and say grace first." },
+{ id: 66, question: "Would they survive a zombie apocalypse?", answer: "Yes, especially if she’s got boots, a Bible, and a baseball bat." },
+{ id: 67, question: "Would they make a good game show host?", answer: "Yes, she'd be charming, polite—and still throw in a sassy quip." },
+{ id: 68, question: "Would they start drama in a group chat?", answer: "No, but she’d definitely leave one if the energy’s off." },
+{ id: 69, question: "Do they look like they know how to cook?", answer: "Yes, she probably has a signature casserole and a secret pie recipe." },
+{ id: 70, question: "Would they adopt a raccoon as a pet?", answer: "No —but she'd write a heartfelt country song about it." },
+{ id: 71, question: "Would they be late to their own concert?", answer: "No. She shows up on time, sparkles on, vocals ready." },
+{ id: 72, question: "Would they survive a week without their phone?", answer: "Yes. She’d spend the time fishing, journaling, or writing ballads." }
     ];
 
     // Function to render the list of categories.
     function renderCategories() {
-      const container = document.getElementById("categoryContainer");
-      container.innerHTML = "";
-      categories.forEach((cat, index) => {
-        const item = document.createElement("div");
-        item.classList.add("grid-item");
-        item.setAttribute("data-index", index);
-        item.innerHTML = `<h2>${cat.name}</h2>`;
-        item.addEventListener("click", function() {
-          // When a category is clicked, show questions for that category.
-          showQuestionsForCategory(index);
-        });
-        container.appendChild(item);
+  const container = document.getElementById("categoryContainer");
+  container.innerHTML = "";
+
+  categories.forEach((cat, index) => {
+    const item = document.createElement("div");
+    item.classList.add("grid-item");
+    item.setAttribute("data-index", index);
+    item.innerHTML = `<h2 class="category-text">${cat.name}</h2>`;
+    item.addEventListener("click", () => showQuestionsForCategory(index));
+    container.appendChild(item);
+  });
+
+  document.getElementById("categoryContainer").classList.remove("hidden");
+  document.getElementById("questionContainer").classList.add("hidden");
+  document.getElementById("backButton").classList.add("hidden");
+  document.getElementById("resetButton").classList.add("hidden");
+
+  // Show test button, hide reset in category view
+  document.getElementById("testButton").style.display = "inline-block";
+  document.getElementById("resetButton").style.display = "none";
+}
+
+function showQuestionsForCategory(categoryIndex) {
+  const category = categories[categoryIndex];
+  const filtered = questions.filter(q => q.id >= category.start && q.id <= category.end);
+  const container = document.getElementById("questionContainer");
+  container.innerHTML = "";
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.classList.add("grid-item");
+    card.innerHTML = `<h2 class="question-text">${item.question}</h2>`;
+
+    let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
+    if (answeredQuestions[item.id] !== undefined) {
+      card.classList.add("answered");
+      card.style.backgroundColor = answeredQuestions[item.id] ? "#4CAF50" : "#f44336";
+      card.innerHTML += answeredQuestions[item.id] ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
+    } else {
+      card.addEventListener("click", function () {
+        if (card.classList.contains("answered")) return;
+        card.classList.add("answered");
+        const isYes = item.answer.trim().toLowerCase().startsWith("yes");
+        card.style.backgroundColor = isYes ? "#4CAF50" : "#f44336";
+        card.innerHTML += isYes ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
+        logAnswer(item.id, isYes);
       });
     }
-    
-    // Function to show questions from a chosen category.
-    function showQuestionsForCategory(categoryIndex) {
-      const category = categories[categoryIndex];
-      // Filter questions that fall within the id range for this category.
-      const filtered = questions.filter(q => q.id >= category.start && q.id <= category.end);
-      
-      const container = document.getElementById("questionContainer");
-      container.innerHTML = "";
-      
-      filtered.forEach(item => {
-  const card = document.createElement("div");
-  card.classList.add("grid-item");
-  card.innerHTML = `<h2>${item.question}</h2>`;
-  
-  // Get any stored answers from local storage
-  let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
-  
-  // If this question has been answered already, mark it accordingly
-  if (answeredQuestions[item.id] !== undefined) {
-    card.classList.add("answered");
-    if (answeredQuestions[item.id]) {
-      card.style.backgroundColor = "#4CAF50"; // green for yes
-      card.innerHTML += '<br><i class="fas fa-check"></i>';
-    } else {
-      card.style.backgroundColor = "#f44336"; // red for no
-      card.innerHTML += '<br><i class="fas fa-times"></i>';
-    }
-  } else {
-    // Otherwise, set up the click event to reveal the answer without displaying the text.
-    card.addEventListener("click", function() {
-      if (card.classList.contains("answered")) return;
-      
-      card.classList.add("answered");
-      
-      // Check if the answer starts with "yes"
-      const isYes = item.answer.trim().toLowerCase().startsWith("yes");
-      
-      // Apply style and icon accordingly
-      if (isYes) {
-        card.style.backgroundColor = "#4CAF50"; // green for yes
-        card.innerHTML += '<br><i class="fas fa-check"></i>';
-      } else {
-        card.style.backgroundColor = "#f44336"; // red for no
-        card.innerHTML += '<br><i class="fas fa-times"></i>';
-      }
-      
-      // Save the result in local storage
-      logAnswer(item.id, isYes);
-    });
-  }
-  
-  container.appendChild(card);
-});
+
+    container.appendChild(card);
+  });
+
+  document.getElementById("categoryContainer").classList.add("hidden");
+  document.getElementById("questionContainer").classList.remove("hidden");
+  document.getElementById("categoryContainer").classList.add("hidden");
+  container.classList.remove("hidden");
+
+  document.getElementById("backButton").classList.remove("hidden");
+  document.getElementById("testButton").style.display = "none";
+  document.getElementById("resetButton").style.display = "inline-block";
+
+
+  // Reset button clears answers and re-renders the same category
+  document.getElementById("resetButton").onclick = () => {
+    localStorage.removeItem("answeredQuestions");
+    showQuestionsForCategory(categoryIndex);
+  };
+}
+
 
 function logAnswer(questionId, isCorrect) {
   let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
@@ -313,36 +374,21 @@ function logAnswer(questionId, isCorrect) {
   localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
 }
 
-      // Hide the category list and show the questions.
-      document.getElementById("categoryContainer").classList.add("hidden");
-      container.classList.remove("hidden");
-      document.getElementById("backButton").classList.remove("hidden");
-    }
-    
-    // Function to go back to the category list.
-    function showCategoryList() {
+function showCategoryList() {
   const questionContainer = document.getElementById("questionContainer");
   questionContainer.classList.add("hidden");
-  questionContainer.innerHTML = ""; // Optional: clear the questions content
-  
-  document.getElementById("backButton").classList.add("hidden");
+  questionContainer.innerHTML = "";
+
   document.getElementById("categoryContainer").classList.remove("hidden");
+
+  document.getElementById("backButton").classList.add("hidden");
+  document.getElementById("testButton").style.display = "inline-block"; // ✅ Fix here
+  document.getElementById("resetButton").style.display = "none";
 }
 
-    
-    // Event listener for the back button.
-    document.getElementById("backButton").addEventListener("click", showCategoryList);
-    
-    // Initial render.
-    renderCategories();
-    document.getElementById("resetButton").addEventListener("click", function() {
-  // Clear local storage entry for answered questions.
-  localStorage.removeItem("answeredQuestions");
-  
-  // Optional: Reset UI by re-rendering categories and/or questions.
-  // For example, if you're in the questions view, you can call showCategoryList()
-  // or simply reload the page:
-  location.reload();
+document.addEventListener("DOMContentLoaded", () => {
+  renderCategories();
+  document.getElementById("backButton").addEventListener("click", showCategoryList);
 });
 
   </script>

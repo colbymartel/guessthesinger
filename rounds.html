@@ -4,117 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Guess The Singer</title>
-  <!-- Import Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Import Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-    /* General Reset */
+    /* Reset and Font */
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-        font-family: 'Poppins', Arial, sans-serif;
-        background: url('../images/bg-top.png') no-repeat center center fixed;
-        background-size: cover; /* Ensure the background covers the entire viewport */
-        color: #333;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Header */
     .header {
-        background-color: #4682b4;
-        padding: 30px;
-        text-align: center;
-        color: white;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
     }
 
     .header .logo img {
-        width: 20%;
-        margin-bottom: 10px;
-        height: auto;
-        display: block;
-        margin: 0 auto;
+      width: 20%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
-    /* Responsive Design for Smaller Screens */
     @media (max-width: 768px) {
-        .header .logo img {
-            width: 60%;
-        }
+      .header .logo img {
+        width: 60%;
+      }
     }
 
-    /* Main Section */
+    /* Main */
     .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
     }
 
-    /* Button Group */
+    .main h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 8px rgba(255,255,255,0.2);
+    }
+
     .button-group {
-        display: flex;
-        gap: 20px;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 20px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    /* Buttons */
     .btn {
-        padding: 15px 25px;
-        background-color: #4682b4;
-        border: none;
-        border-radius: 6px;
-        color: white;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.2s;
+      padding: 16px 28px;
+      background-color: #4682b4;
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+      letter-spacing: 0.5px;
     }
 
     .btn:hover {
-        background-color: #315f85;
-        transform: translateY(-2px);
+      background-color: #315f85;
+      transform: scale(1.05);
+      box-shadow: 0 0 18px rgba(255, 255, 255, 0.3);
     }
 
     /* Footer */
     .footer {
-        background-color: #315f85;
-        color: white;
-        text-align: center;
-        padding: 15px;
-        font-size: 1rem;
+      background-color: #315f85;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.95rem;
+      border-top: 3px solid #fff;
     }
 
     .footer a {
-        color: white;
-        text-decoration: none;
-        margin: 0 6px;
-        font-size: 1rem;
-        transition: color 0.3s ease;
+      color: #fff;
+      text-decoration: none;
+      margin: 0 8px;
+      font-weight: bold;
     }
 
     .footer a:hover {
-        color: #ff914d;
+      color: #ffcc70;
     }
   </style>
 </head>
 <body>
+
   <!-- Header Section -->
   <header class="header">
     <div class="logo">
-      <!-- Replace src with the actual path to your logo image -->
       <img src="images/logo.png" alt="Guess The Singer Logo">
     </div>
   </header>
@@ -123,9 +122,10 @@
   <main class="main">
     <h2>Select a Round</h2>
     <div class="button-group">
-        <button class="btn" id="round1" onclick="window.location.href='questions.html';">Round 1</button>
-        <button class="btn" id="round2" onclick="window.location.href='questions2.html';">Round 2</button>
-        <button class="btn" id="round3" onclick="window.location.href='questions3.html';">Round 3</button>
+      <button class="btn" onclick="window.location.href='questions.html';">Round 1</button>
+      <button class="btn" onclick="window.location.href='questions2.html';">Round 2</button>
+      <button class="btn" onclick="window.location.href='questions3.html';">Round 3</button>
+      <button class="btn" onclick="window.location.href='trivia4.html';">Quiz Round</button>
     </div>
   </main>
 
@@ -133,5 +133,6 @@
   <footer class="footer">
     <p>&copy; 2025 Guess The Singer. All rights reserved.</p>
   </footer>
+
 </body>
 </html>
