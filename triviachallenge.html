@@ -32,7 +32,7 @@ header {
 }
 
 header .logo img {
-  width: 20%;
+  width: 50%;
   max-width: 80%;
 }
 
@@ -202,6 +202,14 @@ header .logo img {
   color: #f1c40f;
 }
 
+#rulesOverlay {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
   </style>
 </head>
@@ -214,14 +222,10 @@ header .logo img {
 
   <!-- Start/Login Screen -->
   <div class="start-container" id="startContainer">
-    <p>
-      A 2-minute timer will start when you click "Start Quiz".
-    </p>
     <div>
       <input type="text" id="userName" class="login-input" placeholder="Enter your name">
     </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
-    <button id="resetLocalStorage" class="start-btn" onclick="resetLocalStorage()">Reset Local Storage</button>
 
   </div>
   
@@ -270,8 +274,8 @@ const db = firebase.firestore();
 
     // --- Trivia question set: 50 sample artist objects.
     // Replace image paths and names as needed.
+  
     const triviaQuestions = [
-      { image: "images/beyonce.jpg", correctAnswer: "Beyonce" },
       { image: "images/ladygaga.jpg", correctAnswer: "Lady Gaga" },
       { image: "images/adele.jpg", correctAnswer: "Adele" },
       { image: "images/brunomars.jpg", correctAnswer: "Bruno Mars" },
@@ -289,7 +293,7 @@ const db = firebase.firestore();
       { image: "images/lorde.png", correctAnswer: "Lorde" },
       { image: "images/mileycyrus.jpg", correctAnswer: "Miley Cyrus" },
       { image: "images/dualipa.jpg", correctAnswer: "Dua Lipa" },
-      { image: "images/zayn.jpg", correctAnswer: "Zayn" },
+      { image: "images/zayn.png", correctAnswer: "Zayn" },
       { image: "images/selenagomez.jpg", correctAnswer: "Selena Gomez" },
       { image: "images/calvinharris.jpg", correctAnswer: "Calvin Harris" },
       { image: "images/halsey.jpg", correctAnswer: "Halsey" },
@@ -298,22 +302,10 @@ const db = firebase.firestore();
       { image: "images/chrisbrown.jpg", correctAnswer: "Chris Brown" },
       { image: "images/postmalone.jpg", correctAnswer: "Post Malone" },
       { image: "images/khalid.jpg", correctAnswer: "Khalid" },
-      { image: "images/camila.jpg", correctAnswer: "Camila Cabello" },
+      { image: "images/camilacabello.jpg", correctAnswer: "Camila Cabello" },
       { image: "images/billieeilish.jpg", correctAnswer: "Billie Eilish" },
       { image: "images/whitneyhouston.png", correctAnswer: "Whitney Houston" },
-      { image: "images/jlo.jpg", correctAnswer: "Jennifer Lopez" },
-      { image: "images/avicii.jpg", correctAnswer: "Avicii" },
-      { image: "images/meghantrainor.jpg", correctAnswer: "Meghan Trainor" },
-         { image: "images/marshmello.jpg", correctAnswer: "Marshmello" },
-      { image: "images/justin timberlake.jpg", correctAnswer: "Justin Timberlake" },
-      { image: "images/cher.jpg", correctAnswer: "Cher" },
-      { image: "images/elvis.jpg", correctAnswer: "Elvis Presley" },
-      { image: "images/lilnasx.jpg", correctAnswer: "Lil Nas X" },
-      { image: "images/cardib.jpg", correctAnswer: "Cardi B" },
-      { image: "images/madonna.jpg", correctAnswer: "Madonna" },
-      { image: "images/elliegoulding.jpg", correctAnswer: "Ellie Goulding" },
-      { image: "images/steviewonder.jpg", correctAnswer: "Stevie Wonder" },
-      { image: "images/cher2.jpg", correctAnswer: "Cher" },
+      { image: "images/justintimberlake.jpg", correctAnswer: "Justin Timberlake" },
     ];
     
     // --- Global variables.
@@ -321,7 +313,10 @@ const db = firebase.firestore();
     let correctCount = 0;
     let startTime = null;
     let timerInterval = null;
-    const totalTime = 60; // seconds
+    const totalTime = 120; // seconds
+    let skippedArtists = [];
+    let sessionId = null;
+
     
     // DOM elements for quiz.
     const progressText = document.getElementById("progressText");
@@ -371,14 +366,6 @@ function startQuiz() {
     alert("Please enter your name to start.");
     return;
   }
-  // Limit one play per device.
-  if (localStorage.getItem("played")) {
-    alert("You have already played this quiz on this device!");
-    return;
-  }
-  
-  localStorage.setItem("currentUser", userName);
-  
   // Log the user's name to the "users" collection.
   db.collection("users").add({
     name: userName,
@@ -393,13 +380,14 @@ function startQuiz() {
   
   // Create a quiz session document in Firestore.
   db.collection("quizSessions").add({
-    userName: userName,
-    startTime: firebase.firestore.FieldValue.serverTimestamp()
-  })
-  .then((docRef) => {
-    console.log("Quiz session created with ID:", docRef.id);
-    localStorage.setItem("quizSessionId", docRef.id);
-  })
+  userName: userName,
+  startTime: firebase.firestore.FieldValue.serverTimestamp()
+})
+.then((docRef) => {
+  sessionId = docRef.id;
+  console.log("Quiz session created with ID:", sessionId);
+})
+
   .catch((error) => {
     console.error("Error creating quiz session: ", error);
   });
@@ -475,9 +463,11 @@ function startQuiz() {
 }
 
 function handlePass() {
-  // Simply move to the next question without displaying the correct answer.
+  // Save the skipped artist
+  skippedArtists.push(triviaQuestions[currentQuestionIndex]);
+
   resultText.textContent = "Question skipped.";
-  
+
   setTimeout(() => {
     currentQuestionIndex++;
     if (currentQuestionIndex < triviaQuestions.length) {
@@ -488,51 +478,100 @@ function handlePass() {
   }, 500);
 }
 
-
 function endQuiz() {
   clearInterval(timerInterval);
   const endTime = new Date();
   const timeTaken = Math.floor((endTime - startTime) / 1000);
+
   progressText.textContent = "Quiz Completed!";
   singerImage.style.display = "none";
   questionText.innerHTML = `<strong>You got ${correctCount} out of ${triviaQuestions.length} correct.</strong><br>Your time: ${formatTime(timeTaken)}`;
+
   answerInput.style.display = "none";
   document.querySelectorAll(".submit-btn").forEach(btn => btn.style.display = "none");
   timerText.style.display = "none";
-  
-  // Mark this device as having played.
-  localStorage.setItem("played", "true");
-  
-  // Retrieve the session document ID.
-  const sessionId = localStorage.getItem("quizSessionId");
+
+  // Show skipped artists if any
+  if (skippedArtists.length > 0) {
+    const skippedSection = document.createElement("div");
+    skippedSection.classList.add("quiz-complete");
+    skippedSection.innerHTML = `<h3 style="margin-top: 30px;">Skipped Artists</h3>`;
+    
+    skippedArtists.forEach(artist => {
+      const card = document.createElement("div");
+      card.style.marginTop = "15px";
+
+      card.innerHTML = `
+        <img src="${artist.image}" alt="${artist.correctAnswer}" style="max-width: 150px; border-radius: 10px; box-shadow: 0 0 12px rgba(255,255,255,0.1);"><br>
+        <span style="color: #00ffcc; font-weight: bold;">${artist.correctAnswer}</span>
+      `;
+      skippedSection.appendChild(card);
+    });
+
+    quizContainer.appendChild(skippedSection);
+  }
+
+  // Update Firestore session if needed
   if (sessionId) {
     db.collection("quizSessions").doc(sessionId).update({
       correctCount: correctCount,
       totalQuestions: triviaQuestions.length,
       timeTaken: timeTaken,
       endTime: firebase.firestore.FieldValue.serverTimestamp()
-    })
-    .then(() => {
+    }).then(() => {
       console.log("Quiz session successfully updated with results.");
-    })
-    .catch((error) => {
+    }).catch((error) => {
       console.error("Error updating quiz session: ", error);
     });
   }
 }
 
-function logoutUser() {
-  // Remove current user info but do not reset progress or timer.
-  localStorage.removeItem("currentUser");
-  alert("You have been logged out. Your progress will continue.");
-}
-function resetLocalStorage() {
-  localStorage.clear();
-  alert("Local storage has been reset.");
-  // Optionally, reload the page:
-  // location.reload();
+function closeRules() {
+  document.getElementById("rulesOverlay").style.display = "none";
 }
 
   </script>
+  <!-- Rules Popup -->
+<div id="rulesOverlay" style="
+position: fixed;
+top: 0; left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.85);
+z-index: 9999;
+display: flex;
+align-items: center;
+justify-content: center;
+">
+<div style="
+  background: #254a6d;
+  color: white;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(255,255,255,0.1);
+">
+  <h2 style="color: #f1c40f; margin-bottom: 15px;">🎤 How to Play</h2>
+  <p style="margin-bottom: 10px;">You’ll see an image of a famous singer.</p>
+  <p style="margin-bottom: 10px;">Type their stage name as fast as you can. Spelling counts!</p>
+  <p style="margin-bottom: 10px;"><strong>You have 2 minutes</strong> to guess as many as you can.</p>
+  <p style="margin-bottom: 20px;">You can skip a question using the "Pass" button.</p>
+  <img src="images/arianagrande.jpg" alt="Example Singer" style="width: 60%; border-radius: 10px; margin: 15px 0; box-shadow: 0 0 15px rgba(255,255,255,0.2);">
+  <p><strong>Example Answer:</strong> <span style="color: #00ffcc;">Ariana Grande</span></p>
+  <button onclick="closeRules()" style="
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  ">OK, Let’s Go!</button>
+</div>
+</div>
+
 </body>
 </html>

@@ -7,141 +7,168 @@
   <link rel="icon" href="/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f4f4f4;
-      padding-bottom: 40px;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    header {
-      background-color: #4682b4;
-      padding: 20px;
-      text-align: center;
-    }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
+  color: #fff;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
 
-    header img {
-      width: 200px;
-    }
+/* Header */
+header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
 
-    .navbar {
-      background-color: #315f85;
-      padding: 15px 0;
-      text-align: center;
-    }
+header img {
+  width: 200px;
+}
 
-    .navbar ul {
-      list-style: none;
-      display: inline-block;
-      padding: 0;
-    }
+/* Navbar */
+.navbar {
+  background-color: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
 
-    .navbar li {
-      display: inline;
-      margin: 0 15px;
-    }
+.navbar ul {
+  list-style: none;
+  display: inline-block;
+  padding: 0;
+}
 
-    .navbar a {
-      color: #fff;
-      font-weight: bold;
-      font-size: 1.1rem;
-      text-decoration: none;
-      padding: 5px 10px;
-    }
+.navbar li {
+  display: inline;
+  margin: 0 15px;
+}
 
-    .navbar a:hover,
-    .navbar a.active {
-      background-color: #4682b4;
-      border-radius: 5px;
-      border-bottom: 3px solid #fff;
-    }
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
 
-    .container {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
-    }
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border-bottom: 3px solid #fff;
+}
 
-    .leaderboard h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #315f85;
-      font-size: 1.8rem;
-    }
+/* Container */
+.container {
+  max-width: 700px;
+  margin: 50px auto;
+  background: #ffffff10;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
 
-    .chart {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
+/* Leaderboard Header */
+.leaderboard h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #fff;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px #000;
+}
 
-    .chart-entry {
-      display: flex;
-      align-items: center;
-    }
+/* Chart Section */
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-    .placement {
-      font-weight: bold;
-      width: 30px;
-      text-align: center;
-      font-size: 1.2rem;
-    }
+.chart-entry {
+  display: flex;
+  align-items: center;
+}
 
-    .gold { color: #d4af37; }
-    .silver { color: #c0c0c0; }
-    .bronze { color: #cd7f32; }
+.placement {
+  font-weight: bold;
+  width: 30px;
+  text-align: center;
+  font-size: 1.3rem;
+  text-shadow: 1px 1px 2px #000;
+}
 
-    .chart-label {
-      flex: 1;
-      font-weight: bold;
-      color: #333;
-    }
+.gold { color: #d4af37; }
+.silver { color: #c0c0c0; }
+.bronze { color: #cd7f32; }
 
-    .chart-bar-container {
-      flex: 3;
-      background: #ddd;
-      border-radius: 20px;
-      overflow: hidden;
-      margin: 0 10px;
-      height: 25px;
-    }
+.chart-label {
+  flex: 1;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 2px #000;
+}
 
-    .chart-bar {
-      height: 100%;
-      background: #4682b4;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+.chart-bar-container {
+  flex: 3;
+  background: #ffffff20;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 10px;
+  height: 25px;
+}
 
-    .chart-value {
-      flex: 0.5;
-      font-weight: bold;
-      color: #333;
-      text-align: right;
-      min-width: 30px;
-    }
+.chart-bar {
+  height: 100%;
+  background: #27ae60;
+  width: 0%;
+  transition: width 0.3s ease;
+}
 
-    .reset-btn {
-      display: block;
-      margin: 30px auto 0;
-      padding: 12px 28px;
-      background-color: #4682b4;
-      color: #fff;
-      border: 2px solid #fff;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+.chart-entry .chart-value {
+  width: 80px;
+  text-align: center;
+  font-size: 1rem;
+}
 
-    .reset-btn:hover {
-      background-color: #2f638f;
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+.chart-entry {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Reset Button */
+.reset-btn {
+  display: block;
+  margin: 40px auto 0;
+  padding: 12px 28px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+}
+
+.reset-btn:hover {
+  background-color: #1e8449;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
 
   </style>
 </head>
@@ -186,56 +213,72 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
     function loadLeaderboard() {
-      const leaderboardDiv = document.getElementById("leaderboard");
+  const leaderboardDiv = document.getElementById("leaderboard");
 
-      db.collection("quizSessions")
-        .orderBy("correctCount", "desc")
-        .limit(5)
-        .get()
-        .then(snapshot => {
-          let html = "<h2>Trivia Leaderboard</h2>";
-          if (snapshot.empty) {
-            html += "<p>No leaderboard data yet.</p>";
-          } else {
-            const data = [];
-            snapshot.forEach(doc => {
-              const userData = doc.data();
-              data.push({
-                user: userData.userName || "Anonymous",
-                correct: userData.correctCount || 0
-              });
+  db.collection("quizSessions")
+    .get()
+    .then(snapshot => {
+      let html = "<h2>Trivia Leaderboard</h2>";
+      if (snapshot.empty) {
+        html += "<p>No leaderboard data yet.</p>";
+      } else {
+        const data = [];
+        snapshot.forEach(doc => {
+          const userData = doc.data();
+          if (userData.correctCount && userData.timeTaken) {
+            data.push({
+              user: userData.userName || "Anonymous",
+              correct: userData.correctCount,
+              time: userData.timeTaken
             });
-
-            const max = Math.max(...data.map(d => d.correct));
-            html += `<div class='chart'>`;
-
-            data.forEach((entry, i) => {
-              const percent = max > 0 ? (entry.correct / max * 100).toFixed(0) : 0;
-              let medalClass = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
-
-              html += `
-                <div class="chart-entry">
-                  <span class="placement ${medalClass}">${i + 1}</span>
-                  <span class="chart-label">${entry.user}</span>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="width: ${percent}%"></div>
-                  </div>
-                  <span class="chart-value">${entry.correct}</span>
-                </div>`;
-            });
-
-            html += `</div>`;
           }
-
-          leaderboardDiv.innerHTML = html;
-        })
-        .catch(err => {
-          console.error("Error fetching leaderboard:", err);
-          leaderboardDiv.innerHTML = "<p>Error loading leaderboard.</p>";
         });
-    }
+
+        // Sort: highest correctCount, then lowest timeTaken
+        data.sort((a, b) => {
+          if (b.correct === a.correct) {
+            return a.time - b.time; // lower time wins
+          }
+          return b.correct - a.correct; // higher score wins
+        });
+
+        const top5 = data.slice(0, 5);
+        const max = Math.max(...top5.map(d => d.correct));
+        html += `<div class='chart'>`;
+
+        top5.forEach((entry, i) => {
+          const percent = max > 0 ? (entry.correct / max * 100).toFixed(0) : 0;
+          let medalClass = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
+
+          html += `
+            <div class="chart-entry">
+              <span class="placement ${medalClass}">${i + 1}</span>
+              <span class="chart-label">${entry.user}</span>
+              <div class="chart-bar-container">
+                <div class="chart-bar" style="width: ${percent}%"></div>
+              </div>
+              <span class="chart-value">${entry.correct} pts</span>
+              <span class="chart-value">${formatTime(entry.time)}</span>
+            </div>`;
+        });
+
+        html += `</div>`;
+      }
+
+      leaderboardDiv.innerHTML = html;
+    })
+    .catch(err => {
+      console.error("Error fetching leaderboard:", err);
+      leaderboardDiv.innerHTML = "<p>Error loading leaderboard.</p>";
+    });
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
 
     function resetLeaderboard() {
       if (!confirm("Are you sure you want to reset all quiz data?")) return;

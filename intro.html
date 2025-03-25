@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess The Singer - Live Intro</title>
+  <style>
+    /* Reset & Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: background-color 0.5s ease;
+    }
+
+    .slide {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      max-width: 900px;
+      width: 100%;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #ffeb3b;
+    }
+    h2 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      color: #4caf50;
+      font-weight: bold;
+    }
+
+    .breakdown {
+      margin-top: 20px;
+      padding: 20px;
+      background: #ffffff10;
+      border: 2px solid #ffffff20;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      font-size: 1.2rem;
+    }
+
+    .nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 3rem;
+      color: #fff;
+      background: rgba(0,0,0,0.3);
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 999;
+      user-select: none;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-left {
+      left: 20px;
+    }
+    .nav-right {
+      right: 20px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .prize-gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 40px;
+  flex-wrap: nowrap; /* Prevents wrapping */
+}
+
+.prize {
+  text-align: center;
+  max-width: 1000px;
+}
+.prize img {
+  width: 400px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s ease;
+}
+
+
+.prize img:hover {
+  transform: scale(1.05);
+}
+
+.prize p {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #fff;
+}
+#grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.singer {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border 0.2s ease;
+}
+
+.singer img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.highlight {
+  border: 2px solid #4caf50;
+}
+
+#startBtn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: #ffffff10;
+  border: 2px solid #ffffff30;
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 20px;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+  text-align: center;
+}
+
+#popup img {
+  max-width: 250px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+#popup.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: none;
+}
+
+#overlay.active {
+  display: block;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="nav-arrow nav-left" id="prevSlide">&#8592;</div>
+  <div class="nav-arrow nav-right" id="nextSlide">&#8594;</div>
+
+  <div class="slide active">
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+      <img src="/images/intro.jpg" alt="Intro" style="max-width: 80vw; max-height: 80vh; border-radius: 20px; box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);">
+    </div>
+  </div>
+  
+  <div class="slide">
+    <h2>This all started with one simple question...</h2>
+    <p><em>"Can I guess your favorite artist?"</em></p>
+  </div>
+  <div class="slide" id="noahSlide">
+    <p>After hundreds of strangers, some guesses were lucky...</p>
+    <video id="noahVideo" src="noah.mp4" controls style="max-width: 50%; border-radius: 12px; margin-top: 20px;"></video>
+  </div>
+  
+  
+
+  <div class="slide" id="adeleSlide">
+    <p>...but many other times, I failed miserably 😂</p>
+    <video id="adeleVideo" src="adele.mp4" controls style="max-width: 50%; border-radius: 12px; margin-top: 20px;"></video>
+  </div>
+
+  <div class="slide">
+    <p>This series has now hit <span class="highlight">200 MILLION views</span> in the last 6 months 💥</p><br>
+    <img src="/images/tiktokviews.jpg" alt="Intro" style="max-width: 50vw; max-height: 80vh; border-radius: 20px; box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);">
+  </div>
+
+  <div class="slide">
+    <p>Despite some hate comments...<br><span class="highlight">I didn’t quit</span> — because this game connects people through music 🎶</p>
+  </div>
+
+  <div class="slide">
+    <p>I’m also a proud Babson grad and former CAB President 👨‍🎓</p>
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+      <img src="/images/ColbyCAB1.jpg" alt="CAB 1" style="max-width: 50vw; max-height: 35vh; border-radius: 20px; box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);">
+      <img src="/images/ColbyCAB2.jpg" alt="CAB 2" style="max-width: 50vw; max-height: 35vh; border-radius: 20px; box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);">
+    </div>
+  </div>
+  
+
+  <div class="slide">
+    <h2>So tonight… I’m back — hosting my FIRST live show</h2>
+    <p>At the very place it all began. 🙌</p>
+  </div>
+
+  <div class="slide">
+    <h2>But let’s talk stakes... 💸</h2>
+    <p>CAB’s grand prizes:</p>
+  
+    <div class="prize-gallery">
+      <div class="prize">
+        <img src="/images/airpodsmax.jpg" alt="AirPods Max">
+        <p>🎧 AirPods Max</p>
+      </div>
+      <div class="prize">
+        <img src="/images/jblcharge5.jpg" alt="JBL Charge 5">
+        <p>🔊 JBL Charge 5</p>
+      </div>
+      <div class="prize">
+        <img src="/images/legopiano.jpg" alt="LEGO Piano Set">
+        <p>🎹 LEGO Piano Set</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="slide">
+    <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+      <img src="/images/mysteryenvelope.jpg" alt="CAB 1" style="max-width: 100vw; max-height: 100vh; border-radius: 20px; box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);">
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    const nextBtn = document.getElementById("nextSlide");
+    const prevBtn = document.getElementById("prevSlide");
+    let current = 0;
+
+    function showSlide(index) {
+  slides.forEach((slide, i) => {
+    const isActive = i === index;
+
+    slide.classList.toggle("active", isActive);
+
+    // Find and control videos in the slide
+    const video = slide.querySelector("video");
+    if (video) {
+      if (isActive) {
+        video.currentTime = 0;
+        video.play();
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    }
+  });
+}
+
+
+    function nextSlide() {
+  if (current < slides.length - 1) {
+    current++;
+    showSlide(current);
+  } else {
+    // Last slide → redirect
+    window.location.href = "rounds.html";
+  }
+}
+
+
+    function prevSlide() {
+      current = Math.max(current - 1, 0);
+      showSlide(current);
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "ArrowRight" || e.key === " ") {
+        nextSlide();
+      } else if (e.key === "ArrowLeft") {
+        prevSlide();
+      }
+    });
+
+    document.addEventListener("click", () => {
+      nextSlide();
+    });
+
+    nextBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      nextSlide();
+    });
+
+    prevBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      prevSlide();
+    });
+    document.querySelectorAll(".toggle-img").forEach(img => {
+  img.addEventListener("click", (e) => {
+    const currentSrc = e.target.src;
+    const altSrc = e.target.dataset.alt;
+
+    // Swap the current src with the alt src
+    e.target.dataset.alt = currentSrc;
+    e.target.src = altSrc;
+  });
+});
+const grid = document.getElementById('grid');
+const popup = document.getElementById('popup');
+const popupImg = document.getElementById('popupImg');
+const popupText = document.getElementById('popupText');
+const overlay = document.getElementById('overlay');
+const startBtn = document.getElementById('startBtn');
+
+if (grid) {
+  const singerCount = 100;
+  const singers = [];
+
+  for (let i = 1; i <= singerCount; i++) {
+    const div = document.createElement('div');
+    div.classList.add('singer');
+    const img = document.createElement('img');
+    img.src = `images/singers/singer${i}.jpg`; // adjust path if needed
+    img.alt = `Singer ${i}`;
+    div.appendChild(img);
+    grid.appendChild(div);
+    singers.push(div);
+  }
+
+  function pickRandomSinger() {
+    let currentIndex = 0;
+    const minCycles = 1; // Minimum full loops
+const maxCycles = 2; // Maximum full loops
+
+const loops = Math.floor(Math.random() * (maxCycles - minCycles + 1)) + minCycles;
+const totalCycles = loops * singers.length + Math.floor(Math.random() * singers.length);
+
+    let cycles = 0;
+
+    let interval = setInterval(() => {
+      singers.forEach(s => s.classList.remove('highlight'));
+      singers[currentIndex].classList.add('highlight');
+      currentIndex = (currentIndex + 1) % singers.length;
+      cycles++;
+
+      if (cycles > totalCycles) {
+        clearInterval(interval);
+        const selected = (currentIndex - 1 + singers.length) % singers.length;
+        showPopup(singers[selected].querySelector('img').src);
+      }
+    }, 50);
+  }
+
+  function showPopup(imageSrc) {
+    popupImg.src = imageSrc;
+    popupText.textContent = "You got this singer!";
+    popup.classList.add('active');
+    overlay.classList.add('active');
+  }
+
+  overlay.addEventListener('click', () => {
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
+  });
+
+  startBtn.addEventListener('click', (e) => {
+  e.stopPropagation(); // Prevent slide advance
+  pickRandomSinger();
+});
+}
+
+  </script>
+</body>
+</html>

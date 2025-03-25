@@ -10,206 +10,239 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; font-family: 'Poppins', sans-serif; background: #f4f4f4; }
-
-    header {
-      background-color: #4682b4;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    .logo img {
-      width: 20%;
-      display: block;
-      margin: 0 auto;
-    }
-    @media (max-width: 768px) {
-      .logo img { width: 60%; }
-    }
-
-    .navbar {
-      background-color: #315f85;
-      padding: 15px 0;
-      text-align: center;
-    }
-    .navbar ul {
-      list-style: none;
-      display: inline-block;
-    }
-    .navbar ul li {
-      display: inline;
-      margin: 0 15px;
-    }
-    .navbar ul li a {
-      color: white;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 1.1rem;
-    }
-    .navbar ul li a:hover {
-      background-color: #4682b4;
-      border-radius: 5px;
-      padding: 5px 10px;
-    }
-
-    .start-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 100px;
-      gap: 20px;
-      min-height: 30vh;
-    }
-    .start-container button {
-      padding: 12px 24px;
-      font-size: 1.1rem;
-      background-color: #315f85;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .category-display, .question-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 150px);
-      text-align: center;
-      
-    }
-.question-container{
-  background: url(/images/bg-top.png) no-repeat;
-
+ /* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-    .category-display.active {
-      animation: popReveal 1s ease forwards, shake 0.6s ease 1s;
-    }
-    body.reveal-bg { background-color: #fff59d; transition: background-color 0.5s ease; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
+  color: #fff;
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
+}
+body {
+  transition: background-color 0.5s ease;
+}
 
-    .category-box {
-      background: #fff;
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      font-size: 2rem;
-      font-weight: bold;
-      margin-top: -150px;
-    }
+/* Header */
+header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+.logo img {
+  width: 20%;
+  display: block;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .logo img {
+    width: 60%;
+  }
+}
 
-    .question-inner {
+/* Navbar */
+.navbar {
+  background-color: #1b2a45;
+  padding: 15px 0;
+  text-align: center;
+}
+.navbar ul {
+  list-style: none;
+  display: inline-block;
+}
+.navbar ul li {
+  display: inline;
+  margin: 0 15px;
+}
+.navbar ul li a {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+.navbar ul li a:hover {
+  background-color: #3b7bbf;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+/* Start Screen */
+.start-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 320px; /* 👈 Adjust as needed to fit your content */
+  margin-top: 100px;
+  min-height: 30vh;
+}
+.start-container button {
+  padding: 14px 30px;
+  font-size: 1.2rem;
+  background: #3b7bbf;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+}
+.start-container button:hover {
+  background: #4682b4;
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(255,255,255,0.2);
+}
+
+/* Category Display */
+.category-display {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+  margin-top: 100px;
+
+}
+.category-box {
+  background: #ffffff10;
+  padding: 40px;
+  border-radius: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  backdrop-filter: blur(10px);
+  border: 2px solid #ffffff20;
+  box-shadow: 0 0 25px rgba(255,255,255,0.05);
+}
+.category-display.active {
+  animation: popReveal 1s ease forwards, shake 0.6s ease 1s;
+}
+
+/* Question Container */
+.question-container {
+  background: transparent;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 150px);
+  margin-top: -70px;
+  padding: 40px 20px;
+}
+.question-inner {
+  background: #ffffff10;
+  padding: 30px;
+  border-radius: 20px;
   max-width: 600px;
   width: 100%;
   text-align: center;
-        margin-top: -80px;
-
+  backdrop-filter: blur(8px);
+  border: 2px solid #ffffff20;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
 }
-
 .question-text {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  color: #333;
+  color: #fff;
   margin-bottom: 30px;
-  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
 }
 
-/* OPTION BUTTONS */
+/* Timer */
+.timer {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  background: #315f85;
+  padding: 12px 24px;
+  border-radius: 50px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 12px rgba(255,255,255,0.1);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px #000;
+}
+
+/* Options */
 .options {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 100%;
   max-width: 500px;
   margin: 0 auto;
 }
 .option {
-  background: #fff;
-  border: 2px solid #315f85;
-  border-radius: 50px;
-  padding: 14px 20px;
-  font-size: 1.1rem;
+  background: #ffffff15;
+  border: 2px solid #3b7bbf;
+  border-radius: 40px;
+  padding: 16px;
+  font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
+  color: #fff;
   transition: all 0.3s ease;
   text-align: center;
-  color: #315f85;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
-
 .option:hover {
-  background: #315f85;
+  background: #4682b4;
   color: #fff;
 }
-
 .option.selected {
   background-color: #ffeb3b;
   color: #000;
   border-color: #ffeb3b;
 }
-
 .option.correct {
   background-color: #4CAF50;
   color: white;
-  border-color: #4CAF50;
 }
-
 .option.wrong {
   background-color: #f44336;
   color: white;
-  border-color: #f44336;
 }
-.timer {
-  font-size: 1.6rem;
+
+/* Buttons */
+.button-group button,
+#revealAnswerBtn, #askAnotherBtn, #resetStorageBtn {
+  margin: 20px auto;
+  padding: 12px 24px;
+  font-size: 1rem;
+  background: #3b7bbf;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   font-weight: bold;
-  color: #fff;
-  background: linear-gradient(135deg, #3b7bbf, #254a6d);
-  padding: 14px 28px;
-  border-radius: 40px;
-  margin-bottom: 25px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2),
-              0 0 30px rgba(49, 95, 133, 0.4);
-  font-family: 'Courier New', Courier, monospace;
-  letter-spacing: 1px;
-  text-shadow: 1px 1px 2px #000;
-  transition: all 0.3s ease;
+  display: none;
+  transition: 0.3s ease;
+}
+.button-group button:hover,
+#revealAnswerBtn:hover,
+#askAnotherBtn:hover,
+#resetStorageBtn:hover {
+  background: #4682b4;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(255,255,255,0.2);
 }
 
-    #revealAnswerBtn, #askAnotherBtn, #resetStorageBtn {
-      margin: 20px auto;
-      padding: 10px 20px;
-      font-size: 1rem;
-      background: #315f85;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      display: none;
-    }
-
-    @keyframes popReveal {
-      0% { transform: scale(0.5); opacity: 0; }
-      50% { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); }
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-10px); }
-      50% { transform: translateX(10px); }
-      75% { transform: translateX(-5px); }
-    }
-    .button-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-  gap: 15px;
+/* Animations */
+@keyframes popReveal {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-5px); }
 }
 
   </style>
@@ -273,22 +306,66 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
   
-    const categories = ["This or That", "Odd One Out", "Battle of the Bests"];
+    const categories = ["This or That", "Odd One Out"];
     const questions = {
-      "This or That": {
-        question: "Whose voice is more iconic?",
-        options: ["Adele", "Whitney Houston"]
-      },
-      "Odd One Out": {
-        question: "Eliminate one of their TV shows",
-        options: ["Selena Gomez", "Ariana Grande", "Miley Cyrus"]
-      },
-      "Battle of the Bests": {
-        question: "Whose side are you on?",
-        options: ["Kendrick Lamar", "Drake"]
-      }
-    };
-  
+  "This or That": [
+    {
+      question: "Whose voice is more iconic?",
+      options: ["Adele", "Whitney Houston"]
+    },
+    {
+      question: "Who is the better E-Board member?",
+      options: ["President Jade", "EVP Corey"]
+    },
+    {
+      question: "Who’s the bigger pop star?",
+      options: ["Taylor Swift", "Beyoncé"]
+    },
+    {
+      question: "Which genre do you prefer?",
+      options: ["Pop", "Rap"]
+    },
+    {
+      question: "Better heartbreak anthem artist?",
+      options: ["Olivia Rodrigo", "Billie Eilish"]
+    },
+    {
+      question: "Whose collabs go harder?",
+      options: ["Rihanna", "Nicki Minaj"]
+    },
+    {
+      question: "Who had the better Disney era?",
+      options: ["Miley Cyrus", "Selena Gomez"]
+    }
+  ],
+  "Odd One Out": [
+    {
+      question: "Remove one Disney Channel star",
+      options: ["Olivia Rodrigo", "Sabrina Carpenter", "Zendaya"]
+    },
+    {
+      question: "Remove one boy band",
+      options: ["Big Time Rush", "One Direction", "Jonas Brothers"]
+    },
+    {
+      question: "Remove one Spring Concert artist",
+      options: ["Ty Dolla $ign", "Lil Yachty", "Swae Lee"]
+    },
+    {
+      question: "Remove one Super Bowl Halftime headliner",
+      options: ["Rihanna", "The Weeknd", "Kendrick Lamar"]
+    },
+    {
+      question: "Remove one K-Pop group",
+      options: ["BLACKPINK", "NewJeans", "BTS"]
+    },
+    {
+      question: "Remove one music festival",
+      options: ["Coachella", "Lollapalooza", "Rolling Loud"]
+    }
+  ]
+};
+
     const startBtn = document.getElementById("startBtn");
     const resetBtn = document.getElementById("resetStorageBtn");
     const categoryDisplay = document.querySelector(".category-display");
@@ -304,25 +381,45 @@
     let timer;
     let timeLeft = 20;
     let currentCategory = "";
-    const askedQuestions = JSON.parse(localStorage.getItem("askedQuestions")) || [];
+    const askedQuestions = JSON.parse(localStorage.getItem("askedQuestions")) || {
+  "This or That": [],
+  "Odd One Out": []
+};
   
-    function getRandomCategory() {
-      let available = categories.filter(cat => !askedQuestions.includes(cat));
-      if (available.length === 0) {
-        alert("You've seen all categories! Starting over.");
-        localStorage.removeItem("askedQuestions");
-        askedQuestions.length = 0;
-        available = [...categories];
-      }
-      return available[Math.floor(Math.random() * available.length)];
-    }
-  
+function getRandomCategory() {
+  const availableCategories = categories.filter(cat => {
+    return askedQuestions[cat].length < questions[cat].length;
+  });
+
+  if (availableCategories.length === 0) {
+    // Reset all
+    categories.forEach(cat => askedQuestions[cat] = []);
+    localStorage.setItem("askedQuestions", JSON.stringify(askedQuestions));
+    return getRandomCategory(); // Retry after reset
+  }
+
+  return availableCategories[Math.floor(Math.random() * availableCategories.length)];
+}
+
+function getNextQuestion(category) {
+  const usedIndexes = askedQuestions[category];
+  const availableQuestions = questions[category]
+    .map((q, i) => ({ q, i }))
+    .filter(({ i }) => !usedIndexes.includes(i));
+
+  const { q, i } = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+  askedQuestions[category].push(i);
+  localStorage.setItem("askedQuestions", JSON.stringify(askedQuestions));
+  return q;
+}
+
     function resetState() {
       selectedOption = null;
       clearInterval(timer);
       revealAnswerBtn.style.display = "none";
       askAnotherBtn.style.display = "none";
       timerDisplay.textContent = "";
+      document.body.style.backgroundColor = ""; // reset to original (gradient will apply)
     }
   
     function showCategory(category) {
@@ -342,7 +439,7 @@
     }
   
     function showQuestion(category) {
-      const q = questions[category];
+      const q = getNextQuestion(category);
       questionText.textContent = q.question;
       optionsList.innerHTML = "";
       questionContainer.style.display = "flex";
@@ -388,47 +485,48 @@ timerDisplay.textContent = formatted;
       const snap = await getDoc(ref);
       return snap.exists() ? snap.data() : {};
     }
-  
     revealAnswerBtn.addEventListener("click", async () => {
-      if (!selectedOption && timeLeft > 0) return;
-      revealAnswerBtn.style.display = "none";
+  if (!selectedOption && timeLeft > 0) return;
+  revealAnswerBtn.style.display = "none";
 
-      const voteData = await fetchVotes(currentCategory);
-      const totalVotes = Object.values(voteData).reduce((sum, val) => sum + val, 0);
-  
-      // Determine top-voted option
-      let topOption = null;
-      let maxVotes = 0;
-      for (const [opt, count] of Object.entries(voteData)) {
-        if (count > maxVotes) {
-          maxVotes = count;
-          topOption = opt;
-        }
+  const voteData = await fetchVotes(currentCategory);
+  const totalVotes = Object.values(voteData).reduce((sum, val) => sum + val, 0);
+
+  // Determine top-voted option
+  let topOption = null;
+  let maxVotes = 0;
+  for (const [opt, count] of Object.entries(voteData)) {
+    if (count > maxVotes) {
+      maxVotes = count;
+      topOption = opt;
+    }
+  }
+
+  document.querySelectorAll(".option").forEach(optEl => {
+    const label = optEl.textContent;
+    const isTopVoted = label === topOption;
+    const votes = voteData[label] || 0;
+    const percent = totalVotes ? ((votes / totalVotes) * 100).toFixed(1) : 0;
+
+    if (label === selectedOption) {
+      optEl.classList.remove("selected");
+      if (isTopVoted) {
+        optEl.classList.add("correct");
+        document.body.style.backgroundColor = "#2e7d32"; // green
+      } else {
+        optEl.classList.add("wrong");
+        document.body.style.backgroundColor = "#c62828"; // red
       }
-  
-      document.querySelectorAll(".option").forEach(optEl => {
-        const label = optEl.textContent;
-        const isTopVoted = label === topOption;
-        const votes = voteData[label] || 0;
-        const percent = totalVotes ? ((votes / totalVotes) * 100).toFixed(1) : 0;
-  
-        if (label === selectedOption) {
-          optEl.classList.remove("selected");
-          optEl.classList.add(isTopVoted ? "correct" : "wrong");
-        } else if (isTopVoted) {
-          optEl.classList.add("correct");
-        }
-  
-        optEl.innerHTML += `<br><small>${votes} votes (${percent}%)</small>`;
-      });
-  
-      if (!askedQuestions.includes(currentCategory)) {
-        askedQuestions.push(currentCategory);
-        localStorage.setItem("askedQuestions", JSON.stringify(askedQuestions));
-      }
-  
-      askAnotherBtn.style.display = "block";
-    });
+    } else if (isTopVoted) {
+      optEl.classList.add("correct");
+    }
+
+    optEl.innerHTML += `<br><small>${votes} votes (${percent}%)</small>`;
+  });
+
+  askAnotherBtn.style.display = "block"; // ✅ always shows now
+});
+
   
     askAnotherBtn.addEventListener("click", () => {
       const next = getRandomCategory();
