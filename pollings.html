@@ -448,19 +448,21 @@ function getNextQuestion(category) {
       const formatted = timeLeft < 10 ? `0:0${timeLeft}` : `0:${timeLeft}`;
 timerDisplay.textContent = formatted;
   
-      q.options.forEach(opt => {
-        const btn = document.createElement("div");
-        btn.classList.add("option");
-        btn.textContent = opt;
-        btn.addEventListener("click", () => {
-          if (selectedOption) return;
-          btn.classList.add("selected");
-          selectedOption = opt;
-          clearInterval(timer);
-          revealAnswerBtn.style.display = "block";
-        });
-        optionsList.appendChild(btn);
-      });
+q.options.forEach(opt => {
+  const btn = document.createElement("div");
+  btn.classList.add("option");
+  btn.textContent = opt;
+  btn.setAttribute("data-label", opt); // <- store original label for later comparison
+  btn.addEventListener("click", () => {
+    if (selectedOption) return;
+    btn.classList.add("selected");
+    selectedOption = opt;
+    clearInterval(timer);
+    revealAnswerBtn.style.display = "block";
+  });
+  optionsList.appendChild(btn);
+});
+
   
       startTimer();
     }
@@ -479,20 +481,20 @@ timerDisplay.textContent = formatted;
   }, 1000);
 }
 
+async function fetchVotes(category, questionText) {
+  const ref = doc(db, "votes", `${category}::${questionText}`);
+  const snap = await getDoc(ref);
+  return snap.exists() ? snap.data() : {};
+}
 
-    async function fetchVotes(category) {
-      const ref = doc(db, "votes", category);
-      const snap = await getDoc(ref);
-      return snap.exists() ? snap.data() : {};
-    }
     revealAnswerBtn.addEventListener("click", async () => {
   if (!selectedOption && timeLeft > 0) return;
   revealAnswerBtn.style.display = "none";
 
-  const voteData = await fetchVotes(currentCategory);
+  const voteData = await fetchVotes(currentCategory, questionText.textContent);
   const totalVotes = Object.values(voteData).reduce((sum, val) => sum + val, 0);
 
-  // Determine top-voted option
+  // Find top-voted option
   let topOption = null;
   let maxVotes = 0;
   for (const [opt, count] of Object.entries(voteData)) {
@@ -502,14 +504,16 @@ timerDisplay.textContent = formatted;
     }
   }
 
+  // Reveal feedback
   document.querySelectorAll(".option").forEach(optEl => {
-    const label = optEl.textContent;
-    const isTopVoted = label === topOption;
-    const votes = voteData[label] || 0;
+    const originalLabel = optEl.getAttribute("data-label"); // new: use a clean stored value
+    const isTopVoted = originalLabel === topOption;
+    const votes = voteData[originalLabel] || 0;
     const percent = totalVotes ? ((votes / totalVotes) * 100).toFixed(1) : 0;
 
-    if (label === selectedOption) {
-      optEl.classList.remove("selected");
+    optEl.classList.remove("selected");
+
+    if (originalLabel === selectedOption) {
       if (isTopVoted) {
         optEl.classList.add("correct");
         document.body.style.backgroundColor = "#2e7d32"; // green
@@ -521,13 +525,14 @@ timerDisplay.textContent = formatted;
       optEl.classList.add("correct");
     }
 
-    optEl.innerHTML += `<br><small>${votes} votes (${percent}%)</small>`;
+    optEl.innerHTML = `${originalLabel}<br><small>${votes} votes (${percent}%)</small>`;
   });
 
-  askAnotherBtn.style.display = "block"; // ✅ always shows now
+  askAnotherBtn.style.display = "block";
 });
 
-  
+
+
     askAnotherBtn.addEventListener("click", () => {
       const next = getRandomCategory();
       resetState();

@@ -110,6 +110,7 @@
     const optionsEl = document.getElementById("options");
     const categoryTitleEl = document.getElementById("categoryTitle");
     const container = document.getElementById("voteContainer");
+    const skipBtn = document.getElementById("skipBtn");
 
     startBtn.addEventListener("click", () => {
       const name = document.getElementById("playerName").value.trim();
@@ -139,38 +140,55 @@
         const btn = document.createElement("button");
         btn.className = "vote-btn";
         btn.textContent = opt;
-        btn.onclick = () => submitVote(q.category, opt, btn);
+        btn.onclick = () => submitVote(q.category, q.question, opt, btn);
         optionsEl.appendChild(btn);
       });
+      skipBtn.disabled = false;
+
     }
+    skipBtn.addEventListener("click", () => {
+  skipBtn.disabled = true;
 
-    async function submitVote(category, option, btnElement) {
-      const ref = doc(db, "votes", category);
-      await runTransaction(db, async (tx) => {
-        const snap = await tx.get(ref);
-        const data = snap.exists() ? snap.data() : {};
-        const count = data[option] || 0;
-        tx.set(ref, { ...data, [option]: count + 1 });
-      });
+  const allButtons = document.querySelectorAll(".vote-btn");
+  allButtons.forEach(btn => btn.disabled = true);
 
-      btnElement.style.backgroundColor = "#4CAF50";
-      btnElement.style.color = "#fff";
-
-      const allButtons = document.querySelectorAll(".vote-btn");
-      allButtons.forEach(btn => btn.disabled = true);
-
-      setTimeout(() => {
-        currentIndex++;
-        if (currentIndex < questions.length) {
-          showQuestion(currentIndex);
-        } else {
-          container.innerHTML = `
-            <h2 style="color: #4CAF50;">✅ Thanks for voting!</h2>
-            <p style="margin-top: 10px;">Your responses were recorded.</p>
-          `;
-        }
-      }, 1000);
+  setTimeout(() => {
+    currentIndex++;
+    if (currentIndex < questions.length) {
+      showQuestion(currentIndex);
+    } else {
+      container.innerHTML = `
+        <h2 style="color: #4CAF50;">✅ Thanks for voting!</h2>
+        <p style="margin-top: 10px;">Your responses were recorded.</p>
+      `;
     }
+  }, 800);
+});
+async function submitVote(category, question, option, btnElement) {
+  const ref = doc(db, "votes", `${category}::${question}`);
+  await runTransaction(db, async (tx) => {
+    const snap = await tx.get(ref);
+    const data = snap.exists() ? snap.data() : {};
+    const count = data[option] || 0;
+    tx.set(ref, { ...data, [option]: count + 1 });
+  });
+
+  btnElement.style.backgroundColor = "#4CAF50";
+  btnElement.style.color = "#fff";
+
+  setTimeout(() => {
+    currentIndex++;
+    if (currentIndex < questions.length) {
+      showQuestion(currentIndex);
+    } else {
+      container.innerHTML = `
+        <h2 style="color: #4CAF50;">✅ Thanks for voting!</h2>
+        <p style="margin-top: 10px;">Your responses were recorded.</p>
+      `;
+    }
+  }, 1000);
+}
+
   </script>
 
   <style>
@@ -351,6 +369,8 @@ header {
       <h2 id="categoryTitle"></h2>
       <p id="questionText"></p>
       <div id="options"></div>
+<button id="skipBtn" class="vote-btn" style="background: #888; margin-top: 20px;">Skip</button>
+
     </div>
   </div>
 
