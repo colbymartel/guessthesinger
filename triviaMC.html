@@ -8,114 +8,150 @@
   <link rel="icon" href="/favicon.ico">
   <style>
     /* General Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: #f4f4f4;
-      padding-bottom: 40px;
-    }
-    header {
-      background-color: #4682b4;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      font-size: 2rem;
-    }
-    .header .logo img {
-      width: 20%;
-      margin-bottom: 10px;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-    @media (max-width: 768px) {
-      .header .logo img { width: 60%; }
-    }
-    /* Start Screen */
-    .start-container {
-      max-width: 600px;
-      margin: 100px auto 0;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .login-input {
-      width: 80%;
-      padding: 10px;
-      font-size: 1.2rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-    .start-btn {
-      padding: 10px 20px;
-      font-size: 1.2rem;
-      background-color: #4682b4;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-right: 10px;
-    }
-    .start-btn:hover {
-      background-color: #315f85;
-    }
-    /* Quiz Container */
-    .quiz-container {
-      display: none;
-      max-width: 600px;
-      margin: 30px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .progress {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-      color: #4682b4;
-    }
-    .timer {
-      font-size: 1.4rem;
-      color: #4682b4;
-      margin-bottom: 15px;
-    }
-    .question-text {
-      font-size: 1.6rem;
-      color: #4682b4;
-      margin-bottom: 20px;
-    }
-    /* Enhanced Multiple Choice Options - Matching start-btn style */
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .option {
-      padding: 10px 20px;
-      font-size: 1.2rem;
-      background-color: #4682b4;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .option:hover {
-      background-color: #315f85;
-    }
-    .result {
-      font-size: 1.4rem;
-      color: #4682b4;
-      margin-top: 20px;
-    }
+  /* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
+  color: #fff;
+  padding-bottom: 40px;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 25px 0;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+header .logo img {
+  width: 50%;
+  max-width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Start Screen */
+.start-container {
+  max-width: 600px;
+  margin: 80px auto 0;
+  background: #254a6d;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+.start-container p {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.login-input {
+  width: 80%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 2px solid #4682b4;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.start-btn, .option {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  background: #27ae60;
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+}
+
+.start-btn:hover, .option:hover {
+  background: #1e8449;
+  transform: scale(1.05);
+}
+
+/* Quiz Container */
+.quiz-container {
+  display: none;
+  max-width: 600px;
+  margin: 40px auto;
+  background: #254a6d;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.progress {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #f1c40f;
+  margin-bottom: 10px;
+}
+
+.timer {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #3b7bbf, #254a6d);
+  padding: 14px 28px;
+  border-radius: 40px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2),
+              0 0 30px rgba(49, 95, 133, 0.4);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Question */
+.question-text {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px #000;
+}
+
+/* Multiple Choice Options */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.option {
+  background-color: #3b7bbf;
+  border: 3px solid white;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.option:hover {
+  background-color: #234d7d;
+}
+
+/* Result */
+.result {
+  font-size: 1.4rem;
+  color: #00ffcc;
+  margin-top: 20px;
+}
+
   </style>
 </head>
 <body>
@@ -128,17 +164,15 @@
   <!-- Start/Login Screen -->
   <div class="start-container" id="startContainer">
     <p style="margin-bottom: 10px; font-size: 1.2rem; color: #4682b4;">
-      A 2-minute timer will start when you click "Start Quiz".
     </p>
     <input type="text" id="userName" class="login-input" placeholder="Enter your name">
     <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
-    <button class="start-btn" onclick="resetLocalStorage()">Reset Local Storage</button>
   </div>
 
   <!-- Quiz Container -->
   <div class="quiz-container" id="quizContainer">
     <div class="progress" id="progressText">Question 1 of 20</div>
-    <div class="timer" id="timerText">Time left: 02:00</div>
+    <div class="timer" id="timerText">02:00</div>
     <div class="question-text" id="questionText">Question will appear here</div>
     <div class="options" id="options">
       <!-- Option buttons will be inserted here dynamically -->
@@ -275,7 +309,7 @@
     let timerInterval = null;
     
     // Total time (2 minutes)
-    const totalTime = 60; // seconds
+    const totalTime = 120; // seconds
     
     // DOM Elements
     const progressText = document.getElementById("progressText");
@@ -301,11 +335,6 @@
         alert("Please enter your name to start.");
         return;
       }
-      if (localStorage.getItem("played")) {
-        alert("You have already played this quiz on this device!");
-        return;
-      }
-      localStorage.setItem("currentUser", userName);
       
       // Optionally, log user and create quiz session using Firestore here...
       
@@ -320,10 +349,10 @@
     let timeRemaining = totalTime;
     
     function startTimer() {
-      timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+      timerText.textContent = `${formatTime(timeRemaining)}`;
       timerInterval = setInterval(() => {
         timeRemaining--;
-        timerText.textContent = `Time left: ${formatTime(timeRemaining)}`;
+        timerText.textContent = `${formatTime(timeRemaining)}`;
         if (timeRemaining <= 0) {
           clearInterval(timerInterval);
           endQuiz();
@@ -335,7 +364,7 @@
       const currentQ = triviaQuestions[currentQuestionIndex];
       if (selectedOption === currentQ.correctAnswer) {
         correctCount++;
-        resultText.style.color = "green";
+        resultText.style.color = "white";
         resultText.textContent = "Correct!";
         currentQuestionIndex++;
         setTimeout(() => {
@@ -382,35 +411,86 @@
     }
     
     function endQuiz() {
-      clearInterval(timerInterval);
-      questionText.innerHTML = `<strong>Quiz Completed!</strong><br>You got ${correctCount} out of ${triviaQuestions.length} correct.`;
-      optionsDiv.innerHTML = "";
-      resultText.textContent = "";
-      timerText.style.display = "none";
-      progressText.style.display = "none";
-      localStorage.setItem("played", "true");
-      
-      // Update quiz session in Firestore using a different ID "choicecount"
-      updateFirebaseChoiceCount();
-    }
-    
-    function updateFirebaseChoiceCount() {
-      const userName = localStorage.getItem("currentUser") || "Anonymous";
-      db.collection("quizSessions").doc("choicecount").set({
-        user: userName,
-        choiceCount: correctCount,
-        timestamp: new Date()
-      })
-      .then(() => console.log("Firebase updated with choicecount"))
-      .catch(error => console.error("Error updating Firebase:", error));
-    }
-    
-    function resetLocalStorage() {
-      localStorage.clear();
-      alert("Local storage has been reset.");
-      // Optionally, reload the page.
-    }
+  clearInterval(timerInterval);
+  const endTime = new Date();
+  const timeTaken = Math.floor((endTime - startTime) / 1000);
+
+  questionText.innerHTML = `<strong>Quiz Completed!</strong><br>You got ${correctCount} out of ${triviaQuestions.length} correct.`;
+  optionsDiv.innerHTML = "";
+  resultText.textContent = "";
+  timerText.style.display = "none";
+  progressText.style.display = "none";
+
+  const userName = document.getElementById("userName").value.trim() || "Anonymous";
+
+  // 🔥 Add a new record for each quiz attempt
+  db.collection("quizSessions").add({
+    userName: userName,
+    correctCount: correctCount,
+    timeTaken: timeTaken,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    console.log("Stats saved for leaderboard");
+  }).catch((error) => {
+    console.error("Error saving to leaderboard:", error);
+  });
+}
+
+    function closeRules() {
+  document.getElementById("rulesOverlay").style.display = "none";
+}
+
   </script>
+  <!-- Rules Popup -->
+<div id="rulesOverlay" style="
+position: fixed;
+top: 0; left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.85);
+z-index: 9999;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+animation: fadeIn 0.4s ease;
+">
+<div style="
+  background: #1e3a5f;
+  color: white;
+  padding: 40px 30px;
+  border-radius: 20px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(255,255,255,0.15);
+  font-family: 'Poppins', sans-serif;
+">
+  <h2 style="color: #f1c40f; margin-bottom: 20px; font-size: 2rem;">🎵 How to Play</h2>
   
+  <ul style="list-style: none; padding: 0; margin-bottom: 25px; text-align: left;">
+    <li style="margin-bottom: 12px;">🧠 <strong>Read the Question:</strong> You'll see a multiple choice question about music.</li>
+    <li style="margin-bottom: 12px;">✅ <strong>Choose Your Answer:</strong> Click the option you think is correct.</li>
+    <li style="margin-bottom: 12px;">⏳ <strong>Watch the Clock:</strong> You have <strong>2 minutes</strong> total to answer as many questions as you can.</li>
+    <li style="margin-bottom: 12px;">❌ <strong>Wrong Answer?</strong> You’ll lose 5 seconds and be prompted to try again. So choose carefully! No skips!</li>
+  </ul>
+
+ 
+  <button onclick="closeRules()" style="
+    margin-top: 15px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  ">🚀 OK, Let’s Go!</button>
+</div>
+</div>
+
 </body>
 </html>

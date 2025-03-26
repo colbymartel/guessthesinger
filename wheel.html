@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Spinning Wheel</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -120,6 +120,7 @@
   </div>
   <button id="spinButton">Spin</button>
   <div id="resultDisplay"></div>
+  <audio id="spinSound" src="wheel.mp3" preload="auto"></audio>
 
   <script>
 const sectors = [
@@ -127,12 +128,12 @@ const sectors = [
   { id: "sector-1", label: "Hint", type: "hint", color: "#FFD700" },
   { id: "sector-2", label: "Question", type: "question", color: "#4682b4" },
   { id: "sector-3", label: "Audience Elimination", type: "elimination", color: "#f44336" },
-  { id: "sector-4", label: "WIN $500", type: "money", color: "#4CAF50" },
+  { id: "sector-4", label: "Money Bag", type: "money", color: "#4CAF50" },
   { id: "sector-5", label: "Mystery Elimination", type: "elimination", color: "#f44336" },
   { id: "sector-6", label: "Question", type: "question", color: "#4682b4" },
   { id: "sector-7", label: "Hint", type: "hint", color: "#FFD700" },
   { id: "sector-8", label: "Question", type: "question", color: "#4682b4" },
-  { id: "sector-9", label: "Money Bag", type: "money", color: "#4CAF50" },
+  { id: "sector-9", label: "Concert Tickets", type: "money", color: "#4CAF50" },
   { id: "sector-10", label: "Question", type: "question", color: "#4682b4" },
   { id: "sector-11", label: "Instant Elimination", type: "elimination", color: "#f44336" },
   { id: "sector-12", label: "Hint X3", type: "question", color: "#FFD700" },
@@ -192,6 +193,10 @@ const sectors = [
   spinButton.disabled = true;
   resultDisplay.textContent = "";
 
+  const spinSound = document.getElementById("spinSound");
+  spinSound.currentTime = 0; // rewind to start
+  spinSound.play();
+
   const minSteps = 60;
   const maxSteps = 100;
   const totalSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
@@ -215,8 +220,9 @@ const sectors = [
   drawWheel(currentIndex);
   resultDisplay.textContent = "Result: " + sectors[currentIndex].label;
   spinButton.disabled = false;
+spinSound.pause();
+spinSound.currentTime = 0;
 }
-
 
     spinButton.addEventListener("click", spinWheel);
   </script>

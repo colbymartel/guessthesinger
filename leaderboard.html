@@ -14,7 +14,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', Arial, sans-serif;
   background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
   color: #fff;
   min-height: 100vh;
@@ -243,11 +243,11 @@ header img {
           return b.correct - a.correct; // higher score wins
         });
 
-        const top5 = data.slice(0, 5);
-        const max = Math.max(...top5.map(d => d.correct));
+        const top10 = data.slice(0, 10);
+        const max = Math.max(...top10.map(d => d.correct));
         html += `<div class='chart'>`;
 
-        top5.forEach((entry, i) => {
+        top10.forEach((entry, i) => {
           const percent = max > 0 ? (entry.correct / max * 100).toFixed(0) : 0;
           let medalClass = i === 0 ? "gold" : i === 1 ? "silver" : i === 2 ? "bronze" : "";
 

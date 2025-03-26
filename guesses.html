@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guess The Singer</title>
   <link rel="icon" href="/favicon.ico">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -121,11 +121,17 @@
       border-radius: 10px;
     }
     .singer-name {
-      margin-top: 8px;
-      font-weight: bold;
-      font-size: 1rem;
-      color: #333;
-    }
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+  white-space: nowrap;               /* Prevent wrapping */
+  overflow: hidden;                 /* Hide overflow text */
+  text-overflow: ellipsis;          /* Show "..." if too long */
+  display: block;
+  max-width: 100%;
+  font-size: clamp(0.7rem, 4vw, 1rem); /* Shrinks text if needed */
+}
+
     /* Popup Overlay */
     .overlay {
       display: none;
@@ -265,58 +271,57 @@
 
     // Array of singer objects (50 items)
     const singers = [
+    { name: "21 Savage", img: "images/21savage.jpg" },
+    { name: "Adele", img: "images/adele.jpg" },
+    { name: "Ariana Grande", img: "images/arianagrande.jpg" },
+    { name: "Bad Bunny", img: "images/badbunny.jpg" },
+    { name: "Benson Boone", img: "images/bensonboone.jpg" },
+    { name: "Beyoncé", img: "images/beyonce.jpg" },
+    { name: "Billie Eilish", img: "images/billieeilish.jpg" },
   { name: "Bruno Mars", img: "images/brunomars.jpg" },
-  { name: "The Weeknd", img: "images/theweeknd.jpg" },
-  { name: "Lady Gaga", img: "images/ladygaga.jpg" },
-  { name: "Ariana Grande", img: "images/arianagrande.jpg" },
-  { name: "Billie Eilish", img: "images/billieeilish.jpg" },
-  { name: "Taylor Swift", img: "images/taylorswift.jpg" },
-  { name: "Justin Bieber", img: "images/justinbieber.jpg" },
-  { name: "Ed Sheeran", img: "images/EdSheeran.jpg" },
-  { name: "Rihanna", img: "images/rihanna.jpg" },
-  { name: "Sabrina Carpenter", img: "images/sabrina.jpg" },
-  { name: "Sia", img: "images/sia.jpg" },
-  { name: "SZA", img: "images/sza.jpg" },
-  { name: "Kendrick Lamar", img: "images/kendricklamar.jpg" },
-  { name: "Eminem", img: "images/eminem.jpg" },
-  { name: "Drake", img: "images/drake.jpg" },
-  { name: "Mariah Carey", img: "images/mariahcarey.jpg" },
-  { name: "David Guetta", img: "images/davidguetta.jpg" },
-  { name: "Post Malone", img: "images/postmalone.jpg" },
-  { name: "Travis Scott", img: "images/travisscott.jpg" },
-  { name: "Bad Bunny", img: "images/badbunny.jpg" },
-  { name: "Kanye West", img: "images/kanyewest.jpg" },
-  { name: "Dua Lipa", img: "images/dualipa.jpg" },
-  { name: "ROSÉ", img: "images/rose.jpg" },
-  { name: "Shakira", img: "images/shakira.jpg" },
-  { name: "Katy Perry", img: "images/katyperry.jpg" },
-  { name: "Elton John", img: "images/eltonjohn.jpg" },
   { name: "Calvin Harris", img: "images/calvinharris.jpg" },
-  { name: "J Balvin", img: "images/jbalvin.jpg" },
-  { name: "Adele", img: "images/adele.jpg" },
-  { name: "Lana Del Rey", img: "images/lanadelrey.jpg" },
-  { name: "KAROL G", img: "images/karolg.jpg" },
-  { name: "Pitbull", img: "images/pitbull.jpg" },
-  { name: "Miley Cyrus", img: "images/mileycyrus.jpg" },
-  { name: "Future", img: "images/future.jpg" },
-  { name: "Beyoncé", img: "images/beyonce.jpg" },
-  { name: "Rauw Alejandro", img: "images/rauwalejandro.jpg" },
-  { name: "Playboi Carti", img: "images/playboicarti.jpg" },
-  { name: "Khalid", img: "images/khalid.jpg" },
+  { name: "Chris Brown", img: "images/chrisbrown.jpg" },
   { name: "Daddy Yankee", img: "images/daddyyankee.jpg" },
-  { name: "Sam Smith", img: "images/samsmith.jpg" },
-  { name: "Tyler, The Creator", img: "images/tylerthecreator.jpg" },
   { name: "Doja Cat", img: "images/dojacat.jpg" },
+  { name: "Drake", img: "images/drake.jpg" },
+  { name: "Dua Lipa", img: "images/dualipa.jpg" },
+  { name: "Ed Sheeran", img: "images/EdSheeran.jpg" },
+  { name: "Elton John", img: "images/eltonjohn.jpg" },
+  { name: "Eminem", img: "images/eminem.jpg" },
+  { name: "Future", img: "images/future.jpg" },
+  { name: "Harry Styles", img: "images/harrystyles.jpg" },
+  { name: "Hozier", img: "images/hozier.jpg" },
+  { name: "Justin Bieber", img: "images/justinbieber.jpg" },
+  { name: "Kanye West", img: "images/kanyewest.jpg" },
+  { name: "KAROL G", img: "images/karolg.jpg" },
+  { name: "Katy Perry", img: "images/katyperry.jpg" },
+  { name: "Kendrick Lamar", img: "images/kendricklamar.jpg" },
+  { name: "Khalid", img: "images/khalid.jpg" },
+  { name: "Lady Gaga", img: "images/ladygaga.jpg" },
+  { name: "Lana Del Rey", img: "images/lanadelrey.jpg" },
+  { name: "Lil Wayne", img: "images/lilwayne.jpg" },
+  { name: "Mariah Carey", img: "images/mariahcarey.jpg" },
+  { name: "Michael Bublé", img: "images/michaelbuble.jpg" },
+  { name: "Miley Cyrus", img: "images/mileycyrus.jpg" },
   { name: "Nicki Minaj", img: "images/nickiminaj.jpg" },
   { name: "Olivia Rodrigo", img: "images/oliviarodrigo1.jpg" },
-  { name: "Chris Brown", img: "images/chrisbrown.jpg" },
-  { name: "Michael Bublé", img: "images/michaelbuble.jpg" },
+  { name: "Pitbull", img: "images/pitbull.jpg" },
+  { name: "Playboi Carti", img: "images/playboicarti.jpg" },
+  { name: "Post Malone", img: "images/postmalone.jpg" },
+  { name: "Rauw Alejandro", img: "images/rauwalejandro.jpg" },
+  { name: "Rihanna", img: "images/rihanna.jpg" },
+  { name: "ROSÉ", img: "images/rose.jpg" },
+  { name: "Sabrina Carpenter", img: "images/sabrina.jpg" },
+  { name: "Sam Smith", img: "images/samsmith.jpg" },
+  { name: "Shakira", img: "images/shakira.jpg" },
   { name: "Shawn Mendes", img: "images/shawnmendes.jpg" },
-  { name: "Lil Wayne", img: "images/lilwayne.jpg" },
-  { name: "Hozier", img: "images/hozier.jpg" },
-  { name: "Harry Styles", img: "images/harrystyles.jpg" },
-  { name: "Benson Boone", img: "images/bensonboone.jpg" },
-  { name: "21 Savage", img: "images/21savage.jpg" },
+  { name: "Sia", img: "images/sia.jpg" },
+  { name: "SZA", img: "images/sza.jpg" },
+  { name: "Taylor Swift", img: "images/taylorswift.jpg" },
+  { name: "The Weeknd", img: "images/theweeknd.jpg" },
+  { name: "Travis Scott", img: "images/travisscott.jpg" },
+  { name: "Tyler, The Creator", img: "images/tylerthecreator.jpg" },
+
   { name: "Teddy Swims", img: "images/teddyswims.jpg" },
   { name: "Camila Cabello", img: "images/camilacabello.jpg" },
   { name: "Britney Spears", img: "images/britneyspears.jpg" },
@@ -478,9 +483,8 @@
   { name: "Noah Cyrus", img: "images/noahcyrus.jpg" },
   { name: "Nelly", img: "images/nelly.jpg" },
   { name: "Roddy Ricch", img: "images/roddyricch.jpg" },
-  { name: "girl in red", img: "images/girlinred.jpg" },
+  { name: "girl in red", img: "images/girlinred.png" },
   { name: "Julia Michaels", img: "images/juliamichaels.jpg" },
-  { name: "Bon Iver", img: "images/boniver.jpg" },
   { name: "Quavo", img: "images/quavo.jpg" },
   { name: "David Kushner", img: "images/davidkushner.jpg" },
   { name: "Cher", img: "images/cher.jpg" },
