@@ -807,7 +807,7 @@ background-color: #4682b4;
   
   <!-- Main Section -->
   <main class="main">
-    <div class="mystery-title">Game #112</div>
+    <div class="mystery-title">Game #116</div>
 
     <!-- Questions Progress Bar -->
     <div class="questions-progress-wrapper">
@@ -956,8 +956,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">AURORA</strong>!</p>
-      <img src="../images/aurora.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Alexander Stewart</strong>!</p>
+      <img src="../images/alexanderstewart.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
       <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
@@ -975,8 +975,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name-failure">AURORA</strong>!</p>
-      <img src="../images/aurora.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Today's singer was <strong id="correct-artist-name-failure">Alexander Stewart</strong>!</p>
+      <img src="../images/alexanderstewart.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
 <p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
 <p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
@@ -1037,9 +1037,9 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-  "Hint 1: They began dancing and songwriting at age six.",
-        "Hint 2: She shares a name with a Disney princess.",
-        "Hint 3: Her name starts with 'A' and her most popular song is 'Runaway'."
+      "Hint 1: Some of their most popular YouTube videos are covers.",
+        "Hint 2: He was born in Toronto, Canada.",
+        "Hint 3: His initials are 'A' and 'S'."
       ];
 
 </script>
@@ -1067,7 +1067,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day112"; // replace with the current game id
+    const gameId = "day116"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
@@ -1132,7 +1132,7 @@ function viewCelebrationFromRecord() {
         // Check the result status. If "fail", populate failure popup; else, celebration popup.
         if (data.result && data.result === "fail") {
           // Populate failure popup elements.
-          document.getElementById("correct-artist-name-failure").textContent = "AURORA";
+          document.getElementById("correct-artist-name-failure").textContent = "Alexander Stewart";
           document.getElementById("failure-questions-used").textContent = data.questionsUsed;
           document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
           // Assume your failure popup has an element with id "failure-time" for duration.
@@ -1149,7 +1149,7 @@ function viewCelebrationFromRecord() {
           }, 10);
         } else {
           // Populate celebration popup elements.
-          document.getElementById("correct-artist-name").textContent = "AURORA";
+          document.getElementById("correct-artist-name").textContent = "Alexander Stewart";
           document.getElementById("questions-used-popup").textContent = data.questionsUsed;
           document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
           document.getElementById("celebration-time").innerHTML =
@@ -1177,8 +1177,8 @@ function viewCelebrationFromRecord() {
 
       // Predefined question responses
       const responses = {
-        "is this a male artist?": "No, they do not identify as male.",
-    "is this a female artist?": "Yes, they do identify as female.",
+        "is this a male artist?": "Yes, they do identify as male.",
+    "is this a female artist?": "No, they do not identify as female.",
     "are they still alive?": "Yes, they are still alive.",
     "are they over 30 years old?": "No, they are under 30.",
     "are they over 40 years old?": "No, they are under 40.",
@@ -1191,12 +1191,12 @@ function viewCelebrationFromRecord() {
     "are they touring?": "No, they are not currently touring.",
     "are they married?": "No, they are not married.",
     "divorced?": "No, they are not divorced.",
-    "LGBTQ?": "Yes, they have publicly identified as LGBTQ+.",
+    "LGBTQ?": "No, they have not publicly identified as LGBTQ+.",
 
-    "are they from North America?": "No, they are not from North America.",
+    "are they from North America?": "Yes, they are from North America.",
     "are they from the United States?": "No, they are not from the United States.",
-    "are they from Canada?": "No, they are not from Canada.",
-    "are they from Europe?": "Yes, they are from Europe.",
+    "are they from Canada?": "Yes, they are from Canada.",
+    "are they from Europe?": "No, they are not from Europe.",
     "are they from Asia?": "No, they are not from Asia.",
     "are they from South America?": "No, they are not from South America.",
     "are they from Australia?": "No, they are not from Australia.",
@@ -1208,7 +1208,7 @@ function viewCelebrationFromRecord() {
     "are they of Latin American descent?": "No, they are not of Latin American descent.",
     "are they of mixed ethnicity?": "No, they are not of mixed ethnicity.",
 
-    "different languages?": "Yes, they perform songs in multiple languages.",
+    "different languages?": "No, they perform songs in one language.",
     "are they Spanish?": "No, they do not perform in Spanish.",
     "do they perform pop music?": "Yes, their music is a type of pop.",
     "do they perform rap music?": "No, they are not known for rap music.",
@@ -1217,31 +1217,31 @@ function viewCelebrationFromRecord() {
     "do they perform country music?": "No, they do not perform country music.",
     "do they perform jazz music?": "No, they do not perform jazz music.",
     "do they perform party music?": "No, their songs are not suited for parties.",
-    "do they perform sad music?": "Yes, some songs have sad verses.",
+    "do they perform sad music?": "Yes, most songs have sad verses.",
 
     "are they also an actor?": "No, they are primarily known for their music.",
     "Disney or Nick?": "No, they are not associated with Disney or Nickelodeon.",
     "singing competition?": "No, they did not rise to fame via a TV singing competition.",
     "have they won a Grammy?": "No, they have not won a Grammy Award.",
     "Super Bowl?": "No, they have not performed at a Super Bowl Halftime Show.",
-    "Coachella?": "Yes, they have performed at Coachella.",
-    "song over one billion streams?": "Yes, they do have a song with over one billion streams.",
+    "Coachella?": "No, they have not performed at Coachella.",
+    "song over one billion streams?": "No, they do not have a song with over one billion streams.",
     "do they have more than 10M TikTok followers?": "No, they do not have more than 10 million TikTok followers.",
     "do they have more than 10M Instagram followers?": "No, they do not have over 10 million Instagram followers.",
     "do they have more than 20M listeners?": "No, they do not have over 20 million monthly listeners on Spotify.",
     "do they have more than 50M listeners?": "No, they do not have over 50 million monthly listeners.",
     "were they ever in a band?": "No, they are primarily a solo artist.",
 
-    "do they have dark hair?": "No, they do not have dark hair.",
-    "do they have blond hair?": "Yes, they do have blond hair.",
-    "over 5.5 feet tall?": "No, they are not over 5.5 feet tall.",
+    "do they have dark hair?": "Yes, they do have dark hair.",
+    "do they have blond hair?": "No, they do not have blond hair.",
+    "over 5.5 feet tall?": "Yes, they are over 5.5 feet tall.",
     "over 6 feet tall?": "No, they are not over 6 feet tall.",
     "do they have tattoos?": "No, they do not have visible tattoos.",
     "do they wear glasses?": "No, they are not typically seen wearing glasses.",
     "do they go by their birth name?": "No, they do not perform under their birth name.",
-    "do they go by one word?": "Yes, their name consists of one word.",
-    "do they go by two words?": "No, their name does not consist of two words.",
-    "do they have a common first name?": "No, their name is unique.",
+    "do they go by one word?": "No, their name consists of more than one word.",
+    "do they go by two words?": "Yes, their name does consist of two words.",
+    "do they have a common first name?": "Yes, their first name is very common.",
     "name starts A-M?": "Yes, their name does start with a letter between A and M."
 
 };
@@ -1305,9 +1305,9 @@ window.askQuestion = function() {
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They began dancing and songwriting at age six.",
-        "Hint 2: She shares a name with a Disney princess.",
-        "Hint 3: Her name starts with 'A' and her most popular song is 'Runaway'."
+      "Hint 1: Some of their most popular YouTube videos are covers.",
+        "Hint 2: He was born in Toronto, Canada.",
+        "Hint 3: His initials are 'A' and 'S'."
       ];
 
 });
@@ -1332,7 +1332,7 @@ window.askQuestion = function() {
         updateProgressBar();
         closeGuessModal();
         guessInput.value = "";
-        const correctAnswer = "aurora";
+        const correctAnswer = "alexander stewart";
         
         if (guess === correctAnswer) {
           showCelebration();
@@ -1537,7 +1537,7 @@ function showFailure() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Populate the failure popup with stats
-  document.getElementById("correct-artist-name-failure").textContent = "AURORA";
+  document.getElementById("correct-artist-name-failure").textContent = "Alexander Stewart";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
@@ -1568,7 +1568,7 @@ function showFailure() {
     "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston",
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear", "Charli xcx",
     "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan",
-    "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv",
+    "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv", "Alexander Stewart",
     "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF", "Phoebe Bridgers", "Janet Jackson", "AURORA",
     "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee", "Lil Peep", "Odetari",
     "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown", "6ix9ine", "Bryson Tiller",
