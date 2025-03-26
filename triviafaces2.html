@@ -204,6 +204,7 @@ header .logo img {
   color: #f1c40f;
 }
 
+
 #rulesOverlay {
   animation: fadeIn 0.4s ease;
 }
@@ -212,7 +213,81 @@ header .logo img {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+  #rulesOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.4s ease;
+  }
 
+  #rulesBox {
+    background: #1e3a5f;
+    color: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(255,255,255,0.15);
+    font-family: 'Poppins', sans-serif;
+  }
+
+  #rulesBox ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  #rulesBox li {
+    margin-bottom: 12px;
+  }
+
+  #rulesBox img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    margin: 20px 0 10px;
+  }
+
+  #rulesBox button {
+    margin-top: 15px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    #rulesBox {
+      padding: 25px 20px;
+      font-size: 0.95rem;
+    }
+
+    #rulesBox h2 {
+      font-size: 1.5rem;
+    }
+
+    #rulesBox button {
+      font-size: 1rem;
+      padding: 12px 20px;
+    }
+  }
   </style>
 </head>
 <body>
@@ -251,6 +326,24 @@ header .logo img {
     <button class="submit-btn" onclick="handleAnswer()">Submit Answer</button>
     <button class="submit-btn" onclick="handlePass()">Pass</button>
         <div class="result" id="resultText"></div>
+  </div>
+  
+<div id="rulesOverlay">
+    <div id="rulesBox">
+      <h2 style="color: #f1c40f; margin-bottom: 20px;">🎧 How to Play</h2>
+  
+      <ul>
+        <li>🔍 <strong>See a Singer:</strong> An image will appear — your job is to identify the artist.</li>
+        <li>⌨️ <strong>Type Their Name:</strong> Enter their stage name correctly (capitalization doesn't matter—spelling does!).</li>
+        <li>⏱️ <strong>Beat the Clock:</strong> You have <strong>2 minutes</strong> to guess as many as possible.</li>
+        <li>⏭️ <strong>Skip If Needed:</strong> Don’t know it? Click "Pass" to move on.</li>
+      </ul>
+  
+      <img src="images/future.jpg" alt="Example Singer">
+      <p><strong>Example Answer:</strong> <span style="color: #00ffcc;">Future</span></p>
+  
+      <button onclick="closeRules()">🚀 OK, Let’s Go!</button>
+    </div>
   </div>
 <!-- Firebase SDKs (using compat versions for simplicity) -->
     <!-- Include Firebase SDK -->
@@ -571,67 +664,5 @@ function closeRules() {
 }
 
   </script>
-<div id="rulesOverlay" style="
-position: fixed;
-top: 0; left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0, 0, 0, 0.85);
-z-index: 9999;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 20px;
-animation: fadeIn 0.4s ease;
-">
-<div style="
-  background: #1e3a5f;
-  color: white;
-  padding: 40px 30px;
-  border-radius: 20px;
-  max-width: 600px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(255,255,255,0.15);
-  font-family: 'Poppins', sans-serif;
-">
-  <h2 style="color: #f1c40f; margin-bottom: 20px; font-size: 2rem;">🎧 How to Play</h2>
-  
-  <ul style="list-style: none; padding: 0; margin-bottom: 25px; text-align: left;">
-    <li style="margin-bottom: 12px;">🔍 <strong>See a Singer:</strong> An image will appear — your job is to identify the artist.</li>
-    <li style="margin-bottom: 12px;">⌨️ <strong>Type Their Name:</strong> Enter their stage name correctly (capitalization doesn't matter- but spelling counts!).</li>
-    <li style="margin-bottom: 12px;">⏱️ <strong>Beat the Clock:</strong> You have <strong>2 minutes</strong> to guess as many as possible.</li>
-    <li style="margin-bottom: 12px;">⏭️ <strong>Skip If Needed:</strong> Don’t know it? Click "Pass" to move on.</li>
-  </ul>
-
-  <div style="margin: 20px 0;">
-    <img src="images/future.jpg" alt="Example Rapper" style="
-      width: 65%;
-      max-width: 300px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.2);
-      margin-bottom: 10px;
-    ">
-    <p style="margin-top: 10px;">
-      <strong>Example Answer:</strong> <span style="color: #00ffcc;">Future</span>
-    </p>
-  </div>
-
-  <button onclick="closeRules()" style="
-    margin-top: 15px;
-    padding: 14px 30px;
-    font-size: 1.1rem;
-    background: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  ">🚀 OK, Let’s Go!</button>
-</div>
-</div>
-
 </body>
 </html>

@@ -152,6 +152,89 @@ header .logo img {
   margin-top: 20px;
 }
 
+#rulesOverlay {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+  #rulesOverlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  #rulesBox {
+    background: #1e3a5f;
+    color: white;
+    padding: 40px 30px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(255,255,255,0.15);
+    font-family: 'Poppins', sans-serif;
+  }
+
+  #rulesBox ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  #rulesBox li {
+    margin-bottom: 12px;
+  }
+
+  #rulesBox img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    margin: 20px 0 10px;
+  }
+
+  #rulesBox button {
+    margin-top: 15px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    #rulesBox {
+      padding: 25px 20px;
+      font-size: 0.95rem;
+    }
+
+    #rulesBox h2 {
+      font-size: 1.5rem;
+    }
+
+    #rulesBox button {
+      font-size: 1rem;
+      padding: 12px 20px;
+    }
+  }
   </style>
 </head>
 <body>
@@ -180,6 +263,19 @@ header .logo img {
     <div class="result" id="resultText"></div>
   </div>
   
+<div id="rulesOverlay">
+  <div id="rulesBox">
+    <h2 style="color: #f1c40f; margin-bottom: 20px;">🎧 How to Play</h2>
+
+    <ul>
+      <li>🧠 <strong>Pick the Best Option:</strong> Choose the answer that you think is correct from the given choices.</li>
+      <li>⏱️ <strong>Beat the Clock:</strong> You have <strong>2 minutes</strong> to guess as many as possible.</li>
+      <li>⏭️ <strong>No Skips!</strong> You must guess until the correct answer is selected. Wrong answers will take away 5 seconds.</li>
+    </ul>
+    <ul>
+    <button onclick="closeRules()">🚀 OK, Let’s Go!</button>
+  </div>
+</div>
   <!-- Firebase SDKs (for quiz session logging) -->
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
@@ -441,56 +537,7 @@ header .logo img {
 }
 
   </script>
-  <!-- Rules Popup -->
-<div id="rulesOverlay" style="
-position: fixed;
-top: 0; left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0, 0, 0, 0.85);
-z-index: 9999;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 20px;
-animation: fadeIn 0.4s ease;
-">
-<div style="
-  background: #1e3a5f;
-  color: white;
-  padding: 40px 30px;
-  border-radius: 20px;
-  max-width: 600px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(255,255,255,0.15);
-  font-family: 'Poppins', sans-serif;
-">
-  <h2 style="color: #f1c40f; margin-bottom: 20px; font-size: 2rem;">🎵 How to Play</h2>
-  
-  <ul style="list-style: none; padding: 0; margin-bottom: 25px; text-align: left;">
-    <li style="margin-bottom: 12px;">🧠 <strong>Read the Question:</strong> You'll see a multiple choice question about music.</li>
-    <li style="margin-bottom: 12px;">✅ <strong>Choose Your Answer:</strong> Click the option you think is correct.</li>
-    <li style="margin-bottom: 12px;">⏳ <strong>Watch the Clock:</strong> You have <strong>2 minutes</strong> total to answer as many questions as you can.</li>
-    <li style="margin-bottom: 12px;">❌ <strong>Wrong Answer?</strong> You’ll lose 5 seconds and be prompted to try again. So choose carefully! No skips!</li>
-  </ul>
-
  
-  <button onclick="closeRules()" style="
-    margin-top: 15px;
-    padding: 14px 30px;
-    font-size: 1.1rem;
-    background: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  ">🚀 OK, Let’s Go!</button>
-</div>
-</div>
 
 </body>
 </html>
