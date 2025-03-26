@@ -271,21 +271,37 @@ header .logo img {
     transition: all 0.3s ease;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   }
-
   @media (max-width: 480px) {
-    #rulesBox {
-      padding: 25px 20px;
-      font-size: 0.95rem;
-    }
+  #rulesBox {
+    padding: 20px 15px;
+    font-size: 0.95rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 
-    #rulesBox h2 {
-      font-size: 1.5rem;
-    }
+  #rulesBox h2 {
+    font-size: 1.3rem;
+    line-height: 1.4;
+  }
 
-    #rulesBox button {
-      font-size: 1rem;
-      padding: 12px 20px;
-    }
+  #rulesBox img {
+    max-width: 200px;
+    margin: 10px 0;
+  }
+
+  #rulesBox ul {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+
+  #rulesBox button {
+    font-size: 1rem;
+    padding: 12px 20px;
+    width: 100%;
+    max-width: 250px;
+  }
+
   }
   </style>
 </head>
