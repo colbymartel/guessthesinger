@@ -7,6 +7,7 @@
   <title>Common Questions - Mystery Artist</title>
   <link rel="icon" href="/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  
   <style>
     /* Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -177,6 +178,10 @@
 #testButton {
   margin-top: -30px;
 }
+#testButton {
+  display: none !important;
+}
+
   </style>
 </head>
 <body>
@@ -187,13 +192,9 @@
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/rounds.html">Rounds</a></li>
-      <li><a href="/questions.html" class="active">Questions</a></li>
-      <li><a href="/hints.html">Hints</a></li>
-      <li><a href="/guesses.html">Guesses</a></li>
-      <li><a href="/results.html">Audience</a></li>
-      <li><a href="/trivia.html">Trivia</a></li>
-      <li><a href="/wheel.html">Wheel</a></li>
+      <li><a href="/mirror.html" class="active">Questions</a></li>
+      <li><a href="/mirror2.html">Hints</a></li>
+      <li><a href="/mirror3.html">Guesses</a></li>
     </ul>
   </nav>
   
@@ -210,8 +211,43 @@
   <a id="testButton" href="/pollings.html" class="back-button">Test</a>
 </div>
 
+<script type="module">
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-  <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+  authDomain: "guessthesinger10.firebaseapp.com",
+  projectId: "guessthesinger10",
+  storageBucket: "guessthesinger10.appspot.com",
+  messagingSenderId: "97201023235",
+  appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+  // ✅ Use Firestore for logging answers
+  async function logAnswer(questionId, isCorrect) {
+  let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
+  answeredQuestions[questionId] = isCorrect;
+  localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
+
+  const docRef = doc(db, "answers", String(questionId));
+  await setDoc(docRef, { isCorrect: isCorrect });
+}
+
+  async function resetAnswers() {
+    const promises = questions.map(q => deleteDoc(doc(db, "answers", String(q.id))));
+    await Promise.all(promises);
+    alert("Answers reset!");
+    location.reload();
+  }
     // Define categories. Note that our questions array below is structured by id ranges.
     const categories = [
       { name: "General Questions", start: 1, end: 12 },
@@ -225,10 +261,10 @@
     
     // Questions array.
     const questions = [
-      { id: 1, question: "Is this a male artist?", answer: "No, the singer is not male." },
-      { id: 2, question: "Is this a female artist?", answer: "Yes, the singer is female." },
-      { id: 3, question: "Are they still alive?", answer: "Yes, the singer is still alive." },
-      { id: 4, question: "Are they over 30 years old?", answer: "Yes, the singer is over 30 years old." },
+      { id: 1, question: "Is this a male artist?"},
+      { id: 2, question: "Is this a female artist?"},
+      { id: 3, question: "Are they still alive?"},
+      { id: 4, question: "Are they over 30 years old?"},
       { id: 5, question: "Are they over 40 years old?", answer: "Yes, the singer is over 40 years old." },
       { id: 6, question: "Are they over 50 years old?", answer: "No, the singer is not over 50 years old." },
       { id: 7, question: "Did they debut before 2000?", answer: "No, the singer debuted after 2000." },
@@ -337,14 +373,34 @@ function showQuestionsForCategory(categoryIndex) {
       card.style.backgroundColor = answeredQuestions[item.id] ? "#4CAF50" : "#f44336";
       card.innerHTML += answeredQuestions[item.id] ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
     } else {
-      card.addEventListener("click", function () {
-        if (card.classList.contains("answered")) return;
-        card.classList.add("answered");
-        const isYes = item.answer.trim().toLowerCase().startsWith("yes");
-        card.style.backgroundColor = isYes ? "#4CAF50" : "#f44336";
-        card.innerHTML += isYes ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
-        logAnswer(item.id, isYes);
-      });
+        card.addEventListener("click", function () {
+  // Cycle: Blue → Green → Red → Blue
+  if (!card.classList.contains("answered")) {
+    // First click: turn green
+    card.classList.add("answered", "answered-green");
+    card.style.backgroundColor = "#4CAF50";
+    card.innerHTML = `<h2 class="question-text">${item.question}</h2><br><i class="fas fa-check"></i>`;
+    logAnswer(item.id, true);
+  } else if (card.classList.contains("answered-green")) {
+    // Second click: turn red
+    card.classList.remove("answered-green");
+    card.classList.add("answered-red");
+    card.style.backgroundColor = "#f44336";
+    card.innerHTML = `<h2 class="question-text">${item.question}</h2><br><i class="fas fa-times"></i>`;
+    logAnswer(item.id, false);
+  } else if (card.classList.contains("answered-red")) {
+    // Third click: reset to blue
+    card.classList.remove("answered", "answered-red");
+    card.style.backgroundColor = "#4682b4";
+    card.innerHTML = `<h2 class="question-text">${item.question}</h2>`;
+    let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
+    delete answeredQuestions[item.id];
+    localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
+    // Optionally remove from Firestore too:
+    // await deleteDoc(doc(db, "answers", String(item.id)));
+  }
+});
+
     }
 
     container.appendChild(card);
@@ -366,22 +422,6 @@ function showQuestionsForCategory(categoryIndex) {
     showQuestionsForCategory(categoryIndex);
   };
 }
-import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-const db = getFirestore();
-
-async function fetchAnswerStatus(questionId) {
-  const docRef = doc(db, "answers", String(questionId));
-  const snap = await getDoc(docRef);
-  return snap.exists() ? snap.data().isCorrect : null;
-}
-const isCorrect = await fetchAnswerStatus(q.id);
-if (isCorrect !== null) {
-  card.classList.add("answered");
-  card.style.backgroundColor = isCorrect ? "#4CAF50" : "#f44336";
-  card.innerHTML += isCorrect ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
-}
-card.style.pointerEvents = "none";
-
 
 
 function showCategoryList() {
@@ -400,7 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCategories();
   document.getElementById("backButton").addEventListener("click", showCategoryList);
 });
-
   </script>
 </body>
 </html>
