@@ -291,6 +291,8 @@ h1 {
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     const votesRef = db.ref('votes');
+    const namesRef = db.ref("contestantNames");
+
 
     function updateProgress(votes) {
       const total = (votes.option1 || 0) + (votes.option2 || 0) + (votes.option3 || 0);
@@ -379,9 +381,6 @@ function changeQR() {
 
   qrImageToggle = !qrImageToggle;
 }
-
-
-const namesRef = db.ref("contestantNames");
 
 // Save name when edited
 document.querySelectorAll(".contestant-name").forEach((el, index) => {

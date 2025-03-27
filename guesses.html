@@ -216,6 +216,10 @@
   0% { transform: translateY(0) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
+.popup h2,
+.popup p {
+  color: #333;
+}
 
   </style>
 </head>
@@ -248,22 +252,23 @@
   </div>
   <!-- Overlay for popups -->
   <div class="overlay" id="overlay"></div>
-  <!-- Celebration Popup -->
+
   <div class="popup" id="celebrationPopup">
     <button class="close-popup" onclick="closePopup()">&times;</button>
     <div id="popupImageContainer"></div>
-    <h2>Congratulations!</h2>
-    <p>The singer was <strong id="celebrationName">The Singer</strong>!</p>
+    <h2 id="popupTitle">Congratulations!</h2>
+    <p id="popupMessage">The singer was <strong id="celebrationName">Carrie Underwood</strong>!</p>
     <button onclick="closePopup()">Close</button>
   </div>
-  <!-- Failure Popup -->
+  
   <div class="popup" id="failurePopup">
     <button class="close-popup" onclick="closePopup()">&times;</button>
     <div id="popupImageContainer"></div>
-    <h2>Nope!</h2>
-    <p>Sorry, that's not right.</p>
+    <h2 id="popupTitle">Nope!</h2>
+    <p id="popupMessage">Sorry, that's not right.</p>
     <button onclick="closePopup()">Close</button>
   </div>
+  
   
   <script>
     // Set the correct singer (all comparisons in lowercase)
@@ -615,42 +620,33 @@
     });
 
     // Custom showPopup function that accepts the popup element, image source, and correctness.
-    function showPopup(popupElement, imageSrc, isCorrect) {
-  // Set or update an image element in the popup.
-  let imgElem = popupElement.querySelector("#popupImage");
-  if (!imgElem) {
-    imgElem = document.createElement("img");
-    imgElem.id = "popupImage";
-    imgElem.style.width = "200px";
-    imgElem.style.height = "auto";
-    imgElem.style.marginBottom = "15px";
-    popupElement.insertBefore(imgElem, popupElement.firstElementChild);
-  }
-  imgElem.src = imageSrc;
-  imgElem.style.border = "5px solid " + (isCorrect ? "green" : "red");
-  
-  // Remove any previous animation classes.
+ function showPopup(popupElement, imageSrc, isCorrect) {
+  const imgContainer = popupElement.querySelector("#popupImageContainer");
+  imgContainer.innerHTML = `
+    <img src="${imageSrc}" style="width: 200px; height: auto; margin-bottom: 15px; border: 5px solid ${isCorrect ? 'green' : 'red'};">
+  `;
+
+  // Set title and message text based on correctness
+  popupElement.querySelector("#popupTitle").textContent = isCorrect ? "🎉 Congratulations!" : "❌ Nope!";
+  popupElement.querySelector("#popupMessage").innerHTML = isCorrect
+    ? `You guessed it right! The singer was <strong>Carrie Underwood</strong>.`
+    : `Sorry, that's not right.`;
+
+  // Add animation and background change
   popupElement.classList.remove("pop-in", "shake", "longer");
-  
-  // For correct answers, add extra class to lengthen animations.
   if (isCorrect) {
-  popupElement.classList.add("pop-in", "shake", "longer");
-  triggerConfetti();
-  // Set the page background to green (adjust opacity as needed)
-  document.body.style.backgroundColor = "rgba(76, 175, 80, 0.5)"; // Green with 50% opacity
-} else {
-  popupElement.classList.add("shake");
-  // Set the page background to red with 50% opacity.
-  document.body.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
-}
+    popupElement.classList.add("pop-in", "shake", "longer");
+    triggerConfetti();
+    document.body.style.backgroundColor = "rgba(76, 175, 80, 0.5)";
+  } else {
+    popupElement.classList.add("shake");
+    document.body.style.backgroundColor = "rgba(255, 0, 0, 0.5)";
+  }
 
-
-  
-  // Show the overlay and popup.
+  // Show it
   document.getElementById("overlay").style.display = "block";
   popupElement.style.display = "block";
 }
-
 
 
 // Create a temporary confetti shower for celebration.
