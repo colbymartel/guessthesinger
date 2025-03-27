@@ -7,7 +7,6 @@
   <title>Common Questions - Mystery Artist</title>
   <link rel="icon" href="/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
-  
   <style>
     /* Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -211,43 +210,8 @@
   <a id="testButton" href="/pollings.html" class="back-button">Test</a>
 </div>
 
-<script type="module">
- import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  deleteDoc
-} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-  authDomain: "guessthesinger10.firebaseapp.com",
-  projectId: "guessthesinger10",
-  storageBucket: "guessthesinger10.appspot.com",
-  messagingSenderId: "97201023235",
-  appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
-  // ✅ Use Firestore for logging answers
-  async function logAnswer(questionId, isCorrect) {
-  let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
-  answeredQuestions[questionId] = isCorrect;
-  localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
-
-  const docRef = doc(db, "answers", String(questionId));
-  await setDoc(docRef, { isCorrect: isCorrect });
-}
-
-  async function resetAnswers() {
-    const promises = questions.map(q => deleteDoc(doc(db, "answers", String(q.id))));
-    await Promise.all(promises);
-    alert("Answers reset!");
-    location.reload();
-  }
+  <script>
     // Define categories. Note that our questions array below is structured by id ranges.
     const categories = [
       { name: "General Questions", start: 1, end: 12 },
@@ -402,6 +366,22 @@ function showQuestionsForCategory(categoryIndex) {
     showQuestionsForCategory(categoryIndex);
   };
 }
+import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+const db = getFirestore();
+
+async function fetchAnswerStatus(questionId) {
+  const docRef = doc(db, "answers", String(questionId));
+  const snap = await getDoc(docRef);
+  return snap.exists() ? snap.data().isCorrect : null;
+}
+const isCorrect = await fetchAnswerStatus(q.id);
+if (isCorrect !== null) {
+  card.classList.add("answered");
+  card.style.backgroundColor = isCorrect ? "#4CAF50" : "#f44336";
+  card.innerHTML += isCorrect ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
+}
+card.style.pointerEvents = "none";
+
 
 
 function showCategoryList() {
@@ -420,6 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCategories();
   document.getElementById("backButton").addEventListener("click", showCategoryList);
 });
+
   </script>
 </body>
 </html>

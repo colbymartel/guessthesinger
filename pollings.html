@@ -126,26 +126,30 @@ header {
 
 /* Question Container */
 .question-container {
-  background: transparent;
   display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 150px);
-  margin-top: -70px;
-  padding: 40px 20px;
+  width: 100%;
+  max-width: 600px;
+  padding-top: 80px;
 }
 .question-inner {
   background: #ffffff10;
   padding: 30px;
   border-radius: 20px;
-  max-width: 600px;
-  width: 100%;
   text-align: center;
   backdrop-filter: blur(8px);
   border: 2px solid #ffffff20;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+  max-height: 70vh;
+  overflow-y: auto;
+  width: 100%;
 }
+
 .question-text {
   font-size: 1.8rem;
   font-weight: 600;
@@ -210,8 +214,9 @@ header {
 
 /* Buttons */
 .button-group button,
-#revealAnswerBtn, #askAnotherBtn, #resetStorageBtn {
-  margin: 20px auto;
+#revealAnswerBtn,
+#askAnotherBtn,
+#resetStorageBtn {
   padding: 12px 24px;
   font-size: 1rem;
   background: #3b7bbf;
@@ -220,9 +225,11 @@ header {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  display: none;
   transition: 0.3s ease;
+  display: none;
+  min-width: 140px;
 }
+
 .button-group button:hover,
 #revealAnswerBtn:hover,
 #askAnotherBtn:hover,
@@ -230,6 +237,13 @@ header {
   background: #4682b4;
   transform: scale(1.05);
   box-shadow: 0 0 12px rgba(255,255,255,0.2);
+}
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* Animations */
@@ -243,6 +257,13 @@ header {
   25% { transform: translateX(-10px); }
   50% { transform: translateX(10px); }
   75% { transform: translateX(-5px); }
+}
+.question-container {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.question-container.visible {
+  opacity: 1;
 }
 
   </style>
@@ -266,10 +287,6 @@ header {
       <li><a href="/wheel.html">Wheel</a></li>
     </ul>
   </nav>
-
-  <div class="start-container">
-    <button id="resetStorageBtn">Reset Game</button>
-  </div>
 
   <div class="category-display">
     <div class="category-box" id="categoryName"></div>
@@ -363,7 +380,6 @@ header {
 };
 
     const startBtn = document.getElementById("startBtn");
-    const resetBtn = document.getElementById("resetStorageBtn");
     const categoryDisplay = document.querySelector(".category-display");
     const categoryName = document.getElementById("categoryName");
     const questionContainer = document.querySelector(".question-container");
@@ -388,11 +404,13 @@ function getRandomCategory() {
   });
 
   if (availableCategories.length === 0) {
-    // Reset all
-    categories.forEach(cat => askedQuestions[cat] = []);
-    localStorage.setItem("askedQuestions", JSON.stringify(askedQuestions));
-    return getRandomCategory(); // Retry after reset
-  }
+  alert("🎉 All questions have been used! Starting over...");
+  localStorage.setItem("justReset", "true"); // 👈 flag the reset
+  localStorage.removeItem("askedQuestions");
+  location.reload();
+  return null;
+}
+
 
   return availableCategories[Math.floor(Math.random() * availableCategories.length)];
 }
@@ -416,23 +434,30 @@ function getNextQuestion(category) {
       askAnotherBtn.style.display = "none";
       timerDisplay.textContent = "";
       document.body.style.backgroundColor = ""; // reset to original (gradient will apply)
+      questionContainer.classList.remove("visible");
+
     }
   
     function showCategory(category) {
-      currentCategory = category;
-      categoryName.textContent = category;
-      document.body.classList.add("reveal-bg");
-      categoryDisplay.style.display = "flex";
-      categoryDisplay.classList.add("active");
-      questionContainer.style.display = "none";
-      document.querySelector(".start-container").style.display = "none";
-  
-      setTimeout(() => {
-        categoryDisplay.style.display = "none";
-        document.body.classList.remove("reveal-bg");
-        showQuestion(category);
-      }, 3000);
-    }
+  currentCategory = category;
+  categoryName.textContent = category;
+  document.body.classList.add("reveal-bg");
+  categoryDisplay.style.display = "flex";
+  categoryDisplay.classList.add("active");
+  questionContainer.style.display = "none";
+
+  // Allow category to animate, then hide it and delay question render slightly
+  setTimeout(() => {
+    categoryDisplay.style.display = "none";
+    document.body.classList.remove("reveal-bg");
+
+    // Give the DOM one more tick before showing the question
+    setTimeout(() => {
+      showQuestion(category);
+    }, 100); // <- this short delay ensures the container is cleared before question loads
+  }, 3000);
+}
+
   
     function showQuestion(category) {
       const q = getNextQuestion(category);
@@ -443,7 +468,11 @@ function getNextQuestion(category) {
       timeLeft = 20;
       const formatted = timeLeft < 10 ? `0:0${timeLeft}` : `0:${timeLeft}`;
 timerDisplay.textContent = formatted;
-  
+questionContainer.style.display = "flex";
+requestAnimationFrame(() => {
+  questionContainer.classList.add("visible");
+});
+
 q.options.forEach(opt => {
   const btn = document.createElement("div");
   btn.classList.add("option");
@@ -527,24 +556,26 @@ async function fetchVotes(category, questionText) {
   askAnotherBtn.style.display = "block";
 });
 
+askAnotherBtn.addEventListener("click", () => {
+  const next = getRandomCategory();
+  if (!next) return; // stop if none left
+  resetState();
+  showCategory(next);
+});
+window.addEventListener("DOMContentLoaded", () => {
+  const justReset = localStorage.getItem("justReset");
 
+  if (justReset) {
+    localStorage.removeItem("justReset"); // ✅ Clean up reset flag
+  }
 
-    askAnotherBtn.addEventListener("click", () => {
-      const next = getRandomCategory();
-      resetState();
-      showCategory(next);
-    });
-  
-    window.addEventListener("DOMContentLoaded", () => {
   const cat = getRandomCategory();
-  showCategory(cat);
+  if (cat) {
+    showCategory(cat);
+  }
 });
 
-  
-    resetBtn.addEventListener("click", () => {
-      localStorage.removeItem("askedQuestions");
-      location.reload();
-    });
+
   </script>
   
 </body>
