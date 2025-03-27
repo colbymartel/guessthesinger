@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Guess The Singer - Locked Hints Page">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hints Board</title>
-  <link rel="icon" href="/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mirror Hints Board</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
   <style>
-    /* General Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+     /* Reset */
+     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', Arial, sans-serif;
       background: #f4f4f4;
@@ -26,7 +26,6 @@
     }
     .header .logo img {
       width: 20%;
-      margin-bottom: 10px;
       height: auto;
       display: block;
       margin: 0 auto;
@@ -34,41 +33,34 @@
     @media (max-width: 768px) {
       .header .logo img { width: 60%; }
     }
-    /* Navigation */
     .navbar {
-      background-color: #315f85;
-      padding: 15px 0;
-      text-align: center;
-    }
-    .navbar ul {
-      list-style: none;
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-    }
-    .navbar ul li {
-      display: inline;
-      margin: 0 15px;
-    }
-    .navbar ul li a {
-      text-decoration: none;
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: bold;
-      padding: 5px 10px;
-      transition: background 0.3s ease;
-    }
-    .navbar ul li a:hover {
-      background-color: #4682b4;
-      border-radius: 5px;
-    }
-    .navbar ul li a.active {
-      background-color: #4682b4; /* Or any color that stands out */
-      border-bottom: 3px solid #fff; /* Creates a visual underline */
-      padding: 5px 10px;
-      border-radius: 5px;
-    }
-    /* Board styling */
+  background: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: inset 0 -2px 6px rgba(255,255,255,0.15);
+}
+.navbar ul {
+  list-style: none;
+}
+.navbar li {
+  display: inline;
+  margin: 0 12px;
+}
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
     .board-container {
       max-width: 1200px;
       margin: 40px auto;
@@ -81,63 +73,37 @@
       gap: 10px;
     }
     .board-cell {
-      background: #222;
-      color: #fff;
       border: 2px solid #4682b4;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       text-align: center;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
+      background: #222;
+      color: white;
     }
-    .board-cell:hover {
-      background: #555;
-      transform: scale(1.05);
-    }
-    /* Category header cells */
     .category-header {
-      background: #4682b4;
+      background-color: #4682b4;
       font-weight: bold;
-      font-size: 1.8rem;
-      cursor: default;
+      font-size: 1.5rem;
     }
-    /* Locked and revealed styles */
     .locked {
-      background: #333;
+      background-color: #333;
       color: #ccc;
     }
     .revealed {
-  background: #4CAF50; /* Green background */
-  color: #fff;         /* White text */
-  cursor: default;
-}
-
-    /* Reset button styling */
-    #resetBtn {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      font-size: 1.2rem;
-      background: #4682b4;
+      background-color: #4CAF50;
       color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    #resetBtn:hover {
-      background: #315f85;
     }
   </style>
 </head>
 <body>
   <header class="header">
     <div class="logo">
-      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      <img src="images/SingerLogo.png" alt="Logo" />
     </div>
   </header>
+
   <nav class="navbar">
     <ul>
       <li><a href="/mirror.html">Questions</a></li>
@@ -145,151 +111,82 @@
       <li><a href="/mirror3.html">Guesses</a></li>
     </ul>
   </nav>
-  
- <!-- Inside your <body> -->
-<div class="board-container">
-  <div class="board" id="jeopardyBoard">
-    <!-- Board cells will be generated via JavaScript -->
+
+  <div class="board-container">
+    <div class="board" id="jeopardyBoard"></div>
   </div>
-</div>
 
-  <script>
-    // Data for board: five categories with three hints each.
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
     const boardData = [
-      { 
-        category: "Music Awards",
-    hints: [
-      "Has won multiple Grammys",
-      "Has 35 Grammy nominations",
-      "Won 2013 Brits Icon Award"
-    ]
-  },
-  {
-    category: "Debut",
-    hints: [
-      "Debuted in the 1960s",
-      "Debut album was released in 1969",
-      "Broke through with the hit 'Your Song' in the early 1970s"
-    ]
-  },
-  {
-    category: "Miscellaneous",
-    hints: [
-      "Born in England",
-      "Known for his signature glasses",
-      "First name starts with E"
-    ]
-  },
-  {
-    category: "Career",
-    hints: [
-      "Wrote over 30 Top 40 hits",
-      "Composed music for films and stage productions",
-      "Composed music for 'The Lion King'"
-    ]
-  },
-  {
-    category: "Social Media",
-    hints: [
-      "Nearly 5OM Spotify monthly listeners",
-      "2.3M TikTok followers",
-      "5M Instagram followers"
-    ]
-  }
-];
-    // Local Storage key for tracking revealed hints.
-    const storageKey = "revealedHintsBoard";
-    
-    // revealedState maps category index to an array of booleans for the three hints.
-    let revealedState = JSON.parse(localStorage.getItem(storageKey)) || {};
-    boardData.forEach((cat, index) => {
-      if (!revealedState.hasOwnProperty(index)) {
-        revealedState[index] = [false, false, false];
+      { category: "Music Awards", hints: ["Has won multiple Grammys", "Has 35 Grammy nominations", "Won 2013 Brits Icon Award"] },
+      { category: "Debut", hints: ["Debuted in the 1960s", "Debut album was released in 1969", "Broke through with the hit 'Your Song' in the early 1970s"] },
+      { category: "Miscellaneous", hints: ["Born in England", "Known for his signature glasses", "First name starts with E"] },
+      { category: "Career", hints: ["Wrote over 30 Top 40 hits", "Composed music for films and stage productions", "Composed music for 'The Lion King'"] },
+      { category: "Social Media", hints: ["Nearly 50M Spotify monthly listeners", "2.3M TikTok followers", "5M Instagram followers"] }
+    ];
+
+    const board = document.getElementById("jeopardyBoard");
+
+    function renderBoard(revealedHints) {
+      board.innerHTML = "";
+
+      // Header row
+      boardData.forEach(col => {
+        const header = document.createElement("div");
+        header.className = "board-cell category-header";
+        header.textContent = col.category;
+        board.appendChild(header);
+      });
+
+      // Hint rows
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < boardData.length; col++) {
+          const cell = document.createElement("div");
+          cell.className = "board-cell";
+
+          const hintText = boardData[col].hints[row];
+          const categoryName = boardData[col].category;
+const isRevealed = revealedHints[categoryName]?.[row];
+
+          if (isRevealed) {
+            cell.classList.add("revealed");
+            cell.textContent = hintText;
+          } else {
+            cell.classList.add("locked");
+            cell.innerHTML = '<i class="fas fa-lock"></i>';
+          }
+
+          board.appendChild(cell);
+        }
       }
+    }
+
+    // Listen to Firestore updates
+    onSnapshot(collection(db, "revealedHints"), (snapshot) => {
+      const revealed = {};
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const { category, index } = data;
+        if (!revealed[category]) revealed[category] = [];
+        revealed[category][index] = true;
+      });
+      renderBoard(revealed);
     });
-    
-    // Save revealedState to localStorage.
-    function saveState() {
-      localStorage.setItem(storageKey, JSON.stringify(revealedState));
-    }
-    
-    // Build the board.
-function buildBoard() {
-  const boardElement = document.getElementById("jeopardyBoard");
-  boardElement.innerHTML = "";
-  
-  // Create header row.
-  boardData.forEach(categoryObj => {
-    const headerCell = document.createElement("div");
-    headerCell.classList.add("board-cell", "category-header");
-    headerCell.textContent = categoryObj.category;
-    headerCell.style.cursor = "default";
-    boardElement.appendChild(headerCell);
-    
-  });
-  
-  // Create hint cells (3 rows x 5 columns).
-  for (let row = 0; row < 3; row++) {
-  for (let col = 0; col < boardData.length; col++) {
-    const hintText = boardData[col].hints[row];
-    const cell = document.createElement("div");
-    cell.classList.add("board-cell");
-    cell.setAttribute("data-category-index", col);
-    cell.setAttribute("data-hint-index", row);
-
-    if (revealedState[col] && revealedState[col][row]) {
-      cell.classList.add("revealed");
-      cell.textContent = hintText;
-      cell.style.backgroundColor = "#4CAF50";
-      cell.style.color = "#fff";
-    } else {
-      cell.classList.add("locked");
-
-      // Optional: display icon based on reveal progress
-      let clickable = (row === 0) ||
-                      (row === 1 && revealedState[col][0]) ||
-                      (row === 2 && revealedState[col][1]);
-
-      cell.innerHTML = clickable 
-        ? '<i class="fas fa-unlock"></i>' 
-        : '<i class="fas fa-lock"></i>';
-
-      // Prevent hover styles from implying interactivity
-      cell.style.cursor = "default";
-    }
-
-    boardElement.appendChild(cell);
-  }
-}
-
-  }
-
-
-    // Update board icons in a specific column.
-    function updateBoardColumnIcons(colIndex) {
-  const boardElement = document.getElementById("jeopardyBoard");
-  const headerCount = boardData.length;
-  for (let row = 0; row < 3; row++) {
-    const cellIndex = headerCount + parseInt(colIndex) + row * boardData.length;
-    const cell = boardElement.children[cellIndex];
-    if (!cell.classList.contains("revealed")) {
-      let clickable = (row === 0) ||
-                      (row === 1 && revealedState[colIndex][0]) ||
-                      (row === 2 && revealedState[colIndex][1]);
-      if (clickable) {
-        cell.style.backgroundColor = "#4CAF50"; // Always green when unlocked
-        cell.innerHTML = '<i class="fas fa-unlock"></i>';
-      } else {
-        cell.style.backgroundColor = ""; // Reset background if not clickable
-        cell.innerHTML = '<i class="fas fa-lock"></i>';
-      }
-    }
-  }
-}
-buildBoard();
-
-    
   </script>
-  
 </body>
 </html>
