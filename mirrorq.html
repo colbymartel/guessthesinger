@@ -178,10 +178,6 @@
 #testButton {
   margin-top: -30px;
 }
-#testButton {
-  display: none !important;
-}
-
   </style>
 </head>
 <body>
@@ -192,63 +188,63 @@
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/mirrorq.html" class="active">Questions</a></li>
+      <li><a href="/mirrorq.html"class="active">Questions</a></li>
       <li><a href="/mirrorh.html">Hints</a></li>
       <li><a href="/mirrorg.html">Guesses</a></li>
     </ul>
   </nav>
+
+  <!-- Categories -->
+  <div id="categoryContainer" class="grid-container"></div>
+
+  <!-- Questions -->
+  <div id="questionContainer" class="grid-container hidden"></div>
+
+  <div class="button-container">
+    <button id="backButton" class="back-button">Back to Categories</button>
+    <button id="resetButton" class="back-button">Reset Answers</button>
+  </div>
   
- <!-- Categories (initially visible) -->
-<div id="categoryContainer" class="grid-container"></div>
 
-<!-- Questions (initially hidden) -->
-<div id="questionContainer" class="grid-container hidden"></div>
-
-<!-- Buttons -->
-<div class="button-container">
-  <button id="backButton" class="back-button">Back to Categories</button>
-  <button id="resetButton" class="back-button">Reset Answers</button>
-  <a id="testButton" href="/pollings.html" class="back-button">Test</a>
-</div>
-
-<script type="module">
- import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
 import {
   getFirestore,
-  doc,
-  setDoc,
-  deleteDoc
+  collection,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import {
+  deleteDoc,
+  getDocs,
+  doc
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-  authDomain: "guessthesinger10.firebaseapp.com",
-  projectId: "guessthesinger10",
-  storageBucket: "guessthesinger10.appspot.com",
-  messagingSenderId: "97201023235",
-  appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+document.getElementById("resetButton").addEventListener("click", async () => {
+  if (!confirm("Are you sure you want to reset all revealed answers?")) return;
 
+  const snapshot = await getDocs(collection(db, "revealedAnswers"));
+  const deletes = snapshot.docs.map(docSnap =>
+    deleteDoc(doc(db, "revealedAnswers", docSnap.id))
+  );
+  await Promise.all(deletes);
 
-  // ✅ Use Firestore for logging answers
-  async function logAnswer(questionId, isCorrect) {
-  let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
-  answeredQuestions[questionId] = isCorrect;
-  localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
+  localStorage.removeItem("answeredQuestions");
+  alert("Answers reset!");
+});
 
-  const docRef = doc(db, "answers", String(questionId));
-  await setDoc(docRef, { isCorrect: isCorrect });
-}
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    let currentCategoryIndex = null;
 
-  async function resetAnswers() {
-    const promises = questions.map(q => deleteDoc(doc(db, "answers", String(q.id))));
-    await Promise.all(promises);
-    alert("Answers reset!");
-    location.reload();
-  }
-    // Define categories. Note that our questions array below is structured by id ranges.
     const categories = [
       { name: "General Questions", start: 1, end: 12 },
       { name: "Geographic Questions", start: 15, end: 27 },
@@ -256,15 +252,13 @@ const db = getFirestore(app);
       { name: "Career & Popularity", start: 38, end: 49 },
       { name: "Name & Appearance", start: 50, end: 60 },
       { name: "Opinions", start: 61, end: 72 }
-
     ];
-    
-    // Questions array.
+
     const questions = [
-      { id: 1, question: "Is this a male artist?"},
-      { id: 2, question: "Is this a female artist?"},
-      { id: 3, question: "Are they still alive?"},
-      { id: 4, question: "Are they over 30 years old?"},
+      { id: 1, question: "Is this a male artist?", answer: "No, the singer is not male." },
+      { id: 2, question: "Is this a female artist?", answer: "Yes, the singer is female." },
+      { id: 3, question: "Are they still alive?", answer: "Yes, the singer is still alive." },
+      { id: 4, question: "Are they over 30 years old?", answer: "Yes, the singer is over 30 years old." },
       { id: 5, question: "Are they over 40 years old?", answer: "Yes, the singer is over 40 years old." },
       { id: 6, question: "Are they over 50 years old?", answer: "No, the singer is not over 50 years old." },
       { id: 7, question: "Did they debut before 2000?", answer: "No, the singer debuted after 2000." },
@@ -330,9 +324,11 @@ const db = getFirestore(app);
 { id: 70, question: "Would they adopt a raccoon as a pet?", answer: "No —but she'd write a heartfelt country song about it." },
 { id: 71, question: "Would they be late to their own concert?", answer: "No. She shows up on time, sparkles on, vocals ready." },
 { id: 72, question: "Would they survive a week without their phone?", answer: "Yes. She’d spend the time fishing, journaling, or writing ballads." }
+
     ];
 
-    // Function to render the list of categories.
+    let revealedMap = {};
+
     function renderCategories() {
   const container = document.getElementById("categoryContainer");
   container.innerHTML = "";
@@ -342,65 +338,38 @@ const db = getFirestore(app);
     item.classList.add("grid-item");
     item.setAttribute("data-index", index);
     item.innerHTML = `<h2 class="category-text">${cat.name}</h2>`;
-    item.addEventListener("click", () => showQuestionsForCategory(index));
+    item.addEventListener("click", () => showQuestions(index));
     container.appendChild(item);
   });
 
+  // ✅ Show categories, hide questions
   document.getElementById("categoryContainer").classList.remove("hidden");
-  document.getElementById("questionContainer").classList.add("hidden");
+  const questionContainer = document.getElementById("questionContainer");
+  questionContainer.classList.add("hidden");
+  questionContainer.innerHTML = ""; // ✅ clear previous questions
   document.getElementById("backButton").classList.add("hidden");
-  document.getElementById("resetButton").classList.add("hidden");
-
-  // Show test button, hide reset in category view
-  document.getElementById("testButton").style.display = "inline-block";
-  document.getElementById("resetButton").style.display = "none";
 }
 
-function showQuestionsForCategory(categoryIndex) {
-  const category = categories[categoryIndex];
-  const filtered = questions.filter(q => q.id >= category.start && q.id <= category.end);
+    function showQuestions(categoryIndex) {
+      currentCategoryIndex = categoryIndex;
   const container = document.getElementById("questionContainer");
   container.innerHTML = "";
+
+  const cat = categories[categoryIndex];
+  const filtered = questions.filter(q => q.id >= cat.start && q.id <= cat.end);
 
   filtered.forEach(item => {
     const card = document.createElement("div");
     card.classList.add("grid-item");
     card.innerHTML = `<h2 class="question-text">${item.question}</h2>`;
+    card.style.cursor = "default"; // Prevent clicking
 
-    let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
-    if (answeredQuestions[item.id] !== undefined) {
+    // Apply reveal color and icon if revealed
+    if (revealedMap[item.id] !== undefined) {
+      const isCorrect = revealedMap[item.id];
       card.classList.add("answered");
-      card.style.backgroundColor = answeredQuestions[item.id] ? "#4CAF50" : "#f44336";
-      card.innerHTML += answeredQuestions[item.id] ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
-    } else {
-        card.addEventListener("click", function () {
-  // Cycle: Blue → Green → Red → Blue
-  if (!card.classList.contains("answered")) {
-    // First click: turn green
-    card.classList.add("answered", "answered-green");
-    card.style.backgroundColor = "#4CAF50";
-    card.innerHTML = `<h2 class="question-text">${item.question}</h2><br><i class="fas fa-check"></i>`;
-    logAnswer(item.id, true);
-  } else if (card.classList.contains("answered-green")) {
-    // Second click: turn red
-    card.classList.remove("answered-green");
-    card.classList.add("answered-red");
-    card.style.backgroundColor = "#f44336";
-    card.innerHTML = `<h2 class="question-text">${item.question}</h2><br><i class="fas fa-times"></i>`;
-    logAnswer(item.id, false);
-  } else if (card.classList.contains("answered-red")) {
-    // Third click: reset to blue
-    card.classList.remove("answered", "answered-red");
-    card.style.backgroundColor = "#4682b4";
-    card.innerHTML = `<h2 class="question-text">${item.question}</h2>`;
-    let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
-    delete answeredQuestions[item.id];
-    localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
-    // Optionally remove from Firestore too:
-    // await deleteDoc(doc(db, "answers", String(item.id)));
-  }
-});
-
+      card.style.backgroundColor = isCorrect ? "#4CAF50" : "#f44336";
+      card.innerHTML += isCorrect ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
     }
 
     container.appendChild(card);
@@ -408,38 +377,53 @@ function showQuestionsForCategory(categoryIndex) {
 
   document.getElementById("categoryContainer").classList.add("hidden");
   document.getElementById("questionContainer").classList.remove("hidden");
-  document.getElementById("categoryContainer").classList.add("hidden");
-  container.classList.remove("hidden");
-
   document.getElementById("backButton").classList.remove("hidden");
-  document.getElementById("testButton").style.display = "none";
-  document.getElementById("resetButton").style.display = "inline-block";
-
-
-  // Reset button clears answers and re-renders the same category
-  document.getElementById("resetButton").onclick = () => {
-    localStorage.removeItem("answeredQuestions");
-    showQuestionsForCategory(categoryIndex);
-  };
 }
 
-
-function showCategoryList() {
-  const questionContainer = document.getElementById("questionContainer");
-  questionContainer.classList.add("hidden");
-  questionContainer.innerHTML = "";
-
-  document.getElementById("categoryContainer").classList.remove("hidden");
-
-  document.getElementById("backButton").classList.add("hidden");
-  document.getElementById("testButton").style.display = "inline-block"; // ✅ Fix here
-  document.getElementById("resetButton").style.display = "none";
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  renderCategories();
-  document.getElementById("backButton").addEventListener("click", showCategoryList);
+document.getElementById("backButton").addEventListener("click", () => {
+  renderCategories(); // ✅ properly resets to category view
 });
+
+
+    renderCategories();
+
+    onSnapshot(collection(db, "revealedAnswers"), (snapshot) => {
+  console.log("⏳ Snapshot updated. Docs count:", snapshot.size);
+
+  revealedMap = {};
+
+  let isReset = false;
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+
+    // 👇 Check for special reset document
+    if (doc.id === "status" && data.type === "reset") {
+      isReset = true;
+    }
+
+    if (data.id !== undefined) {
+      revealedMap[data.id] = data.isCorrect;
+    }
+  });
+
+  if (isReset || Object.keys(revealedMap).length === 0) {
+    console.log("🧼 Detected reset.");
+    localStorage.removeItem("answeredQuestions");
+    currentCategoryIndex = null;
+    renderCategories();
+    return;
+  }
+
+  localStorage.setItem("answeredQuestions", JSON.stringify(revealedMap));
+
+  if (currentCategoryIndex !== null) {
+    showQuestions(currentCategoryIndex);
+  }
+});
+
+
   </script>
 </body>
+
 </html>

@@ -217,7 +217,9 @@ import {
   getFirestore,
   doc,
   setDoc,
-  deleteDoc
+  deleteDoc,
+  getDocs,
+  collection
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -238,16 +240,13 @@ const db = getFirestore(app);
   answeredQuestions[questionId] = isCorrect;
   localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
 
-  const docRef = doc(db, "answers", String(questionId));
-  await setDoc(docRef, { isCorrect: isCorrect });
+  await setDoc(doc(db, "revealedAnswers", String(questionId)), {
+    id: questionId,
+    isCorrect: isCorrect,
+    timestamp: new Date()
+  });
 }
 
-  async function resetAnswers() {
-    const promises = questions.map(q => deleteDoc(doc(db, "answers", String(q.id))));
-    await Promise.all(promises);
-    alert("Answers reset!");
-    location.reload();
-  }
     // Define categories. Note that our questions array below is structured by id ranges.
     const categories = [
       { name: "General Questions", start: 1, end: 12 },
@@ -416,10 +415,26 @@ function showCategoryList() {
   document.getElementById("resetButton").style.display = "none";
 }
 
+async function resetAnswers() {
+  const snapshot = await getDocs(collection(db, "revealedAnswers"));
+const deletes = snapshot.docs.map(docSnap =>
+  deleteDoc(doc(db, "revealedAnswers", docSnap.id))
+);
+await Promise.all(deletes);
+
+
+  // Also clear localStorage to reset UI state locally
+  localStorage.removeItem("answeredQuestions");
+
+  alert("Answers have been reset!");
+  location.reload(); // Optional: refresh to clear visuals
+}
 document.addEventListener("DOMContentLoaded", () => {
   renderCategories();
   document.getElementById("backButton").addEventListener("click", showCategoryList);
 });
+
+
   </script>
 </body>
 </html>

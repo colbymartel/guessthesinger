@@ -217,7 +217,9 @@ import {
   getFirestore,
   doc,
   setDoc,
-  deleteDoc
+  deleteDoc,
+  getDocs,
+  collection
 } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -238,16 +240,13 @@ const db = getFirestore(app);
   answeredQuestions[questionId] = isCorrect;
   localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
 
-  const docRef = doc(db, "answers", String(questionId));
-  await setDoc(docRef, { isCorrect: isCorrect });
+  await setDoc(doc(db, "revealedAnswers", String(questionId)), {
+    id: questionId,
+    isCorrect: isCorrect,
+    timestamp: new Date()
+  });
 }
 
-  async function resetAnswers() {
-    const promises = questions.map(q => deleteDoc(doc(db, "answers", String(q.id))));
-    await Promise.all(promises);
-    alert("Answers reset!");
-    location.reload();
-  }
     // Define categories. Note that our questions array below is structured by id ranges.
     const categories = [
       { name: "General Questions", start: 1, end: 12 },
@@ -261,75 +260,66 @@ const db = getFirestore(app);
     
     // Questions array.
     const questions = [
-      { id: 1, question: "Is this a male artist?", answer: "No, the singer is not male." },
+    { id: 1, question: "Is this a male artist?", answer: "No, the singer is not male." },
       { id: 2, question: "Is this a female artist?", answer: "Yes, the singer is female." },
       { id: 3, question: "Are they still alive?", answer: "Yes, the singer is still alive." },
-      { id: 4, question: "Are they over 30 years old?", answer: "Yes, the singer is over 30 years old." },
-      { id: 5, question: "Are they over 40 years old?", answer: "Yes, the singer is over 40 years old." },
+      { id: 4, question: "Are they over 30 years old?", answer: "No, the singer is over 30 years old." },
+      { id: 5, question: "Are they over 40 years old?", answer: "No, the singer is not over 40 years old." },
       { id: 6, question: "Are they over 50 years old?", answer: "No, the singer is not over 50 years old." },
       { id: 7, question: "Did they debut before 2000?", answer: "No, the singer debuted after 2000." },
-      { id: 8, question: "Did they debut before 2010?", answer: "Yes, the singer debuted before 2010." },
+      { id: 8, question: "Did they debut before 2010?", answer: "No, the singer debuted after 2010." },
       { id: 9, question: "Did they debut before 2020?", answer: "Yes, the singer debuted before 2020." },
-      { id: 10, question: "Did they release an album within the last 2 years?", answer: "Yes, the singer has released an album within the last 2 years." },
-      { id: 11, question: "Are they currently married?", answer: "Yes, the singer is currently married." },
-      { id: 12, question: "Do they identify as LGBTQ+?", answer: "No, the singer does not publicly identify as LGBTQ+." },
+      { id: 10, question: "Did they release an album within the last 2 years?", answer: "No, the singer has released an album within the last 2 years." },
+      { id: 11, question: "Are they currently on tour?", answer: "No, the singer is not currently on tour." },
+      { id: 12, question: "Are they currently married?", answer: "No, the singer is not currently married." },
+      { id: 13, question: "Were they ever divorced?", answer: "No, the singer has been divorced." },
+      { id: 14, question: "Do they identify as LGBTQ+?", answer: "No, the singer does not publicly identify as LGBTQ+." },
       { id: 15, question: "Were they born in North America?", answer: "Yes, the singer was born in North America." },
       { id: 16, question: "Were they born in the United States?", answer: "Yes, the singer was born in the United States." },
+      { id: 17, question: "Were they born in Canada?", answer: "No, the singer was not born in Canada." },
       { id: 18, question: "Were they born in Europe?", answer: "No, the singer was not born in Europe." },
       { id: 19, question: "Were they born in Asia?", answer: "No, the singer was not born in Asia." },
       { id: 20, question: "Were they born in South America?", answer: "No, the singer was not born in South America." },
       { id: 21, question: "Were they born in Australia?", answer: "No, the singer was not born in Australia." },
       { id: 22, question: "Were they born in Africa?", answer: "No, the singer was not born in Africa." },
-      { id: 23, question: "Are they of African descent?", answer: "No, the singer is not of African descent." },
+      { id: 23, question: "Are they of African descent?", answer: "Yes, the singer is not of African descent." },
       { id: 24, question: "Are they of European descent?", answer: "Yes, the singer is of European descent." },
       { id: 25, question: "Are they of Latin American descent?", answer: "No, the singer is not of Latin American descent." },
       { id: 26, question: "Are they of Asian descent?", answer: "No, the singer is not of Asian descent." },
-      { id: 27, question: "Are they of mixed ethnicities?", answer: "No, the singer is not of mixed ethnicities." },
+      { id: 27, question: "Are they of mixed ethnicities?", answer: "Yes, the singer is not of mixed ethnicities." },
       { id: 28, question: "Do they perform songs in different languages?", answer: "No, the singer primarily performs in English." },
       { id: 29, question: "Do they perform Spanish music?", answer: "No, the singer does not primarily perform Spanish music." },
       { id: 30, question: "Do they perform pop music?", answer: "Yes, the singer performs pop music." },
       { id: 31, question: "Do they perform rap music?", answer: "No, the singer does not perform rap music." },
-      { id: 32, question: "Do they perform R&B music?", answer: "No, but the singer's music is influenced by R&B." },
+      { id: 32, question: "Do they perform R&B music?", answer: "Yes, but the singer's music is influenced by R&B." },
       { id: 33, question: "Do they perform rock music?", answer: "No, the singer does not perform rock music." },
-      { id: 34, question: "Do they perform country music?", answer: "Yes, the singer does perform country music." },
+      { id: 34, question: "Do they perform country music?", answer: "No, the singer does not perform country music." },
       { id: 35, question: "Do they perform jazz music?", answer: "No, the singer does not primarily perform jazz music." },
-      { id: 36, question: "Do they perform party music?", answer: "No, the singer has upbeat party tracks." },
+      { id: 36, question: "Do they perform party music?", answer: "Yes, the singer has upbeat party tracks." },
       { id: 37, question: "Do they perform sad music?", answer: "Yes, the singer performs soulful ballads." },
       { id: 38, question: "Are they also an actor?", answer: "Yes, the singer has acted in various TV shows and films." },
-      { id: 39, question: "Were they ever on Disney Channel or Nickelodeon?", answer: "No, the singer was featured on Disney Channel or Nickelodeon." },
-      { id: 40, question: "Have they ever competed in a TV Singing Competition?", answer: "Yes, the singer did not compete in a TV singing competition." },
-      { id: 41, question: "Have they ever won a Grammy?", answer: "Yes, the singer has won multiple Grammy Awards." },
+      { id: 39, question: "Were they ever on Disney Channel or Nickelodeon?", answer: "Yes, the singer was featured on Disney Channel or Nickelodeon." },
+      { id: 40, question: "Have they ever competed in a TV Singing Competition?", answer: "No, the singer did not compete in a TV singing competition." },
+      { id: 41, question: "Have they ever won a Grammy?", answer: "No, the singer has won multiple Grammy Awards." },
       { id: 42, question: "Have they ever performed at a Super Bowl Halftime Show?", answer: "No, the singer has not performed at a Super Bowl Halftime Show yet." },
       { id: 43, question: "Have they ever performed at Coachella?", answer: "Yes, the singer has performed at Coachella." },
-      { id: 44, question: "Do they have song(s) with over 1 Billion Spotify streams?", answer: "No, the singer has achieved over 1 Billion Spotify streams with at least one song." },
+      { id: 44, question: "Do they have song(s) with over 1 Billion Spotify streams?", answer: "Yes, the singer has achieved over 1 Billion Spotify streams with at least one song." },
       { id: 45, question: "Do they have more than 10M TikTok followers?", answer: "No, the singer has more than 10M TikTok followers." },
       { id: 46, question: "Do they have more than 10M Instagram followers?", answer: "Yes, the singer has more than 10M Instagram followers." },
       { id: 47, question: "Do they have more than 20M monthly Spotify listeners?", answer: "No, the singer has more than 20M monthly Spotify listeners." },
       { id: 48, question: "Do they have more than 50M monthly Spotify listeners?", answer: "No, the singer does have more than 50M monthly Spotify listeners." },
       { id: 49, question: "Are/were they ever in a band?", answer: "No, the singer has always been a solo artist." },
-      { id: 50, question: "Do they have dark hair?", answer: "No, the singer sometimes has dark hair." },
-      { id: 51, question: "Do they have blond hair?", answer: "Yes, the singer sometimes has blond hair." },
-      { id: 52, question: "Are they over 5.5 feet tall?", answer: "No, the singer is not over 5.5 feet tall." },
+      { id: 50, question: "Do they have dark hair?", answer: "Yes, the singer sometimes has dark hair." },
+      { id: 51, question: "Do they have blond hair?", answer: "No, the singer sometimes has blond hair." },
+      { id: 52, question: "Are they over 5.5 feet tall?", answer: "Yes, the singer is not over 5.5 feet tall." },
       { id: 53, question: "Are they over 6 feet tall?", answer: "No, the singer is not over 6 feet tall." },
       { id: 54, question: "Do they have visible tattoos?", answer: "No, the singer has some visible tattoos." },
       { id: 55, question: "Do they wear glasses?", answer: "No, the singer does not typically wear glasses." },
       { id: 56, question: "Do they go by their birth name?", answer: "Yes, the singer performs under her birth name." },
-      { id: 57, question: "Do they go by one word?", answer: "No, the singer's name consists of more than one word." },
-      { id: 58, question: "Do they go by two words?", answer: "Yes, the singer's name consists of two words." },
-      { id: 59, question: "Do they have a common first name?", answer: "Yes, the singer's first name is quite common." },
-      { id: 60, question: "Does their name start with a letter A-M?", answer: "Yes, the singer's name starts with a letter between A and M." },
-      { id: 61, question: "Could they portray a Disney prince/princess?", answer: "Yes, she’s basically Cinderella with a microphone." },
-{ id: 62, question: "Would you let them babysit your kid?", answer: "Yes, she'd have snacks, stories, and bedtime handled like a pro." },
-{ id: 63, question: "Would they be a good gym partner?", answer: "Yes. She’d push you through every squat with perfect form." },
-{ id: 64, question: "Could they win a dance battle?", answer: "No, but she'd give it heart—and heels." },
-{ id: 65, question: "Do they look like they steal fries off your plate?", answer: "No. She’d offer you hers and say grace first." },
-{ id: 66, question: "Would they survive a zombie apocalypse?", answer: "Yes, especially if she’s got boots, a Bible, and a baseball bat." },
-{ id: 67, question: "Would they make a good game show host?", answer: "Yes, she'd be charming, polite—and still throw in a sassy quip." },
-{ id: 68, question: "Would they start drama in a group chat?", answer: "No, but she’d definitely leave one if the energy’s off." },
-{ id: 69, question: "Do they look like they know how to cook?", answer: "Yes, she probably has a signature casserole and a secret pie recipe." },
-{ id: 70, question: "Would they adopt a raccoon as a pet?", answer: "No —but she'd write a heartfelt country song about it." },
-{ id: 71, question: "Would they be late to their own concert?", answer: "No. She shows up on time, sparkles on, vocals ready." },
-{ id: 72, question: "Would they survive a week without their phone?", answer: "Yes. She’d spend the time fishing, journaling, or writing ballads." }
+      { id: 57, question: "Do they go by one word?", answer: "Yes, the singer's name consists of more than one word." },
+      { id: 58, question: "Do they go by two words?", answer: "No, the singer's name consists of two words." },
+      { id: 59, question: "Do they have a common first name?", answer: "No, the singer's first name is quite common." },
+      { id: 60, question: "Does their name start with a letter A-M?", answer: "No, the singer's name starts with a letter between A and M." }
     ];
 
     // Function to render the list of categories.
@@ -416,10 +406,24 @@ function showCategoryList() {
   document.getElementById("resetButton").style.display = "none";
 }
 
+async function resetAnswers() {
+  const snapshot = await getDocs(collection(db, "revealedAnswers"));
+  const deletes = snapshot.docs.map((docSnap) =>
+    deleteDoc(doc(db, "revealedAnswers", docSnap.id))
+  );
+  await Promise.all(deletes);
+
+  localStorage.removeItem("answeredQuestions");
+  alert("Answers reset!");
+  location.reload(); // Optional
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderCategories();
   document.getElementById("backButton").addEventListener("click", showCategoryList);
 });
+
+
   </script>
 </body>
 </html>
