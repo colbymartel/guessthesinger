@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer: Common Questions about the mystery artist">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Common Questions - Mystery Artist</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding-bottom: 40px;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .header .logo img {
+      width: 20%;
+      margin-bottom: 10px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .header .logo img { width: 60%; }
+    }
+    .navbar {
+      background-color: #315f85;
+      padding: 15px 0;
+      text-align: center;
+    }
+    .navbar ul {
+      list-style: none;
+      display: inline-block;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+    .navbar ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 5px 10px;
+      transition: background 0.3s ease;
+    }
+    .navbar ul li a:hover {
+      background-color: #4682b4;
+      border-radius: 5px;
+    }
+    /* Category & Questions Grid */
+    .grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 10px;
+}
+.grid-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  min-height: 200px; /* or your preferred height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+
+
+    .grid-item:hover {
+      transform: scale(1.05);
+    }
+    .grid-item h2 {
+      font-size: 1.2rem;
+      color: #333;
+    }
+    .back-button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      background: #4682b4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 200px;
+    }
+    .back-button:hover {
+      background: #315f85;
+    }
+    /* Hide container by default */
+    .hidden { display: none; }
+    #questionContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 10px;
+}
+.navbar ul li a.active {
+  background-color: #4682b4; /* Or any color that stands out */
+  border-bottom: 3px solid #fff; /* Creates a visual underline */
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+  <nav class="navbar">
+    <ul>
+      <li><a href="/rounds.html">Rounds</a></li>
+      <li><a href="/questions2.html" class="active">Questions</a></li>
+      <li><a href="/hints2.html">Hints</a></li>
+      <li><a href="/guesses2.html">Guesses</a></li>
+      <li><a href="/trivia2.html">Trivia</a></li>
+      <li><a href="/results2.html">Audience</a></li>
+    </ul>
+  </nav>
+  
+  <!-- Category List -->
+  <div id="categoryContainer" class="grid-container">
+    <!-- Six categories will be rendered here -->
+  </div>
+  
+  <!-- Questions List (hidden by default) -->
+  <div id="questionContainer" class="grid-container hidden">
+    <!-- Questions for a category will be rendered here -->
+  </div>
+  
+  <!-- Back Button for questions view -->
+  <button id="backButton" class="back-button hidden">Back to Categories</button>
+  <button id="resetButton" class="back-button">Reset Answers</button>
+
+  <script>
+    // Define categories. Note that our questions array below is structured by id ranges.
+    const categories = [
+      { name: "General Questions", start: 1, end: 14 },
+      { name: "Geographic Questions", start: 15, end: 22 },
+      { name: "Background Questions", start: 23, end: 27 },
+      { name: "Music Style Questions", start: 28, end: 37 },
+      { name: "Career & Popularity", start: 38, end: 49 },
+      { name: "Name & Appearance", start: 50, end: 60 }
+    ];
+    
+    // Questions array.
+    const questions = [
+      { id: 1, question: "Is this a male artist?", answer: "Yes, the singer is not male." },
+      { id: 2, question: "Is this a female artist?", answer: "No, the singer is female." },
+      { id: 3, question: "Are they still alive?", answer: "Yes, the singer is still alive." },
+      { id: 4, question: "Are they over 30 years old?", answer: "Yes, the singer is over 30 years old." },
+      { id: 5, question: "Are they over 40 years old?", answer: "Yes, the singer is not over 40 years old." },
+      { id: 6, question: "Are they over 50 years old?", answer: "Yes, the singer is not over 50 years old." },
+      { id: 7, question: "Did they debut before 2000?", answer: "Yes, the singer debuted after 2000." },
+      { id: 8, question: "Did they debut before 2010?", answer: "Yes, the singer debuted after 2000." },
+      { id: 9, question: "Did they debut before 2020?", answer: "Yes, the singer debuted before 2020." },
+      { id: 10, question: "Did they release an album within the last 2 years?", answer: "No, the singer has released an album within the last 2 years." },
+      { id: 11, question: "Are they currently on tour?", answer: "No, the singer is not currently on tour." },
+      { id: 12, question: "Are they currently married?", answer: "Yes, the singer is not currently married." },
+      { id: 13, question: "Were they ever divorced?", answer: "Yes, the singer has been divorced." },
+      { id: 14, question: "Do they identify as LGBTQ+?", answer: "Yes, the singer does not publicly identify as LGBTQ+." },
+      { id: 15, question: "Were they born in North America?", answer: "No, the singer was born in North America." },
+      { id: 16, question: "Were they born in the United States?", answer: "No, the singer was born in the United States." },
+      { id: 17, question: "Were they born in Canada?", answer: "No, the singer was not born in Canada." },
+      { id: 18, question: "Were they born in Europe?", answer: "Yes, the singer was not born in Europe." },
+      { id: 19, question: "Were they born in Asia?", answer: "No, the singer was not born in Asia." },
+      { id: 20, question: "Were they born in South America?", answer: "No, the singer was not born in South America." },
+      { id: 21, question: "Were they born in Australia?", answer: "No, the singer was not born in Australia." },
+      { id: 22, question: "Were they born in Africa?", answer: "No, the singer was not born in Africa." },
+      { id: 23, question: "Are they of African descent?", answer: "No, the singer is not of African descent." },
+      { id: 24, question: "Are they of European descent?", answer: "Yes, the singer is of European descent." },
+      { id: 25, question: "Are they of Latin American descent?", answer: "No, the singer is not of Latin American descent." },
+      { id: 26, question: "Are they of Asian descent?", answer: "No, the singer is not of Asian descent." },
+      { id: 27, question: "Are they of mixed ethnicities?", answer: "No, the singer is not of mixed ethnicities." },
+      { id: 28, question: "Do they perform songs in different languages?", answer: "No, the singer primarily performs in English." },
+      { id: 29, question: "Do they perform Spanish music?", answer: "No, the singer does not primarily perform Spanish music." },
+      { id: 30, question: "Do they perform pop music?", answer: "Yes, the singer performs pop music." },
+      { id: 31, question: "Do they perform rap music?", answer: "No, the singer does not perform rap music." },
+      { id: 32, question: "Do they perform R&B music?", answer: "No, but the singer's music is influenced by R&B." },
+      { id: 33, question: "Do they perform rock music?", answer: "Yes, the singer does not perform rock music." },
+      { id: 34, question: "Do they perform country music?", answer: "No, the singer does not perform country music." },
+      { id: 35, question: "Do they perform jazz music?", answer: "No, the singer does not primarily perform jazz music." },
+      { id: 36, question: "Do they perform party music?", answer: "Yes, the singer has upbeat party tracks." },
+      { id: 37, question: "Do they perform sad music?", answer: "Yes, the singer performs soulful ballads." },
+      { id: 38, question: "Are they also an actor?", answer: "No, the singer has acted in various TV shows and films." },
+      { id: 39, question: "Were they ever on Disney Channel or Nickelodeon?", answer: "No, the singer was featured on Disney Channel or Nickelodeon." },
+      { id: 40, question: "Have they ever competed in a TV Singing Competition?", answer: "No, the singer did not compete in a TV singing competition." },
+      { id: 41, question: "Have they ever won a Grammy?", answer: "Yes, the singer has won multiple Grammy Awards." },
+      { id: 42, question: "Have they ever performed at a Super Bowl Halftime Show?", answer: "No, the singer has not performed at a Super Bowl Halftime Show yet." },
+      { id: 43, question: "Have they ever performed at Coachella?", answer: "No, the singer has performed at Coachella." },
+      { id: 44, question: "Do they have song(s) with over 1 Billion Spotify streams?", answer: "Yes, the singer has achieved over 1 Billion Spotify streams with at least one song." },
+      { id: 45, question: "Do they have more than 10M TikTok followers?", answer: "No, the singer has more than 10M TikTok followers." },
+      { id: 46, question: "Do they have more than 10M Instagram followers?", answer: "No, the singer has more than 10M Instagram followers." },
+      { id: 47, question: "Do they have more than 20M monthly Spotify listeners?", answer: "Yes, the singer has more than 20M monthly Spotify listeners." },
+      { id: 48, question: "Do they have more than 50M monthly Spotify listeners?", answer: "No, the singer does have more than 50M monthly Spotify listeners." },
+      { id: 49, question: "Are/were they ever in a band?", answer: "Yes, the singer has always been a solo artist." },
+      { id: 50, question: "Do they have dark hair?", answer: "No, the singer sometimes has dark hair." },
+      { id: 51, question: "Do they have blond hair?", answer: "No, the singer sometimes has blond hair." },
+      { id: 52, question: "Are they over 5.5 feet tall?", answer: "Yes, the singer is not over 5.5 feet tall." },
+      { id: 53, question: "Are they over 6 feet tall?", answer: "No, the singer is not over 6 feet tall." },
+      { id: 54, question: "Do they have visible tattoos?", answer: "No, the singer has some visible tattoos." },
+      { id: 55, question: "Do they wear glasses?", answer: "Yes, the singer does not typically wear glasses." },
+      { id: 56, question: "Do they go by their birth name?", answer: "No, the singer performs under her birth name." },
+      { id: 57, question: "Do they go by one word?", answer: "No, the singer's name consists of more than one word." },
+      { id: 58, question: "Do they go by two words?", answer: "Yes, the singer's name consists of two words." },
+      { id: 59, question: "Do they have a common first name?", answer: "No, the singer's first name is quite common." },
+      { id: 60, question: "Does their name start with a letter A-M?", answer: "Yes, the singer's name starts with a letter between A and M." }
+    ];
+    
+    // Function to render the list of categories.
+    function renderCategories() {
+      const container = document.getElementById("categoryContainer");
+      container.innerHTML = "";
+      categories.forEach((cat, index) => {
+        const item = document.createElement("div");
+        item.classList.add("grid-item");
+        item.setAttribute("data-index", index);
+        item.innerHTML = `<h2>${cat.name}</h2>`;
+        item.addEventListener("click", function() {
+          // When a category is clicked, show questions for that category.
+          showQuestionsForCategory(index);
+        });
+        container.appendChild(item);
+      });
+    }
+    
+    // Function to show questions from a chosen category.
+    function showQuestionsForCategory(categoryIndex) {
+      const category = categories[categoryIndex];
+      // Filter questions that fall within the id range for this category.
+      const filtered = questions.filter(q => q.id >= category.start && q.id <= category.end);
+      
+      const container = document.getElementById("questionContainer");
+      container.innerHTML = "";
+      
+      filtered.forEach(item => {
+  const card = document.createElement("div");
+  card.classList.add("grid-item");
+  card.innerHTML = `<h2>${item.question}</h2>`;
+  
+  // Get any stored answers from local storage
+  let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
+  
+  // If this question has been answered already, mark it accordingly
+  if (answeredQuestions[item.id] !== undefined) {
+    card.classList.add("answered");
+    if (answeredQuestions[item.id]) {
+      card.style.backgroundColor = "#4CAF50"; // green for yes
+      card.innerHTML += '<br><i class="fas fa-check"></i>';
+    } else {
+      card.style.backgroundColor = "#f44336"; // red for no
+      card.innerHTML += '<br><i class="fas fa-times"></i>';
+    }
+  } else {
+    // Otherwise, set up the click event to reveal the answer without displaying the text.
+    card.addEventListener("click", function() {
+      if (card.classList.contains("answered")) return;
+      
+      card.classList.add("answered");
+      
+      // Check if the answer starts with "yes"
+      const isYes = item.answer.trim().toLowerCase().startsWith("yes");
+      
+      // Apply style and icon accordingly
+      if (isYes) {
+        card.style.backgroundColor = "#4CAF50"; // green for yes
+        card.innerHTML += '<br><i class="fas fa-check"></i>';
+      } else {
+        card.style.backgroundColor = "#f44336"; // red for no
+        card.innerHTML += '<br><i class="fas fa-times"></i>';
+      }
+      
+      // Save the result in local storage
+      logAnswer(item.id, isYes);
+    });
+  }
+  
+  container.appendChild(card);
+});
+
+function logAnswer(questionId, isCorrect) {
+  let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
+  answeredQuestions[questionId] = isCorrect;
+  localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
+}
+
+      // Hide the category list and show the questions.
+      document.getElementById("categoryContainer").classList.add("hidden");
+      container.classList.remove("hidden");
+      document.getElementById("backButton").classList.remove("hidden");
+    }
+    
+    // Function to go back to the category list.
+    function showCategoryList() {
+  const questionContainer = document.getElementById("questionContainer");
+  questionContainer.classList.add("hidden");
+  questionContainer.innerHTML = ""; // Optional: clear the questions content
+  
+  document.getElementById("backButton").classList.add("hidden");
+  document.getElementById("categoryContainer").classList.remove("hidden");
+}
+
+    
+    // Event listener for the back button.
+    document.getElementById("backButton").addEventListener("click", showCategoryList);
+    
+    // Initial render.
+    renderCategories();
+    document.getElementById("resetButton").addEventListener("click", function() {
+  // Clear local storage entry for answered questions.
+  localStorage.removeItem("answeredQuestions");
+  
+  // Optional: Reset UI by re-rendering categories and/or questions.
+  // For example, if you're in the questions view, you can call showCategoryList()
+  // or simply reload the page:
+  location.reload();
+});
+
+  </script>
+</body>
+</html>

@@ -132,10 +132,27 @@ header {
     <!-- QR Code area (optional) -->
     <div class="qr-code">
       <h1>Scan to begin</h1>
-      <img src="../images/trivia2qr.jpg" alt="Scan QR Code">
+      <img src="../images/trivia2qr.jpg" alt="Scan QR Code" id="qrImage" onclick="changeQR()">
     </div>
+    
+    
     <!-- Leaderboard button -->
     <a class="btn-leaderboard" href="leaderboard.html">View Leaderboard</a>
+    <a class="btn-leaderboard" href="leaderboardvote.html">Audience Vote</a>
+
   </div>
 </body>
+<script>
+  let qrSwapped = false;
+
+  function changeQR() {
+    const qrImg = document.getElementById("qrImage");
+    if (!qrSwapped) {
+      qrImg.src = "../images/audienceguessqr.jpg"; // Change this to your second QR image path
+      qrSwapped = true;
+    }
+  }
+</script>
+
+
 </html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer - Leaderboard">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - Guess The Singer</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+        font-family: 'Poppins', sans-serif;
+        background: url(/images/bg-top.png) no-repeat;
+      background-color: white;
+      color: #333;
+      text-align: center;
+  color: #fff;
+  min-height: 100vh;
+  padding-bottom: 40px;
+    }
+/* Header */
+header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+header img {
+  width: 20%;
+}
+
+
+/* Navbar */
+.navbar {
+  background-color: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  justify-content: center; /* horizontally center */
+  align-items: center;      /* vertically center */
+  padding: 0;
+  margin: 0 auto;
+}
+
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
+    
+
+    h1 {
+      color: #254a6d;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      margin-top: 40px;
+
+    }
+
+    .leaderboard {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .leaderboard-header {
+  background-color: #254a6d; /* dark blue */
+  color: white !important;   /* force white text */
+  font-weight: bold;
+  display: flex;
+  padding: 15px;
+}
+
+.leaderboard-row {
+  display: flex;
+  padding: 12px;
+  border-top: 1px solid #4682b4;
+  background-color: #4682b4;
+  color: white;
+}
+
+.leaderboard-row:hover {
+  background-color: #f1f1f1;
+}
+
+
+    .leaderboard-row:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    .cell {
+      flex: 1;
+      font-size: 0.95rem;
+      color: white;
+    }
+    .leaderboard-row .cell {
+  color: #254a6d; /* or any blue shade you prefer */
+  font-weight: 500;
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="images/SingerLogo.png" alt="Guess the Singer Logo">
+  </header>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="/rounds.html">Rounds</a></li>
+      <li><a href="/questions.html">Questions</a></li>
+      <li><a href="/hints.html">Hints</a></li>
+      <li><a href="/guesses.html">Guesses</a></li>
+      <li><a href="/results.html">Audience</a></li>
+      <li><a href="/trivia.html" class="active">Trivia</a></li>
+      <li><a href="/wheel.html">Wheel</a></li>
+    </ul>
+  </nav>
+
+  <h1>🎤 Fastest Audience Guesses</h1>
+
+  <div class="leaderboard" id="leaderboard">
+    <div class="leaderboard-header">
+      <div class="cell">Name</div>
+      <div class="cell">Guess</div>
+      <div class="cell">Time</div>
+    </div>
+    <!-- Rows will be inserted here -->
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const leaderboard = document.getElementById("leaderboard");
+    const correctAnswer = "adele"; // <-- replace with current correct singer (lowercase)
+
+    async function loadLeaderboard() {
+      const snapshot = await db.collection("lockedGuesses")
+        .orderBy("timestamp", "asc")
+        .get();
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const guess = (data.guess || "").toLowerCase();
+        if (guess === correctAnswer) {
+          const name = doc.id;
+          const time = data.timestamp?.toDate().toLocaleString() || "—";
+
+          const row = document.createElement("div");
+          row.className = "leaderboard-row";
+          row.innerHTML = `
+            <div class="cell">${name}</div>
+            <div class="cell">${capitalize(guess)}</div>
+            <div class="cell">${time}</div>
+          `;
+          leaderboard.appendChild(row);
+        }
+      });
+    }
+
+    function capitalize(name) {
+      return name.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    }
+
+    loadLeaderboard();
+  </script>
+</body>
+</html>
