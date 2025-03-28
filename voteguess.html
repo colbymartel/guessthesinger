@@ -239,21 +239,6 @@
 .gallery-item {
   position: relative;
 }
-#resetStars {
-  margin: 20px auto;
-  display: block;
-  padding: 10px 20px;
-  background-color: #4682b4;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-#resetStars:hover {
-  background-color: #315f85;
-}
 
   </style>
 </head>
@@ -268,7 +253,7 @@
     <div class="search-wrapper">
       <i class="fas fa-search search-icon"></i>
       <input type="text" id="searchBar" placeholder="Type singer's name...">
-      <button id="resetStars">Reset</button>
+     
 
     </div>
   </div>
@@ -655,11 +640,6 @@ let playerName = null;
   { name: "Lizzy McAlpine", img: "images/lizzymcalpine.jpg" },
   { name: "Oliver Tree", img: "images/olivertree.png" }
     ];
-
-document.getElementById("resetStars").addEventListener("click", () => {
-  starredSingers = [];
-  renderGallery(searchBar.value);
-});
 
     const gallery = document.getElementById("gallery");
 
