@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Guess The Singer - Locked Hints Page">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="description" content="Guess The Singer - Locked Hints Page" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hints Board</title>
-  <link rel="icon" href="/favicon.ico">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
   <style>
-    /* General Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', Arial, sans-serif;
@@ -21,54 +20,40 @@
       padding: 20px;
       text-align: center;
     }
-    header h1 {
-      font-size: 2rem;
-    }
     .header .logo img {
       width: 20%;
-      margin-bottom: 10px;
       height: auto;
       display: block;
       margin: 0 auto;
     }
-    @media (max-width: 768px) {
-      .header .logo img { width: 60%; }
-    }
-    /* Navigation */
     .navbar {
-      background-color: #315f85;
-      padding: 15px 0;
-      text-align: center;
-    }
-    .navbar ul {
-      list-style: none;
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-    }
-    .navbar ul li {
-      display: inline;
-      margin: 0 15px;
-    }
-    .navbar ul li a {
-      text-decoration: none;
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: bold;
-      padding: 5px 10px;
-      transition: background 0.3s ease;
-    }
-    .navbar ul li a:hover {
-      background-color: #4682b4;
-      border-radius: 5px;
-    }
-    .navbar ul li a.active {
-      background-color: #4682b4; /* Or any color that stands out */
-      border-bottom: 3px solid #fff; /* Creates a visual underline */
-      padding: 5px 10px;
-      border-radius: 5px;
-    }
-    /* Board styling */
+  background: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: inset 0 -2px 6px rgba(255,255,255,0.15);
+}
+.navbar ul {
+  list-style: none;
+}
+.navbar li {
+  display: inline;
+  margin: 0 12px;
+}
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
     .board-container {
       max-width: 1200px;
       margin: 40px auto;
@@ -96,34 +81,30 @@
       background: #555;
       transform: scale(1.05);
     }
-    /* Category header cells */
     .category-header {
       background: #4682b4;
       font-weight: bold;
       font-size: 1.8rem;
       cursor: default;
     }
-    /* Locked and revealed styles */
     .locked {
       background: #333;
       color: #ccc;
     }
     .revealed {
-  background: #4CAF50; /* Green background */
-  color: #fff;         /* White text */
-  cursor: default;
-}
-
-    /* Reset button styling */
+      background: #4CAF50;
+      color: #fff;
+      cursor: default;
+    }
     #resetBtn {
       display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
+      margin: 30px auto 0;
+      padding: 12px 24px;
       font-size: 1.2rem;
       background: #4682b4;
       color: #fff;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
@@ -135,7 +116,7 @@
 <body>
   <header class="header">
     <div class="logo">
-      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy" />
     </div>
   </header>
   <nav class="navbar">
@@ -149,17 +130,38 @@
       <li><a href="/wheel3.html">Wheel</a></li>
     </ul>
   </nav>
-  
+
   <div class="board-container">
-    <div class="board" id="jeopardyBoard">
-      <!-- Board cells will be generated via JavaScript -->
-    </div>
+    <div class="board" id="jeopardyBoard"></div>
     <button id="resetBtn">Reset Board</button>
   </div>
-  <script>
-    // Data for board: five categories with three hints each.
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      setDoc,
+      doc,
+      deleteDoc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    
     const boardData = [
-      { 
+    { 
         category: "Music Awards", 
         hints: [
           "Zero Grammy nominations",
@@ -201,160 +203,119 @@
       }
     ];
     
-    // Local Storage key for tracking revealed hints.
-    const storageKey = "revealedHintsBoard";
+    const revealed = {};
+    let unlockedRows = JSON.parse(localStorage.getItem("unlockedRows")) || [0];
     
-    // revealedState maps category index to an array of booleans for the three hints.
-    let revealedState = JSON.parse(localStorage.getItem(storageKey)) || {};
-    boardData.forEach((cat, index) => {
-      if (!revealedState.hasOwnProperty(index)) {
-        revealedState[index] = [false, false, false];
-      }
-    });
-    
-    // Save revealedState to localStorage.
-    function saveState() {
-      localStorage.setItem(storageKey, JSON.stringify(revealedState));
+    function saveUnlockedRows() {
+      localStorage.setItem("unlockedRows", JSON.stringify(unlockedRows));
     }
     
-    // Build the board.
-function buildBoard() {
-  const boardElement = document.getElementById("jeopardyBoard");
-  boardElement.innerHTML = "";
-  
-  // Create header row.
-  boardData.forEach(categoryObj => {
-    const headerCell = document.createElement("div");
-    headerCell.classList.add("board-cell", "category-header");
-    headerCell.textContent = categoryObj.category;
-    headerCell.style.cursor = "default";
-    boardElement.appendChild(headerCell);
+    function isRowRevealed(revealedHints, row) {
+      return boardData.every(col => revealedHints[col.category]?.[row]);
+    }
     
-  });
-  
-  // Create hint cells (3 rows x 5 columns).
-  for (let row = 0; row < 3; row++) {
-    for (let col = 0; col < boardData.length; col++) {
-      const hintText = boardData[col].hints[row];
-      const cell = document.createElement("div");
-      cell.classList.add("board-cell");
-      cell.setAttribute("data-category-index", col);
-      cell.setAttribute("data-hint-index", row);
-      
-      // For row 0, always show as unlocked with green background.
-      if (row === 0) {
-  if (revealedState[col] && revealedState[col][0]) {
-    cell.classList.add("revealed");
-    cell.textContent = hintText;
-  } else {
-    cell.classList.add("locked");
-    cell.style.backgroundColor = "#4CAF50"; // Force green background
-    cell.style.color = "#fff";               // White text for unlocked icon
-    cell.innerHTML = '<i class="fas fa-unlock"></i>';
-  }
-}
-else {
-        // For rows 1 and 2:
-        if (revealedState[col] && revealedState[col][row]) {
-          cell.classList.add("revealed");
-          cell.textContent = hintText;
-        } else {
-          cell.classList.add("locked");
-          // Determine clickable state:
-          // Row 1 is clickable if row 0 is revealed.
-          // Row 2 is clickable if row 1 is revealed.
-          let clickable = (row === 1 && revealedState[col][0]) ||
-                          (row === 2 && revealedState[col][1]);
-          cell.innerHTML = clickable 
-            ? '<i class="fas fa-unlock"></i>' 
-            : '<i class="fas fa-lock"></i>';
-            
+    async function fetchRevealedHints() {
+      const snapshot = await getDocs(collection(db, "revealedHints"));
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const { category, index } = data;
+        if (!revealed[category]) revealed[category] = [];
+        revealed[category][index] = true;
+      });
+    }
+    
+    async function buildBoard() {
+      await fetchRevealedHints();
+      renderBoard(revealed);
+    }
+    
+    function renderBoard(revealedHints) {
+      const board = document.getElementById("jeopardyBoard");
+      board.innerHTML = "";
+    
+      boardData.forEach(cat => {
+        const header = document.createElement("div");
+        header.className = "board-cell category-header";
+        header.textContent = cat.category;
+        board.appendChild(header);
+      });
+    
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < boardData.length; col++) {
+          const categoryName = boardData[col].category;
+          const hintText = boardData[col].hints[row];
+          const cell = document.createElement("div");
+    
+          if (revealedHints[categoryName]?.[row]) {
+            cell.className = "board-cell revealed";
+            cell.textContent = hintText;
+          } else if (unlockedRows.includes(row)) {
+            cell.className = "board-cell";
+            cell.style.backgroundColor = "#4CAF50";
+            cell.innerHTML = '<i class="fas fa-unlock"></i>';
+            cell.addEventListener("click", async () => {
+              await revealHint(col, row);
+            });
+          } else {
+            cell.className = "board-cell locked";
+            cell.innerHTML = '<i class="fas fa-lock"></i>';
+          }
+    
+          board.appendChild(cell);
         }
       }
-      
-      // Reveal hint on click if dependencies are met.
-      cell.addEventListener("click", function() {
-  const catIdx = cell.getAttribute("data-category-index");
-  const hintIdx = parseInt(cell.getAttribute("data-hint-index"));
-  
-  // Enforce dependency rules for rows beyond 0.
-  if (hintIdx === 1 && !revealedState[catIdx][0]) return;
-  if (hintIdx === 2 && !revealedState[catIdx][1]) return;
-  if (cell.classList.contains("revealed")) return;
-  
-  // Reveal the hint.
-// Reveal the hint.
-cell.classList.remove("locked");
-cell.classList.add("revealed");
-cell.textContent = hintText;
-
-// Ensure background remains green and text white.
-cell.style.backgroundColor = "#4CAF50";
-cell.style.color = "#fff";
-
-// Update local storage state.
-revealedState[catIdx][hintIdx] = true;
-saveState();
-
-  
-  // For row 0 and row 1, update the cell below (if available) to be green and unlocked
-  if (hintIdx < 2) {
-    const headerCount = boardData.length;
-    const boardChildren = document.getElementById("jeopardyBoard").children;
-    const nextCellIndex = headerCount + parseInt(catIdx) + (hintIdx + 1) * boardData.length;
-    const nextCell = boardChildren[nextCellIndex];
-    if (nextCell && !nextCell.classList.contains("revealed")) {
-  nextCell.style.backgroundColor = "#4CAF50";
-  nextCell.innerHTML = '<i class="fas fa-unlock"></i>';
-}
-
-  }
-  
-  // Update icons for the entire column if necessary.
-  updateBoardColumnIcons(catIdx);
-});
-
-      boardElement.appendChild(cell);
     }
-  }
-}
-
-    // Update board icons in a specific column.
-    function updateBoardColumnIcons(colIndex) {
-  const boardElement = document.getElementById("jeopardyBoard");
-  const headerCount = boardData.length;
-  for (let row = 0; row < 3; row++) {
-    const cellIndex = headerCount + parseInt(colIndex) + row * boardData.length;
-    const cell = boardElement.children[cellIndex];
-    if (!cell.classList.contains("revealed")) {
-      let clickable = (row === 0) ||
-                      (row === 1 && revealedState[colIndex][0]) ||
-                      (row === 2 && revealedState[colIndex][1]);
-      if (clickable) {
-        cell.style.backgroundColor = "#4CAF50"; // Always green when unlocked
-        cell.innerHTML = '<i class="fas fa-unlock"></i>';
-      } else {
-        cell.style.backgroundColor = ""; // Reset background if not clickable
-        cell.innerHTML = '<i class="fas fa-lock"></i>';
-      }
-    }
-  }
-}
-
     
-    // Reset button: clear state and rebuild board.
-    document.getElementById("resetBtn").addEventListener("click", function() {
-      revealedState = {};
-      boardData.forEach((cat, index) => {
-        revealedState[index] = [false, false, false];
+    async function revealHint(categoryIndex, hintIndex) {
+      const categoryName = boardData[categoryIndex].category;
+    
+      if (!revealed[categoryName]) revealed[categoryName] = [];
+      if (revealed[categoryName][hintIndex]) return;
+    
+      await setDoc(doc(db, "revealedHints", `${categoryIndex}-${hintIndex}`), {
+        category: categoryName,
+        index: hintIndex,
+        timestamp: new Date()
       });
-      saveState();
+    
+      revealed[categoryName][hintIndex] = true;
+    
+      // Check if full row is now revealed, unlock next row
+      if (isRowRevealed(revealed, hintIndex) && !unlockedRows.includes(hintIndex + 1)) {
+        unlockedRows.push(hintIndex + 1);
+        saveUnlockedRows();
+      }
+    
+      renderBoard(revealed);
+    }
+    
+    async function resetBoard() {
+      const snapshot = await getDocs(collection(db, "revealedHints"));
+      const batchDeletes = snapshot.docs.map(doc => deleteDoc(doc.ref));
+      await Promise.all(batchDeletes);
+      for (const key in revealed) delete revealed[key];
+      unlockedRows = [0];
+      saveUnlockedRows();
       buildBoard();
+    }
+    
+    document.getElementById("resetBtn").addEventListener("click", resetBoard);
+    
+    // Real-time sync
+    onSnapshot(collection(db, "revealedHints"), (snapshot) => {
+      const newRevealed = {};
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const { category, index } = data;
+        if (!newRevealed[category]) newRevealed[category] = [];
+        newRevealed[category][index] = true;
+      });
+      Object.assign(revealed, newRevealed);
+      renderBoard(revealed);
     });
     
-    // Initial build.
     buildBoard();
-  </script>
-  
+    </script>
+    
 </body>
 </html>

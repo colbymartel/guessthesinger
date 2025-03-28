@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mirror Hints Board</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"/>
+  <style>
+     /* Reset */
+     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f4f4;
+      padding-bottom: 40px;
+    }
+    header {
+      background-color: #4682b4;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+    .header .logo img {
+      width: 20%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      .header .logo img { width: 60%; }
+    }
+    .navbar {
+  background: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: inset 0 -2px 6px rgba(255,255,255,0.15);
+}
+.navbar ul {
+  list-style: none;
+}
+.navbar li {
+  display: inline;
+  margin: 0 12px;
+}
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
+    .board-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 10px;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 150px;
+      gap: 10px;
+    }
+    .board-cell {
+      border: 2px solid #4682b4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      text-align: center;
+      background: #222;
+      color: white;
+    }
+    .category-header {
+      background-color: #4682b4;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .locked {
+      background-color: #333;
+      color: #ccc;
+    }
+    .revealed {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Logo" />
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <ul>
+      <li><a href="/mirrorq.html">Questions</a></li>
+      <li><a href="/mirrorh.html" class="active">Hints</a></li>
+      <li><a href="/mirrorg.html">Guesses</a></li>
+    </ul>
+  </nav>
+
+  <div class="board-container">
+    <div class="board" id="jeopardyBoard"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const boardData = [
+      { category: "Music Awards", hints: ["Has won multiple Grammys", "Has 35 Grammy nominations", "Won 2013 Brits Icon Award"] },
+      { category: "Debut", hints: ["Debuted in the 1960s", "Debut album was released in 1969", "Broke through with the hit 'Your Song' in the early 1970s"] },
+      { category: "Miscellaneous", hints: ["Born in England", "Known for his signature glasses", "First name starts with E"] },
+      { category: "Career", hints: ["Wrote over 30 Top 40 hits", "Composed music for films and stage productions", "Composed music for 'The Lion King'"] },
+      { category: "Social Media", hints: ["Nearly 50M Spotify monthly listeners", "2.3M TikTok followers", "5M Instagram followers"] }
+    ];
+
+    const board = document.getElementById("jeopardyBoard");
+
+    function renderBoard(revealedHints) {
+      board.innerHTML = "";
+
+      // Header row
+      boardData.forEach(col => {
+        const header = document.createElement("div");
+        header.className = "board-cell category-header";
+        header.textContent = col.category;
+        board.appendChild(header);
+      });
+
+      // Hint rows
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < boardData.length; col++) {
+          const cell = document.createElement("div");
+          cell.className = "board-cell";
+
+          const hintText = boardData[col].hints[row];
+          const categoryName = boardData[col].category;
+const isRevealed = revealedHints[categoryName]?.[row];
+
+          if (isRevealed) {
+            cell.classList.add("revealed");
+            cell.textContent = hintText;
+          } else {
+            cell.classList.add("locked");
+            cell.innerHTML = '<i class="fas fa-lock"></i>';
+          }
+
+          board.appendChild(cell);
+        }
+      }
+    }
+
+    // Listen to Firestore updates
+    onSnapshot(collection(db, "revealedHints"), (snapshot) => {
+      const revealed = {};
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const { category, index } = data;
+        if (!revealed[category]) revealed[category] = [];
+        revealed[category][index] = true;
+      });
+      renderBoard(revealed);
+    });
+  </script>
+</body>
+</html>

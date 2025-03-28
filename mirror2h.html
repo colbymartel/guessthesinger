@@ -106,9 +106,9 @@
 
   <nav class="navbar">
     <ul>
-      <li><a href="/mirror.html">Questions</a></li>
-      <li><a href="/mirror2.html" class="active">Hints</a></li>
-      <li><a href="/mirror3.html">Guesses</a></li>
+      <li><a href="/mirror2q.html">Questions</a></li>
+      <li><a href="/mirror2h.html" class="active">Hints</a></li>
+      <li><a href="/mirror2g.html">Guesses</a></li>
     </ul>
   </nav>
 
@@ -133,11 +133,46 @@
     const db = getFirestore(app);
 
     const boardData = [
-      { category: "Music Awards", hints: ["Has won multiple Grammys", "Has 35 Grammy nominations", "Won 2013 Brits Icon Award"] },
-      { category: "Debut", hints: ["Debuted in the 1960s", "Debut album was released in 1969", "Broke through with the hit 'Your Song' in the early 1970s"] },
-      { category: "Miscellaneous", hints: ["Born in England", "Known for his signature glasses", "First name starts with E"] },
-      { category: "Career", hints: ["Wrote over 30 Top 40 hits", "Composed music for films and stage productions", "Composed music for 'The Lion King'"] },
-      { category: "Social Media", hints: ["Nearly 50M Spotify monthly listeners", "2.3M TikTok followers", "5M Instagram followers"] }
+    { 
+        category: "Music Awards",
+    hints: [
+      "Has won multiple Grammys",
+      "Has 35 Grammy nominations",
+      "Won 2013 Brits Icon Award"
+    ]
+  },
+  {
+    category: "Debut",
+    hints: [
+      "Debuted in the 1960s",
+      "Debut album was released in 1969",
+      "Broke through with the hit 'Your Song' in the early 1970s"
+    ]
+  },
+  {
+    category: "Miscellaneous",
+    hints: [
+      "Born in England",
+      "Known for his signature glasses",
+      "First name starts with E"
+    ]
+  },
+  {
+    category: "Career",
+    hints: [
+      "Wrote over 30 Top 40 hits",
+      "Composed music for films and stage productions",
+      "Composed music for 'The Lion King'"
+    ]
+  },
+  {
+    category: "Social Media",
+    hints: [
+      "Nearly 50M Spotify monthly listeners",
+      "2.3M TikTok followers",
+      "5M Instagram followers"
+    ]
+  }
     ];
 
     const board = document.getElementById("jeopardyBoard");

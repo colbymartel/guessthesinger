@@ -6,110 +6,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guess The Singer</title>
   <link rel="icon" href="/favicon.ico">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
-    /* Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: #f4f4f4;
-      padding-bottom: 40px;
-    }
+  font-family: 'Poppins', sans-serif;
+  background: url(/images/bg-top.png) no-repeat;
+  background-color: white;
+  background-size: cover;
+  color: #fff;
+  padding-bottom: 40px;
+  min-height: 100vh;
+  text-align: center;
+}
+
     header {
       background-color: #4682b4;
-      color: #fff;
       padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      font-size: 2rem;
     }
     .header .logo img {
       width: 20%;
-      margin-bottom: 10px;
-      height: auto;
-      display: block;
       margin: 0 auto;
+      display: block;
     }
-    @media (max-width: 768px) {
-      .header .logo img { width: 60%; }
-    }
-    /* Navigation */
-    .navbar {
-      background-color: #315f85;
-      padding: 15px 0;
-      text-align: center;
-    }
-    .navbar ul {
-      list-style: none;
-      display: inline-block;
-      margin: 0;
-      padding: 0;
-    }
-    .navbar ul li {
-      display: inline;
-      margin: 0 15px;
-    }
-    .navbar ul li a {
-      text-decoration: none;
+    h1 {
+      margin-top: 40px;
+      font-size: 2rem;
       color: #fff;
-      font-size: 1.1rem;
-      font-weight: bold;
-      padding: 5px 10px;
-      transition: background 0.3s ease;
     }
-    .navbar ul li a:hover {
-      background-color: #4682b4;
-      border-radius: 5px;
-    }
-    /* Search Bar, Options Countdown and Buttons */
+    .navbar {
+  background: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: inset 0 -2px 6px rgba(255,255,255,0.15);
+}
+.navbar ul {
+  list-style: none;
+}
+.navbar li {
+  display: inline;
+  margin: 0 12px;
+}
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
+
+    /* Search Bar */
     .search-container {
       text-align: center;
       margin: 20px;
     }
     .search-wrapper {
-      position: relative;
-      display: inline-block;
-      width: 80%;
-      max-width: 500px;
-    }
-    .search-wrapper input {
-      width: 100%;
-      padding: 10px 40px 10px 10px;
-      font-size: 1.2rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .search-icon {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-      font-size: 1.2rem;
-    }
-    .options-counter {
-      margin-top: 10px;
-      font-size: 1.1rem;
-      color: #333;
-    }
-    .button-container {
-      margin-top: 15px;
-    }
-    .button-container button {
-      padding: 8px 16px;
-      font-size: 1rem;
-      border: none;
-      background-color: #4682b4;
-      color: #fff;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 0 5px;
-      transition: background 0.3s ease;
-    }
-    .button-container button:hover {
-      background-color: #315f85;
-    }
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  margin: 30px auto;
+}
+.search-wrapper input {
+  width: 100%;
+  padding: 14px 50px 14px 20px;
+  font-size: 1.1rem;
+  border-radius: 40px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.search-icon {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4682b4;
+  font-size: 1.3rem;
+}
     /* Gallery Grid */
     .gallery {
       display: grid;
@@ -129,6 +109,7 @@
       text-align: center;
       transition: transform 0.3s ease;
       cursor: pointer;
+      /* Ensure consistent sizing even when filtered */
       display: block;
     }
     .gallery-item:hover {
@@ -140,11 +121,133 @@
       border-radius: 10px;
     }
     .singer-name {
-      margin-top: 8px;
-      font-weight: bold;
-      font-size: 1rem;
-      color: #333;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+  white-space: nowrap;               /* Prevent wrapping */
+  overflow: hidden;                 /* Hide overflow text */
+  text-overflow: ellipsis;          /* Show "..." if too long */
+  display: block;
+  max-width: 100%;
+  font-size: clamp(0.7rem, 4vw, 1rem); /* Shrinks text if needed */
+}
+
+    /* Popup Overlay */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 900;
     }
+    /* Popup Box */
+    .popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 2px solid #4682b4;
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 1000;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+
+
+    .popup h2 { margin-bottom: 15px; }
+    .popup p { margin-bottom: 20px; font-size: 1.1rem; }
+    .popup button {
+      padding: 10px 20px;
+      border: none;
+      background: #4682b4;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .popup button:hover { background: #315f85; }
+    /* Close "X" Button */
+    .popup .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #4682b4;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .popup .close-popup:hover { color: #ff4d4d; }
+
+.pop-in {
+  animation: popIn 0.5s ease-out;
+}
+@keyframes shake {
+  0% { transform: translate(-50%, -50%) translateX(0); }
+  25% { transform: translate(-50%, -50%) translateX(-10px); }
+  50% { transform: translate(-50%, -50%) translateX(10px); }
+  75% { transform: translate(-50%, -50%) translateX(-10px); }
+  100% { transform: translate(-50%, -50%) translateX(0); }
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+.popup.longer.shake {
+  animation-duration: 1s !important;
+}
+
+/* Confetti styling */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+  transform: rotate(0deg);
+  border-radius: 2px;
+}
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+.popup h2,
+.popup p {
+  color: #333;
+}
+.gallery-item.starred::after {
+  content: "⭐";
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  font-size: 1.2rem;
+  color: gold;
+  z-index: 2;
+}
+.gallery-item {
+  position: relative;
+}
+#resetStars {
+  margin: 20px auto;
+  display: block;
+  padding: 10px 20px;
+  background-color: #4682b4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+#resetStars:hover {
+  background-color: #315f85;
+}
+
   </style>
 </head>
 <body>
@@ -155,91 +258,104 @@
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/questions.html">Questions</a></li>
-      <li><a href="/hints.html">Hints</a></li>
-      <li><a href="/guesses.html">Guesses</a></li>
-      <li><a href="/results.html">Audience</a></li>
-      <li><a href="/trivia.html">Trivia</a></li>
-      <li><a href="/wheel.html">Wheel</a></li>
+      <li><a href="/mirror2q.html">Questions</a></li>
+      <li><a href="/mirror2h.html">Hints</a></li>
+      <li><a href="/mirror2g.html" class="active">Guesses</a></li>
     </ul>
   </nav>
   <div class="search-container">
     <div class="search-wrapper">
       <i class="fas fa-search search-icon"></i>
       <input type="text" id="searchBar" placeholder="Type singer's name...">
-    </div>
-    <!-- Options remaining countdown -->
-    <div class="options-counter" id="optionsCounter">Options remaining: 0</div>
-    <div class="button-container">
-      <button id="undoButton">Undo</button>
-      <button id="resetButton">Reset</button>
+      <button id="resetStars">Reset</button>
+
     </div>
   </div>
   
   <div class="gallery" id="gallery">
     <!-- Gallery items will be generated by JavaScript -->
   </div>
+  <!-- Overlay for popups -->
+  <div class="overlay" id="overlay"></div>
+
+  <div class="popup" id="celebrationPopup">
+    <button class="close-popup" onclick="closePopup()">&times;</button>
+    <div id="popupImageContainer"></div>
+    <h2 id="popupTitle">Congratulations!</h2>
+    <p id="popupMessage">The singer was <strong id="celebrationName">Carrie Underwood</strong>!</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+  
+  <div class="popup" id="failurePopup">
+    <button class="close-popup" onclick="closePopup()">&times;</button>
+    <div id="popupImageContainer"></div>
+    <h2 id="popupTitle">Nope!</h2>
+    <p id="popupMessage">Sorry, that's not right.</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+  
   
   <script>
-    // Original array of singers (all items)
-    const allSingers = [
-    { name: "Bruno Mars", img: "images/brunomars.jpg" },
-  { name: "The Weeknd", img: "images/theweeknd.jpg" },
-  { name: "Lady Gaga", img: "images/ladygaga.jpg" },
-  { name: "Ariana Grande", img: "images/arianagrande.jpg" },
-  { name: "Billie Eilish", img: "images/billieeilish.jpg" },
-  { name: "Taylor Swift", img: "images/taylorswift.jpg" },
+
+    // Array of singer objects (50 items)
+    const singers = [
+    { name: "21 Savage", img: "images/21savage.jpg" },
+    { name: "Adele", img: "images/adele.jpg" },
+    { name: "Alicia Keys", img: "images/aliciakeys.jpg" },
+    { name: "Ariana Grande", img: "images/arianagrande.jpg" },
+    { name: "Bad Bunny", img: "images/badbunny.jpg" },
+    { name: "Benson Boone", img: "images/bensonboone.jpg" },
+    { name: "Beyoncé", img: "images/beyonce.jpg" },
+    { name: "Billie Eilish", img: "images/billieeilish.jpg" },
+  { name: "Bruno Mars", img: "images/brunomars.jpg" },
+  { name: "Calvin Harris", img: "images/calvinharris.jpg" },
+  { name: "Chris Brown", img: "images/chrisbrown.jpg" },
+  { name: "Daddy Yankee", img: "images/daddyyankee.jpg" },
+  { name: "Doja Cat", img: "images/dojacat.jpg" },
+  { name: "Drake", img: "images/drake.jpg" },
+  { name: "Dua Lipa", img: "images/dualipa.jpg" },
+  { name: "Ed Sheeran", img: "images/EdSheeran.jpg" },
+  { name: "Elton John", img: "images/eltonjohn.jpg" },
+  { name: "Eminem", img: "images/eminem.jpg" },
+  { name: "Future", img: "images/future.jpg" },
+  { name: "Harry Styles", img: "images/harrystyles.jpg" },
+  { name: "Hozier", img: "images/hozier.jpg" },
   { name: "Justin Bieber", img: "images/justinbieber.jpg" },
-  { name: "Ed Sheeran", img: "images/edsheeran.jpg" },
+  { name: "Kanye West", img: "images/kanyewest.jpg" },
+  { name: "KAROL G", img: "images/karolg.jpg" },
+  { name: "Katy Perry", img: "images/katyperry.jpg" },
+  { name: "Kendrick Lamar", img: "images/kendricklamar.jpg" },
+  { name: "Khalid", img: "images/khalid.jpg" },
+  { name: "Lady Gaga", img: "images/ladygaga.jpg" },
+  { name: "Lana Del Rey", img: "images/lanadelrey.jpg" },
+  { name: "Lil Wayne", img: "images/lilwayne.jpg" },
+  { name: "Mariah Carey", img: "images/mariahcarey.jpg" },
+  { name: "Michael Bublé", img: "images/michaelbuble.jpg" },
+  { name: "Miley Cyrus", img: "images/mileycyrus.jpg" },
+  { name: "Nicki Minaj", img: "images/nickiminaj.jpg" },
+  { name: "Olivia Rodrigo", img: "images/oliviarodrigo1.jpg" },
+  { name: "Pitbull", img: "images/pitbull.jpg" },
+  { name: "Playboi Carti", img: "images/playboicarti.jpg" },
+  { name: "Post Malone", img: "images/postmalone.jpg" },
+  { name: "Rauw Alejandro", img: "images/rauwalejandro.jpg" },
   { name: "Rihanna", img: "images/rihanna.jpg" },
+  { name: "ROSÉ", img: "images/rose.jpg" },
   { name: "Sabrina Carpenter", img: "images/sabrina.jpg" },
+  { name: "Sam Smith", img: "images/samsmith.jpg" },
+  { name: "Shakira", img: "images/shakira.jpg" },
+  { name: "Shawn Mendes", img: "images/shawnmendes.jpg" },
   { name: "Sia", img: "images/sia.jpg" },
   { name: "SZA", img: "images/sza.jpg" },
-  { name: "Kendrick Lamar", img: "images/kendricklamar.jpg" },
-  { name: "Eminem", img: "images/eminem.jpg" },
-  { name: "Drake", img: "images/drake.jpg" },
-  { name: "Mariah Carey", img: "images/mariahcarey.jpg" },
-  { name: "David Guetta", img: "images/davidguetta.jpg" },
-  { name: "Post Malone", img: "images/postmalone.jpg" },
+  { name: "Taylor Swift", img: "images/taylorswift.jpg" },
+  { name: "The Weeknd", img: "images/theweeknd.jpg" },
   { name: "Travis Scott", img: "images/travisscott.jpg" },
-  { name: "Bad Bunny", img: "images/badbunny.jpg" },
-  { name: "Kanye West", img: "images/kanyewest.jpg" },
-  { name: "Dua Lipa", img: "images/dualipa.jpg" },
-  { name: "ROSÉ", img: "images/rose.jpg" },
-  { name: "Shakira", img: "images/shakira.jpg" },
-  { name: "Katy Perry", img: "images/katyperry.jpg" },
-  { name: "Elton John", img: "images/eltonjohn.jpg" },
-  { name: "Calvin Harris", img: "images/calvinharris.jpg" },
-  { name: "J Balvin", img: "images/jbalvin.jpg" },
-  { name: "Adele", img: "images/adele.jpg" },
-  { name: "Lana Del Rey", img: "images/lanadelrey.jpg" },
-  { name: "KAROL G", img: "images/karolg.jpg" },
-  { name: "Pitbull", img: "images/pitbull.jpg" },
-  { name: "Miley Cyrus", img: "images/mileycyrus.jpg" },
-  { name: "Future", img: "images/future.jpg" },
-  { name: "Beyoncé", img: "images/beyonce.jpg" },
-  { name: "Rauw Alejandro", img: "images/rawalejandro.jpg" },
-  { name: "Playboi Carti", img: "images/playboicarti.jpg" },
-  { name: "Khalid", img: "images/khalid.jpg" },
-  { name: "Daddy Yankee", img: "images/daddyyankee.jpg" },
-  { name: "Sam Smith", img: "images/samsmith.jpg" },
   { name: "Tyler, The Creator", img: "images/tylerthecreator.jpg" },
-  { name: "Doja Cat", img: "images/dojacat.jpg" },
-  { name: "Nicki Minaj", img: "images/nickiminaj.jpg" },
-  { name: "Olivia Rodrigo", img: "images/oliviarodrigo.jpg" },
-  { name: "Chris Brown", img: "images/chrisbrown.jpg" },
-  { name: "Michael Bublé", img: "images/michaelbuble.jpg" },
-  { name: "Shawn Mendes", img: "images/shawnmendes.jpg" },
-  { name: "Lil Wayne", img: "images/lilwayne.jpg" },
-  { name: "Hozier", img: "images/hozier.jpg" },
-  { name: "Harry Styles", img: "images/harrystyles.jpg" },
-  { name: "Benson Boone", img: "images/bensonboone.jpg" },
-  { name: "21 Savage", img: "images/21savage.jpg" },
+
   { name: "Teddy Swims", img: "images/teddyswims.jpg" },
   { name: "Camila Cabello", img: "images/camilacabello.jpg" },
   { name: "Britney Spears", img: "images/britneyspears.jpg" },
   { name: "Peso Pluma", img: "images/pesopluma.jpg" },
-  { name: "The Kid LAROI", img: "images/thekidlaroi.jpg" },
+  { name: "The Kid LAROI", img: "images/kidlaroi.jpg" },
   { name: "Kelly Clarkson", img: "images/kellyclarkson.jpg" },
   { name: "Michael Jackson", img: "images/michaeljackson.jpg" },
   { name: "Halsey", img: "images/halsey.jpg" },
@@ -250,13 +366,13 @@
   { name: "Arijit Singh", img: "images/arijitsingh.jpg" },
   { name: "Tate McRae", img: "images/tatemcrae.jpg" },
   { name: "Pritam", img: "images/pritam.jpg" },
-  { name: "Chappell Roan", img: "images/chappellroan.jpg" },
+  { name: "Chappell Roan", img: "images/chappellroan.png" },
   { name: "Ellie Goulding", img: "images/elliegoulding.jpg" },
   { name: "Dean Martin", img: "images/deanmartin.jpg" },
   { name: "USHER", img: "images/usher.jpg" },
   { name: "Elvis Presley", img: "images/elvispresley.jpg" },
   { name: "Selena Gomez", img: "images/selenagomez.jpg" },
-  { name: "Daniel Caesar", img: "images/danielcaesar.jpg" },
+  { name: "Daniel Caesar", img: "images/danielcaesar.png" },
   { name: "Juice WRLD", img: "images/juicewrld.jpg" },
   { name: "Justin Timberlake", img: "images/justintimberlake.jpg" },
   { name: "Gunna", img: "images/gunna.jpg" },
@@ -270,7 +386,7 @@
   { name: "Ne-Yo", img: "images/neyo.jpg" },
   { name: "J. Cole", img: "images/jcole.jpg" },
   { name: "Frank Ocean", img: "images/frankocean.jpg" },
-  { name: "A$AP Rocky", img: "images/aasaprocky.jpg" },
+  { name: "A$AP Rocky", img: "images/asaprocky.jpg" },
   { name: "James Arthur", img: "images/jamesarthur.jpg" },
   { name: "Ty Dolla $ign", img: "images/tydollasign.jpg" },
   { name: "Swae Lee", img: "images/swaelee.jpg" },
@@ -284,21 +400,18 @@
   { name: "Sean Paul", img: "images/seanpaul.jpg" },
   { name: "Meghan Trainor", img: "images/meghantrainor.jpg" },
   { name: "Kali Uchis", img: "images/kaliuchis.jpg" },
-  { name: "Avicii", img: "images/avicii.jpg" },
-  { name: "Alicia Keys", img: "images/aliciakeys.jpg" },
   { name: "Snoop Dogg", img: "images/snoopdogg.jpg" },
   { name: "Flo Rida", img: "images/florida.jpg" },
   { name: "Lil Baby", img: "images/lilbaby.jpg" },
-  { name: "Lord Huron", img: "images/lordhuron.jpg" },
   { name: "Jack Harlow", img: "images/jackharlow.jpg" },
-  { name: "Charli xcx", img: "images/charlicxc.jpg" },
+  { name: "Charli xcx", img: "images/charlixcx.jpg" },
   { name: "Lewis Capaldi", img: "images/lewiscapaldi.jpg" },
   { name: "Lil Uzi Vert", img: "images/liluzivert.jpg" },
   { name: "Christina Aguilera", img: "images/christinaaguilera.jpg" },
   { name: "d4vd", img: "images/d4vd.jpg" },
   { name: "Laufey", img: "images/laufey.jpg" },
   { name: "Jason Derulo", img: "images/jasonderulo.jpg" },
-  { name: "Whitney Houston", img: "images/whitneyhouston.jpg" },
+  { name: "Whitney Houston", img: "images/whitneyhouston.png" },
   { name: "Steve Lacy", img: "images/stevelacy.jpg" },
   { name: "John Legend", img: "images/johnlegend.jpg" },
   { name: "Trippie Redd", img: "images/trippieredd.jpg" },
@@ -308,7 +421,7 @@
   { name: "Noah Kahan", img: "images/noahkahan.jpg" },
   { name: "Bruce Springsteen", img: "images/brucespringsteen.jpg" },
   { name: "Macklemore", img: "images/macklemore.jpg" },
-  { name: "Sexyy Red", img: "images/sexyyred.jpg" },
+  { name: "Sexxy Red", img: "images/sexxyred.jpg" },
   { name: "Megan Thee Stallion", img: "images/megantheestallion.jpg" },
   { name: "Paul McCartney", img: "images/paulmccartney.jpg" },
   { name: "Shaboozey", img: "images/shaboozey.jpg" },
@@ -321,8 +434,8 @@
   { name: "Robin Schulz", img: "images/robinschulz.jpg" },
   { name: "GloRilla", img: "images/glorilla.jpg" },
   { name: "Young Thug", img: "images/youngthug.jpg" },
-  { name: "Cardi B", img: "images/cardiB.jpg" },
-  { name: "ZAYN", img: "images/zayn.jpg" },
+  { name: "Cardi B", img: "images/cardib.jpg" },
+  { name: "ZAYN", img: "images/zayn.png" },
   { name: "Kodak Black", img: "images/kodakblack.jpg" },
   { name: "ROSALÍA", img: "images/rosalia.jpg" },
   { name: "Dr. Dre", img: "images/drdre.jpg" },
@@ -332,7 +445,7 @@
   { name: "Conan Gray", img: "images/conangray.jpg" },
   { name: "Stevie Wonder", img: "images/steviewonder.jpg" },
   { name: "Central Cee", img: "images/centralcee.jpg" },
-  { name: "2Pac", img: "images/2pac.jpg" },
+  { name: "Tupac", img: "images/tupac.png" },
   { name: "Luke Combs", img: "images/lukecombs.jpg" },
   { name: "JID", img: "images/jid.jpg" },
   { name: "DaBaby", img: "images/dababy.jpg" },
@@ -377,7 +490,7 @@
   { name: "Luis Fonsi", img: "images/luisfonsi.jpg" },
   { name: "NLE Choppa", img: "images/nlechoppa.jpg" },
   { name: "Timbaland", img: "images/timbaland.jpg" },
-  { name: "Alec Benjamin", img: "images/alecbenjamin.jpg" },
+  { name: "Alec Benjamin", img: "images/alecbenjamin1.jpg" },
   { name: "Lorde", img: "images/lorde.jpg" },
   { name: "Pop Smoke", img: "images/popsmoke.jpg" },
   { name: "Lauv", img: "images/lauv.jpg" },
@@ -396,9 +509,8 @@
   { name: "Noah Cyrus", img: "images/noahcyrus.jpg" },
   { name: "Nelly", img: "images/nelly.jpg" },
   { name: "Roddy Ricch", img: "images/roddyricch.jpg" },
-  { name: "girl in red", img: "images/girlinred.jpg" },
+  { name: "girl in red", img: "images/girlinred.png" },
   { name: "Julia Michaels", img: "images/juliamichaels.jpg" },
-  { name: "Bon Iver", img: "images/boniver.jpg" },
   { name: "Quavo", img: "images/quavo.jpg" },
   { name: "David Kushner", img: "images/davidkushner.jpg" },
   { name: "Cher", img: "images/cher.jpg" },
@@ -477,87 +589,88 @@
   { name: "H.E.R.", img: "images/her.jpg" },
   { name: "keshi", img: "images/keshi.jpg" },
   { name: "Ray Charles", img: "images/raycharles.jpg" },
-  { name: "Carrie Underwood", img: "images/carrieunderwood.jpg" },
+  { name: "Carrie Underwood", img: "images/CarrieUnderwood.jpg" },
   { name: "Luke Bryan", img: "images/lukebryan.jpg" },
   { name: "Lionel Richie", img: "images/lionelrichie.jpg" },
   { name: "Nicky Youre", img: "images/nickyyoure.jpg" },
   { name: "Lizzo", img: "images/lizzo.jpg" },
   { name: "Lizzy McAlpine", img: "images/lizzymcalpine.jpg" },
-  { name: "Oliver Tree", img: "images/olivertree.jpg" }
+  { name: "Oliver Tree", img: "images/olivertree.png" }
     ];
+    let starredSingers = [];
 
-    // Current active singers (displayed in the gallery)
-    let activeSingers = [...allSingers];
-    // Stack for removed items (for undo)
-    let removedItems = [];
+document.getElementById("resetStars").addEventListener("click", () => {
+  starredSingers = [];
+  renderGallery(searchBar.value);
+});
 
     const gallery = document.getElementById("gallery");
-    const searchBar = document.getElementById("searchBar");
-    const optionsCounter = document.getElementById("optionsCounter");
-    const undoButton = document.getElementById("undoButton");
-    const resetButton = document.getElementById("resetButton");
-
-    // Update the options remaining counter.
-    function updateOptionsCounter() {
-      optionsCounter.textContent = "Options remaining: " + activeSingers.length;
-    }
 
     // Render gallery: filter by search term; each item is clickable.
     function renderGallery(filterText = "") {
-      gallery.innerHTML = "";
-      activeSingers.forEach(singer => {
-        if (singer.name.toLowerCase().includes(filterText.toLowerCase())) {
-          const item = document.createElement("div");
-          item.classList.add("gallery-item");
-          item.setAttribute("data-singer", singer.name.toLowerCase());
-          item.setAttribute("data-img", singer.img);
-          item.innerHTML = `
-            <img src="${singer.img}" alt="${singer.name}">
-            <div class="singer-name">${singer.name}</div>
-          `;
-          // On click, remove the clicked singer from the gallery.
-          item.addEventListener("click", function() {
-            const chosenSinger = this.getAttribute("data-singer");
-            const removed = activeSingers.find(s => s.name.toLowerCase() === chosenSinger);
-            activeSingers = activeSingers.filter(s => s.name.toLowerCase() !== chosenSinger);
-            removedItems.push(removed);
-            renderGallery(searchBar.value);
-            updateOptionsCounter();
-          });
-          gallery.appendChild(item);
-        }
-      });
-      updateOptionsCounter();
+  gallery.innerHTML = "";
+  let filteredSingers = singers.filter(singer =>
+    singer.name.toLowerCase().includes(filterText.toLowerCase())
+  );
+
+  // Sort so starred singers are first
+  filteredSingers.sort((a, b) => {
+    const aStarred = starredSingers.includes(a.name.toLowerCase());
+    const bStarred = starredSingers.includes(b.name.toLowerCase());
+    return bStarred - aStarred;
+  });
+
+  filteredSingers.forEach(singer => {
+    const item = document.createElement("div");
+    item.classList.add("gallery-item");
+    item.setAttribute("data-singer", singer.name.toLowerCase());
+    item.setAttribute("data-img", singer.img);
+    if (starredSingers.includes(singer.name.toLowerCase())) {
+      item.classList.add("starred");
     }
+
+    item.innerHTML = `
+      <img src="${singer.img}" alt="${singer.name}">
+      <div class="singer-name">${singer.name}</div>
+    `;
+
+    item.addEventListener("click", function () {
+      const chosenSinger = this.getAttribute("data-singer");
+      const chosenImg = this.getAttribute("data-img");
+
+      // Toggle star
+      if (starredSingers.includes(chosenSinger)) {
+        starredSingers = starredSingers.filter(s => s !== chosenSinger);
+      } else {
+        starredSingers.push(chosenSinger);
+      }
+
+      // Re-render to update star visuals and order
+      renderGallery(searchBar.value);
+
+      // Still allow guess check
+      if (chosenSinger === correctSinger) {
+        document.getElementById("celebrationName").textContent = "Carrie Underwood";
+        showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
+      } else {
+        showPopup(document.getElementById("failurePopup"), chosenImg, false);
+      }
+    });
+
+    gallery.appendChild(item);
+  });
+}
 
     // Initial render of all singers.
     renderGallery();
 
     // Search functionality.
+    const searchBar = document.getElementById("searchBar");
     searchBar.addEventListener("input", function() {
       renderGallery(this.value);
     });
 
-    // Undo button functionality: restores the most recently removed singer.
-    undoButton.addEventListener("click", function() {
-      if (removedItems.length > 0) {
-        const singerToRestore = removedItems.pop();
-        activeSingers.push(singerToRestore);
-        // Sort activeSingers to reflect the original order.
-        activeSingers.sort((a, b) => allSingers.indexOf(a) - allSingers.indexOf(b));
-        renderGallery(searchBar.value);
-        updateOptionsCounter();
-      }
-    });
-
-    // Reset button functionality: restores the full original gallery.
-    resetButton.addEventListener("click", function() {
-      activeSingers = [...allSingers];
-      removedItems = [];
-      searchBar.value = "";
-      renderGallery();
-      updateOptionsCounter();
-    });
+ 
   </script>
 </body>
 </html>

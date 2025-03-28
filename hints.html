@@ -139,17 +139,15 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import {
-  getFirestore,
-  collection,
-  getDocs,
-  setDoc,
-  doc,
-  deleteDoc,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
-
-
+      getFirestore,
+      collection,
+      getDocs,
+      setDoc,
+      doc,
+      deleteDoc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
@@ -158,10 +156,10 @@
       messagingSenderId: "97201023235",
       appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
-
+    
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
+    
     const boardData = [
       {
         category: "Music Awards",
@@ -184,9 +182,18 @@
         hints: ["Has over 2,000 Instagram posts", "1-2M TikTok followers", "13M Instagram followers"]
       }
     ];
-
+    
     const revealed = {};
-
+    let unlockedRows = JSON.parse(localStorage.getItem("unlockedRows")) || [0];
+    
+    function saveUnlockedRows() {
+      localStorage.setItem("unlockedRows", JSON.stringify(unlockedRows));
+    }
+    
+    function isRowRevealed(revealedHints, row) {
+      return boardData.every(col => revealedHints[col.category]?.[row]);
+    }
+    
     async function fetchRevealedHints() {
       const snapshot = await getDocs(collection(db, "revealedHints"));
       snapshot.forEach(docSnap => {
@@ -196,120 +203,99 @@
         revealed[category][index] = true;
       });
     }
-
-    function isRowRevealed(revealedHints, row) {
-  return boardData.every(col => revealedHints[col.category]?.[row]);
-}
-
+    
     async function buildBoard() {
       await fetchRevealedHints();
+      renderBoard(revealed);
+    }
+    
+    function renderBoard(revealedHints) {
       const board = document.getElementById("jeopardyBoard");
       board.innerHTML = "";
-
+    
       boardData.forEach(cat => {
         const header = document.createElement("div");
         header.className = "board-cell category-header";
         header.textContent = cat.category;
         board.appendChild(header);
       });
-
+    
       for (let row = 0; row < 3; row++) {
         for (let col = 0; col < boardData.length; col++) {
+          const categoryName = boardData[col].category;
           const hintText = boardData[col].hints[row];
           const cell = document.createElement("div");
-          const categoryName = boardData[col].category;
-const isRevealed = revealed[categoryName]?.[row];
-
-          if (isRevealed) {
+    
+          if (revealedHints[categoryName]?.[row]) {
             cell.className = "board-cell revealed";
             cell.textContent = hintText;
-          } else if (
-  row === 0 ||
-  (row === 1 && isRowRevealed(revealed, 0)) ||
-  (row === 2 && isRowRevealed(revealed, 1))
-)
-
-           {
+          } else if (unlockedRows.includes(row)) {
             cell.className = "board-cell";
             cell.style.backgroundColor = "#4CAF50";
             cell.innerHTML = '<i class="fas fa-unlock"></i>';
             cell.addEventListener("click", async () => {
-  await revealHint(col, row);
-  buildBoard();
-});
+              await revealHint(col, row);
+            });
           } else {
             cell.className = "board-cell locked";
             cell.innerHTML = '<i class="fas fa-lock"></i>';
           }
-
+    
           board.appendChild(cell);
         }
       }
     }
+    
     async function revealHint(categoryIndex, hintIndex) {
-  await setDoc(doc(db, "revealedHints", `${categoryIndex}-${hintIndex}`), {
-    category: boardData[categoryIndex].category,
-    index: hintIndex,
-    timestamp: new Date()
-  });
-
-}
-
-    buildBoard();
-
-    async function resetBoard() {
-  const snapshot = await getDocs(collection(db, "revealedHints"));
-  const batchDeletes = snapshot.docs.map(doc => deleteDoc(doc.ref));
-  await Promise.all(batchDeletes);
-  for (const key in revealed) delete revealed[key]; // clear object safely
-  buildBoard();  // rebuild the UI
-}
-document.getElementById("resetBtn").addEventListener("click", resetBoard);
-
-
-onSnapshot(collection(db, "revealedHints"), (snapshot) => {
-  const revealed = {};
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    const { category, index } = data;
-    if (!revealed[category]) revealed[category] = [];
-    revealed[category][index] = true;
-  });
-  renderBoard(revealed);
-});
-
-function renderBoard(revealed) {
-  const board = document.getElementById("jeopardyBoard");
-  board.innerHTML = "";
-
-  // Add headers
-  boardData.forEach(col => {
-    const header = document.createElement("div");
-    header.className = "board-cell category-header";
-    header.textContent = col.category;
-    board.appendChild(header);
-  });
-
-  // Add hint cells
-  for (let row = 0; row < 3; row++) {
-    for (let col = 0; col < boardData.length; col++) {
-      const categoryName = boardData[col].category;
-      const hintText = boardData[col].hints[row];
-      const cell = document.createElement("div");
-
-      if (revealed[categoryName]?.[row]) {
-        cell.className = "board-cell revealed";
-        cell.textContent = hintText;
-      } else {
-        cell.className = "board-cell locked";
-        cell.innerHTML = '<i class="fas fa-lock"></i>';
+      const categoryName = boardData[categoryIndex].category;
+    
+      if (!revealed[categoryName]) revealed[categoryName] = [];
+      if (revealed[categoryName][hintIndex]) return;
+    
+      await setDoc(doc(db, "revealedHints", `${categoryIndex}-${hintIndex}`), {
+        category: categoryName,
+        index: hintIndex,
+        timestamp: new Date()
+      });
+    
+      revealed[categoryName][hintIndex] = true;
+    
+      // Check if full row is now revealed, unlock next row
+      if (isRowRevealed(revealed, hintIndex) && !unlockedRows.includes(hintIndex + 1)) {
+        unlockedRows.push(hintIndex + 1);
+        saveUnlockedRows();
       }
-
-      board.appendChild(cell);
+    
+      renderBoard(revealed);
     }
-  }
-}
-
-  </script>
+    
+    async function resetBoard() {
+      const snapshot = await getDocs(collection(db, "revealedHints"));
+      const batchDeletes = snapshot.docs.map(doc => deleteDoc(doc.ref));
+      await Promise.all(batchDeletes);
+      for (const key in revealed) delete revealed[key];
+      unlockedRows = [0];
+      saveUnlockedRows();
+      buildBoard();
+    }
+    
+    document.getElementById("resetBtn").addEventListener("click", resetBoard);
+    
+    // Real-time sync
+    onSnapshot(collection(db, "revealedHints"), (snapshot) => {
+      const newRevealed = {};
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const { category, index } = data;
+        if (!newRevealed[category]) newRevealed[category] = [];
+        newRevealed[category][index] = true;
+      });
+      Object.assign(revealed, newRevealed);
+      renderBoard(revealed);
+    });
+    
+    buildBoard();
+    </script>
+    
 </body>
 </html>

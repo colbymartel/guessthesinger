@@ -178,6 +178,10 @@
 #testButton {
   margin-top: -30px;
 }
+#testButton {
+  display: none !important;
+}
+
   </style>
 </head>
 <body>
@@ -188,13 +192,9 @@
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/rounds.html">Rounds</a></li>
-      <li><a href="/questions2.html" class="active">Questions</a></li>
-      <li><a href="/hints2.html">Hints</a></li>
-      <li><a href="/guesses2.html">Guesses</a></li>
-      <li><a href="/results2.html">Audience</a></li>
-      <li><a href="/trivia2.html">Trivia</a></li>
-      <li><a href="/wheel2.html">Wheel</a></li>
+      <li><a href="/mirror2q.html" class="active">Questions</a></li>
+      <li><a href="/mirror2h.html">Hints</a></li>
+      <li><a href="/mirror3g.html">Guesses</a></li>
     </ul>
   </nav>
   
@@ -261,10 +261,10 @@ const db = getFirestore(app);
     
     // Questions array.
     const questions = [
-      { id: 1, question: "Is this a male artist?", answer: "No, the singer is not male." },
-      { id: 2, question: "Is this a female artist?", answer: "Yes, the singer is female." },
-      { id: 3, question: "Are they still alive?", answer: "Yes, the singer is still alive." },
-      { id: 4, question: "Are they over 30 years old?", answer: "Yes, the singer is over 30 years old." },
+      { id: 1, question: "Is this a male artist?"},
+      { id: 2, question: "Is this a female artist?"},
+      { id: 3, question: "Are they still alive?"},
+      { id: 4, question: "Are they over 30 years old?"},
       { id: 5, question: "Are they over 40 years old?", answer: "Yes, the singer is over 40 years old." },
       { id: 6, question: "Are they over 50 years old?", answer: "No, the singer is not over 50 years old." },
       { id: 7, question: "Did they debut before 2000?", answer: "No, the singer debuted after 2000." },
@@ -373,14 +373,34 @@ function showQuestionsForCategory(categoryIndex) {
       card.style.backgroundColor = answeredQuestions[item.id] ? "#4CAF50" : "#f44336";
       card.innerHTML += answeredQuestions[item.id] ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
     } else {
-      card.addEventListener("click", function () {
-        if (card.classList.contains("answered")) return;
-        card.classList.add("answered");
-        const isYes = item.answer.trim().toLowerCase().startsWith("yes");
-        card.style.backgroundColor = isYes ? "#4CAF50" : "#f44336";
-        card.innerHTML += isYes ? '<br><i class="fas fa-check"></i>' : '<br><i class="fas fa-times"></i>';
-        logAnswer(item.id, isYes);
-      });
+        card.addEventListener("click", function () {
+  // Cycle: Blue → Green → Red → Blue
+  if (!card.classList.contains("answered")) {
+    // First click: turn green
+    card.classList.add("answered", "answered-green");
+    card.style.backgroundColor = "#4CAF50";
+    card.innerHTML = `<h2 class="question-text">${item.question}</h2><br><i class="fas fa-check"></i>`;
+    logAnswer(item.id, true);
+  } else if (card.classList.contains("answered-green")) {
+    // Second click: turn red
+    card.classList.remove("answered-green");
+    card.classList.add("answered-red");
+    card.style.backgroundColor = "#f44336";
+    card.innerHTML = `<h2 class="question-text">${item.question}</h2><br><i class="fas fa-times"></i>`;
+    logAnswer(item.id, false);
+  } else if (card.classList.contains("answered-red")) {
+    // Third click: reset to blue
+    card.classList.remove("answered", "answered-red");
+    card.style.backgroundColor = "#4682b4";
+    card.innerHTML = `<h2 class="question-text">${item.question}</h2>`;
+    let answeredQuestions = JSON.parse(localStorage.getItem("answeredQuestions")) || {};
+    delete answeredQuestions[item.id];
+    localStorage.setItem("answeredQuestions", JSON.stringify(answeredQuestions));
+    // Optionally remove from Firestore too:
+    // await deleteDoc(doc(db, "answers", String(item.id)));
+  }
+});
+
     }
 
     container.appendChild(card);
