@@ -395,7 +395,7 @@ const db = firebase.firestore();
 
       { image: "images/dualipa.jpg", correctAnswer: "Dua Lipa" },
       { image: "images/prince.png", correctAnswer: "Prince" },
-      { image: "images/quavo.png", correctAnswer: "Quavo" },
+      { image: "images/quavo.jpg", correctAnswer: "Quavo" },
       { image: "images/justintimberlake.jpg", correctAnswer: "Justin Timberlake" },
       { image: "images/selena.jpg", correctAnswer: "Selena" },
 
@@ -552,14 +552,13 @@ function startQuiz() {
   answerInput.value = "";
   resultText.textContent = "";
 }
-
-
-    function handleAnswer() {
+function handleAnswer() {
   const userAnswer = answerInput.value.trim().toLowerCase();
   if (userAnswer === "") {
     alert("Please enter an answer.");
     return;
   }
+  autocompleteOptions.style.display = "none"; // Hide dropdown on submit
 
   const currentData = isSkippedRound ? skippedArtists[skippedIndex] : triviaQuestions[currentQuestionIndex];
   const correctAnswer = currentData.correctAnswer.toLowerCase();

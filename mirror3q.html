@@ -178,6 +178,59 @@
 #testButton {
   margin-top: -30px;
 }
+.dropdown-menu a:hover {
+  background-color: #3b7bbf;
+}
+.hamburger-menu {
+  display: none;
+  position: relative;
+  text-align: right;
+  margin: 10px 20px;
+}
+
+.hamburger-icon {
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+  background-color: #4682b4;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 45px;
+  background-color: #254a6d;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  z-index: 999;
+  padding: 10px 0;
+  width: 180px;
+}
+
+.dropdown-menu a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #3b7bbf;
+}
+.hamburger-menu {
+  display: block;
+  position: relative;
+  text-align: right;
+  margin: 10px 20px;
+}
+
+
   </style>
 </head>
 <body>
@@ -193,7 +246,14 @@
       <li><a href="/mirror3g.html">Guesses</a></li>
     </ul>
   </nav>
-
+  <div class="hamburger-menu">
+    <div class="hamburger-icon" onclick="toggleMenu()">☰</div>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="/mirrorq.html">Round 1</a>
+      <a href="/mirror2q.html">Round 2</a>
+      <a href="/mirror3q.html">Round 3</a>
+    </div>
+  </div>
   <!-- Categories -->
   <div id="categoryContainer" class="grid-container"></div>
 
@@ -404,9 +464,22 @@ document.getElementById("backButton").addEventListener("click", () => {
     showQuestions(currentCategoryIndex);
   }
 });
-
-
   </script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("dropdownMenu");
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    }
+  
+    window.addEventListener("click", function (e) {
+      const menu = document.getElementById("dropdownMenu");
+      const icon = document.querySelector(".hamburger-icon");
+      if (!menu.contains(e.target) && !icon.contains(e.target)) {
+        menu.style.display = "none";
+      }
+    });
+  </script>
+  
 </body>
 
 </html>
