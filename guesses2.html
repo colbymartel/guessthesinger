@@ -257,7 +257,7 @@
     <button class="close-popup" onclick="closePopup()">&times;</button>
     <div id="popupImageContainer"></div>
     <h2 id="popupTitle">Congratulations!</h2>
-    <p id="popupMessage">The singer was <strong id="celebrationName">Elton John</strong>!</p>
+    <p id="popupMessage">The singer was <strong id="celebrationName">Stevie Wonder</strong>!</p>
     <button onclick="closePopup()">Close</button>
   </div>
   
@@ -272,7 +272,7 @@
   
   <script>
     // Set the correct singer (all comparisons in lowercase)
-    const correctSinger = "elton john";
+    const correctSinger = "stevie wonder";
 
     // Array of singer objects (50 items)
     const singers = [
@@ -602,7 +602,7 @@
             const chosenImg = this.getAttribute("data-img");
             if (chosenSinger === correctSinger) {
               // Set popup text and border (green) for correct.
-              document.getElementById("celebrationName").textContent = "Elton John";
+              document.getElementById("celebrationName").textContent = "Stevie Wonder";
               showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
             } else {
               showPopup(document.getElementById("failurePopup"), chosenImg, false);
@@ -632,7 +632,7 @@
   // Set title and message text based on correctness
   popupElement.querySelector("#popupTitle").textContent = isCorrect ? "🎉 Congratulations!" : "❌ Nope!";
   popupElement.querySelector("#popupMessage").innerHTML = isCorrect
-    ? `You guessed it right! The singer was <strong>Elton John</strong>.`
+    ? `You guessed it right! The singer was <strong>Stevie Wonder</strong>.`
     : `Sorry, that's not right.`;
 
   // Add animation and background change

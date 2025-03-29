@@ -562,6 +562,7 @@ function startQuiz() {
     alert("Please enter an answer.");
     return;
   }
+  autocompleteOptions.style.display = "none"; // Hide dropdown on submit
 
   const currentData = isSkippedRound ? skippedArtists[skippedIndex] : triviaQuestions[currentQuestionIndex];
   const correctAnswer = currentData.correctAnswer.toLowerCase();

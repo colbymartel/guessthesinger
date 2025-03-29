@@ -257,7 +257,7 @@
     <button class="close-popup" onclick="closePopup()">&times;</button>
     <div id="popupImageContainer"></div>
     <h2 id="popupTitle">Congratulations!</h2>
-    <p id="popupMessage">The singer was <strong id="celebrationName">Carrie Underwood</strong>!</p>
+    <p id="popupMessage">The singer was <strong id="celebrationName">Post Malone<n/strong>!</p>
     <button onclick="closePopup()">Close</button>
   </div>
   
@@ -272,14 +272,16 @@
   
   <script>
     // Set the correct singer (all comparisons in lowercase)
-    const correctSinger = "carrie underwood";
+    const correctSinger = "post malone";
 
     // Array of singer objects (50 items)
     const singers = [
     { name: "Adele", img: "images/adele.jpg" },
     { name: "Alicia Keys", img: "images/aliciakeys.jpg" },
     { name: "Ariana Grande", img: "images/arianagrande.jpg" },
+    { name: "Anitta", img: "images/anitta.jpg" },
     { name: "Bad Bunny", img: "images/badbunny.jpg" },
+    { name: "beabadoobee", img: "images/beabadoobee.jpg" },
   { name: "Bella Poarch", img: "images/bellapoarch.jpg" },
     { name: "Benson Boone", img: "images/bensonboone.jpg" },
     { name: "Beyoncé", img: "images/beyonce.jpg" },
@@ -289,6 +291,7 @@
   { name: "Calvin Harris", img: "images/calvinharris.jpg" },
   { name: "Camila Cabello", img: "images/camilacabello.jpg" },
   { name: "Chris Brown", img: "images/chrisbrown.jpg" },
+  { name: "Chappell Roan", img: "images/chappellroan.png" },
   { name: "Corey Freedman", img: "images/coreyfreedman.jpg" },
   { name: "Daddy Yankee", img: "images/daddyyankee.jpg" },
   { name: "Doja Cat", img: "images/dojacat.jpg" },
@@ -296,6 +299,7 @@
   { name: "Dua Lipa", img: "images/dualipa.jpg" },
   { name: "Ed Sheeran", img: "images/EdSheeran.jpg" },
   { name: "Elton John", img: "images/eltonjohn.jpg" },
+  { name: "Elvis Presley", img: "images/elvispresley.jpg" },
   { name: "Eminem", img: "images/eminem.jpg" },
   { name: "Future", img: "images/future.jpg" },
   { name: "Harry Styles", img: "images/harrystyles.jpg" },
@@ -304,6 +308,7 @@
   { name: "Kanye West", img: "images/kanyewest.jpg" },
   { name: "KAROL G", img: "images/karolg.jpg" },
   { name: "Katy Perry", img: "images/katyperry.jpg" },
+  { name: "Kelly Clarkson", img: "images/kellyclarkson.jpg" },
   { name: "Kendrick Lamar", img: "images/kendricklamar.jpg" },
   { name: "Khalid", img: "images/khalid.jpg" },
   { name: "Lady Gaga", img: "images/ladygaga.jpg" },
@@ -313,9 +318,11 @@
   { name: "Lizzy McAlpine", img: "images/lizzymcalpine.jpg" },
   { name: "Mariah Carey", img: "images/mariahcarey.jpg" },
   { name: "Michael Bublé", img: "images/michaelbuble.jpg" },
+  { name: "Michael Jackson", img: "images/michaeljackson.jpg" },
   { name: "Miley Cyrus", img: "images/mileycyrus.jpg" },
   { name: "Nicki Minaj", img: "images/nickiminaj.jpg" },
   { name: "Olivia Rodrigo", img: "images/oliviarodrigo1.jpg" },
+  { name: "Peso Pluma", img: "images/pesopluma.jpg" },
   { name: "Pitbull", img: "images/pitbull.jpg" },
   { name: "Playboi Carti", img: "images/playboicarti.jpg" },
   { name: "Post Malone", img: "images/postmalone.jpg" },
@@ -332,15 +339,12 @@
   { name: "Teddy Swims", img: "images/teddyswims.jpg" },
   { name: "The Weeknd", img: "images/theweeknd.jpg" },
   { name: "Travis Scott", img: "images/travisscott.jpg" },
+  { name: "The Kid LAROI", img: "images/kidlaroi.jpg" },
   { name: "Tyler, The Creator", img: "images/tylerthecreator.jpg" },
   { name: "Joe Jonas", img: "images/joejonas.jpg" },
   { name: "Nick Jonas", img: "images/nickjonas.jpg" },
   { name: "KSI", img: "images/ksi.jpg" },
 
-  { name: "Peso Pluma", img: "images/pesopluma.jpg" },
-  { name: "The Kid LAROI", img: "images/kidlaroi.jpg" },
-  { name: "Kelly Clarkson", img: "images/kellyclarkson.jpg" },
-  { name: "Michael Jackson", img: "images/michaeljackson.jpg" },
   { name: "Halsey", img: "images/halsey.jpg" },
   { name: "Kesha", img: "images/kesha.jpg" },
   { name: "Frank Sinatra", img: "images/franksinatra.jpg" },
@@ -348,11 +352,9 @@
   { name: "XXXTENTACION", img: "images/xxxtentacion.jpg" },
   { name: "Arijit Singh", img: "images/arijitsingh.jpg" },
   { name: "Tate McRae", img: "images/tatemcrae.jpg" },
-  { name: "Chappell Roan", img: "images/chappellroan.png" },
   { name: "Ellie Goulding", img: "images/elliegoulding.jpg" },
   { name: "Dean Martin", img: "images/deanmartin.jpg" },
   { name: "USHER", img: "images/usher.jpg" },
-  { name: "Elvis Presley", img: "images/elvispresley.jpg" },
   { name: "Selena Gomez", img: "images/selenagomez.jpg" },
   { name: "Daniel Caesar", img: "images/danielcaesar.png" },
   { name: "Juice WRLD", img: "images/juicewrld.jpg" },
@@ -360,7 +362,6 @@
   { name: "Gunna", img: "images/gunna.jpg" },
   { name: "Madonna", img: "images/madonna.jpg" },
   { name: "JENNIE", img: "images/jennie.jpg" },
-  { name: "Anitta", img: "images/anitta.jpg" },
   { name: "50 Cent", img: "images/50cent.jpg" },
   { name: "Don Toliver", img: "images/dontoliver.jpg" },
   { name: "Bebe Rexha", img: "images/beberexha.jpg" },
@@ -426,7 +427,7 @@
   { name: "George Michael", img: "images/georgemichael.jpg" },
   { name: "Conan Gray", img: "images/conangray.jpg" },
   { name: "Stevie Wonder", img: "images/STEVIEWONDER.jpg" },
-  { name: "Central Cee", img: "images/centralcee.jpg" },
+  { name: "Central Cee", img: "images/CentralCee.jpg" },
   { name: "Tupac", img: "images/tupac.png" },
   { name: "Luke Combs", img: "images/Lukecombs.jpg" },
   { name: "JID", img: "images/jid.jpg" },
@@ -451,7 +452,6 @@
   { name: "Dolly Parton", img: "images/dollyparton.jpg" },
   { name: "Troye Sivan", img: "images/troyesivan.jpg" },
   { name: "Kid Cudi", img: "images/kidcudi.jpg" },
-  { name: "beabadoobee", img: "images/beabadoobee.jpg" },
   { name: "Amy Winehouse", img: "images/amywinehouse.jpg" },
   { name: "Chris Stapleton", img: "images/chrisstapleton.jpg" },
   { name: "Lil Peep", img: "images/lilpeep.jpg" },
@@ -602,7 +602,7 @@
             const chosenImg = this.getAttribute("data-img");
             if (chosenSinger === correctSinger) {
               // Set popup text and border (green) for correct.
-              document.getElementById("celebrationName").textContent = "Carrie Underwood";
+              document.getElementById("celebrationName").textContent = "Post Malone";
               showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
             } else {
               showPopup(document.getElementById("failurePopup"), chosenImg, false);
@@ -632,7 +632,7 @@
   // Set title and message text based on correctness
   popupElement.querySelector("#popupTitle").textContent = isCorrect ? "🎉 Congratulations!" : "❌ Nope!";
   popupElement.querySelector("#popupMessage").innerHTML = isCorrect
-    ? `You guessed it right! The singer was <strong>Carrie Underwood</strong>.`
+    ? `You guessed it right! The singer was <strong>Post Malone</strong>.`
     : `Sorry, that's not right.`;
 
   // Add animation and background change
