@@ -133,46 +133,26 @@
     const db = getFirestore(app);
 
     const boardData = [
-    { 
-        category: "Music Awards", 
-        hints: [
-          "Zero Grammy nominations",
-          "Won 5 Kid's Choice Awards",
-          "Has won Golden Globe Best TV Show Actress"
-        ]
-      },
-      { 
-        category: "Debut", 
-        hints: [
-          "Debuted in the 2010s",
-          "Debut album was released in 2013",
-          "Feature film debut in Spiderman: Homecoming"
-        ]
-      },
-      { 
-        category: "Miscellaneous ", 
-        hints: [
-          "Born in Oakland, California",
-          "Is 5'10''",
-          "First name starts with Z"
-        ]
-      },
-      { 
-        category: "Career", 
-        hints: [
-          "Also acted in films",
-          "Most famous song is from a movie soundtrack",
-          "Started career on Disney Channel's Shake It Up"
-        ]
-      },
-      { 
-        category: "Social Media", 
-        hints: [
-        "4M YouTube subscribers",
-          "Over 50M Instagram followers",
-          "180M Instagram followers",
-        ]
-      }
+    {
+    category: "Music Awards",
+    hints: ["Has won an American Music Award", "Has been nominated for a Grammy", "Won Billboard Women in Music's Woman of the Year"]
+  },
+  {
+    category: "Debut",
+    hints: ["Debuted in the 2000s", "First album released in 2009", "Started on Disney Channel"]
+  },
+  {
+    category: "Miscellaneous",
+    hints: ["Dark brown hair", "Born in Texas", "First name starts with S"]
+  },
+  {
+    category: "Career",
+    hints: ["Has appeared in TV and films", "Was part of a band", "Is a billionaire"]
+  },
+  {
+    category: "Social Media",
+    hints: ["Over 4M Instagram followers", "Over 40M Instagram followers", "Over 400M Instagram followers"]
+  }
     ];
 
     const board = document.getElementById("jeopardyBoard");

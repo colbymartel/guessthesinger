@@ -169,7 +169,7 @@ header img {
     const db = firebase.firestore();
 
     const leaderboard = document.getElementById("leaderboard");
-    const correctAnswer = "adele"; // <-- replace with current correct singer (lowercase)
+    const correctAnswer = "stevie wonder"; // <-- replace with current correct singer (lowercase)
 
     async function loadLeaderboard() {
       const snapshot = await db.collection("lockedGuesses")
