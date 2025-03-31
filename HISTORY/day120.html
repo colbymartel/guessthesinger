@@ -807,7 +807,7 @@ background-color: #4682b4;
   
   <!-- Main Section -->
   <main class="main">
-    <div class="mystery-title">Game #118</div>
+    <div class="mystery-title">Game #120</div>
 
     <!-- Questions Progress Bar -->
     <div class="questions-progress-wrapper">
@@ -956,8 +956,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">Shakira</strong>!</p>
-      <img src="../images/shakira.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Jeremy Zucker</strong>!</p>
+      <img src="../images/jeremyzucker.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
       <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
@@ -975,8 +975,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name-failure">Shakira</strong>!</p>
-      <img src="../images/shakira.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Today's singer was <strong id="correct-artist-name-failure">Jeremy Zucker</strong>!</p>
+      <img src="../images/jeremyzucker.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
 <p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
 <p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
@@ -1037,9 +1037,9 @@ background-color: #4682b4;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They have won multiple Grammy Awards.",
-        "Hint 2: She is the daughter of a Lebanese father and Colombian mother.",
-        "Hint 3: She performed with Jennifer Lopez at a Super Bowl."
+      "Hint 1: Their music often explores themes of love, mental health, and self-discovery.",
+        "Hint 2: Their breakout single was released in 2018.",
+        "Hint 3: He is best known for his songs 'Comethru' and 'You Were Good to Me'."
       ];
 
 </script>
@@ -1067,7 +1067,7 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day118"; // replace with the current game id
+    const gameId = "day120"; // replace with the current game id
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
@@ -1132,7 +1132,7 @@ function viewCelebrationFromRecord() {
         // Check the result status. If "fail", populate failure popup; else, celebration popup.
         if (data.result && data.result === "fail") {
           // Populate failure popup elements.
-          document.getElementById("correct-artist-name-failure").textContent = "Shakira";
+          document.getElementById("correct-artist-name-failure").textContent = "Jeremy Zucker";
           document.getElementById("failure-questions-used").textContent = data.questionsUsed;
           document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
           // Assume your failure popup has an element with id "failure-time" for duration.
@@ -1149,7 +1149,7 @@ function viewCelebrationFromRecord() {
           }, 10);
         } else {
           // Populate celebration popup elements.
-          document.getElementById("correct-artist-name").textContent = "Shakira";
+          document.getElementById("correct-artist-name").textContent = "Jeremy Zucker";
           document.getElementById("questions-used-popup").textContent = data.questionsUsed;
           document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
           document.getElementById("celebration-time").innerHTML =
@@ -1177,72 +1177,72 @@ function viewCelebrationFromRecord() {
 
       // Predefined question responses
       const responses = {
-        "is this a male artist?": "No, they do not identify as male.",
-    "is this a female artist?": "Yes, they do identify as female.",
+        "is this a male artist?": "Yes, they do identify as male.",
+    "is this a female artist?": "No, they do not identify as female.",
     "are they still alive?": "Yes, they are still alive.",
-    "are they over 30 years old?": "Yes, they are over 30 years old.",
-    "are they over 40 years old?": "Yes, they are over 40 years old.",
+    "are they over 30 years old?": "No, they are not over 30 years old.",
+    "are they over 40 years old?": "No, they are not over 40 years old.",
     "are they over 50 years old?": "No, they are under 50 years old.",
  
-    "debut before 2000?": "Yes, their debut occurred before 2000.",
-    "debut before 2010?": "Yes, their career began before 2010.",
+    "debut before 2000?": "No, their debut occurred after 2000.",
+    "debut before 2010?": "No, their career began after 2010.",
     "debut before 2020?": "Yes, they began their career before 2020.",
     "album release in last 2 years?": "Yes, they released an album in the last 2 years.",
     "are they touring?": "No, they are not currently touring.",
-    "are they married?": "No, they are not married.",
+    "are they married?": "Yes, they are married.",
     "divorced?": "No, they are not divorced.",
     "LGBTQ?": "No, they have not publicly identified as LGBTQ+.",
 
-    "are they from north america?": "No, they are not from North America.",
-    "are they from the united states?": "No, they are not from the United States.",
+    "are they from north america?": "Yes, they are from North America.",
+    "are they from the united states?": "Yes, they are from the United States.",
     "are they from canada?": "No, they are not from Canada.",
     "are they from europe?": "No, they are not from Europe.",
     "are they from asia?": "No, they are not from Asia.",
-    "are they from south america?": "Yes, they are from South America.",
+    "are they from south america?": "No, they are not from South America.",
     "are they from australia?": "No, they are not from Australia.",
     "are they from africa?": "No, they are not from Africa.",
 
     "are they of African descent?": "No, they are not of African descent.",
     "are they of Asian descent?": "No, they are not of Asian descent.",
     "are they of European descent?": "Yes, they are of European descent.",
-    "are they of Latin American descent?": "Yes, they are of Latin American descent.",
-    "are they of mixed ethnicity?": "Yes, they are of mixed ethnicity.",
+    "are they of Latin American descent?": "No, they are not of Latin American descent.",
+    "are they of mixed ethnicity?": "No, they are not of mixed ethnicity.",
 
-    "different languages?": "Yes, they perform songs in multiple languages.",
-    "are they spanish?": "Yes, they do perform in Spanish.",
-    "do they perform pop music?": "Yes, they do perform pop music.",
+    "different languages?": "No, they perform songs in one language.",
+    "are they spanish?": "No, they do not perform in Spanish.",
+    "do they perform pop music?": "Yes, they do perform a type of pop music.",
     "do they perform rap music?": "No, they are not known for rap music.",
-    "do they perform R&B music?": "No, they are not known for R&B elements.",
+    "do they perform R&B music?": "Yes, their music has R&B elements.",
     "do they perform rock music?": "Yes, their music includes rock elements.",
     "do they perform country music?": "No, they do not perform country music.",
     "do they perform jazz music?": "No, they do not perform jazz music.",
-    "do they perform party music?": "Yes, their songs are suitable for parties.",
-    "do they perform sad music?": "Yes, some songs have sad verses.",
+    "do they perform party music?": "No, their songs are not suitable for parties.",
+    "do they perform sad music?": "Yes, most songs have sad vibes.",
 
-    "are they also an actor?": "No, but they do have some TV and movie appearances.",
-    "Disney or Nick?": "Yes, they have been on Disney or Nickelodeon.",
+    "are they also an actor?": "No, they do have some TV and movie appearances.",
+    "Disney or Nick?": "No, they have not been on Disney or Nickelodeon.",
     "singing competition?": "No, they did not rise to fame via a TV singing competition.",
-    "have they won a Grammy?": "Yes, they have won a Grammy Award.",
-    "Super Bowl?": "Yes, they have performed at a Super Bowl Halftime Show.",
+    "have they won a Grammy?": "No, they have not won a Grammy Award.",
+    "Super Bowl?": "No, they have not performed at a Super Bowl Halftime Show.",
     "Coachella?": "Yes, they have performed at Coachella.",
-    "song over one billion streams?": "Yes, they do have a song with over one billion streams.",
-    "do they have more than 10M TikTok followers?": "Yes, they do have more than 10 million TikTok followers.",
-    "do they have more than 10M Instagram followers?": "Yes, they do have over 10 million Instagram followers.",
-    "do they have more than 20M listeners?": "Yes, they do have over 20 million monthly listeners on Spotify.",
-    "do they have more than 50M listeners?": "Yes, they do have over 50 million monthly listeners.",
+    "song over one billion streams?": "No, they do not have a song with over one billion streams.",
+    "do they have more than 10M TikTok followers?": "No, they do not have more than 10 million TikTok followers.",
+    "do they have more than 10M Instagram followers?": "No, they do not have over 10 million Instagram followers.",
+    "do they have more than 20M listeners?": "No, they do not have over 20 million monthly listeners on Spotify.",
+    "do they have more than 50M listeners?": "No, they do not have over 50 million monthly listeners.",
     "were they ever in a band?": "No, they are primarily a solo artist.",
 
-    "do they have dark hair?": "No, they do not have dark hair.",
-    "do they have blond hair?": "Yes, they do have blond hair.",
-    "over 5.5 feet tall?": "No, they are not over 5.5 feet tall.",
+    "do they have dark hair?": "Yes, they do have dark hair.",
+    "do they have blond hair?": "No, they do not have blond hair.",
+    "over 5.5 feet tall?": "Yes, they are over 5.5 feet tall.",
     "over 6 feet tall?": "No, they are not over 6 feet tall.",
     "do they have tattoos?": "No, they do not have visible tattoos.",
     "do they wear glasses?": "No, they are not typically seen wearing glasses.",
     "do they go by their birth name?": "Yes, they do perform under their birth name.",
-    "do they go by one word?": "Yes, their name consists of one word.",
-    "do they go by two words?": "No, their name does not consist of two words.",
-    "do they have a common first name?": "No, their first name is unique.",
-    "name starts A-M?": "No, their name does not start with a letter between A and M."
+    "do they go by one word?": "No, their name consists of more than one word.",
+    "do they go by two words?": "Yes, their name does consist of two words.",
+    "do they have a common first name?": "Yes, their first name is common.",
+    "name starts A-M?": "Yes, their name does start with a letter between A and M."
 
 };
 // Ask Question function.
@@ -1305,9 +1305,9 @@ window.askQuestion = function() {
     // Hints
     const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They have won multiple Grammy Awards.",
-        "Hint 2: She is the daughter of a Lebanese father and Colombian mother.",
-        "Hint 3: She performed with Jennifer Lopez at a Super Bowl."
+      "Hint 1: Their music often explores themes of love, mental health, and self-discovery.",
+        "Hint 2: Their breakout single was released in 2018.",
+        "Hint 3: He is best known for his songs 'Comethru' and 'You Were Good to Me'."
       ];
 
 });
@@ -1332,7 +1332,7 @@ window.askQuestion = function() {
         updateProgressBar();
         closeGuessModal();
         guessInput.value = "";
-        const correctAnswer = "shakira";
+        const correctAnswer = "jeremy zucker";
         
         if (guess === correctAnswer) {
           showCelebration();
@@ -1537,7 +1537,7 @@ function showFailure() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Populate the failure popup with stats
-  document.getElementById("correct-artist-name-failure").textContent = "Shakira";
+  document.getElementById("correct-artist-name-failure").textContent = "Jeremy Zucker";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
@@ -1565,7 +1565,7 @@ function showFailure() {
       const artists = [
       "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran", "Kehlani", "Polo G",
     "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd", "Lil Mosey", "Ashnikko",
-    "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston",
+    "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston", "Jeremy Zucker",
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear", "Charli xcx",
     "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan", "Shakira",
     "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv", "Alexander Stewart",
@@ -1870,7 +1870,7 @@ function showCelebration() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Update popup content
-  document.getElementById("correct-artist-name").textContent = "Shakira";
+  document.getElementById("correct-artist-name").textContent = "Jeremy Zucker";
   document.getElementById("questions-used-popup").textContent = questionsAsked;
   document.getElementById("hints-used-popup").textContent = getHintsUsed();
   document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
