@@ -22,33 +22,28 @@
     .bracket-container {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       overflow-x: auto;
-    }
-    .quadrant {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0 20px;
     }
     .round-column {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin: 10px;
+      align-items: center;
+      gap: 16px;
+      margin: 0 10px;
     }
     .matchup {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       background: #1E3D59;
       color: white;
       padding: 6px 10px;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
-      min-width: 200px;
       border: 2px solid transparent;
+      width: 200px;
     }
     .matchup:hover {
       background: #2a5d85;
@@ -57,12 +52,35 @@
       background: #28a745;
       border-color: #fff;
     }
+    .matchup.eliminated {
+      background: #888 !important;
+      opacity: 0.6;
+      pointer-events: none;
+    }
     .artist-img {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid #fff;
+      margin-right: 8px;
+    }
+    .matchup span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .placeholder {
+      width: 200px;
+      height: 48px;
+      background: #1E3D59;
+      border: 2px dashed #555;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-style: italic;
     }
     .mid-champion {
       margin-top: 40px;
@@ -97,70 +115,99 @@
   <button class="submit-btn" onclick="submitBracket()">Submit My Bracket</button>
 
   <script>
-    const firstRoundMatchups = [
-      ["Taylor Swift", "Melanie Martinez"], ["J. Cole", "A$AP Rocky"], ["Ed Sheeran", "Luke Combs"],
-      ["Travis Scott", "Kodak Black"], ["Bad Bunny", "Yeat"], ["Olivia Rodrigo", "Frank Ocean"],
-      ["Billie Eilish", "Rosalía"], ["Pitbull", "Whitney Houston"],
-      ["Noah Kahan", "Mary J. Blige"], ["Pritam", "50 Cent"], ["Justin Bieber", "Meghan Trainor"],
-      ["Sabrina Carpenter", "Zach Bryan"], ["Drake", "Cher"], ["Harry Styles", "Don Toliver"],
-      ["SZA", "Zara Larsson"], ["Shakira", "Mac Miller"],
-      ["Teddy Swims", "Tove Lo"], ["Benson Boone", "Charli XCX"], ["Bruno Mars", "Stevie Wonder"],
-      ["Gracie Abrams", "Juice WRLD"], ["Beyoncé", "Niall Horan"], ["Michael Jackson", "Daniel Caesar"],
-      ["Kendrick Lamar", "Bruce Springsteen"], ["Adele", "Billy Joel"],
-      ["Mitski", "Laufey"], ["Tyler, The Creator", "Gunna"], ["Lady Gaga", "Mac DeMarco"],
-      ["Chris Brown", "Childish Gambino"], ["beabadoobee", "Lenny Kravitz"], ["Hozier", "Morgan Wallen"],
-      ["The Weeknd", "Lauv"], ["Lana Del Rey", "Demi Lovato"]
+    const artistImages = name => `images/${name.toLowerCase().replace(/[^a-z0-9]/g, '')}.jpg`;
+
+    const bracketData = [
+      [ // Round 1: 32 matchups
+        ["Taylor Swift", "Melanie Martinez"], ["J. Cole", "A$AP Rocky"], ["Ed Sheeran", "Luke Combs"],
+        ["Travis Scott", "Kodak Black"], ["Bad Bunny", "Yeat"], ["Olivia Rodrigo", "Frank Ocean"],
+        ["Billie Eilish", "Rosalía"], ["Pitbull", "Whitney Houston"],
+        ["Noah Kahan", "Mary J. Blige"], ["Pritam", "50 Cent"], ["Justin Bieber", "Meghan Trainor"],
+        ["Sabrina Carpenter", "Zach Bryan"], ["Drake", "Cher"], ["Harry Styles", "Don Toliver"],
+        ["SZA", "Zara Larsson"], ["Shakira", "Mac Miller"],
+        ["Teddy Swims", "Tove Lo"], ["Benson Boone", "Charli XCX"], ["Bruno Mars", "Stevie Wonder"],
+        ["Gracie Abrams", "Juice WRLD"], ["Beyoncé", "Niall Horan"], ["Michael Jackson", "Daniel Caesar"],
+        ["Kendrick Lamar", "Bruce Springsteen"], ["Adele", "Billy Joel"],
+        ["Mitski", "Laufey"], ["Tyler, The Creator", "Gunna"], ["Lady Gaga", "Mac DeMarco"],
+        ["Chris Brown", "Childish Gambino"], ["beabadoobee", "Lenny Kravitz"], ["Hozier", "Morgan Wallen"],
+        ["The Weeknd", "Lauv"], ["Lana Del Rey", "Demi Lovato"]
+      ], [], [], [], [], []
     ];
 
-    const bracketContainer = document.getElementById("bracket-container");
+    function createMatchupNode(name, roundIndex, matchIndex, isWinner) {
+      const div = document.createElement("div");
+      div.className = "matchup";
+      if (isWinner === false) div.classList.add("eliminated");
+      div.innerHTML = `<span><img class='artist-img' src='${artistImages(name)}'>${name}</span>`;
+      div.onclick = () => {
+        const nextRound = roundIndex + 1;
+        const nextMatchIndex = Math.floor(matchIndex / 2);
 
-    function getImage(name) {
-      const formatted = name.toLowerCase().replace(/[^a-z0-9]/g, "");
-      return `images/${formatted}.jpg`;
+        bracketData[nextRound] = bracketData[nextRound] || [];
+        bracketData[nextRound][nextMatchIndex] = bracketData[nextRound][nextMatchIndex] || ["", ""];
+
+        if (matchIndex % 2 === 0) {
+          bracketData[nextRound][nextMatchIndex][0] = name;
+        } else {
+          bracketData[nextRound][nextMatchIndex][1] = name;
+        }
+
+        renderBracket();
+      };
+      return div;
     }
 
-    function createMatchup(name1, name2, onSelect) {
-      const div1 = document.createElement("div");
-      div1.className = "matchup";
-      div1.innerHTML = `<img class='artist-img' src='${getImage(name1)}'><span>${name1}</span>`;
-      div1.onclick = () => onSelect(name1, div1, div2);
-
-      const div2 = document.createElement("div");
-      div2.className = "matchup";
-      div2.innerHTML = `<img class='artist-img' src='${getImage(name2)}'><span>${name2}</span>`;
-      div2.onclick = () => onSelect(name2, div2, div1);
-
-      return [div1, div2];
+    function createPlaceholder() {
+      const p = document.createElement("div");
+      p.className = "placeholder";
+      p.innerText = "Winner advances here";
+      return p;
     }
 
     function renderBracket() {
-      // For simplicity, divide into 4 quadrants of 8 matchups each
-      for (let q = 0; q < 4; q++) {
-        const quadrant = document.createElement("div");
-        quadrant.className = "quadrant";
+      const container = document.getElementById("bracket-container");
+      container.innerHTML = "";
 
-        const round = document.createElement("div");
-        round.className = "round-column";
+      for (let round = 0; round < bracketData.length; round++) {
+        const column = document.createElement("div");
+        column.className = "round-column";
 
-        for (let i = 0; i < 8; i++) {
-          const index = q * 8 + i;
-          const [name1, name2] = firstRoundMatchups[index];
-          const [div1, div2] = createMatchup(name1, name2, (winner, selectedDiv, otherDiv) => {
-            selectedDiv.classList.add("selected");
-            otherDiv.classList.remove("selected");
-            console.log(`Selected: ${winner}`);
-          });
-          round.appendChild(div1);
-          round.appendChild(div2);
+        for (let match = 0; match < bracketData[round].length; match++) {
+          const [name1, name2] = bracketData[round][match];
+
+          const winner = bracketData[round + 1]?.[Math.floor(match / 2)]?.[match % 2 === 0 ? 0 : 1];
+          const is1Winner = winner === name1;
+          const is2Winner = winner === name2;
+
+          if (name1) column.appendChild(createMatchupNode(name1, round, match * 2, is1Winner ? true : is2Winner ? false : null));
+          if (name2) column.appendChild(createMatchupNode(name2, round, match * 2 + 1, is2Winner ? true : is1Winner ? false : null));
+
+          if (round < bracketData.length - 1) {
+            const hasWinner = is1Winner || is2Winner;
+            if (hasWinner && winner) {
+              column.appendChild(createMatchupNode(winner, round + 1, Math.floor(match / 2), null));
+            } else {
+              column.appendChild(createPlaceholder());
+            }
+          }
         }
 
-        quadrant.appendChild(round);
-        bracketContainer.appendChild(quadrant);
+        container.appendChild(column);
+      }
+
+      const final = bracketData[bracketData.length - 1][0];
+      if (final && (final[0] || final[1])) {
+        document.getElementById("champion").innerText = `CHAMPION: ${final[0] || final[1]}`;
       }
     }
 
     function submitBracket() {
-      alert("Bracket submitted! Full progression coming soon.");
+      const final = bracketData[bracketData.length - 1][0];
+      if (final && (final[0] || final[1])) {
+        alert(`You chose ${final[0] || final[1]} as your champion!`);
+      } else {
+        alert("Please finish your bracket before submitting.");
+      }
     }
 
     renderBracket();
