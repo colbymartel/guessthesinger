@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 125 - Celebration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f8ff;
+      text-align: center;
+      padding: 60px 20px;
+      color: #333;
+    }
+
+    .popup {
+      background: #fff;
+      border: 2px solid #4682b4;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #4682b4;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .popup p {
+      font-size: 1.1rem;
+      margin: 10px 0;
+    }
+
+    .share-button {
+      background-color: #4682b4;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 20px;
+    }
+
+    .share-button:hover {
+      background-color: #315f85;
+    }
+  </style>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function fetchAndDisplayStats() {
+      try {
+        const docRef = doc(db, "daily_stats", "day125");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          document.getElementById("questionsCount").textContent = data.questionsUsed ?? 0;
+          document.getElementById("hintsCount").textContent = data.hintsUsed ?? 0;
+        } else {
+          document.getElementById("questionsCount").textContent = 0;
+          document.getElementById("hintsCount").textContent = 0;
+        }
+      } catch (error) {
+        console.error("Error loading stats:", error);
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", fetchAndDisplayStats);
+  </script>
+</head>
+<body>
+  <div class="popup">
+    <h1>🎉 You Got It!</h1>
+    <img src="images/carlyraejepsen.jpg" alt="Carly Rae Jepsen" style="width: 200px; border-radius: 10px; margin: 15px 0;" />
+
+    <p><strong>Singer:</strong> Carly Rae Jepsen</p>
+    <p><strong>Questions Used:</strong> <span id="questionsCount">...</span></p>
+    <p><strong>Hints Needed:</strong> <span id="hintsCount">...</span></p>
+    <button class="share-button" onclick="shareResult()">Share Your Result</button>
+  </div>
+
+  <script>
+    function shareResult() {
+      const questions = document.getElementById("questionsCount").textContent;
+      const hints = document.getElementById("hintsCount").textContent;
+      const result = `🎤 I guessed today's singer in ${questions} questions and ${hints} hints! Try it now at guessthesinger.com`;
+
+      navigator.clipboard.writeText(result)
+        .then(() => alert("Copied to clipboard!"))
+        .catch(err => alert("Couldn't copy result."));
+    }
+  </script>
+</body>
+</html>

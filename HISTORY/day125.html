@@ -15,6 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guess The Mystery Artist</title>
   <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <style>
@@ -85,11 +86,12 @@ margin-left: 15px;
       overflow: hidden;
     }
     .questions-progress-bar {
-      height: 30px;
-      background-color: #4682b4;
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+  height: 30px;
+  background-color: #4682b4;
+  width: 100%; /* start full */
+  transition: width 0.3s ease;
+}
+
     @media (max-width: 768px) {
   .questions-progress-container{
 margin-right: 10px;
@@ -158,96 +160,104 @@ width: 90%;  }
   }
 }
 .custom-dropdown {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  padding: 12px;
-  position: relative;
   background: #fff;
-  margin-bottom: 15px;
-  text-align: left;
-  font-family: Arial, sans-serif;
+  color: #333;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  position: relative;
+  border: 2px solid #4682b4;
+  transition: all 0.3s ease;
+}
+
+.custom-dropdown:hover {
+  transform: scale(1.02);
 }
 
 .dropdown-header {
-  font-size: 1.2rem;
-  color: #333;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #1a1a1a;
 }
 
 .dropdown-header i {
-  transition: transform 0.3s;
+  color: #4682b4;
+  transition: transform 0.3s ease;
 }
 
 .custom-dropdown.active .dropdown-header i {
   transform: rotate(180deg);
 }
 
+/* Dropdown Content */
 .dropdown-content {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
+  background: #fff;
+  border: 2px solid #4682b4;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  z-index: 100;
   max-height: 300px;
   overflow-y: auto;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-  z-index: 10;
-  display: none;
-  padding: 5px 0;
 }
 
 .custom-dropdown.active .dropdown-content {
   display: block;
 }
 
+/* Each category group (like General, Background) */
 .dropdown-group {
+  padding: 0;
+  margin: 0;
   border-top: 1px solid #eee;
-  padding: 5px 0;
 }
-
 .dropdown-group:first-of-type {
   border-top: none;
 }
 
 .dropdown-group summary {
-  list-style: none;
-  cursor: pointer;
+  background: #f0f8ff;
+  padding: 10px 15px;
   font-weight: bold;
-  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
 }
-
 .dropdown-group summary:hover {
-  background-color: #f1f1f1;
+  background: #e0f2ff;
 }
-
+.dropdown-group[open] summary .toggle-icon {
+  transform: rotate(180deg);
+}
+.dropdown-group summary .toggle-icon {
+  transition: transform 0.3s ease;
+}
 .dropdown-group summary::-webkit-details-marker {
   display: none;
 }
 
-.dropdown-group summary .toggle-icon {
-  transition: transform 0.3s;
+
+.custom-dropdown.active .dropdown-content {
+  display: block;
 }
 
-details[open] summary .toggle-icon {
-  transform: rotate(180deg);
-}
-
+/* Dropdown Items */
 .dropdown-item {
-  padding: 10px 12px;
+  padding: 12px 20px;
+  transition: all 0.2s ease;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
   border-bottom: 1px solid #f0f0f0;
-  font-size: 1rem;
 }
 
 .dropdown-item:last-child {
@@ -255,14 +265,18 @@ details[open] summary .toggle-icon {
 }
 
 .dropdown-item:hover {
-  background: #e6f7ff;
-  color: #0056b3;
+  background: #e6faff;
+  color: #0077b6;
+  font-weight: bold;
 }
 
+/* Already Asked Questions */
 .dropdown-item.asked {
+  opacity: 0.5;
   pointer-events: none;
-  opacity: 0.6;
+  font-style: italic;
 }
+
     /* Button Group */
     .button-group {
       display: flex;
@@ -273,7 +287,7 @@ details[open] summary .toggle-icon {
     }
     /* We add a specific class for the Ask Question button */
     .cta-button {
-        width: 200px;
+        width: 280px;
 height: 48px;
 justify-content: center;
 border-radius: 12px;
@@ -289,7 +303,7 @@ margin-top: 5px;
     @media (max-width: 768px) {
   .cta-button {
     height:48px; /* Adjust as needed */
-    width: 45%;
+    width: 70%;
     font-size: 16px;
   }
 }
@@ -321,7 +335,7 @@ margin-top: 5px;
     white-space: nowrap;
   }
 }
-
+ 
 
 .results-button:hover {
   background-color: #2e8b57; /* Darker green on hover */
@@ -339,6 +353,7 @@ margin-top: 5px;
       background: #f9f9f9;
       width: 100%;
       max-width: 500px;
+      margin-bottom: 10px;
     }
     @media (max-width: 768px) {
   .answer-display {
@@ -601,19 +616,21 @@ margin-top: 5px;
     .footer a:hover {
       color: #ff914d;
     }
-    /* Navbar Styling */
+
+ 
 .navbar {
 display: flex;
 justify-content: center;
 gap: 20px;
-background-color: #315f85;
-padding: 15px 0;
 font-weight: bold;
 position: fixed;
   top: var(--header-height);
   left: 0;
   width: 100%;
   z-index: 9; /* or higher if needed */
+  background: #254a6d;
+  padding: 15px 0;
+  box-shadow: inset 0 -2px 6px rgba(255,255,255,0.15);
 }
 
 .navbar ul {
@@ -625,17 +642,20 @@ margin: 0;
 padding: 0;
 }
 
-.navbar ul li a {
-text-decoration: none;
-color: white;
-font-size: 1rem;
-padding: 5px 10px;
-border-radius: 5px;
-transition: background-color 0.3s ease;
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
-
-.navbar ul li a:hover {
-background-color: #4682b4;
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
 }
 /* Stats Popup Overlay Container */
 #stats-popup {
@@ -785,6 +805,49 @@ background-color: #4682b4;
 #close-stats-popup:hover {
   color: #ff4d4d;
 }
+.icon-only {
+  background-color: #f9c851;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.2s ease;
+}
+
+.icon-only:hover {
+  transform: scale(1.1);
+  background-color: #f7b500;
+}
+#modalHintContainer {
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+#closeHintModal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;         /* make it larger */
+  font-weight: bold;
+  color: #4682b4;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  z-index: 1001;
+}
+
+#closeHintModal:hover {
+  color: #ff4d4d;
+}
+
   </style>
 </head>
 <body>
@@ -807,7 +870,7 @@ background-color: #4682b4;
   
   <!-- Main Section -->
   <main class="main">
-    <div class="mystery-title">Game #123</div>
+    <div class="mystery-title">Game #125</div>
 
     <!-- Questions Progress Bar -->
     <div class="questions-progress-wrapper">
@@ -855,7 +918,7 @@ background-color: #4682b4;
                         <div class="dropdown-item" data-value="are they from asia?">Were they born in Asia?</div>
                         <div class="dropdown-item" data-value="are they from south america?">Were they born in South America?</div>
                         <div class="dropdown-item" data-value="are they from australia?">Were they born in Australia?</div>
-                        <div class="dropdown-item" data-value="are they from aftrica?">Were they born in Africa?</div>
+                        <div class="dropdown-item" data-value="are they from africa?">Were they born in Africa?</div>
                       </details>
                       
                       <!-- Background Questions Section -->
@@ -885,7 +948,7 @@ background-color: #4682b4;
   
                       <!-- Career and Popularity Questions Section -->
                       <details class="dropdown-group">
-                          <summary>Career and Popularity Questions<i class="fas fa-chevron-down toggle-icon"></i></summary>
+                          <summary>Career and Popularity<i class="fas fa-chevron-down toggle-icon"></i></summary>
                           <div class="dropdown-item" data-value="are they also an actor?">Are they also an actor?</div>
                           <div class="dropdown-item" data-value="disney or nick?">Were they ever on Disney Channel or Nickelodeon?</div>
                           <div class="dropdown-item" data-value="singing competition?">Have they ever competed in a TV Singing Competition?</div>
@@ -902,7 +965,7 @@ background-color: #4682b4;
   
                       <!-- Name and Appearance Questions Section -->
                       <details class="dropdown-group">
-                          <summary>Name and Appearance Questions<i class="fas fa-chevron-down toggle-icon"></i></summary>
+                          <summary>Name and Appearance<i class="fas fa-chevron-down toggle-icon"></i></summary>
                           <div class="dropdown-item" data-value="do they have dark hair?">Do they have black or brown hair?</div>
                           <div class="dropdown-item" data-value="do they have blond hair?">Do they have blond hair?</div>
                           <div class="dropdown-item" data-value="over 5.5 feet tall?">Are they over 5 1/2 feet tall?</div>
@@ -917,25 +980,29 @@ background-color: #4682b4;
                         </details>
         </div>
       </div>
+      <div class="answer-display" id="answerDisplay"></div>
+      <!-- This will display the response after a question is asked -->
+      
       <div class="button-group">
         <!-- Give the Ask Question button a special class -->
-        <button class="cta-button ask-question" onclick="askQuestion()">Ask Question</button>
-        <button class="cta-button guess-artist" onclick="openGuessModal()">Guess the Artist</button>
-    </div>
-    </div>
+        <button class="cta-button guess-artist" onclick="window.location.href='/submitguess.html'">Guess the Singer</button>
+        <!-- Lightbulb Icon Button -->
+<button class="icon-only" title="Get a hint">
+    <i class="fas fa-lightbulb"></i>
+  </button>
+</div>
 
-    <!-- Answer Display -->
-    <div class="answer-display" id="answerDisplay"></div>
+    </div>
+    </div>
 
     <!-- Hint Container -->
-    <div class="hint-container" id="hintContainer">
+    <div class="hint-container" style="display: none;" id="hintContainer">
       <!-- Begin with a section labeled "Hint Locked" -->
       <div id="hintBox-1" class="hint-box locked" data-revealed="false">
         <i class="fas fa-lock"></i> Hint Locked
       </div>
     </div>
   </main>
-
   <!-- Modal for Artist Guess -->
   <div id="guessModal" class="modal">
     <div class="modal-content">
@@ -956,8 +1023,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">MF DOOM</strong>!</p>
-      <img src="../images/mfdoom.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Carly Rae Jepsen</strong>!</p>
+      <img src="../images/carlyraejepsen.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
       <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
@@ -975,8 +1042,8 @@ background-color: #4682b4;
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name-failure">MF DOOM</strong>!</p>
-      <img src="../images/mfdoom.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Today's singer was <strong id="correct-artist-name-failure">Carly Rae Jepsen</strong>!</p>
+      <img src="../images/carlyraejepsen.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
 <p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
 <p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
@@ -1012,7 +1079,15 @@ background-color: #4682b4;
     </div>
   </div>
 </div>
-  
+      <!-- Hint Popup Modal -->
+      <div id="hintModal" class="modal">
+        <div class="modal-content" id="hintModalContent">
+          <span id="closeHintModal" class="close-popup">&times;</span>
+          <h2>Unlocked Hints</h2>
+          <div id="modalHintContainer"></div>
+        </div>
+      </div>
+      
   <!-- Footer -->
   <footer class="footer">
     &copy; 2024 Colby Martel | 
@@ -1022,25 +1097,15 @@ background-color: #4682b4;
     <a href="https://discord.gg/AEH92GCs" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
   </footer>
 <script>
-    
-    // Simple function to open the guess modal.
-    function openGuessModal() {
-      const modal = document.getElementById("guessModal");
-      modal.style.display = "block";
-    }
-    // Close guess modal.
-    function closeGuessModal() {
-      const modal = document.getElementById("guessModal");
-      modal.style.display = "none";
-    }
 
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-      "Hint 1: They were born in London, England.",
-        "Hint 2: He concealed his face for performances.",
-        "Hint 3: His stage name sounds like that of an upcoming Avenger's villain."
+      "Hint 1: They placed in the Top 5 on a TV singing competition.",
+        "Hint 2: Their breakthrough single was the #1 best-selling single of 2012.",
+        "Hint 3: Hey I just met you and this is crazy, but here's your last hint."
       ];
+  
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
@@ -1050,6 +1115,8 @@ background-color: #4682b4;
     import { getDatabase, ref, push, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
     import { ref as dbRef, set } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
+    import { updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
     // Firebase configuration – replace with your actual settings.
     const firebaseConfig = {
@@ -1067,7 +1134,9 @@ background-color: #4682b4;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day123"; // replace with the current game id
+    const gameId = "day125"; // replace with the current game id
+    const firestore = getFirestore(app);
+
     onAuthStateChanged(auth, (user) => {
   if (user) {
     checkIfPlayed();
@@ -1076,6 +1145,25 @@ background-color: #4682b4;
     // Optionally, redirect to your login page
   }
 });
+async function incrementQuestionCount() {
+  try {
+    await updateDoc(doc(db, "daily_stats", "day124"), {
+      questionsUsed: increment(1)
+    });
+  } catch (err) {
+    console.error("Failed to increment question count:", err);
+  }
+}
+
+async function incrementHintCount() {
+  try {
+    await updateDoc(doc(db, "daily_stats", "day124"), {
+      hintsUsed: increment(1)
+    });
+  } catch (err) {
+    console.error("Failed to increment hint count:", err);
+  }
+}
 
 // Check if the current user has already played this game
 function checkIfPlayed() {
@@ -1132,7 +1220,7 @@ function viewCelebrationFromRecord() {
         // Check the result status. If "fail", populate failure popup; else, celebration popup.
         if (data.result && data.result === "fail") {
           // Populate failure popup elements.
-          document.getElementById("correct-artist-name-failure").textContent = "MF DOOM";
+          document.getElementById("correct-artist-name-failure").textContent = "Carly Rae Jepsen";
           document.getElementById("failure-questions-used").textContent = data.questionsUsed;
           document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
           // Assume your failure popup has an element with id "failure-time" for duration.
@@ -1149,7 +1237,7 @@ function viewCelebrationFromRecord() {
           }, 10);
         } else {
           // Populate celebration popup elements.
-          document.getElementById("correct-artist-name").textContent = "MF DOOM";
+          document.getElementById("correct-artist-name").textContent = "Carly Rae Jepsen";
           document.getElementById("questions-used-popup").textContent = data.questionsUsed;
           document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
           document.getElementById("celebration-time").innerHTML =
@@ -1173,58 +1261,57 @@ function viewCelebrationFromRecord() {
 
 // Listen for auth state changes so "auth.currentUser" is defined.
     document.addEventListener("DOMContentLoaded", function() {
-        loadProgress();
 
       // Predefined question responses
       const responses = {
-        "is this a male artist?": "Yes, they do identify as male.",
-    "is this a female artist?": "No, they do not identify as female.",
-    "are they still alive?": "No, they are not still alive.",
+        "is this a male artist?": "No, they do not identify as male.",
+    "is this a female artist?": "Yes, they do identify as female.",
+    "are they still alive?": "Yes, they are still alive.",
     "are they over 30 years old?": "Yes, they are over 30 years old.",
-    "are they over 40 years old?": "Yes, they are over 40 years old.",
-    "are they over 50 years old?": "No, they are not over 50 years old.",
+    "are they over 40 years old?": "No, they are not over 40 years old.",
+    "are they over 50 years old?": "No, they are under 50 years old.",
  
-    "debut before 2000?": "Yes, their debut occurred before 2000.",
-    "debut before 2010?": "Yes, their debut occurred before 2010.",
+    "debut before 2000?": "No, their debut occurred after 2000.",
+    "debut before 2010?": "Yes, their career began before 2010.",
     "debut before 2020?": "Yes, they began their career before 2020.",
-    "album release in last 2 years?": "Yes, they did release an album in the last 2 years.",
+    "album release in last 2 years?": "Yes, they released an album in the last 2 years.",
     "are they touring?": "No, they are not currently touring.",
     "are they married?": "No, they are not currently married.",
-    "divorced?": "No, they have not been divorced.",
+    "divorced?": "No, they are not divorced.",
     "LGBTQ?": "No, they have not publicly identified as LGBTQ+.",
 
-    "are they from north america?": "No, they are not from North America.",
+    "are they from north america?": "Yes, they are from North America.",
     "are they from the united states?": "No, they are not from the United States.",
-    "are they from canada?": "No, they are not from Canada.",
-    "are they from europe?": "Yes, they are from Europe.",
+    "are they from canada?": "Yes, they are from Canada.",
+    "are they from europe?": "No, they are not from Europe.",
     "are they from asia?": "No, they are not from Asia.",
     "are they from south america?": "No, they are not from South America.",
     "are they from australia?": "No, they are not from Australia.",
     "are they from africa?": "No, they are not from Africa.",
 
-    "are they of african descent?": "Yes, they are of African descent.",
+    "are they of african descent?": "No, they are not of African descent.",
     "are they of asian descent?": "No, they are not of Asian descent.",
-    "are they of european descent?": "No, they are not of European descent.",
+    "are they of european descent?": "Yes, they are of European descent.",
     "are they of latin american descent?": "No, they are not of Latin American descent.",
     "are they of mixed ethnicity?": "No, they are not of mixed ethnicity.",
 
     "different languages?": "No, they perform songs in one language.",
     "are they spanish?": "No, they do not perform in Spanish.",
-    "do they perform pop music?": "No, they do not perform pop music.",
-    "do they perform rap music?": "Yes, they are known for rap music.",
+    "do they perform pop music?": "Yes, they do perform pop music.",
+    "do they perform rap music?": "No, they are not known for rap music.",
     "do they perform R&B music?": "No, their music is not classified as R&B.",
-    "do they perform rock music?": "No, their music does not include rock elements.",
+    "do they perform rock music?": "No, they do not perform rock music.",
     "do they perform country music?": "No, they do not perform country music.",
     "do they perform jazz music?": "No, they do not perform jazz music.",
-    "do they perform party music?": "Yes, their songs are suitable for parties.",
+    "do they perform party music?": "Yes, some songs are suitable for parties.",
     "do they perform sad music?": "Yes, some songs have sad vibes.",
 
-    "are they also an actor?": "No, they are not also an actor.",
-    "Disney or Nick?": "No, they have not been on Disney or Nickelodeon.",
-    "singing competition?": "No, they did not rise to fame via a TV singing competition.",
-    "have they won a Grammy?": "No, they have not won a Grammy Award.",
-    "Super Bowl?": "No, they have not performed at a Super Bowl Halftime Show.",
-    "Coachella?": "Yes, they have performed at Coachella.",
+    "are they also an actor?": "No, but they do have some TV and movie appearances.",
+    "disney or nick?": "Yes, they have been on Disney or Nickelodeon.",
+    "singing competition?": "Yes, they did rise to fame via a TV singing competition.",
+    "have they won a grammy?": "No, they have not won a Grammy Award.",
+    "super bowl?": "No, they have not performed at a Super Bowl Halftime Show.",
+    "coachella?": "Yes, they have performed at Coachella.",
     "song over one billion streams?": "No, they do not have a song with over one billion streams.",
     "do they have more than 10M TikTok followers?": "No, they do not have more than 10 million TikTok followers.",
     "do they have more than 10M Instagram followers?": "No, they do not have over 10 million Instagram followers.",
@@ -1232,16 +1319,16 @@ function viewCelebrationFromRecord() {
     "do they have more than 50M listeners?": "No, they do not have over 50 million monthly listeners.",
     "were they ever in a band?": "No, they are primarily a solo artist.",
 
-    "do they have dark hair?": "Yes, they do have dark hair.",
-    "do they have blond hair?": "Yes, they had blond hair.",
+    "do they have dark hair?": "Yes, they do usually have dark hair.",
+    "do they have blond hair?": "Yes, they do sometimes have blond hair.",
     "over 5.5 feet tall?": "No, they are not over 5.5 feet tall.",
     "over 6 feet tall?": "No, they are not over 6 feet tall.",
     "do they have tattoos?": "No, they do not have visible tattoos.",
     "do they wear glasses?": "No, they are not typically seen wearing glasses.",
-    "do they go by their birth name?": "No, they do not perform under their birth name.",
+    "do they go by their birth name?": "Yes, they do perform under their birth name.",
     "do they go by one word?": "No, their name consists of more than one word.",
-    "do they go by two words?": "Yes, their name does consist of two words.",
-    "do they have a common first name?": "No, their first name is not common.",
+    "do they go by two words?": "No, their name does not consist of two words.",
+    "do they have a common first name?": "Yes, their first name is somewhat common.",
     "name starts A-M?": "Yes, their name does start with a letter between A and M."
 
 };
@@ -1293,22 +1380,13 @@ window.askQuestion = function() {
 
   selectedValue = "";
   selectedElement = null;
-  document.getElementById("dropdownHeader").innerHTML = "Select a question to start... <i class='fas fa-chevron-down'></i>";
+  document.getElementById("dropdownHeader").innerHTML = "Select a question... <i class='fas fa-chevron-down'></i>";
   
   if (questionsAsked >= maxQuestions) {
     gameEnded = true;
     showFailure();
   }
 };
-
-
-    // Hints
-    const hintThresholds = [4, 8, 12];
-      const hintsArray = [
-      "Hint 1: They were born in London, England.",
-        "Hint 2: He concealed his face for performances.",
-        "Hint 3: His stage name sounds like that of an upcoming Avenger's villain."
-      ];
 
 });
  
@@ -1330,9 +1408,8 @@ window.askQuestion = function() {
         questionsAsked++;
         guessCount++;
         updateProgressBar();
-        closeGuessModal();
         guessInput.value = "";
-        const correctAnswer = "mf doom";
+        const correctAnswer = "carly rae jepsen";
         
         if (guess === correctAnswer) {
           showCelebration();
@@ -1359,8 +1436,6 @@ window.askQuestion = function() {
         return document.querySelectorAll(".hint-box.unlocked[data-revealed='true']").length;
       }
 
-      // Hint container
-      const hintContainer = document.getElementById("hintContainer");
 
       // Setup initial hint box click (for hintBox-1)
       const initialHintBox = document.getElementById("hintBox-1");
@@ -1372,89 +1447,67 @@ window.askQuestion = function() {
 
       // Update progress bar and hint boxes
       function updateProgressBar() {
-        const progressText = document.getElementById("questionsProgressText");
-        const progressBar = document.getElementById("questionsProgressBar");
-        progressText.textContent = `Questions Asked: ${questionsAsked} of ${maxQuestions}`;
-        progressBar.style.width = (questionsAsked / maxQuestions) * 100 + "%";
-        
-        // When 14 questions are reached, open the guess modal.
-        if (questionsAsked === 14) {
-          const answerDisplay = document.getElementById("answerDisplay");
-          answerDisplay.textContent = "Only one more question! Make a final guess!";
-          openGuessModal();
-        }
-        
-        // Unlock hints as needed.
-        if (questionsAsked >= hintThresholds[0]) {
-          unlockHintBox("hintBox-1", 0);
-          if (!document.getElementById("hintBox-2")) {
-            createHintBox(2);
-          }
-        }
-        hintThresholds.slice(1).forEach((threshold, idx) => {
-          if (questionsAsked >= threshold) {
-            let boxId = "hintBox-" + (idx + 2);
-            let box = document.getElementById(boxId);
-            if (box && box.classList.contains("locked")) {
-              unlockHintBox(boxId, idx + 1);
-              if (idx < hintThresholds.length - 1 && !document.getElementById("hintBox-" + (idx + 3))) {
-                createHintBox(idx + 3);
-              }
-            }
-          }
-        });
-        if (questionsAsked >= maxQuestions) {
-          if (!document.getElementById("hintBox-3")) {
-            createHintBox(3);
-          } else {
-            unlockHintBox("hintBox-3", 2);
-          }
-        }
-        reorderHintBoxes();
-      }
+  const progressText = document.getElementById("questionsProgressText");
+  const progressBar = document.getElementById("questionsProgressBar");
+  progressText.textContent = `Questions Remaining: ${maxQuestions - questionsAsked} of ${maxQuestions}`;
+  progressBar.style.width = ((maxQuestions - questionsAsked) / maxQuestions) * 100 + "%";
+
+  // Unlock hints at thresholds
+  hintThresholds.forEach((threshold, index) => {
+    const boxId = `hintBox-${index + 1}`;
+    const boxExists = document.getElementById(boxId);
+
+    // Create the hint box if it doesn't exist yet
+    if (!boxExists) {
+      createHintBox(index + 1);
+    }
+
+    // Unlock the hint if threshold reached
+    if (questionsAsked >= threshold) {
+      unlockHintBox(boxId, index);
+    }
+  });
+
+  reorderHintBoxes();
+
+  if (questionsAsked === 14) {
+    document.getElementById("answerDisplay").textContent =
+      "Only one more question! Make a final guess!";
+  }
+
+  if (questionsAsked >= maxQuestions) {
+    gameEnded = true;
+    showFailure();
+  }
+}
 
       // Create a new locked hint box
       function createHintBox(hintNumber) {
-        const box = document.createElement("div");
-        box.id = "hintBox-" + hintNumber;
-        box.className = "hint-box locked";
-        box.dataset.revealed = "false";
-        box.innerHTML = "Hint " + hintNumber + " Locked";
-        box.addEventListener("click", function() {
-          if (hintNumber > 1) {
-            const hint1 = document.getElementById("hintBox-1");
-            if (!hint1 || hint1.dataset.revealed !== "true") {
-              return;
-            }
-          }
-          if (hintNumber === 3) {
-            const hint2 = document.getElementById("hintBox-2");
-            if (!hint2 || hint2.dataset.revealed !== "true") {
-              return;
-            }
-          }
-          if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
-            revealHint(box, hintNumber - 1);
-          }
-        });
-        hintContainer.appendChild(box);
-      }
+  const box = document.createElement("div");
+  box.id = `hintBox-${hintNumber}`;
+  box.className = "hint-box locked";
+  box.dataset.revealed = "false";
+  box.innerHTML = `Hint ${hintNumber} Locked`;
+
+  box.addEventListener("click", function () {
+    if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
+      revealHint(box, hintNumber - 1); // Use 0-indexed hint array
+    }
+  });
+
+  hintContainer.appendChild(box);
+}
 
       // Unlock a hint box
       function unlockHintBox(boxId, idx) {
-        let box = document.getElementById(boxId);
-        if (box && box.classList.contains("locked")) {
-          if (boxId === "hintBox-4") {
-            box.style.display = "none";
-            return;
-          }
-          box.classList.remove("locked");
-          box.classList.add("unlocked");
-          box.innerHTML = "<i class='fas fa-unlock'></i> Hint Unlocked! (Click to reveal)";
-          box.dataset.revealed = "false";
-          box.style.display = "";
-        }
-      }
+  const box = document.getElementById(boxId);
+  if (box && box.classList.contains("locked")) {
+    box.classList.remove("locked");
+    box.classList.add("unlocked");
+    box.innerHTML = "<i class='fas fa-unlock'></i> Hint Unlocked! (Click to reveal)";
+    box.dataset.revealed = "false";
+  }
+}
 
       // Reorder hint boxes so unlocked ones appear first.
       function reorderHintBoxes() {
@@ -1474,15 +1527,13 @@ window.askQuestion = function() {
       // Reveal a hint.
       function revealHint(box, idx) {
   if (box.dataset.revealed === "false") {
-    box.innerHTML = "<i class='fas fa-lightbulb'></i> " + hintsArray[idx];
+    box.innerHTML = `<i class='fas fa-lightbulb'></i> ${hintsArray[idx]}`;
     box.dataset.revealed = "true";
-    if (idx < hintsArray.length - 1 && !document.getElementById("hintBox-" + (idx + 2))) {
-      createHintBox(idx + 2);
-    }
+    saveProgress();
     reorderHintBoxes();
-    saveProgress(); // Save progress after hint is revealed.
   }
 }
+
 
       // Custom dropdown interactions.
       const customDropdown = document.getElementById("customDropdown");
@@ -1495,16 +1546,24 @@ window.askQuestion = function() {
       document.querySelectorAll("details summary").forEach(summary => {
         summary.addEventListener("click", function(e) { e.stopPropagation(); });
       });
-      document.querySelectorAll(".dropdown-item").forEach(item => {
-        item.addEventListener("click", function(e) {
-          if (this.classList.contains("asked")) return;
-          e.stopPropagation();
-          selectedValue = this.getAttribute("data-value");
-          selectedElement = this;
-          dropdownHeader.innerHTML = this.textContent + " <i class='fas fa-chevron-down'></i>";
-          customDropdown.classList.remove("active");
-        });
-      });
+
+document.querySelectorAll(".dropdown-item").forEach(item => {
+  item.addEventListener("click", () => {
+    if (!item.classList.contains("asked")) {
+      const questionText = item.textContent.trim();
+      selectedValue = item.getAttribute("data-value");
+      selectedElement = item;
+
+      // Auto-answer logic
+      askQuestion(); // ← uses your existing askQuestion() logic
+
+      // Close the dropdown
+      const dropdown = item.closest(".custom-dropdown");
+      if (dropdown) dropdown.classList.remove("active");
+    }
+  });
+});
+
 
       // Show failure popup (Game Over). Only disable the Ask Question button.
       function disableGameControls() {
@@ -1537,7 +1596,7 @@ function showFailure() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Populate the failure popup with stats
-  document.getElementById("correct-artist-name-failure").textContent = "MF DOOM";
+  document.getElementById("correct-artist-name-failure").textContent = "Carly Rae Jepsen";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
@@ -1563,7 +1622,7 @@ function showFailure() {
       const inputField = document.getElementById("guessInput");
       const autocompleteList = document.getElementById("autocomplete-list");
       const artists = [
-      "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran", "Kehlani", "Polo G", "MF DOOM",
+      "Taylor Swift", "Ariana Grande", "Drake", "Beyoncé", "Ed Sheeran", "Kehlani", "Polo G", "Carly Rae Jepsen",
     "Billie Eilish", "Harry Styles", "Bruno Mars", "Rihanna", "The Weeknd", "Lil Mosey", "Ashnikko", "Barry Manilow",
     "Post Malone", "Lady Gaga", "Doja Cat", "Kanye West", "Justin Bieber", "Whitney Houston", "Jeremy Zucker",
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear", "Charli xcx",
@@ -1647,17 +1706,6 @@ function showFailure() {
   }
 }
     
-    // Simple function to open the guess modal.
-    function openGuessModal() {
-      const modal = document.getElementById("guessModal");
-      modal.style.display = "block";
-    }
-    // Close guess modal.
-    function closeGuessModal() {
-      const modal = document.getElementById("guessModal");
-      modal.style.display = "none";
-    }
-
      
     // Function to fetch and display user stats in a popup with an animated bar chart.
     function showUserStatsPopup() {
@@ -1829,15 +1877,22 @@ function recordUserGameResult(questionsUsed, durationMs, status) {
   if (!currentUser) return;
   const hintsUsed = getHintsUsed();
   const userGameRef = ref(database, `userGames/${currentUser.uid}/${gameId}`);
+
+  // Save to Realtime Database
   set(userGameRef, {
     questionsUsed: questionsUsed,
     hintsUsed: hintsUsed,
-    duration: durationMs, // duration in milliseconds
-    result: status,       // store "win" or "fail"
+    duration: durationMs,
+    result: status,
     timestamp: new Date().toISOString()
   })
-  .then(() => console.log("User game result recorded"))
+  .then(() => {
+    console.log("User game result recorded in Realtime DB");
+  })
   .catch(err => console.error("Error recording result:", err));
+
+  // Save to Firestore
+  saveStatsToFirestore(currentUser.uid, gameId, questionsUsed, hintsUsed);
 }
 
 function recordGameResult(questionsUsed, status, duration) {
@@ -1870,10 +1925,11 @@ function showCelebration() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Update popup content
-  document.getElementById("correct-artist-name").textContent = "MF DOOM";
+  document.getElementById("correct-artist-name").textContent = "Barry Manilow";
   document.getElementById("questions-used-popup").textContent = questionsAsked;
   document.getElementById("hints-used-popup").textContent = getHintsUsed();
   document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
+  saveStatsForDay("day125", questionsAsked, getHintsUsed(), elapsedMs);
 
   const popup = document.getElementById("celebration-popup");
   popup.style.display = "flex";
@@ -1979,7 +2035,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // Make sure gameId is defined, e.g.:
 const progressKey = `gameProgress_${gameId}`;
 function saveProgress() {
-  // Save state of hint boxes
   const hintBoxes = Array.from(document.querySelectorAll("#hintContainer .hint-box")).map(box => ({
     id: box.id,
     unlocked: box.classList.contains("unlocked"),
@@ -1987,7 +2042,6 @@ function saveProgress() {
     innerHTML: box.innerHTML
   }));
 
-  // Save state of dropdown items that have been asked.
   const askedDropdownItems = Array.from(document.querySelectorAll(".dropdown-item.asked")).map(item => ({
     dataValue: item.getAttribute("data-value"),
     innerHTML: item.innerHTML
@@ -1999,55 +2053,70 @@ function saveProgress() {
     startTime: startTime.toISOString(),
     gameEnded,
     hintsProgress: hintBoxes,
-    askedDropdownItems // new property to store dropdown state
+    askedDropdownItems
   };
 
   localStorage.setItem(progressKey, JSON.stringify(progress));
 }
 
-function loadProgress() {
+function restoreProgress() {
   const saved = localStorage.getItem(progressKey);
-  if (saved) {
-    const progress = JSON.parse(saved);
-    questionsAsked = progress.questionsAsked;
-    guessCount = progress.guessCount;
-    startTime = new Date(progress.startTime);
-    gameEnded = progress.gameEnded;
-    
+  if (!saved) return;
+
+  try {
+    const data = JSON.parse(saved);
+    questionsAsked = data.questionsAsked || 0;
+    guessCount = data.guessCount || 0;
+    startTime = data.startTime ? new Date(data.startTime) : new Date();
+    gameEnded = data.gameEnded || false;
+
+    if (data.hintsProgress) {
+      restoreHintsProgress(data.hintsProgress);
+    }
+
+    if (data.askedDropdownItems) {
+      restoreDropdownState(data.askedDropdownItems);
+    }
+
     updateProgressBar();
-    closeGuessModal();
-    
-    if (progress.hintsProgress && Array.isArray(progress.hintsProgress)) {
-      restoreHintsProgress(progress.hintsProgress);
-    }
-    
-    if (progress.askedDropdownItems && Array.isArray(progress.askedDropdownItems)) {
-      restoreDropdownState(progress.askedDropdownItems);
-    }
-    
+
+    // If game already ended, show appropriate popup
     if (gameEnded) {
-      document.getElementById("answerDisplay").textContent =
-        "You have already played today's game!";
-      disableGame();
+      viewCelebrationFromRecord(); // Already defined
     }
+  } catch (e) {
+    console.error("Error restoring progress:", e);
   }
 }
+document.addEventListener("DOMContentLoaded", () => {
+  restoreProgress();
+});
+
+
+document.querySelectorAll('.hint-cell').forEach(cell => {
+  cell.addEventListener('click', function () {
+    if (!this.classList.contains('revealed')) {
+      this.classList.add('revealed');
+      const hintsKey = `hintsUsed_${gameId}`;
+
+    }
+  });
+});
+;
 
 
 function restoreHintsProgress(hintsData) {
   const container = document.getElementById("hintContainer");
-  container.innerHTML = ""; // Clear existing hints
+  container.innerHTML = ""; // Clear existing
 
   hintsData.forEach(savedHint => {
     const box = document.createElement("div");
     box.id = savedHint.id;
-    // Set the appropriate classes based on saved state
     box.className = "hint-box " + (savedHint.unlocked ? "unlocked" : "locked");
     box.dataset.revealed = savedHint.revealed ? "true" : "false";
     box.innerHTML = savedHint.innerHTML;
 
-    // Rebind the event listener to enable revealing hints
-    box.addEventListener("click", function() {
+    box.addEventListener("click", function () {
       const hintNumber = parseInt(box.id.replace("hintBox-", ""));
       if (box.classList.contains("unlocked") && box.dataset.revealed === "false") {
         revealHint(box, hintNumber - 1);
@@ -2057,6 +2126,7 @@ function restoreHintsProgress(hintsData) {
     container.appendChild(box);
   });
 }
+
 function restoreDropdownState(askedItems) {
   // Loop over each saved asked item.
   askedItems.forEach(savedItem => {
@@ -2069,6 +2139,87 @@ function restoreDropdownState(askedItems) {
     }
   });
 }
+updateProgressBar();
+document.addEventListener("DOMContentLoaded", () => {
+  const hintIcon = document.querySelector(".icon-only");
+  if (hintIcon) {
+    hintIcon.addEventListener("click", () => {
+      const modal = document.getElementById("hintModal");
+      const modalHintContainer = document.getElementById("modalHintContainer");
+      modalHintContainer.innerHTML = ""; // clear existing
+
+      // Load saved hint progress from localStorage
+      const saved = JSON.parse(localStorage.getItem(progressKey));
+      const hintData = saved?.hintsProgress || [];
+
+      hintsArray.forEach((hintText, index) => {
+        const id = `hintBox-${index + 1}`;
+        const hint = hintData.find(h => h.id === id) || {};
+        const unlocked = hint.unlocked;
+        const revealed = hint.revealed;
+
+        const box = document.createElement("div");
+        box.id = id;
+        box.className = "hint-box";
+        box.dataset.revealed = revealed ? "true" : "false";
+
+        if (!unlocked) {
+          box.classList.add("locked");
+          box.innerHTML = `Hint ${index + 1} Locked`;
+        } else if (revealed) {
+          box.classList.add("unlocked");
+          box.innerHTML = `<i class='fas fa-lightbulb'></i> ${hintsArray[index]}`;
+        } else {
+          box.classList.add("unlocked");
+          box.innerHTML = `<i class='fas fa-unlock'></i> Hint Unlocked! (Click to reveal)`;
+          box.addEventListener("click", () => {
+            revealHint(box, index);
+          });
+        }
+
+        modalHintContainer.appendChild(box);
+      });
+
+      modal.style.display = "block";
+    });
+  }
+});
+
+
+
+// Close modal when clicking X
+document.getElementById("closeHintModal").addEventListener("click", () => {
+  document.getElementById("hintModal").style.display = "none";
+});
+
+// Close modal if user clicks outside the content
+window.addEventListener("click", function(e) {
+  const modal = document.getElementById("hintModal");
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+async function saveStatsForDay(dayId, questionsUsed, hintsUsed, timeSpent) {
+  console.log("Saving stats for:", dayId, questionsUsed, hintsUsed, timeSpent);
+  try {
+    await updateDoc(doc(firestore, "daily_stats", dayId), {
+      questionsUsed: increment(questionsUsed),
+      hintsUsed: increment(hintsUsed),
+      timeSpent: increment(timeSpent),
+      timestamp: new Date()
+    });
+    console.log("✅ Stats updated in Firestore");
+  } catch (error) {
+    console.error("❌ Failed to update stats:", error);
+  }
+}
+
+const q = questionsAsked;
+const h = getHintsUsed();
+const t = new Date() - startTime;
+
+console.log("Saving stats for day125:", { q, h, t });
+
 
     </script>
     

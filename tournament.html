@@ -1,216 +1,394 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guess The Singer - Bracket Challenge</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Enhanced Bracket</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #0b3d6b;
+      font-family: Arial, sans-serif;
+      background: #003a66;
       color: white;
-      min-height: 100vh;
-      padding: 20px;
-      text-align: center;
+      margin: 0;
+      padding: 40px;
     }
     h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
+      text-align: center;
     }
-    .bracket-container {
+    .bracket {
       display: flex;
+      gap: 40px;
       justify-content: center;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      align-items: flex-start;
     }
-    .round-column {
+    .column {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      margin: 0 10px;
+    }
+    .pair-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 40px;
     }
     .matchup {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      background: #1E3D59;
-      color: white;
-      padding: 6px 10px;
-      border-radius: 12px;
+      align-items: center;
+      gap: 10px;
+    }
+    .singer {
+      background: #1e3d59;
+      padding: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
       width: 200px;
     }
-    .matchup:hover {
+    .singer:hover {
       background: #2a5d85;
     }
-    .matchup.selected {
-      background: #28a745;
-      border-color: #fff;
-    }
-    .matchup.eliminated {
-      background: #888 !important;
-      opacity: 0.6;
-      pointer-events: none;
-    }
-    .artist-img {
+    .singer img {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #fff;
-      margin-right: 8px;
+      border: 2px solid white;
     }
-    .matchup span {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .selected {
+      background: #28a745 !important;
     }
-    .placeholder {
-      width: 200px;
-      height: 48px;
-      background: #1E3D59;
-      border: 2px dashed #555;
-      border-radius: 10px;
+    .advance-slot {
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #aaa;
-      font-style: italic;
-    }
-    .mid-champion {
-      margin-top: 40px;
-      font-size: 1.4rem;
-      padding: 10px;
-      border: 2px solid white;
-      border-radius: 10px;
-      background: #fff;
-      color: #0b3d6b;
-      font-weight: bold;
-    }
-    button.submit-btn {
-      margin-top: 40px;
-      padding: 12px 30px;
-      font-size: 1rem;
-      border: none;
-      background: #ffcc00;
-      color: #000;
+      border: 2px dashed #ccc;
       border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button.submit-btn:hover {
-      background: #e6b800;
+      background: #145;
+      font-style: italic;
+      margin: 40px 0;
+      width: 200px;
     }
   </style>
 </head>
 <body>
-  <h1>Guess The Singer - Bracket Challenge</h1>
-  <div class="bracket-container" id="bracket-container"></div>
-  <div class="mid-champion" id="champion">CHAMPION</div>
-  <button class="submit-btn" onclick="submitBracket()">Submit My Bracket</button>
+  <h1>Bracket Challenge</h1>
+  <div class="bracket">
+    <div class="column" id="round1">
+
+      <div class="pair-wrapper" data-match="0">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 0, 'Taylor Swift')">
+            <img src="images/taylorswift.jpg" alt="Taylor Swift" /> Taylor Swift
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 0, 'Melanie Martinez')">
+            <img src="images/melaniemartinez.jpg" alt="Melanie Martinez" /> Melanie Martinez
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="1">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 1, 'J. Cole')">
+            <img src="images/jcole.jpg" alt="J. Cole" /> J. Cole
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 1, 'A$AP Rocky')">
+            <img src="images/aaprocky.jpg" alt="A$AP Rocky" /> A$AP Rocky
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="2">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 2, 'Ed Sheeran')">
+            <img src="images/edsheeran.jpg" alt="Ed Sheeran" /> Ed Sheeran
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 2, 'Luke Combs')">
+            <img src="images/lukecombs.jpg" alt="Luke Combs" /> Luke Combs
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="3">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 3, 'Travis Scott')">
+            <img src="images/travisscott.jpg" alt="Travis Scott" /> Travis Scott
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 3, 'Kodak Black')">
+            <img src="images/kodakblack.jpg" alt="Kodak Black" /> Kodak Black
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="4">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 4, 'Bad Bunny')">
+            <img src="images/badbunny.jpg" alt="Bad Bunny" /> Bad Bunny
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 4, 'Yeat')">
+            <img src="images/yeat.jpg" alt="Yeat" /> Yeat
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="5">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 5, 'Olivia Rodrigo')">
+            <img src="images/oliviarodrigo.jpg" alt="Olivia Rodrigo" /> Olivia Rodrigo
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 5, 'Frank Ocean')">
+            <img src="images/frankocean.jpg" alt="Frank Ocean" /> Frank Ocean
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="6">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 6, 'Billie Eilish')">
+            <img src="images/billieeilish.jpg" alt="Billie Eilish" /> Billie Eilish
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 6, 'Rosalía')">
+            <img src="images/rosala.jpg" alt="Rosalía" /> Rosalía
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="7">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 7, 'Pitbull')">
+            <img src="images/pitbull.jpg" alt="Pitbull" /> Pitbull
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 7, 'Whitney Houston')">
+            <img src="images/whitneyhouston.jpg" alt="Whitney Houston" /> Whitney Houston
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="8">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 8, 'Noah Kahan')">
+            <img src="images/noahkahan.jpg" alt="Noah Kahan" /> Noah Kahan
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 8, 'Mary J. Blige')">
+            <img src="images/maryjblige.jpg" alt="Mary J. Blige" /> Mary J. Blige
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="9">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 9, 'Pritam')">
+            <img src="images/pritam.jpg" alt="Pritam" /> Pritam
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 9, '50 Cent')">
+            <img src="images/50cent.jpg" alt="50 Cent" /> 50 Cent
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="10">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 10, 'Justin Bieber')">
+            <img src="images/justinbieber.jpg" alt="Justin Bieber" /> Justin Bieber
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 10, 'Meghan Trainor')">
+            <img src="images/meghantrainor.jpg" alt="Meghan Trainor" /> Meghan Trainor
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="11">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 11, 'Sabrina Carpenter')">
+            <img src="images/sabrinacarpenter.jpg" alt="Sabrina Carpenter" /> Sabrina Carpenter
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 11, 'Zach Bryan')">
+            <img src="images/zachbryan.jpg" alt="Zach Bryan" /> Zach Bryan
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="12">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 12, 'Drake')">
+            <img src="images/drake.jpg" alt="Drake" /> Drake
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 12, 'Cher')">
+            <img src="images/cher.jpg" alt="Cher" /> Cher
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="13">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 13, 'Harry Styles')">
+            <img src="images/harrystyles.jpg" alt="Harry Styles" /> Harry Styles
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 13, 'Don Toliver')">
+            <img src="images/dontoliver.jpg" alt="Don Toliver" /> Don Toliver
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="14">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 14, 'SZA')">
+            <img src="images/sza.jpg" alt="SZA" /> SZA
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 14, 'Zara Larsson')">
+            <img src="images/zaralarsson.jpg" alt="Zara Larsson" /> Zara Larsson
+          </div>
+        </div>
+      </div>
+    
+      <div class="pair-wrapper" data-match="15">
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 15, 'Shakira')">
+            <img src="images/shakira.jpg" alt="Shakira" /> Shakira
+          </div>
+        </div>
+        <div class="matchup">
+          <div class="singer" onclick="selectWinner(this, 15, 'Mac Miller')">
+            <img src="images/macmiller.jpg" alt="Mac Miller" /> Mac Miller
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    <div class="column" id="round2">
+<div class="advance-slot" id="advance-0">Winner</div>
+<div class="advance-slot" id="advance-1">Winner</div>
+<div class="advance-slot" id="advance-2">Winner</div>
+<div class="advance-slot" id="advance-3">Winner</div>
+<div class="advance-slot" id="advance-4">Winner</div>
+<div class="advance-slot" id="advance-5">Winner</div>
+<div class="advance-slot" id="advance-6">Winner</div>
+<div class="advance-slot" id="advance-7">Winner</div>
+<div class="advance-slot" id="advance-8">Winner</div>
+<div class="advance-slot" id="advance-9">Winner</div>
+<div class="advance-slot" id="advance-10">Winner</div>
+<div class="advance-slot" id="advance-11">Winner</div>
+<div class="advance-slot" id="advance-12">Winner</div>
+<div class="advance-slot" id="advance-13">Winner</div>
+<div class="advance-slot" id="advance-14">Winner</div>
+<div class="advance-slot" id="advance-15">Winner</div>
+    </div>
+ 
+    <!-- Column 3: Quarterfinals -->
+    <div class="column" id="round3">
+      <div class="advance-slot" id="advance-r3-0" style="margin: 80px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r3-1" style="margin: 80px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r3-2" style="margin: 80px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r3-3" style="margin: 80px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r3-4" style="margin: 80px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r3-5" style="margin: 80px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r3-6" style="margin: 80px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r3-7" style="margin: 80px 0;">Winner</div>
+    </div>
+
+    <!-- Column 4: Semifinals -->
+    <div class="column" id="round4">
+      <div class="advance-slot" id="advance-r4-0" style="margin: 180px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r4-1" style="margin: 180px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r4-2" style="margin: 180px 0;">Winner</div>
+      <div class="advance-slot" id="advance-r4-3" style="margin: 180px 0;">Winner</div>
+    </div>
+
+    <!-- Column 5: Champion -->
+    <div class="column" id="round5">
+      <div class="advance-slot" id="advance-r5-0" style="margin: 280px 0;">Champion</div>
+    </div>
+
+
+</div>
+
+  </div>
 
   <script>
-    const artistImages = name => `images/${name.toLowerCase().replace(/[^a-z0-9]/g, '')}.jpg`;
-
-    const bracketData = [
-      [ // Round 1: 32 matchups
-        ["Taylor Swift", "Melanie Martinez"], ["J. Cole", "A$AP Rocky"], ["Ed Sheeran", "Luke Combs"],
-        ["Travis Scott", "Kodak Black"], ["Bad Bunny", "Yeat"], ["Olivia Rodrigo", "Frank Ocean"],
-        ["Billie Eilish", "Rosalía"], ["Pitbull", "Whitney Houston"],
-        ["Noah Kahan", "Mary J. Blige"], ["Pritam", "50 Cent"], ["Justin Bieber", "Meghan Trainor"],
-        ["Sabrina Carpenter", "Zach Bryan"], ["Drake", "Cher"], ["Harry Styles", "Don Toliver"],
-        ["SZA", "Zara Larsson"], ["Shakira", "Mac Miller"],
-        ["Teddy Swims", "Tove Lo"], ["Benson Boone", "Charli XCX"], ["Bruno Mars", "Stevie Wonder"],
-        ["Gracie Abrams", "Juice WRLD"], ["Beyoncé", "Niall Horan"], ["Michael Jackson", "Daniel Caesar"],
-        ["Kendrick Lamar", "Bruce Springsteen"], ["Adele", "Billy Joel"],
-        ["Mitski", "Laufey"], ["Tyler, The Creator", "Gunna"], ["Lady Gaga", "Mac DeMarco"],
-        ["Chris Brown", "Childish Gambino"], ["beabadoobee", "Lenny Kravitz"], ["Hozier", "Morgan Wallen"],
-        ["The Weeknd", "Lauv"], ["Lana Del Rey", "Demi Lovato"]
-      ], [], [], [], [], []
-    ];
-
-    function createMatchupNode(name, roundIndex, matchIndex, isWinner) {
-      const div = document.createElement("div");
-      div.className = "matchup";
-      if (isWinner === false) div.classList.add("eliminated");
-      div.innerHTML = `<span><img class='artist-img' src='${artistImages(name)}'>${name}</span>`;
-      div.onclick = () => {
-        const nextRound = roundIndex + 1;
-        const nextMatchIndex = Math.floor(matchIndex / 2);
-
-        bracketData[nextRound] = bracketData[nextRound] || [];
-        bracketData[nextRound][nextMatchIndex] = bracketData[nextRound][nextMatchIndex] || ["", ""];
-
-        if (matchIndex % 2 === 0) {
-          bracketData[nextRound][nextMatchIndex][0] = name;
-        } else {
-          bracketData[nextRound][nextMatchIndex][1] = name;
-        }
-
-        renderBracket();
+    const round2Winners = [];
+    const round3Winners = [];
+    const round4Winners = [];
+  
+    function selectWinner(el, matchId, name) {
+      // Clear previous selections in this match
+      const matchBlock = document.querySelector(`[data-match='${matchId}']`);
+      matchBlock.querySelectorAll('.singer').forEach(m => m.classList.remove('selected'));
+      el.classList.add('selected');
+  
+      // Update Round 2
+      const slot = document.getElementById(`advance-${matchId}`);
+      slot.textContent = name;
+      slot.style.fontStyle = "normal";
+      slot.style.background = "#28a745";
+      slot.style.border = "2px solid white";
+  
+      // Save for round 2 selection logic
+      round2Winners[matchId] = name;
+  
+      // Setup click event for Round 2 slot (to select for Round 3)
+      slot.onclick = () => {
+        const nextMatchId = Math.floor(matchId / 2);
+        round3Winners[nextMatchId] = name;
+        const nextSlot = document.getElementById(`advance-r3-${nextMatchId}`);
+        nextSlot.textContent = name;
+        nextSlot.style.fontStyle = "normal";
+        nextSlot.style.background = "#28a745";
+        nextSlot.style.border = "2px solid white";
+  
+        nextSlot.onclick = () => {
+          const semiMatchId = Math.floor(nextMatchId / 2);
+          round4Winners[semiMatchId] = name;
+          const semiSlot = document.getElementById(`advance-r4-${semiMatchId}`);
+          semiSlot.textContent = name;
+          semiSlot.style.fontStyle = "normal";
+          semiSlot.style.background = "#28a745";
+          semiSlot.style.border = "2px solid white";
+  
+          semiSlot.onclick = () => {
+            const finalSlot = document.getElementById(`advance-r5-0`);
+            finalSlot.textContent = name;
+            finalSlot.style.fontStyle = "normal";
+            finalSlot.style.background = "#ffd700";
+            finalSlot.style.border = "3px solid white";
+          };
+        };
       };
-      return div;
     }
-
-    function createPlaceholder() {
-      const p = document.createElement("div");
-      p.className = "placeholder";
-      p.innerText = "Winner advances here";
-      return p;
-    }
-
-    function renderBracket() {
-      const container = document.getElementById("bracket-container");
-      container.innerHTML = "";
-
-      for (let round = 0; round < bracketData.length; round++) {
-        const column = document.createElement("div");
-        column.className = "round-column";
-
-        for (let match = 0; match < bracketData[round].length; match++) {
-          const [name1, name2] = bracketData[round][match];
-
-          const winner = bracketData[round + 1]?.[Math.floor(match / 2)]?.[match % 2 === 0 ? 0 : 1];
-          const is1Winner = winner === name1;
-          const is2Winner = winner === name2;
-
-          if (name1) column.appendChild(createMatchupNode(name1, round, match * 2, is1Winner ? true : is2Winner ? false : null));
-          if (name2) column.appendChild(createMatchupNode(name2, round, match * 2 + 1, is2Winner ? true : is1Winner ? false : null));
-
-          if (round < bracketData.length - 1) {
-            const hasWinner = is1Winner || is2Winner;
-            if (hasWinner && winner) {
-              column.appendChild(createMatchupNode(winner, round + 1, Math.floor(match / 2), null));
-            } else {
-              column.appendChild(createPlaceholder());
-            }
-          }
-        }
-
-        container.appendChild(column);
-      }
-
-      const final = bracketData[bracketData.length - 1][0];
-      if (final && (final[0] || final[1])) {
-        document.getElementById("champion").innerText = `CHAMPION: ${final[0] || final[1]}`;
-      }
-    }
-
-    function submitBracket() {
-      const final = bracketData[bracketData.length - 1][0];
-      if (final && (final[0] || final[1])) {
-        alert(`You chose ${final[0] || final[1]} as your champion!`);
-      } else {
-        alert("Please finish your bracket before submitting.");
-      }
-    }
-
-    renderBracket();
   </script>
+  
 </body>
 </html>
