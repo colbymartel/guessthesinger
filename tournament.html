@@ -1,393 +1,923 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Enhanced Bracket</title>
+  <title>Music Tournament Bracket</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #003a66;
-      color: white;
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 40px;
+      padding: 0;
     }
-    h1 {
+    
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: #f2f2f2;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .header {
+      background: #0a0e3c;
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo span {
+      color: #ff0000;
+    }
+    
+    .tournament-title {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: center;
+      margin: 20px 0;
+      color: #0a0e3c;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    
+    .stat-item {
       text-align: center;
     }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0a0e3c;
+    }
+    
+    .bracket-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-x: auto;
+    }
+    
     .bracket {
       display: flex;
       gap: 40px;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: flex-start;
+      min-width: 1100px;
     }
+    
     .column {
       display: flex;
       flex-direction: column;
     }
+    
+    .round-header {
+      text-align: center;
+      font-weight: 600;
+      color: #0a0e3c;
+      margin-bottom: 15px;
+      padding: 8px;
+      border-bottom: 2px solid #eee;
+    }
+    
     .pair-wrapper {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 20px;
-      margin-bottom: 40px;
+      gap: 10px;
+      margin-bottom: 20px;
+      position: relative;
     }
+    
+    .connector {
+      position: absolute;
+      right: -40px;
+      width: 40px;
+      border-top: 2px solid #ccc;
+      top: 50%;
+    }
+    
+    .connector.right {
+      border-right: 2px solid #ccc;
+      height: 100%;
+      top: 25%;
+    }
+    
     .matchup {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 5px;
+      position: relative;
     }
+    
     .singer {
-      background: #1e3d59;
+      background: white;
       padding: 10px;
-      border-radius: 8px;
+      border-radius: 4px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 10px;
       transition: 0.2s;
       width: 200px;
+      border: 1px solid #ddd;
     }
+    
     .singer:hover {
-      background: #2a5d85;
+      background: #f5f7fa;
+      border-color: #0a0e3c;
     }
+    
     .singer img {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid white;
+      border: 1px solid #ccc;
     }
+    
     .selected {
-      background: #28a745 !important;
+      background: #e9f7ef !important;
+      border: 1px solid #28a745 !important;
+      position: relative;
     }
+    
+    .selected::after {
+      content: "✓";
+      position: absolute;
+      right: 10px;
+      color: #28a745;
+      font-weight: bold;
+    }
+    
+    .seed {
+      background: #eee;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 2px 5px;
+      margin-right: 5px;
+      color: #555;
+    }
+    
     .advance-slot {
       height: 50px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      border: 2px dashed #ccc;
-      border-radius: 8px;
-      background: #145;
+      justify-content: flex-start;
+      padding: 10px;
+      border: 1px dashed #ccc;
+      border-radius: 4px;
+      background: #f9f9f9;
       font-style: italic;
-      margin: 40px 0;
+      margin: 10px 0;
       width: 200px;
+      position: relative;
+      gap: 10px;
+      color: #777;
+    }
+    
+    .advance-slot.active {
+      cursor: pointer;
+      font-style: normal;
+      border: 1px solid #ccc;
+      background: white;
+      color: #333;
+    }
+    
+    .advance-slot.champion {
+      background: #fff4cc;
+      border: 1px solid #ffd700;
+      min-height: 60px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .advance-slot.champion.active {
+      background: #ffd700;
+      border: 2px solid #d4af37;
+      color: #333;
+    }
+    
+    .match-details {
+      display: flex;
+      flex-direction: column;
+      font-size: 10px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: right;
+    }
+    
+    .match-time {
+      color: #999;
+    }
+    
+    .match-venue {
+      color: #555;
+      font-weight: 600;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+    
+    .button {
+      background: #0a0e3c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    
+    .button:hover {
+      background: #1e2474;
+    }
+    
+    .button.reset {
+      background: #dc3545;
+    }
+    
+    .button.reset:hover {
+      background: #c82333;
+    }
+    
+    .button.save {
+      background: #28a745;
+    }
+    
+    .button.save:hover {
+      background: #218838;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      max-width: 500px;
+      width: 100%;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .modal-close {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    .singer-profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .singer-profile img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #0a0e3c;
+      margin-bottom: 10px;
+    }
+    
+    .singer-name {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .singer-stats {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin-top: 15px;
+    }
+    
+    .singer-stat {
+      text-align: center;
+      padding: 0 10px;
+    }
+    
+    .singer-stat-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 3px;
+    }
+    
+    .singer-stat-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #0a0e3c;
+    }
+    
+    @media screen and (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      
+      .stats-bar {
+        flex-wrap: wrap;
+      }
+      
+      .stat-item {
+        width: 50%;
+        margin-bottom: 10px;
+      }
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>Bracket Challenge</h1>
-  <div class="bracket">
-    <div class="column" id="round1">
-
-      <div class="pair-wrapper" data-match="0">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 0, 'Taylor Swift')">
-            <img src="images/taylorswift.jpg" alt="Taylor Swift" /> Taylor Swift
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 0, 'Melanie Martinez')">
-            <img src="images/melaniemartinez.jpg" alt="Melanie Martinez" /> Melanie Martinez
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="1">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 1, 'J. Cole')">
-            <img src="images/jcole.jpg" alt="J. Cole" /> J. Cole
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 1, 'A$AP Rocky')">
-            <img src="images/aaprocky.jpg" alt="A$AP Rocky" /> A$AP Rocky
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="2">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 2, 'Ed Sheeran')">
-            <img src="images/edsheeran.jpg" alt="Ed Sheeran" /> Ed Sheeran
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 2, 'Luke Combs')">
-            <img src="images/lukecombs.jpg" alt="Luke Combs" /> Luke Combs
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="3">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 3, 'Travis Scott')">
-            <img src="images/travisscott.jpg" alt="Travis Scott" /> Travis Scott
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 3, 'Kodak Black')">
-            <img src="images/kodakblack.jpg" alt="Kodak Black" /> Kodak Black
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="4">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 4, 'Bad Bunny')">
-            <img src="images/badbunny.jpg" alt="Bad Bunny" /> Bad Bunny
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 4, 'Yeat')">
-            <img src="images/yeat.jpg" alt="Yeat" /> Yeat
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="5">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 5, 'Olivia Rodrigo')">
-            <img src="images/oliviarodrigo.jpg" alt="Olivia Rodrigo" /> Olivia Rodrigo
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 5, 'Frank Ocean')">
-            <img src="images/frankocean.jpg" alt="Frank Ocean" /> Frank Ocean
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="6">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 6, 'Billie Eilish')">
-            <img src="images/billieeilish.jpg" alt="Billie Eilish" /> Billie Eilish
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 6, 'Rosalía')">
-            <img src="images/rosala.jpg" alt="Rosalía" /> Rosalía
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="7">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 7, 'Pitbull')">
-            <img src="images/pitbull.jpg" alt="Pitbull" /> Pitbull
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 7, 'Whitney Houston')">
-            <img src="images/whitneyhouston.jpg" alt="Whitney Houston" /> Whitney Houston
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="8">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 8, 'Noah Kahan')">
-            <img src="images/noahkahan.jpg" alt="Noah Kahan" /> Noah Kahan
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 8, 'Mary J. Blige')">
-            <img src="images/maryjblige.jpg" alt="Mary J. Blige" /> Mary J. Blige
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="9">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 9, 'Pritam')">
-            <img src="images/pritam.jpg" alt="Pritam" /> Pritam
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 9, '50 Cent')">
-            <img src="images/50cent.jpg" alt="50 Cent" /> 50 Cent
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="10">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 10, 'Justin Bieber')">
-            <img src="images/justinbieber.jpg" alt="Justin Bieber" /> Justin Bieber
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 10, 'Meghan Trainor')">
-            <img src="images/meghantrainor.jpg" alt="Meghan Trainor" /> Meghan Trainor
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="11">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 11, 'Sabrina Carpenter')">
-            <img src="images/sabrinacarpenter.jpg" alt="Sabrina Carpenter" /> Sabrina Carpenter
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 11, 'Zach Bryan')">
-            <img src="images/zachbryan.jpg" alt="Zach Bryan" /> Zach Bryan
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="12">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 12, 'Drake')">
-            <img src="images/drake.jpg" alt="Drake" /> Drake
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 12, 'Cher')">
-            <img src="images/cher.jpg" alt="Cher" /> Cher
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="13">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 13, 'Harry Styles')">
-            <img src="images/harrystyles.jpg" alt="Harry Styles" /> Harry Styles
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 13, 'Don Toliver')">
-            <img src="images/dontoliver.jpg" alt="Don Toliver" /> Don Toliver
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="14">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 14, 'SZA')">
-            <img src="images/sza.jpg" alt="SZA" /> SZA
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 14, 'Zara Larsson')">
-            <img src="images/zaralarsson.jpg" alt="Zara Larsson" /> Zara Larsson
-          </div>
-        </div>
-      </div>
-    
-      <div class="pair-wrapper" data-match="15">
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 15, 'Shakira')">
-            <img src="images/shakira.jpg" alt="Shakira" /> Shakira
-          </div>
-        </div>
-        <div class="matchup">
-          <div class="singer" onclick="selectWinner(this, 15, 'Mac Miller')">
-            <img src="images/macmiller.jpg" alt="Mac Miller" /> Mac Miller
-          </div>
-        </div>
-      </div>
-    
+  <div class="header">
+    <div class="header-content">
+      <div class="logo">MUSIC<span>TOURNAMENT</span></div>
+      <div id="current-time">April 6, 2025</div>
     </div>
-    <div class="column" id="round2">
-<div class="advance-slot" id="advance-0">Winner</div>
-<div class="advance-slot" id="advance-1">Winner</div>
-<div class="advance-slot" id="advance-2">Winner</div>
-<div class="advance-slot" id="advance-3">Winner</div>
-<div class="advance-slot" id="advance-4">Winner</div>
-<div class="advance-slot" id="advance-5">Winner</div>
-<div class="advance-slot" id="advance-6">Winner</div>
-<div class="advance-slot" id="advance-7">Winner</div>
-<div class="advance-slot" id="advance-8">Winner</div>
-<div class="advance-slot" id="advance-9">Winner</div>
-<div class="advance-slot" id="advance-10">Winner</div>
-<div class="advance-slot" id="advance-11">Winner</div>
-<div class="advance-slot" id="advance-12">Winner</div>
-<div class="advance-slot" id="advance-13">Winner</div>
-<div class="advance-slot" id="advance-14">Winner</div>
-<div class="advance-slot" id="advance-15">Winner</div>
-    </div>
- 
-    <!-- Column 3: Quarterfinals -->
-    <div class="column" id="round3">
-      <div class="advance-slot" id="advance-r3-0" style="margin: 80px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r3-1" style="margin: 80px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r3-2" style="margin: 80px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r3-3" style="margin: 80px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r3-4" style="margin: 80px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r3-5" style="margin: 80px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r3-6" style="margin: 80px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r3-7" style="margin: 80px 0;">Winner</div>
-    </div>
-
-    <!-- Column 4: Semifinals -->
-    <div class="column" id="round4">
-      <div class="advance-slot" id="advance-r4-0" style="margin: 180px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r4-1" style="margin: 180px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r4-2" style="margin: 180px 0;">Winner</div>
-      <div class="advance-slot" id="advance-r4-3" style="margin: 180px 0;">Winner</div>
-    </div>
-
-    <!-- Column 5: Champion -->
-    <div class="column" id="round5">
-      <div class="advance-slot" id="advance-r5-0" style="margin: 280px 0;">Champion</div>
-    </div>
-
-
-</div>
-
   </div>
+  
+  <div class="container">
+    <h1 class="tournament-title">2025 Music Madness Bracket Challenge</h1>
+    
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-label">TOTAL MATCHUPS</div>
+        <div class="stat-value">31</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">COMPLETED</div>
+        <div class="stat-value" id="matches-completed">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">REMAINING</div>
+        <div class="stat-value" id="matches-remaining">31</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">BRACKET SCORE</div>
+        <div class="stat-value" id="bracket-score">0</div>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <button class="button save" id="save-bracket">Save Bracket</button>
+      <button class="button" id="share-bracket">Share Bracket</button>
+      <button class="button reset" id="reset-bracket">Reset Bracket</button>
+    </div>
+    
+    <div class="bracket-container">
+      <div class="bracket">
+        <div class="column" id="round1">
+          <div class="round-header">ROUND 1</div>
+          
+          <div class="pair-wrapper" data-match="0">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 0, 'Taylor Swift', 1)" data-player-id="ts01">
+                <div class="seed">1</div>
+                <img src="images/taylorswift.jpg" alt="Taylor Swift" /> Taylor Swift
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 8</div>
+                <div class="match-venue">LA</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 0, 'Melanie Martinez', 16)" data-player-id="mm16">
+                <div class="seed">16</div>
+                <img src="images/melaniemartinez.jpg" alt="Melanie Martinez" /> Melanie Martinez
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+          
+          <div class="pair-wrapper" data-match="1">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 1, 'J. Cole', 8)" data-player-id="jc08">
+                <div class="seed">8</div>
+                <img src="images/jcole.jpg" alt="J. Cole" /> J. Cole
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 8</div>
+                <div class="match-venue">NYC</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 1, 'A$AP Rocky', 9)" data-player-id="ar09">
+                <div class="seed">9</div>
+                <img src="images/aaprocky.jpg" alt="A$AP Rocky" /> A$AP Rocky
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+          
+          <div class="pair-wrapper" data-match="2">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 2, 'Ed Sheeran', 5)" data-player-id="es05">
+                <div class="seed">5</div>
+                <img src="images/edsheeran.jpg" alt="Ed Sheeran" /> Ed Sheeran
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 9</div>
+                <div class="match-venue">London</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 2, 'Luke Combs', 12)" data-player-id="lc12">
+                <div class="seed">12</div>
+                <img src="images/lukecombs.jpg" alt="Luke Combs" /> Luke Combs
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+          
+          <div class="pair-wrapper" data-match="3">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 3, 'Travis Scott', 4)" data-player-id="ts04">
+                <div class="seed">4</div>
+                <img src="images/travisscott.jpg" alt="Travis Scott" /> Travis Scott
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 9</div>
+                <div class="match-venue">Houston</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 3, 'Kodak Black', 13)" data-player-id="kb13">
+                <div class="seed">13</div>
+                <img src="images/kodakblack.jpg" alt="Kodak Black" /> Kodak Black
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+
+          <div class="pair-wrapper" data-match="4">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 4, 'Bad Bunny', 2)" data-player-id="bb02">
+                <div class="seed">2</div>
+                <img src="images/badbunny.jpg" alt="Bad Bunny" /> Bad Bunny
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 10</div>
+                <div class="match-venue">Miami</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 4, 'Yeat', 15)" data-player-id="ye15">
+                <div class="seed">15</div>
+                <img src="images/yeat.jpg" alt="Yeat" /> Yeat
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+          
+          <div class="pair-wrapper" data-match="5">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 5, 'Olivia Rodrigo', 7)" data-player-id="or07">
+                <div class="seed">7</div>
+                <img src="images/oliviarodrigo.jpg" alt="Olivia Rodrigo" /> Olivia Rodrigo
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 10</div>
+                <div class="match-venue">Chicago</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 5, 'Frank Ocean', 10)" data-player-id="fo10">
+                <div class="seed">10</div>
+                <img src="images/frankocean.jpg" alt="Frank Ocean" /> Frank Ocean
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+          
+          <div class="pair-wrapper" data-match="6">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 6, 'Billie Eilish', 3)" data-player-id="be03">
+                <div class="seed">3</div>
+                <img src="images/billieeilish.jpg" alt="Billie Eilish" /> Billie Eilish
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 11</div>
+                <div class="match-venue">Atlanta</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 6, 'Rosalía', 14)" data-player-id="ro14">
+                <div class="seed">14</div>
+                <img src="images/rosala.jpg" alt="Rosalía" /> Rosalía
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+          
+          <div class="pair-wrapper" data-match="7">
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 7, 'Pitbull', 6)" data-player-id="pb06">
+                <div class="seed">6</div>
+                <img src="images/pitbull.jpg" alt="Pitbull" /> Pitbull
+              </div>
+              <div class="match-details">
+                <div class="match-time">Apr 11</div>
+                <div class="match-venue">Dallas</div>
+              </div>
+            </div>
+            <div class="matchup">
+              <div class="singer" onclick="selectWinner(this, 7, 'Whitney Houston', 11)" data-player-id="wh11">
+                <div class="seed">11</div>
+                <img src="images/whitneyhouston.jpg" alt="Whitney Houston" /> Whitney Houston
+              </div>
+            </div>
+            <div class="connector"></div>
+          </div>
+        </div>
+        
+        <div class="column" id="round2">
+          <div class="round-header">ROUND 2</div>
+          <div class="advance-slot" id="advance-0" data-match="r2-0">Awaiting Results</div>
+          <div class="advance-slot" id="advance-1" data-match="r2-1">Awaiting Results</div>
+          <div class="advance-slot" id="advance-2" data-match="r2-2">Awaiting Results</div>
+          <div class="advance-slot" id="advance-3" data-match="r2-3">Awaiting Results</div>
+          <div class="connector right"></div>
+        </div>
+        
+        <div class="column" id="round3">
+          <div class="round-header">SEMIFINALS</div>
+          <div class="advance-slot" id="advance-r3-0" data-match="r3-0" style="margin: 60px 0;">Awaiting Results</div>
+          <div class="advance-slot" id="advance-r3-1" data-match="r3-1" style="margin: 60px 0;">Awaiting Results</div>
+          <div class="connector right"></div>
+        </div>
+        
+        <div class="column" id="round4">
+          <div class="round-header">FINALS</div>
+          <div class="advance-slot champion" id="advance-r4-0" data-match="r4-0" style="margin: 120px 0;">Championship Match</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Player Profile Modal -->
+  <div class="modal" id="player-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Player Profile</h2>
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+      </div>
+      <div class="singer-profile" id="modal-profile">
+        <!-- Profile content will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+  
+  <!-- Toast Notification -->
+  <div class="toast" id="toast-notification"></div>
 
   <script>
-    const round2Winners = [];
-    const round3Winners = [];
-    const round4Winners = [];
+    // Player data with additional stats
+    const playerData = {
+      "ts01": {
+        name: "Taylor Swift",
+        image: "images/taylorswift.jpg",
+        seed: 1,
+        genre: "Pop",
+        albums: 10,
+        grammys: 12,
+        topHit: "Anti-Hero",
+        yearActive: "2006-present"
+      },
+      "mm16": {
+        name: "Melanie Martinez",
+        image: "images/melaniemartinez.jpg",
+        seed: 16,
+        genre: "Alternative Pop",
+        albums: 3,
+        grammys: 0,
+        topHit: "Cry Baby",
+        yearActive: "2012-present"
+      },
+      "jc08": {
+        name: "J. Cole",
+        image: "images/jcole.jpg",
+        seed: 8,
+        genre: "Hip Hop",
+        albums: 6,
+        grammys: 1,
+        topHit: "Middle Child",
+        yearActive: "2007-present"
+      },
+      "ar09": {
+        name: "A$AP Rocky",
+        image: "images/aaprocky.jpg",
+        seed: 9,
+        genre: "Hip Hop",
+        albums: 4,
+        grammys: 0,
+        topHit: "Praise The Lord",
+        yearActive: "2011-present"
+      },
+      "es05": {
+        name: "Ed Sheeran",
+        image: "images/edsheeran.jpg",
+        seed: 5,
+        genre: "Pop/Folk",
+        albums: 5,
+        grammys: 4,
+        topHit: "Shape of You",
+        yearActive: "2004-present"
+      },
+      "lc12": {
+        name: "Luke Combs",
+        image: "images/lukecombs.jpg",
+        seed: 12,
+        genre: "Country",
+        albums: 4,
+        grammys: 0,
+        topHit: "Beautiful Crazy",
+        yearActive: "2014-present"
+      },
+      "ts04": {
+        name: "Travis Scott",
+        image: "images/travisscott.jpg",
+        seed: 4,
+        genre: "Hip Hop",
+        albums: 4,
+        grammys: 0,
+        topHit: "Sicko Mode",
+        yearActive: "2008-present"
+      },
+      "kb13": {
+        name: "Kodak Black",
+        image: "images/kodakblack.jpg",
+        seed: 13,
+        genre: "Hip Hop",
+        albums: 4,
+        grammys: 0,
+        topHit: "No Flockin",
+        yearActive: "2009-present"
+      },
+      "bb02": {
+        name: "Bad Bunny",
+        image: "images/badbunny.jpg",
+        seed: 2,
+        genre: "Reggaeton",
+        albums: 5,
+        grammys: 3,
+        topHit: "Dákiti",
+        yearActive: "2016-present"
+      },
+      "ye15": {
+        name: "Yeat",
+        image: "images/yeat.jpg",
+        seed: 15,
+        genre: "Hip Hop",
+        albums: 3,
+        grammys: 0,
+        topHit: "Money So Big",
+        yearActive: "2018-present"
+      },
+      "or07": {
+        name: "Olivia Rodrigo",
+        image: "images/oliviarodrigo.jpg",
+        seed: 7,
+        genre: "Pop/Rock",
+        albums: 2,
+        grammys: 3,
+        topHit: "drivers license",
+        yearActive: "2019-present"
+      },
+      "fo10": {
+        name: "Frank Ocean",
+        image: "images/frankocean.jpg",
+        seed: 10,
+        genre: "R&B",
+        albums: 2,
+        grammys: 2,
+        topHit: "Thinkin Bout You",
+        yearActive: "2005-present"
+      },
+      "be03": {
+        name: "Billie Eilish",
+        image: "images/billieeilish.jpg",
+        seed: 3,
+        genre: "Pop",
+        albums: 3,
+        grammys: 7,
+        topHit: "bad guy",
+        yearActive: "2015-present"
+      },
+      "ro14": {
+        name: "Rosalía",
+        image: "images/rosala.jpg",
+        seed: 14,
+        genre: "Flamenco/Pop",
+        albums: 3,
+        grammys: 1,
+        topHit: "MALAMENTE",
+        yearActive: "2013-present"
+      },
+      "pb06": {
+        name: "Pitbull",
+        image: "images/pitbull.jpg",
+        seed: 6,
+        genre: "Pop/Rap",
+        albums: 11,
+        grammys: 1,
+        topHit: "Give Me Everything",
+        yearActive: "2001-present"
+      },
+      "wh11": {
+        name: "Whitney Houston",
+        image: "images/whitneyhouston.jpg",
+        seed: 11,
+        genre: "R&B/Pop",
+        albums: 7,
+        grammys: 6,
+        topHit: "I Will Always Love You",
+        yearActive: "1977-2012"
+      }
+    };
   
-    function selectWinner(el, matchId, name) {
-      // Clear previous selections in this match
-      const matchBlock = document.querySelector(`[data-match='${matchId}']`);
-      matchBlock.querySelectorAll('.singer').forEach(m => m.classList.remove('selected'));
-      el.classList.add('selected');
-  
-      // Update Round 2
-      const slot = document.getElementById(`advance-${matchId}`);
-      slot.textContent = name;
-      slot.style.fontStyle = "normal";
-      slot.style.background = "#28a745";
-      slot.style.border = "2px solid white";
-  
-      // Save for round 2 selection logic
-      round2Winners[matchId] = name;
-  
-      // Setup click event for Round 2 slot (to select for Round 3)
-      slot.onclick = () => {
-        const nextMatchId = Math.floor(matchId / 2);
-        round3Winners[nextMatchId] = name;
-        const nextSlot = document.getElementById(`advance-r3-${nextMatchId}`);
-        nextSlot.textContent = name;
-        nextSlot.style.fontStyle = "normal";
-        nextSlot.style.background = "#28a745";
-        nextSlot.style.border = "2px solid white";
-  
-        nextSlot.onclick = () => {
-          const semiMatchId = Math.floor(nextMatchId / 2);
-          round4Winners[semiMatchId] = name;
-          const semiSlot = document.getElementById(`advance-r4-${semiMatchId}`);
-          semiSlot.textContent = name;
-          semiSlot.style.fontStyle = "normal";
-          semiSlot.style.background = "#28a745";
-          semiSlot.style.border = "2px solid white";
-  
-          semiSlot.onclick = () => {
-            const finalSlot = document.getElementById(`advance-r5-0`);
-            finalSlot.textContent = name;
-            finalSlot.style.fontStyle = "normal";
-            finalSlot.style.background = "#ffd700";
-            finalSlot.style.border = "3px solid white";
-          };
-        };
+    // Track winners for each round
+    const bracketData = {
+      round1Winners: {},
+      round2Winners: {},
+      round3Winners: {},
+      champion: null,
+      completed: 0
+    };
+    
+    // Initialize date and time display
+    function updateDateTime() {
+      const now = new Date();
+      const options = { 
+        weekday: 'short', 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       };
+      document.getElementById('current-time').textContent = now.toLocaleDateString('en-US', options);
     }
+    
+    // Function to select winner
+    function selectWinner(el, matchId, name, seed) {
+      // Get all singers in this match
+      const matchBlock = document.querySelector(`[data-match='${matchId}']`);
+      const singers = matchBlock.querySelectorAll('.singer');
+      
+      // Clear previous selections in this match
+      singers.forEach(m => m.classList.remove('selected'));
+      
+      // Mark this selection
+      el.classList.add('selected');
+      
+      // Get player ID
+      const playerId = el.getAttribute('data-player-id');
+      
+      // Update round 1 winners
+      bracketData.round1Winners[matchId] = {
+        name,
+        seed,
+        playerId
+      };
+      
+      // Update the next round slot
+      const nextRound = 'advance-' + matchId;
+      const nextSlot = document.getElementById(nextRound);
+      updateSlot(nextSlot, name, seed, playerId);
+      
+      // Calculate next match in round 2
+      const round2MatchId = Math.floor(matchId / 2);
+      
+      // Setup click for round 2
+      nextSlot.onclick = function() {
+        advanceToNextRound(nextSlot, round2MatchId, name, seed, playerId, 'round2Winners', 'advance-r3-');
+      };
+      
+      // Update stats
+      updateStats();
+      
+      // Show notification
+      showToast(`${name} advanced to the next round!`);
+    }
+    
+    // Function to advance winner to next round
+    function advanceToNextRound(el, matchId, name, seed, playerId, roundDataKey, nextPrefix) {
+  // Record the winner
+  bracketData[roundDataKey][matchId] = {
+    name,
+    seed,
+    playerId
+  };
+
+  // Get the next slot
+  const nextSlot = document.getElementById(`${nextPrefix}${Math.floor(matchId / 2)}`);
+  updateSlot(nextSlot, name, seed, playerId);
+
+  // Set up click for next round if not finals yet
+  const nextRoundKey = nextPrefix === 'advance-r3-' ? 'champion' : 
+                       (nextPrefix === 'advance-' ? 'round2Winners' : 'round3Winners');
+
+  if (nextPrefix !== 'advance-r4-') {
+    nextSlot.onclick = function() {
+      advanceToNextRound(nextSlot, Math.floor(matchId / 2), name, seed, playerId, nextRoundKey, getNextPrefix(nextPrefix));
+    };
+  } else {
+    bracketData.champion = { name, seed, playerId };
+    nextSlot.classList.add('champion');
+    showToast(`${name} wins the championship!`);
+  }
+
+  updateStats();
+  showToast(`${name} advanced to the next round!`);
+}
+
+// Helper to get next round prefix
+function getNextPrefix(currentPrefix) {
+  if (currentPrefix === 'advance-') return 'advance-r3-';
+  if (currentPrefix === 'advance-r3-') return 'advance-r4-';
+  return null;
+}
+
+      
+      // Update slot appearance
   </script>
   
 </body>
