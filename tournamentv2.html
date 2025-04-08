@@ -227,7 +227,7 @@
       margin: 0 -10px;
     }
 .round {
-  min-width: 180px;
+  min-width: 120px;
   flex-shrink: 0; /* Prevent them from shrinking too small on scroll */
 }
 
@@ -266,15 +266,17 @@
       background: #1e2474;
     }
     .tournament-title {
-      font-size: 32px;
-      font-weight: 700;
-      text-align: center;
-      margin: 20px 0;
-      color: #0a0e3c;
-    }
+  font-size: 36px;
+  font-weight: 900;
+  text-align: center;
+  margin: 20px 0;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
     
     .bracket-wrapper {
-  width: 100vw;
+  width: 110vw;
   overflow: hidden;
   padding: 0;
   margin: 0;
@@ -286,36 +288,30 @@
   padding: 10px 10px;
 }
 
-.bracket {
-  transform: scale(0.7); /* Try 0.6 or 0.5 depending on your bracket width */
-  transform-origin: top left;
+
+.stats-bar {
+  display: flex;
+  justify-content: space-between;
+  background: #f4f4f4;
+  color: #111;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.stat-item {
+  text-align: center;
 }
 
-    .stats-bar {
-      display: flex;
-      justify-content: space-between;
-      background: white;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-    
-    .stat-item {
-      text-align: center;
-    }
-    
-    .stat-label {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 5px;
-    }
-    
-    .stat-value {
-      font-size: 20px;
-      font-weight: 700;
-      color: #0a0e3c;
-    }
+.stat-label {
+  font-size: 12px;
+  color: #555;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 900;
+}
   </style>
 </head>
 <body>
@@ -355,7 +351,7 @@
       <div class="round">
         <div class="round-title">ROUND 1</div>
         <!-- Left matchups -->
-        <div class="matchup" data-matchup="0">
+        <div class="matchup" data-matchup="1">
           <div class="player" onclick="selectPlayer(this)">
             <span class="seed">#1</span>
             <img src="images/taylorswift.jpg" alt="Taylor Swift">
@@ -367,7 +363,7 @@
           </div>
         </div>
         
-        <div class="matchup" data-matchup="1">
+        <div class="matchup" data-matchup="2">
           <div class="player" onclick="selectPlayer(this)">
             <img src="images/jcole.jpg" alt="J. Cole">
             <span class="player-name">J. COLE</span>
@@ -378,29 +374,29 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="3">
           <div class="player" onclick="selectPlayer(this)">
-            <img src="/api/placeholder/40/40" alt="Ed Sheeran">
+            <img src="images/EdSheeran.jpg" alt="Ed Sheeran">
             <span class="player-name">ED SHEERAN</span>
           </div>
           <div class="player" onclick="selectPlayer(this)">
-            <img src="/api/placeholder/40/40" alt="Luke Combs">
+            <img src="images/Lukecombs.jpg" alt="Luke Combs">
             <span class="player-name">LUKE COMBS</span>
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="4">
           <div class="player" onclick="selectPlayer(this)">
-            <img src="/api/placeholder/40/40" alt="Travis Scott">
+            <img src="images/travisscott.jpg" alt="Travis Scott">
             <span class="player-name">TRAVIS SCOTT</span>
           </div>
           <div class="player" onclick="selectPlayer(this)">
-            <img src="/api/placeholder/40/40" alt="Kodak Black">
+            <img src="images/kodakblack.jpg" alt="Kodak Black">
             <span class="player-name">KODAK BLACK</span>
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="5">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Bad Bunny">
             <span class="player-name">BAD BUNNY</span>
@@ -411,7 +407,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="6">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Olivia Rodrigo">
             <span class="player-name">OLIVIA RODRIGO</span>
@@ -422,7 +418,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="7">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Billie Eilish">
             <span class="player-name">BILLIE EILISH</span>
@@ -433,7 +429,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="8">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Pitbull">
             <span class="player-name">PITBULL</span>
@@ -444,7 +440,7 @@
           </div>
         </div>
 
-        <div class="matchup">
+        <div class="matchup" data-matchup="9">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Norah Khan">
             <span class="player-name">NORAH KHAN</span>
@@ -455,7 +451,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="10">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Pritam">
             <span class="player-name">PRITAM</span>
@@ -466,7 +462,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="11">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Justin Bieber">
             <span class="player-name">JUSTIN BIEBER</span>
@@ -477,7 +473,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="12">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Sabrina Carpenter">
             <span class="player-name">SABRINA CARPENTER</span>
@@ -488,7 +484,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="13">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Drake">
             <span class="player-name">DRAKE</span>
@@ -499,7 +495,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="14">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Harry Styles">
             <span class="player-name">HARRY STYLES</span>
@@ -510,7 +506,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="15">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="SZA">
             <span class="player-name">SZA</span>
@@ -521,7 +517,7 @@
           </div>
         </div>
         
-        <div class="matchup">
+        <div class="matchup" data-matchup="16">
           <div class="player" onclick="selectPlayer(this)">
             <img src="/api/placeholder/40/40" alt="Shakira">
             <span class="player-name">SHAKIRA</span>
@@ -536,67 +532,67 @@
       <!-- Left R2 -->
       <div class="round">
         <div class="round-title">ROUND 2</div>
-        <div class="matchup centered-slot" data-advance-to="0">
-          <div class="player empty-player"></div>
-        </div>
-        
         <div class="matchup centered-slot" data-advance-to="1">
           <div class="player empty-player"></div>
         </div>
         
-        <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="2">
           <div class="player empty-player"></div>
         </div>
         
-        <div class="matchup centered-slot">
-          <div class="player empty-player"></div>
-        </div>
-        
-        <div class="matchup centered-slot">
-          <div class="player empty-player"></div>
-        </div>
-        
-        <div class="matchup centered-slot">
-          <div class="player empty-player"></div>
-        </div>
-        
-        <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="3">
           <div class="player empty-player"></div>
         </div>
 
-          <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="4">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="5">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="6">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="7">
           <div class="player empty-player"></div>
         </div>
 
-           <div class="matchup centered-slot">
-          <div class="player empty-player"></div>
-        </div>
-        
-        <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="8">
           <div class="player empty-player"></div>
         </div>
 
-          <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="9">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="10">
           <div class="player empty-player"></div>
         </div>
 
-            <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="11">
+          <div class="player empty-player"></div>
+        </div>
+
+        <div class="matchup centered-slot" data-advance-to="12">
           <div class="player empty-player"></div>
         </div>
         
-        <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="13">
           <div class="player empty-player"></div>
         </div>
         
-        <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="14">
           <div class="player empty-player"></div>
         </div>
         
-        <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="15">
           <div class="player empty-player"></div>
         </div>
         
-        <div class="matchup centered-slot">
+        <div class="matchup centered-slot" data-advance-to="16">
           <div class="player empty-player"></div>
         </div>
       </div>
@@ -604,9 +600,10 @@
       <!-- Left R3 -->
       <div class="round">
         <div class="round-title">SWEET 16</div>
-        <div class="matchup">
+        <div class="matchup centered-slot" id="sweet16-slot-1">
           <div class="player empty-player"></div>
         </div>
+        
         
         <div class="matchup">
           <div class="player empty-player"></div>
@@ -1009,73 +1006,264 @@
   <script>
     // Function to handle player selection
     function selectPlayer(element) {
+  // Step 1: Mark this player as selected in their matchup
+  
   const matchup = element.closest('.matchup');
-  const allMatchups = Array.from(document.querySelectorAll('.round .matchup'));
+  // Deselect other players in same matchup
+  matchup.querySelectorAll('.player').forEach(p => p.classList.remove('selected'));
+  element.classList.add('selected');
+  
+  
+  // Step 2: Determine which round we're in
   const currentRound = matchup.closest('.round');
   const allRounds = Array.from(document.querySelectorAll('.round, .final'));
   const roundIndex = allRounds.indexOf(currentRound);
 
-  // Deselect others in same matchup
-  matchup.querySelectorAll('.player').forEach(p => p.classList.remove('selected'));
-  element.classList.add('selected');
-
-  // Determine the matchup number and calculate where to send it
-  const matchupIndex = parseInt(matchup.dataset.matchup);
-  const targetMatchupIndex = Math.floor(matchupIndex / 2);
-
+  // If we're in the final, don't try to advance
+  if (roundIndex + 1 >= allRounds.length) return;
+  
+  // Step 3: Find the proper next round
   const nextRound = allRounds[roundIndex + 1];
-  if (!nextRound || nextRound.classList.contains('final')) return;
+  
+  // Step 4: Find our position in the current round
+  const matchupsInCurrentRound = Array.from(currentRound.querySelectorAll('.matchup'));
+  const matchupIndex = matchupsInCurrentRound.indexOf(matchup);
+  
+  // Step 5: Calculate where to advance in the tournament bracket
+  // In a tournament bracket, winners from matchups 0&1 go to 0, 2&3 go to 1, etc.
+  let nextMatchupIndex = matchupIndex;
 
-  const nextMatchup = nextRound.querySelector(`.matchup[data-advance-to="${targetMatchupIndex}"]`);
-  if (!nextMatchup) return;
-
-  const nextSlot = nextMatchup.querySelector('.player');
-  if (!nextSlot) return;
+// From Round 2 onward, every 2 matchups combine into 1
+if (!currentRound.classList.contains('round') || currentRound.querySelector('.round-title')?.innerText !== 'ROUND 1') {
+  nextMatchupIndex = Math.floor(matchupIndex / 2);
+}
+  
+  // Debugging info - log what's happening
+  console.log(`Selected ${element.querySelector('.player-name')?.innerText} from Round ${roundIndex+1}, matchup #${matchupIndex+1}`);
+  console.log(`Should advance to Round ${roundIndex+2}, matchup #${nextMatchupIndex+1}`);
+  
+  // Step 6: Find the next matchup to advance to
+  const matchupsInNextRound = Array.from(nextRound.querySelectorAll('.matchup'));
+  console.log(`Found ${matchupsInNextRound.length} matchups in next round`);
+  
+  // Make sure we have a valid next matchup
+  if (nextMatchupIndex >= matchupsInNextRound.length) {
+    console.error("Invalid next matchup index:", nextMatchupIndex);
+    return;
+  }
+  
+  const nextMatchup = matchupsInNextRound[nextMatchupIndex];
+  console.log("Next matchup:", nextMatchup);
+  
+  // Step 7: Handle special case for the finals
+  if (currentRound.querySelector('.round-title')?.innerText === 'FINAL FOUR') {
+  const finalBoxes = document.querySelectorAll('.final .champion-box');
+  const matchupIndexInFinalFour = matchupIndex; // 0 or 1
 
   const selectedName = element.querySelector('.player-name')?.innerText || element.innerText;
   const selectedImg = element.querySelector('img')?.src || '';
 
+  if (finalBoxes[matchupIndexInFinalFour]) {
+    finalBoxes[matchupIndexInFinalFour].innerHTML = `
+      ${selectedImg ? `<img src="${selectedImg}" alt="${selectedName}">` : ''}
+      <span class="player-name">${selectedName}</span>
+    `;
+  }
+
+  updateStats();
+  return;
+}
+  
+  // Step 8: Find or create the slot in the next matchup
+  let nextSlot = nextMatchup.querySelector('.empty-player');
+  if (!nextSlot) {
+    console.log("No empty slot found, checking for existing players");
+    // If no empty slot, check if we need to create a new player slot
+    const existingPlayers = nextMatchup.querySelectorAll('.player:not(.empty-player)');
+    console.log(`Found ${existingPlayers.length} existing players in next matchup`);
+    
+    if (existingPlayers.length === 0) {
+      // Create a new player slot
+      console.log("Creating new player slot");
+      nextSlot = document.createElement('div');
+      nextSlot.className = 'player';
+      nextMatchup.appendChild(nextSlot);
+    } else if (existingPlayers.length === 1) {
+      // Use the existing player slot
+      console.log("Using existing player slot");
+      nextSlot = existingPlayers[0];
+    } else {
+      console.error("Next matchup already has too many players");
+      return;
+    }
+  } else {
+    console.log("Found empty player slot");
+  }
+  
+  // Step 9: Move the player data to the next slot
+  const selectedName = element.querySelector('.player-name')?.innerText || element.innerText;
+  const selectedImg = element.querySelector('img')?.src || '';
+  
+  console.log(`Advancing player: ${selectedName}`);
+  
   nextSlot.innerHTML = `
     ${selectedImg ? `<img src="${selectedImg}" alt="${selectedName}">` : ''}
     <span class="player-name">${selectedName}</span>
   `;
   nextSlot.classList.remove('empty-player');
-  nextSlot.classList.add('filled');
-  nextSlot.onclick = function () {
-    selectPlayer(nextSlot);
-  };
+  nextSlot.classList.add('player');
+  nextSlot.setAttribute('onclick', 'selectPlayer(this)');
+  
+  // Step 10: Update stats
+  updateStats();
 }
 
-
-    function submitBracket() {
-      const selectedPlayers = document.querySelectorAll('.player.selected');
-      if (selectedPlayers.length < 31) {
-        alert('Please complete your bracket before submitting!');
-        return;
-      }
-
-      const champion = document.querySelector('.champion-box .player-name');
-      if (!champion) {
-        alert('Please select a champion before submitting!');
-        return;
-      }
-
-      const bracketData = Array.from(selectedPlayers).map(player => player.innerText.trim());
-
-      alert(`Bracket submitted! Your champion: ${champion.innerText}`);
-      // Optionally send `bracketData` to a server or save it locally
-    }
-    function scaleBracket() {
-      const wrapper = document.querySelector('.bracket-wrapper');
-      const bracket = document.querySelector('.bracket');
-      const scale = window.innerWidth / bracket.scrollWidth;
+// Function to update statistics display
+function updateStats() {
+  const totalMatchups = 31; // Total number of Round 1 matchups
+  const round1Matchups = document.querySelectorAll('.round:first-of-type .matchup');
   
-      bracket.style.transform = `scale(${scale})`;
-      bracket.style.transformOrigin = 'top left';
+  let completedMatchups = 0;
+  round1Matchups.forEach(matchup => {
+    if (matchup.querySelector('.player.selected')) {
+      completedMatchups++;
     }
+  });
+
+  const remainingMatchups = totalMatchups - completedMatchups;
+
+  document.getElementById('matches-completed').innerText = completedMatchups;
+  document.getElementById('matches-remaining').innerText = remainingMatchups;
   
-    window.addEventListener('load', scaleBracket);
-    window.addEventListener('resize', scaleBracket);
+  console.log(`Stats updated: ${completedMatchups} completed, ${remainingMatchups} remaining`);
+}
+
+// Function to handle bracket submission
+function submitBracket() {
+  const champion = document.querySelector('.champion-box .player-name');
+  if (!champion) {
+    alert('Please select a champion before submitting!');
+    return;
+  }
+
+  // Check if all matchups are completed
+  const remainingMatchups = parseInt(document.getElementById('matches-remaining').innerText);
+  if (remainingMatchups > 0) {
+    alert(`Please complete all matchups before submitting! You have ${remainingMatchups} matchups remaining.`);
+    return;
+  }
+
+  alert(`Bracket submitted! Your champion: ${champion.innerText}`);
+  // Optionally send bracket data to a server or save it locally
+}
+
+// Function to reset the bracket
+function resetBracket() {
+  if (confirm('Are you sure you want to reset your bracket? This will clear all your selections.')) {
+    // Remove all selected classes
+    document.querySelectorAll('.player.selected').forEach(p => {
+      p.classList.remove('selected');
+    });
+    
+    // Reset all advancement slots
+    const emptySlots = document.querySelectorAll('.round:not(:first-child) .matchup .player:not(.empty-player), .champion-box');
+    emptySlots.forEach(slot => {
+      slot.innerHTML = '';
+      if (!slot.classList.contains('champion-box')) {
+        slot.classList.add('empty-player');
+        slot.classList.remove('player', 'filled');
+        slot.removeAttribute('onclick');
+      }
+    });
+    
+    // Reset stats
+    document.getElementById('matches-completed').innerText = '0';
+    document.getElementById('matches-remaining').innerText = '31';
+    document.getElementById('bracket-score').innerText = '0';
+    
+    console.log("Bracket reset");
+  }
+}
+
+// Initialize event listeners
+window.addEventListener('load', function() {
+  console.log("Tournament bracket initialized");
+  
+  // Add reset functionality
+  const resetButton = document.getElementById('reset-bracket');
+  if (resetButton) {
+    resetButton.addEventListener('click', resetBracket);
+    console.log("Reset button initialized");
+  }
+  
+  // Add save functionality
+  const saveButton = document.getElementById('save-bracket');
+  if (saveButton) {
+    saveButton.addEventListener('click', function() {
+      alert('Your bracket has been saved!');
+      console.log("Bracket saved");
+    });
+  }
+  
+  // Add share functionality
+  const shareButton = document.getElementById('share-bracket');
+  if (shareButton) {
+    shareButton.addEventListener('click', function() {
+      alert('Share link copied to clipboard!');
+      console.log("Bracket shared");
+    });
+  }
+  
+  // Initialize stats
+  updateStats();
+  
+  // Add bracket scaling
+  scaleBracket();
+});
+
+function scaleBracket() {
+  const wrapper = document.querySelector('.bracket-wrapper');
+  const bracket = document.querySelector('.bracket');
+  const scale = Math.min(window.innerWidth / bracket.scrollWidth, 1);
+
+  bracket.style.transform = `scale(${scale})`;
+  bracket.style.transformOrigin = 'top left';
+  console.log(`Bracket scaled to ${scale}`);
+}
+
+window.addEventListener('resize', scaleBracket);
+function clearAdvancementsFrom(playerName, startingRoundIndex) {
+  const allRounds = Array.from(document.querySelectorAll('.round, .final'));
+
+  for (let i = startingRoundIndex + 1; i < allRounds.length; i++) {
+    const matchups = allRounds[i].querySelectorAll('.matchup');
+
+    matchups.forEach(matchup => {
+      matchup.querySelectorAll('.player').forEach(p => {
+        const nameEl = p.querySelector('.player-name');
+        if (nameEl && nameEl.innerText === playerName) {
+          // Clear this player
+          p.classList.add('empty-player');
+          p.classList.remove('player', 'selected');
+          p.removeAttribute('onclick');
+          p.innerHTML = '';
+        }
+      });
+    });
+
+    // Also check champion boxes (finals)
+    if (allRounds[i].classList.contains('final')) {
+      const finalBoxes = allRounds[i].querySelectorAll('.champion-box');
+      finalBoxes.forEach(box => {
+        const nameEl = box.querySelector('.player-name');
+        if (nameEl && nameEl.innerText === playerName) {
+          box.innerHTML = '';
+        }
+      });
+    }
+  }
+}
+
   </script>
   
 </body>
