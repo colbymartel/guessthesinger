@@ -270,7 +270,7 @@
 
   async function fetchAndDisplayStats() {
     try {
-      const docRef = doc(db, "daily_stats", "day129");
+      const docRef = doc(db, "daily_stats", "day130");
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -279,7 +279,7 @@
         document.getElementById("questions-used-popup").textContent = data.questionsUsed ?? 0;
         document.getElementById("hints-used-popup").textContent = data.hintsUsed ?? 0;
       } else {
-        console.warn("⚠️ No stats found for day129");
+        console.warn("⚠️ No stats found for day130");
       }
     } catch (error) {
       console.error("❌ Error fetching stats:", error);
@@ -294,13 +294,13 @@
   fetchAndDisplayStats(); // ✅ Get from Firestore
 }
   try {
-    const docRef = doc(db, "daily_stats", "day129");
+    const docRef = doc(db, "daily_stats", "day130");
     await setDoc(docRef, {
       questionsUsed,
       hintsUsed,
       timestamp: new Date().toISOString()
     });
-    console.log("✅ Stats saved to Firestore for day129");
+    console.log("✅ Stats saved to Firestore for day130");
   } catch (error) {
     console.error("❌ Error saving stats:", error);
   }
@@ -320,7 +320,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/HISTORY/day129.html">Back to Questions</a></li>
+      <li><a href="/HISTORY/day130.html">Back to Questions</a></li>
     </ul>
   </nav>
   <div class="search-container">
