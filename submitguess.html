@@ -340,7 +340,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
     <button class="close-popup" onclick="closePopup()">&times;</button>
     <div id="popupImageContainer"></div>
     <h2 id="popupTitle">Congratulations!</h2>
-    <p id="popupMessage">The singer was <strong id="celebrationName">Sam Barber<n/strong>!</p>
+    <p id="popupMessage">The singer was <strong id="celebrationName">Eddie Vedder<n/strong>!</p>
     <div class="celebration-buttons">
         <button id="share-result-button" class="share-button">Share with Friends!</button>
     </div>
@@ -366,7 +366,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   <script>
     // Set the correct singer (all comparisons in lowercase)
     
-    const correctSinger = "sam barber";
+    const correctSinger = "eddie vedder";
 
     // Array of singer objects (50 items)
     const singers = [
@@ -393,6 +393,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   { name: "Drake", img: "images/drake.jpg" },
   { name: "Dua Lipa", img: "images/dualipa.jpg" },
   { name: "Ed Sheeran", img: "images/EdSheeran.jpg" },
+  { name: "Eddie Vedder", img: "images/eddievedder.jpg" },
   { name: "Elton John", img: "images/eltonjohn.jpg" },
   { name: "Elvis Presley", img: "images/elvispresley.jpg" },
   { name: "Eminem", img: "images/eminem.jpg" },
@@ -708,7 +709,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   const chosenImg = this.getAttribute("data-img");
 
   if (chosenSinger === correctSinger) {
-    document.getElementById("celebrationName").textContent = "Sam Barber";
+    document.getElementById("celebrationName").textContent = "Eddie Vedder";
     await saveStatsToFirestore();       // ✅ Now valid
     fetchAndDisplayStats();             // ✅ Still fine
     showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
@@ -736,7 +737,7 @@ searchBar.addEventListener("input", function () {
   // Set title and message text based on correctness
   popupElement.querySelector("#popupTitle").textContent = isCorrect ? "🎉 Congratulations!" : "❌ Nope!";
   popupElement.querySelector("#popupMessage").innerHTML = isCorrect
-    ? `The singer was <strong>Sam Barber</strong>.`
+    ? `The singer was <strong>Eddie Vedder</strong>.`
     : `Sorry, that's not right.`;
 
   // Add animation and background change
