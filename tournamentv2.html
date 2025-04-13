@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singer Tournament Bracket</title>
+  <style>
+ body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
+  color: #fff;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  background-size: cover;
+}
+
+/* HEADER */
+header {
+      background-color: #4682b4;
+      padding: 20px;
+    }
+    .header .logo img {
+      width: 20%;
+      margin: 0 auto;
+      display: block;
+    }
+
+/* NAVBAR */
+.navbar {
+  background: #254a6d;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: inset 0 -2px 6px rgba(255,255,255,0.15);
+}
+.navbar ul {
+  list-style: none;
+}
+.navbar li {
+  display: inline;
+  margin: 0 12px;
+}
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
+
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .bracket {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .round {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* changed from 'space-around' */
+  width: 180px;
+}
+
+    .round-title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+    .matchup {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+.centered-slot {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.centered-slot .player {
+  transform: translateY(0); /* visually centered */
+}
+
+.player,
+.empty-player {
+  width: 160px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.empty-player {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.3);
+  border: 2px dashed rgba(255, 255, 255, 0.4);
+}
+
+.player {
+  background-color: white;
+  color: #000;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 3px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.player.selected {
+  border-color: #ffdf00;
+  background-color: #fffce0;
+  font-weight: bold;
+}
+
+    
+    .player:hover {
+      background-color: #f0f0f0;
+    }
+    
+    .seed {
+  background-color: #e03a3e;
+  color: white;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+    .player img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+    
+    .connector {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 0 10px;
+    }
+    
+    .connector-item {
+      height: 130px;
+      position: relative;
+    }
+    
+    .line-down {
+      position: absolute;
+      width: 2px;
+      background-color: rgba(255, 255, 255, 0.5);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .line-across {
+      position: absolute;
+      height: 2px;
+      background-color: rgba(255, 255, 255, 0.5);
+      left: 0;
+      right: 0;
+    }
+    
+    .final {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .champion-box {
+      background-color: transparent;
+      border: 2px solid #ffdf00;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 5px;
+      width: 160px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .champion-title {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .player-name {
+      flex-grow: 1;
+    }
+    
+    .submit-btn {
+      background-color: #ffdf00;
+      color: #333;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 30px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .submit-btn:hover {
+      background-color: #e6c700;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      opacity: 0.8;
+    }
+    
+    .empty-player {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  height: 10px;
+  width: 100px;
+  padding: 20px;
+  margin: 30px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+    
+    .empty-player:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .bracket-connector {
+      position: relative;
+      width: 20px;
+      margin: 0 -10px;
+    }
+.round {
+  min-width: 120px;
+  flex-shrink: 0; /* Prevent them from shrinking too small on scroll */
+}
+
+    .connector-line {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .horizontal-line {
+      height: 2px;
+      width: 20px;
+    }
+    
+    .vertical-line {
+      width: 2px;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+    }
+    
+    .button {
+      background: #0a0e3c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    
+    .button:hover {
+      background: #1e2474;
+    }
+    .tournament-title {
+  font-size: 36px;
+  font-weight: 900;
+  text-align: center;
+  margin: 20px 0;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+    
+    .bracket-wrapper {
+  width: 110vw;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0;
+  padding: 10px 10px;
+}
+
+
+.stats-bar {
+  display: flex;
+  justify-content: space-between;
+  background: #f4f4f4;
+  color: #111;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #555;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 900;
+}
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+  <nav class="navbar">
+    <ul>
+        <li><a href="/rounds.html">Rounds</a></li>
+        <li><a href="/questions.html">Questions</a></li>
+        <li><a href="/hints.html">Hints</a></li>
+        <li><a href="/guesses.html">Guesses</a></li>
+        <li><a href="/results.html">Audience</a></li>
+        <li><a href="/trivia.html" class="active">Trivia</a></li>
+        <li><a href="/wheel.html">Wheel</a></li>
+    </ul>
+  </nav>
+    <div class="container">
+        <div class="stats-bar">
+          <div class="stat-item">
+            <div class="stat-label">TOTAL MATCHUPS</div>
+            <div class="stat-value">31</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">COMPLETED</div>
+            <div class="stat-value" id="matches-completed">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">REMAINING</div>
+            <div class="stat-value" id="matches-remaining">31</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">BRACKET SCORE</div>
+            <div class="stat-value" id="bracket-score">0</div>
+          </div>
+        </div>
+        
+        <div class="controls">
+          <button class="button save" id="save-bracket">Save Bracket</button>
+          <button class="button" id="share-bracket">Share Bracket</button>
+          <button class="button reset" id="reset-bracket">Reset Bracket</button>
+        </div>
+
+        <div class="bracket-wrapper">
+    <div class="bracket">
+      <!-- Left side of bracket -->
+      <div class="round">
+        <div class="round-title">ROUND 1</div>
+        <!-- Left matchups -->
+        <div class="matchup" data-matchup="1">
+          <div class="player" onclick="selectPlayer(this)">
+            <span class="seed">#1</span>
+            <img src="images/taylorswift.jpg" alt="Taylor Swift">
+            <span class="player-name">TAYLOR SWIFT</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="images/melaniemartinez.png" alt="Melanie Martinez">
+            <span class="player-name">MELANIE MARTINEZ</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="2">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="images/jcole.jpg" alt="J. Cole">
+            <span class="player-name">J. COLE</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="images/asaprocky.jpg" alt="A$AP Rocky">
+            <span class="player-name">A$AP ROCKY</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="3">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="images/EdSheeran.jpg" alt="Ed Sheeran">
+            <span class="player-name">ED SHEERAN</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="images/Lukecombs.jpg" alt="Luke Combs">
+            <span class="player-name">LUKE COMBS</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="4">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="images/travisscott.jpg" alt="Travis Scott">
+            <span class="player-name">TRAVIS SCOTT</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="images/kodakblack.jpg" alt="Kodak Black">
+            <span class="player-name">KODAK BLACK</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="5">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Bad Bunny">
+            <span class="player-name">BAD BUNNY</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Yeat">
+            <span class="player-name">YEAT</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="6">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Olivia Rodrigo">
+            <span class="player-name">OLIVIA RODRIGO</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Frank Ocean">
+            <span class="player-name">FRANK OCEAN</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="7">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Billie Eilish">
+            <span class="player-name">BILLIE EILISH</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Rosalía">
+            <span class="player-name">ROSALÍA</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="8">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Pitbull">
+            <span class="player-name">PITBULL</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Whitney Houston">
+            <span class="player-name">WHITNEY HOUSTON</span>
+          </div>
+        </div>
+
+        <div class="matchup" data-matchup="9">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Norah Khan">
+            <span class="player-name">NORAH KHAN</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Mary J. Blige">
+            <span class="player-name">MARY J. BLIGE</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="10">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Pritam">
+            <span class="player-name">PRITAM</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="50 Cent">
+            <span class="player-name">50 CENT</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="11">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Justin Bieber">
+            <span class="player-name">JUSTIN BIEBER</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Meghan Trainor">
+            <span class="player-name">MEGHAN TRAINOR</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="12">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Sabrina Carpenter">
+            <span class="player-name">SABRINA CARPENTER</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Luke Bryan">
+            <span class="player-name">LUKE BRYAN</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="13">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Drake">
+            <span class="player-name">DRAKE</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Cher">
+            <span class="player-name">CHER</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="14">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Harry Styles">
+            <span class="player-name">HARRY STYLES</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="JP Saxe">
+            <span class="player-name">JP SAXE</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="15">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="SZA">
+            <span class="player-name">SZA</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Zara Larsson">
+            <span class="player-name">ZARA LARSSON</span>
+          </div>
+        </div>
+        
+        <div class="matchup" data-matchup="16">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Shakira">
+            <span class="player-name">SHAKIRA</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Mac Miller">
+            <span class="player-name">MAC MILLER</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Left R2 -->
+      <div class="round">
+        <div class="round-title">ROUND 2</div>
+        <div class="matchup centered-slot" data-advance-to="1">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="2">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="3">
+          <div class="player empty-player"></div>
+        </div>
+
+        <div class="matchup centered-slot" data-advance-to="4">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="5">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="6">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="7">
+          <div class="player empty-player"></div>
+        </div>
+
+        <div class="matchup centered-slot" data-advance-to="8">
+          <div class="player empty-player"></div>
+        </div>
+
+        <div class="matchup centered-slot" data-advance-to="9">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="10">
+          <div class="player empty-player"></div>
+        </div>
+
+        <div class="matchup centered-slot" data-advance-to="11">
+          <div class="player empty-player"></div>
+        </div>
+
+        <div class="matchup centered-slot" data-advance-to="12">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="13">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="14">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="15">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup centered-slot" data-advance-to="16">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Left R3 -->
+      <div class="round">
+        <div class="round-title">SWEET 16</div>
+        <div class="matchup centered-slot" id="sweet16-slot-1">
+          <div class="player empty-player"></div>
+        </div>
+        
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Left R4 -->
+      <div class="round">
+        <div class="round-title">ELITE 8</div>
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Left Final Four -->
+      <div class="round">
+        <div class="round-title">FINAL FOUR</div>
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Final -->
+      <div class="final">
+        <div class="round-title">FINALS</div>
+        <div class="champion-box">
+        </div>
+        <div class="champion-title">CHAMPION</div>
+        <div class="champion-box">
+        </div>
+      </div>
+      
+      <!-- Right Final Four -->
+      <div class="round">
+        <div class="round-title">FINAL FOUR</div>
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Right R4 -->
+      <div class="round">
+        <div class="round-title">ELITE 8</div>
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Right R3 -->
+      <div class="round">
+        <div class="round-title">SWEET 16</div>
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Right R2 -->
+      <div class="round">
+        <div class="round-title">ROUND 2</div>
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player empty-player"></div>
+        </div>
+      </div>
+      
+      <!-- Right side of bracket -->
+      <div class="round">
+        <div class="round-title">ROUND 1</div>
+        <!-- Right matchups -->
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="The Kid Laroi">
+            <span class="player-name">THE KID LAROI</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Tove Lo">
+            <span class="player-name">TOVE LO</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Benson Boone">
+            <span class="player-name">BENSON BOONE</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Charli XCX">
+            <span class="player-name">CHARLI XCX</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Bruno Mars">
+            <span class="player-name">BRUNO MARS</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Stevie Wonder">
+            <span class="player-name">STEVIE WONDER</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Rachel Abrams">
+            <span class="player-name">RACHEL ABRAMS</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Kim Wilde">
+            <span class="player-name">KIM WILDE</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Beyoncé">
+            <span class="player-name">BEYONCÉ</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Niall Horan">
+            <span class="player-name">NIALL HORAN</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Michael Jackson">
+            <span class="player-name">MICHAEL JACKSON</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Daniel Caesar">
+            <span class="player-name">DANIEL CAESAR</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Kendrick Lamar">
+            <span class="player-name">KENDRICK LAMAR</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Bruce Springsteen">
+            <span class="player-name">BRUCE SPRINGSTEEN</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Adele">
+            <span class="player-name">ADELE</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Billy Joel">
+            <span class="player-name">BILLY JOEL</span>
+          </div>
+        </div>
+
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Mitski">
+            <span class="player-name">MITSKI</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Laufey">
+            <span class="player-name">LAUFEY</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Tyler, The Creator">
+            <span class="player-name">TYLER, THE CREATOR</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Gunna">
+            <span class="player-name">GUNNA</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Lady Gaga">
+            <span class="player-name">LADY GAGA</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Demi Lovato">
+            <span class="player-name">DEMI LOVATO</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Chris Brown">
+            <span class="player-name">CHRIS BROWN</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Childish Gambino">
+            <span class="player-name">CHILDISH GAMBINO</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Snakehips">
+            <span class="player-name">SNAKEHIPS</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Lenny Kravitz">
+            <span class="player-name">LENNY KRAVITZ</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Hozier">
+            <span class="player-name">HOZIER</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Morgan Wallen">
+            <span class="player-name">MORGAN WALLEN</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="The Weeknd">
+            <span class="player-name">THE WEEKND</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Lauv">
+            <span class="player-name">LAUV</span>
+          </div>
+        </div>
+        
+        <div class="matchup">
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Lana Del Rey">
+            <span class="player-name">LANA DEL REY</span>
+          </div>
+          <div class="player" onclick="selectPlayer(this)">
+            <img src="/api/placeholder/40/40" alt="Demi Lovato">
+            <span class="player-name">DEMI LOVATO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 30px;">
+      <button class="submit-btn" onclick="submitBracket()">SUBMIT MY BRACKET</button>
+    </div>
+    
+    <div class="footer">
+      <p>GuessTheSinger.com © 2025</p>
+    </div>
+  </div>
+  
+  <script>
+    // Function to handle player selection
+    function selectPlayer(element) {
+  // Step 1: Mark this player as selected in their matchup
+  
+  const matchup = element.closest('.matchup');
+  // Deselect other players in same matchup
+  matchup.querySelectorAll('.player').forEach(p => p.classList.remove('selected'));
+  element.classList.add('selected');
+  
+  
+  // Step 2: Determine which round we're in
+  const currentRound = matchup.closest('.round');
+  const allRounds = Array.from(document.querySelectorAll('.round, .final'));
+  const roundIndex = allRounds.indexOf(currentRound);
+
+  // If we're in the final, don't try to advance
+  if (roundIndex + 1 >= allRounds.length) return;
+  
+  // Step 3: Find the proper next round
+  const nextRound = allRounds[roundIndex + 1];
+  
+  // Step 4: Find our position in the current round
+  const matchupsInCurrentRound = Array.from(currentRound.querySelectorAll('.matchup'));
+  const matchupIndex = matchupsInCurrentRound.indexOf(matchup);
+  
+  // Step 5: Calculate where to advance in the tournament bracket
+  // In a tournament bracket, winners from matchups 0&1 go to 0, 2&3 go to 1, etc.
+  let nextMatchupIndex = matchupIndex;
+
+// From Round 2 onward, every 2 matchups combine into 1
+if (!currentRound.classList.contains('round') || currentRound.querySelector('.round-title')?.innerText !== 'ROUND 1') {
+  nextMatchupIndex = Math.floor(matchupIndex / 2);
+}
+  
+  // Debugging info - log what's happening
+  console.log(`Selected ${element.querySelector('.player-name')?.innerText} from Round ${roundIndex+1}, matchup #${matchupIndex+1}`);
+  console.log(`Should advance to Round ${roundIndex+2}, matchup #${nextMatchupIndex+1}`);
+  
+  // Step 6: Find the next matchup to advance to
+  const matchupsInNextRound = Array.from(nextRound.querySelectorAll('.matchup'));
+  console.log(`Found ${matchupsInNextRound.length} matchups in next round`);
+  
+  // Make sure we have a valid next matchup
+  if (nextMatchupIndex >= matchupsInNextRound.length) {
+    console.error("Invalid next matchup index:", nextMatchupIndex);
+    return;
+  }
+  
+  const nextMatchup = matchupsInNextRound[nextMatchupIndex];
+  console.log("Next matchup:", nextMatchup);
+  
+  // Step 7: Handle special case for the finals
+  if (currentRound.querySelector('.round-title')?.innerText === 'FINAL FOUR') {
+  const finalBoxes = document.querySelectorAll('.final .champion-box');
+  const matchupIndexInFinalFour = matchupIndex; // 0 or 1
+
+  const selectedName = element.querySelector('.player-name')?.innerText || element.innerText;
+  const selectedImg = element.querySelector('img')?.src || '';
+
+  if (finalBoxes[matchupIndexInFinalFour]) {
+    finalBoxes[matchupIndexInFinalFour].innerHTML = `
+      ${selectedImg ? `<img src="${selectedImg}" alt="${selectedName}">` : ''}
+      <span class="player-name">${selectedName}</span>
+    `;
+  }
+
+  updateStats();
+  return;
+}
+  
+  // Step 8: Find or create the slot in the next matchup
+  let nextSlot = nextMatchup.querySelector('.empty-player');
+  if (!nextSlot) {
+    console.log("No empty slot found, checking for existing players");
+    // If no empty slot, check if we need to create a new player slot
+    const existingPlayers = nextMatchup.querySelectorAll('.player:not(.empty-player)');
+    console.log(`Found ${existingPlayers.length} existing players in next matchup`);
+    
+    if (existingPlayers.length === 0) {
+      // Create a new player slot
+      console.log("Creating new player slot");
+      nextSlot = document.createElement('div');
+      nextSlot.className = 'player';
+      nextMatchup.appendChild(nextSlot);
+    } else if (existingPlayers.length === 1) {
+      // Use the existing player slot
+      console.log("Using existing player slot");
+      nextSlot = existingPlayers[0];
+    } else {
+      console.error("Next matchup already has too many players");
+      return;
+    }
+  } else {
+    console.log("Found empty player slot");
+  }
+  
+  // Step 9: Move the player data to the next slot
+  const selectedName = element.querySelector('.player-name')?.innerText || element.innerText;
+  const selectedImg = element.querySelector('img')?.src || '';
+  
+  console.log(`Advancing player: ${selectedName}`);
+  
+  nextSlot.innerHTML = `
+    ${selectedImg ? `<img src="${selectedImg}" alt="${selectedName}">` : ''}
+    <span class="player-name">${selectedName}</span>
+  `;
+  nextSlot.classList.remove('empty-player');
+  nextSlot.classList.add('player');
+  nextSlot.setAttribute('onclick', 'selectPlayer(this)');
+  
+  // Step 10: Update stats
+  updateStats();
+}
+
+// Function to update statistics display
+function updateStats() {
+  const totalMatchups = 31; // Total number of Round 1 matchups
+  const round1Matchups = document.querySelectorAll('.round:first-of-type .matchup');
+  
+  let completedMatchups = 0;
+  round1Matchups.forEach(matchup => {
+    if (matchup.querySelector('.player.selected')) {
+      completedMatchups++;
+    }
+  });
+
+  const remainingMatchups = totalMatchups - completedMatchups;
+
+  document.getElementById('matches-completed').innerText = completedMatchups;
+  document.getElementById('matches-remaining').innerText = remainingMatchups;
+  
+  console.log(`Stats updated: ${completedMatchups} completed, ${remainingMatchups} remaining`);
+}
+
+// Function to handle bracket submission
+function submitBracket() {
+  const champion = document.querySelector('.champion-box .player-name');
+  if (!champion) {
+    alert('Please select a champion before submitting!');
+    return;
+  }
+
+  // Check if all matchups are completed
+  const remainingMatchups = parseInt(document.getElementById('matches-remaining').innerText);
+  if (remainingMatchups > 0) {
+    alert(`Please complete all matchups before submitting! You have ${remainingMatchups} matchups remaining.`);
+    return;
+  }
+
+  alert(`Bracket submitted! Your champion: ${champion.innerText}`);
+  // Optionally send bracket data to a server or save it locally
+}
+
+// Function to reset the bracket
+function resetBracket() {
+  if (confirm('Are you sure you want to reset your bracket? This will clear all your selections.')) {
+    // Remove all selected classes
+    document.querySelectorAll('.player.selected').forEach(p => {
+      p.classList.remove('selected');
+    });
+    
+    // Reset all advancement slots
+    const emptySlots = document.querySelectorAll('.round:not(:first-child) .matchup .player:not(.empty-player), .champion-box');
+    emptySlots.forEach(slot => {
+      slot.innerHTML = '';
+      if (!slot.classList.contains('champion-box')) {
+        slot.classList.add('empty-player');
+        slot.classList.remove('player', 'filled');
+        slot.removeAttribute('onclick');
+      }
+    });
+    
+    // Reset stats
+    document.getElementById('matches-completed').innerText = '0';
+    document.getElementById('matches-remaining').innerText = '31';
+    document.getElementById('bracket-score').innerText = '0';
+    
+    console.log("Bracket reset");
+  }
+}
+
+// Initialize event listeners
+window.addEventListener('load', function() {
+  console.log("Tournament bracket initialized");
+  
+  // Add reset functionality
+  const resetButton = document.getElementById('reset-bracket');
+  if (resetButton) {
+    resetButton.addEventListener('click', resetBracket);
+    console.log("Reset button initialized");
+  }
+  
+  // Add save functionality
+  const saveButton = document.getElementById('save-bracket');
+  if (saveButton) {
+    saveButton.addEventListener('click', function() {
+      alert('Your bracket has been saved!');
+      console.log("Bracket saved");
+    });
+  }
+  
+  // Add share functionality
+  const shareButton = document.getElementById('share-bracket');
+  if (shareButton) {
+    shareButton.addEventListener('click', function() {
+      alert('Share link copied to clipboard!');
+      console.log("Bracket shared");
+    });
+  }
+  
+  // Initialize stats
+  updateStats();
+  
+  // Add bracket scaling
+  scaleBracket();
+});
+
+function scaleBracket() {
+  const wrapper = document.querySelector('.bracket-wrapper');
+  const bracket = document.querySelector('.bracket');
+  const scale = Math.min(window.innerWidth / bracket.scrollWidth, 1);
+
+  bracket.style.transform = `scale(${scale})`;
+  bracket.style.transformOrigin = 'top left';
+  console.log(`Bracket scaled to ${scale}`);
+}
+
+window.addEventListener('resize', scaleBracket);
+function clearAdvancementsFrom(playerName, startingRoundIndex) {
+  const allRounds = Array.from(document.querySelectorAll('.round, .final'));
+
+  for (let i = startingRoundIndex + 1; i < allRounds.length; i++) {
+    const matchups = allRounds[i].querySelectorAll('.matchup');
+
+    matchups.forEach(matchup => {
+      matchup.querySelectorAll('.player').forEach(p => {
+        const nameEl = p.querySelector('.player-name');
+        if (nameEl && nameEl.innerText === playerName) {
+          // Clear this player
+          p.classList.add('empty-player');
+          p.classList.remove('player', 'selected');
+          p.removeAttribute('onclick');
+          p.innerHTML = '';
+        }
+      });
+    });
+
+    // Also check champion boxes (finals)
+    if (allRounds[i].classList.contains('final')) {
+      const finalBoxes = allRounds[i].querySelectorAll('.champion-box');
+      finalBoxes.forEach(box => {
+        const nameEl = box.querySelector('.player-name');
+        if (nameEl && nameEl.innerText === playerName) {
+          box.innerHTML = '';
+        }
+      });
+    }
+  }
+}
+
+  </script>
+  
+</body>
+</html>
