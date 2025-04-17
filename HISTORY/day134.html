@@ -881,7 +881,15 @@ padding: 0;
         <div class="questions-progress-bar" id="questionsProgressBar"></div>
       </div>
     </div>
-    
+    <!-- Welcome Popup -->
+<div id="welcome-popup" class="celebration-popup" style="z-index: 4000;">
+  <div class="popup-content">
+    <button class="close-popup" id="close-welcome-popup">&times;</button>
+    <h2>Welcome to Guess the Singer! 🎤</h2>
+    <p>Hi! We are scaling back to one mystery singer per week as we build other cool offerings for this site. Thanks for understanding and can't wait to show you what we have in store next!<br><br>—Colby</p>
+  </div>
+</div>
+
     <!-- Question Box with Custom Dropdown -->
     <div class="question-box">
       <div class="custom-dropdown" id="customDropdown">
@@ -2229,6 +2237,29 @@ document.addEventListener("click", function(event) {
   }
 });
 
+// Show Welcome Popup on Page Load (only once per session)
+document.addEventListener("DOMContentLoaded", () => {
+  const hasSeenWelcome = sessionStorage.getItem("seenWelcomePopup");
+  if (!hasSeenWelcome) {
+    const welcomePopup = document.getElementById("welcome-popup");
+    welcomePopup.style.display = "flex";
+    setTimeout(() => {
+      welcomePopup.classList.add("show");
+    }, 10);
+    sessionStorage.setItem("seenWelcomePopup", "true");
+  }
+
+  const closeWelcome = document.getElementById("close-welcome-popup");
+  if (closeWelcome) {
+    closeWelcome.addEventListener("click", () => {
+      const popup = document.getElementById("welcome-popup");
+      popup.classList.remove("show");
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 500);
+    });
+  }
+});
 
     </script>
     
