@@ -270,7 +270,7 @@
 
   async function fetchAndDisplayStats() {
     try {
-      const docRef = doc(db, "daily_stats", "day134");
+      const docRef = doc(db, "daily_stats", "day142");
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -279,7 +279,7 @@
         document.getElementById("questions-used-popup").textContent = data.questionsUsed ?? 0;
         document.getElementById("hints-used-popup").textContent = data.hintsUsed ?? 0;
       } else {
-        console.warn("⚠️ No stats found for day134");
+        console.warn("⚠️ No stats found for day142");
       }
     } catch (error) {
       console.error("❌ Error fetching stats:", error);
@@ -294,13 +294,13 @@
   fetchAndDisplayStats(); // ✅ Get from Firestore
 }
   try {
-    const docRef = doc(db, "daily_stats", "day134");
+    const docRef = doc(db, "daily_stats", "day142");
     await setDoc(docRef, {
       questionsUsed,
       hintsUsed,
       timestamp: new Date().toISOString()
     });
-    console.log("✅ Stats saved to Firestore for day134");
+    console.log("✅ Stats saved to Firestore for day142");
   } catch (error) {
     console.error("❌ Error saving stats:", error);
   }
@@ -320,7 +320,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/HISTORY/day134.html">Back to Questions</a></li>
+      <li><a href="/HISTORY/day142.html">Back to Questions</a></li>
     </ul>
   </nav>
   <div class="search-container">
@@ -340,7 +340,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
     <button class="close-popup" onclick="closePopup()">&times;</button>
     <div id="popupImageContainer"></div>
     <h2 id="popupTitle">Congratulations!</h2>
-    <p id="popupMessage">The singer was <strong id="celebrationName">G-Dragon<n/strong>!</p>
+    <p id="popupMessage">The singer was <strong id="celebrationName">Lana Del Rey<n/strong>!</p>
     <div class="celebration-buttons">
         <button id="share-result-button" class="share-button">Share with Friends!</button>
     </div>
@@ -353,7 +353,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
     <p id="popupMessage">Sorry, that's not right.</p>
 
     <div class="popup-buttons">
-      <a href="/HISTORY/day134.html">
+      <a href="/HISTORY/day122.html">
         <button>More Questions</button>
       </a>
       <button onclick="resetAndClose()">Guess Again</button>
@@ -366,7 +366,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   <script>
     // Set the correct singer (all comparisons in lowercase)
     
-    const correctSinger = "g-dragon";
+    const correctSinger = "lana del rey";
 
     // Array of singer objects (50 items)
     const singers = [
@@ -398,7 +398,6 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   { name: "Elvis Presley", img: "images/elvispresley.jpg" },
   { name: "Eminem", img: "images/eminem.jpg" },
   { name: "Future", img: "images/future.jpg" },
-  { name: "G-Dragon", img: "images/gdragon.jpg" },
   { name: "Harry Styles", img: "images/harrystyles.jpg" },
   { name: "Hozier", img: "images/hozier.jpg" },
   { name: "Justin Bieber", img: "images/justinbieber.jpg" },
@@ -711,7 +710,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   const chosenImg = this.getAttribute("data-img");
 
   if (chosenSinger === correctSinger) {
-    document.getElementById("celebrationName").textContent = "G-Dragon";
+    document.getElementById("celebrationName").textContent = "Lana Del Rey";
     await saveStatsToFirestore();       // ✅ Now valid
     fetchAndDisplayStats();             // ✅ Still fine
     showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
@@ -739,7 +738,7 @@ searchBar.addEventListener("input", function () {
   // Set title and message text based on correctness
   popupElement.querySelector("#popupTitle").textContent = isCorrect ? "🎉 Congratulations!" : "❌ Nope!";
   popupElement.querySelector("#popupMessage").innerHTML = isCorrect
-    ? `The singer was <strong>G-Dragon</strong>.`
+    ? `The singer was <strong>Lana Del Rey</strong>.`
     : `Sorry, that's not right.`;
 
   // Add animation and background change

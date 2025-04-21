@@ -1,153 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Book the ultimate music guessing game show experience - Guess The Singer!">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book the ultimate music guessing game show experience - Guess The Singer!" />
   <title>Book the Game Show - Guess The Singer</title>
-  <link rel="icon" href="/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #254a6d, #4682b4);
-      color: white;
-      min-height: 100vh;
-      text-align: center;
-      padding-bottom: 50px;
-    }
-    header {
-      padding: 30px 20px;
-    }
-    .logo img {
-      width: 180px;
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-top: 20px;
-    }
-    p.description {
-      max-width: 700px;
-      margin: 20px auto;
-      font-size: 1.2rem;
+      background: #f0f6fb;
+      color: #1b1b1b;
       line-height: 1.6;
     }
-    .cta {
-      margin: 40px auto;
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     }
-    .cta button {
-      background: #fff;
-      color: #254a6d;
-      font-size: 1.2rem;
-      font-weight: bold;
-      padding: 15px 30px;
-      border-radius: 40px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+
+    .nav-logo img {
+      height: 60px;
     }
-    .cta button:hover {
-      background: #ffd700;
-      color: #000;
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    .nav-links {
+      list-style: none;
+      display: flex;
       gap: 30px;
-      max-width: 1000px;
-      margin: 50px auto;
-      padding: 0 20px;
     }
-    .feature-box {
-      background: rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 25px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-    .feature-box h3 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-    }
-    .feature-box p {
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1b3a57;
+      font-weight: 700;
       font-size: 1rem;
+      transition: color 0.3s;
     }
-    .media-section {
-      max-width: 1000px;
-      margin: 60px auto;
-      padding: 0 20px;
+
+    .nav-links a:hover {
+      color: #00aaff;
     }
-    .media-section h2 {
-      font-size: 2rem;
+
+    .hero {
+      background: linear-gradient(135deg, #0077cc, #00aaff);
+      color: white;
+      text-align: center;
+      padding: 100px 20px;
+      clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
       margin-bottom: 20px;
     }
+
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 40px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-btn {
+      background-color: #ffffff;
+      color: #0077cc;
+      border: none;
+      padding: 18px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .hero-btn:hover {
+      background-color: #ffd740;
+      color: #000;
+    }
+
+    .section {
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #0077cc;
+    }
+
+    .section p {
+      max-width: 800px;
+      margin: 0 auto 40px;
+      font-size: 1.15rem;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature-box {
+      background: #ffffff;
+      border-left: 6px solid #00aaff;
+      border-radius: 16px;
+      padding: 30px 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-box:hover {
+      transform: scale(1.05);
+    }
+
+    .feature-box h3 {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+      color: #0077cc;
+    }
+
+    .feature-box p {
+      font-size: 1rem;
+      color: #333;
+    }
+
     .media-wrapper {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
+      margin-top: 30px;
     }
+
     .media-wrapper iframe,
     .media-wrapper img {
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
       max-width: 100%;
       width: 450px;
       height: 250px;
     }
+
     footer {
-      margin-top: 60px;
-      font-size: 0.9rem;
-      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 40px 20px;
+      background: #0077cc;
+      color: white;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <img src="images/SingerLogo.png" alt="Guess The Singer Logo">
+  <nav class="navbar">
+    <div class="nav-logo">
+      <img src="images/SingerLogo.png" alt="Guess The Singer Logo" />
     </div>
-    <h1>Book the Ultimate Music Game Show</h1>
-    <p class="description">
-      Bring the energy, fun, and unforgettable moments of <strong>Guess The Singer</strong> to your next event! Whether it’s a school, company party, or private gathering, our interactive live game show will have your guests cheering, laughing, and guessing their hearts out.
-    </p>
-    <div class="cta">
-      <a href="mailto:youremail@example.com?subject=Booking%20Guess%20The%20Singer"><button>Book Now</button></a>
-    </div>
-  </header>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#media">Watch</a></li>
+      <li><a href="mailto:youremail@example.com">Book Now</a></li>
+    </ul>
+  </nav>
 
-  <section class="features">
-    <div class="feature-box">
-      <h3>🎤 Live Game Show Setup</h3>
-      <p>We bring the full game show experience — hosts, music, lights, and all!</p>
-    </div>
-    <div class="feature-box">
-      <h3>👥 Perfect for All Ages</h3>
-      <p>Whether it’s a school crowd, coworkers, or family – everyone gets involved.</p>
-    </div>
-    <div class="feature-box">
-      <h3>🏆 Prizes & Challenges</h3>
-      <p>Let your guests compete for bragging rights and custom prizes.</p>
-    </div>
-    <div class="feature-box">
-      <h3>📸 Social-Ready Content</h3>
-      <p>We capture the highlights – perfect for your event’s socials or recap videos.</p>
+  <section class="hero">
+    <h1>Step Into the Spotlight</h1>
+    <p>Bring the electric energy of a live music game show straight to your audience — thrilling, hilarious, and unforgettable!</p>
+    <a href="mailto:youremail@example.com"><button class="hero-btn">Book the Show</button></a>
+  </section>
+
+  <section class="section" id="about">
+    <h2>What Is Guess The Singer?</h2>
+    <p>
+      It's not just a game — it's a spectacle. Guess The Singer transforms your venue into a buzzing, high-stakes showdown of musical intuition, fast-paced trivia, and unforgettable audience interaction.
+    </p>
+  </section>
+
+  <section class="section" id="host">
+    <h2>Meet Your Host</h2>
+    <p>
+      Colby Martel is the creator and host of Guess The Singer — a high-energy performer and music lover with a passion for connecting people through unforgettable experiences. With a background in street interviews and social connection videos, Colby has entertained millions online and now brings that same electric energy to live stages across the country.
+    </p>
+    <div class="media-wrapper">
+      <img src="images/colby-host.jpg" alt="Colby Martel - Host of Guess The Singer" />
+    </div>$1
+    <h2>Why Book With Us?</h2>
+    <div class="features">
+      <div class="feature-box">
+        <h3>🎤 Game Show Hosts & Setup</h3>
+        <p>Our team handles everything: lights, sound, screens, and dynamic hosts to guide the crowd!</p>
+      </div>
+      <div class="feature-box">
+        <h3>🎁 Real Prizes & Excitement</h3>
+        <p>From mystery bags to elimination rounds, we keep the stakes high and the crowd cheering.</p>
+      </div>
+      <div class="feature-box">
+        <h3>📸 Social Media Gold</h3>
+        <p>Your event becomes the highlight reel — perfect for your brand, campus, or company channels.</p>
+      </div>
     </div>
   </section>
 
-  <section class="media-section">
-    <h2>🎬 Watch the Game Show in Action</h2>
+  <section class="section" id="media">
+    <h2>🎬 See It In Action</h2>
     <div class="media-wrapper">
       <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
-      <img src="images/event1.jpg" alt="Live Game Show Image">
-      <img src="images/event2.jpg" alt="Audience Enjoying Game">
+      <img src="images/event2.jpg" alt="Audience enjoying Guess The Singer" />
+      <img src="images/event3.jpg" alt="Participants on stage during show" />
     </div>
   </section>
 
   <footer>
-    &copy; 2025 Guess The Singer | Designed for unforgettable moments 🎶
+    &copy; 2025 Guess The Singer | The Game Show That Hits All the Right Notes 🎶
   </footer>
 </body>
 </html>
