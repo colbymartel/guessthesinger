@@ -93,6 +93,40 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    @media (max-width: 600px) {
+  body {
+    padding: 20px;
+  }
+
+  .gallery {
+    gap: 16px;
+  }
+
+  .gallery-item {
+    padding: 8px;
+  }
+
+  .gallery-item img {
+    width: 90%;
+    max-width: 120px;
+    margin: 0 auto;
+  }
+
+  .singer-name {
+    font-size: 0.9rem;
+  }
+
+  .button-group {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .button-group button {
+    margin: 5px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
 
 /* Header */
 .header {
@@ -115,6 +149,24 @@
   margin: 0 auto;
   display: block;
 }
+.round-select {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.round-select select {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .header {
+    box-shadow: none;
+  }
+}
 
   </style>
 </head>
@@ -125,14 +177,16 @@
         </div>
     </header>
     
-  <div class="button-group">
-    <button onclick="loadRound(1)">Round 1</button>
-    <button onclick="loadRound(2)">Round 2</button>
-    <button onclick="loadRound(3)">Round 3</button>
-    <button onclick="loadRound(4)">Round 4</button>
-    <button onclick="loadRound(5)">Round 5</button>
-  </div>
-  
+<div class="round-select">
+  <select onchange="loadRound(this.value)">
+    <option value="1">Round 1</option>
+    <option value="2">Round 2</option>
+    <option value="3">Round 3</option>
+    <option value="4">Round 4</option>
+    <option value="5">Round 5</option>
+  </select>
+</div>
+
   <div class="gallery" id="gallery"></div>
 
   <div class="popup" id="popup">
