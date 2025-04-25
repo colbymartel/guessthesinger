@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Guess The Singer Trivia: Type the name of the singer shown on screen.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess The Singer Trivia</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    /* General Reset */
+  /* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
+  color: #fff;
+  padding-bottom: 40px;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 25px 0;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+header .logo img {
+  width: 50%;
+  max-width: 80%;
+}
+
+/* Start Screen */
+.start-container {
+  max-width: 600px;
+  margin: 80px auto 0;
+  background: #254a6d;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+.start-container p {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.login-input {
+  width: 80%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 2px solid #4682b4;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.start-btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  background: #27ae60;
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+}
+
+.start-btn:hover {
+  background: #1e8449;
+  transform: scale(1.05);
+}
+
+/* Quiz Container */
+.quiz-container {
+  display: none;
+  max-width: 600px;
+  margin: 40px auto;
+  background: #254a6d;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.progress{
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #f1c40f;
+  margin-bottom: 10px;
+}
+.timer{
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #3b7bbf, #254a6d);
+  padding: 14px 28px;
+  border-radius: 40px;
+  margin-bottom: 25px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2),
+              0 0 30px rgba(49, 95, 133, 0.4);
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px #000;
+  transition: all 0.3s ease;
+}
+
+
+.singer-image {
+  max-width: 60%;
+  border: 5px solid #4682b4;
+  border-radius: 12px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.question-text {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.answer-input {
+  width: 80%;
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+/* Submit & Pass Buttons */
+.submit-btn {
+  background: #315f85;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 12px 24px;
+  border:3px solid white;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: -10px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.submit-btn:hover {
+  background: #4682b4;
+  transform: scale(1.05);
+}
+
+.result {
+  font-size: 1.3rem;
+  color: #00ffcc;
+  margin-top: 20px;
+}
+
+/* Autocomplete Dropdown */
+#autocompleteOptions {
+  display: none;
+  position: absolute;
+  width: 80%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #000;
+  border: 2px solid #4682b4;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 100;
+  margin-top: -10px;
+  border-radius: 0 0 10px 10px;
+}
+
+.autocomplete-item {
+  padding: 20px;
+  font-size: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover {
+  background: #e6f2ff;
+}
+
+/* Completion Summary */
+.quiz-complete {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  color: #f1c40f;
+}
+
+#rulesOverlay {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+#rulesOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#rulesOverlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#rulesBox {
+  background: #ffffff;
+  color: #1e3a5f;
+  padding: 40px 50px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+#rulesBox h2 {
+  color: #4682b4;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+#rulesBox ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+  font-size: 1rem;
+}
+
+#rulesBox li {
+  margin-bottom: 12px;
+  line-height: 1.6;
+  color: #333;
+}
+
+#rulesBox img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 25px 0 15px;
+}
+
+#rulesBox p {
+  font-size: 1rem;
+  color: #254a6d;
+}
+
+#rulesBox button {
+  margin-top: 20px;
+  padding: 14px 30px;
+  font-size: 1.1rem;
+  background: #3cb371;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#rulesBox button:hover {
+  background: #2e8b57;
+  transform: scale(1.05);
+}
+#rulesBox #closeRulesBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none !important;
+  border: none;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #4682b4 ;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#rulesBox #closeRulesBtn:hover {
+  color: #ff4d4d;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+
+  <!-- Start/Login Screen -->
+  <div class="start-container" id="startContainer">
+    <div>
+      <input type="text" id="userName" class="login-input" placeholder="Enter your name">
+    </div>
+    <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+
+  </div>
+  
+  
+  <!-- Quiz Container -->
+  <div class="quiz-container" id="quizContainer">
+    <div class="progress" id="progressText">Question 1 of 50</div>
+    <div class="timer" id="timerText">02:00</div>
+    <!-- Singer image will be displayed here -->
+    <img id="singerImage" class="singer-image" src="" alt="Singer Image">
+    <!-- Question text -->
+    <div class="question-text" id="questionText">Who is this singer?</div>
+    <!-- Answer input -->
+    <div style="position: relative;">
+      <input type="text" id="answerInput" class="answer-input" placeholder="Type your answer here">
+      <div id="autocompleteOptions"></div>
+    </div>
+    
+    <br>
+        <br>
+    <button class="submit-btn" onclick="handleAnswer()">Submit Answer</button>
+    <button class="submit-btn" onclick="handlePass()">Pass</button>
+        <div class="result" id="resultText"></div>
+  </div>
+
+  
+  <div id="rulesOverlay" class="show">
+    <div id="rulesBox">
+        <button id="closeRulesBtn">&times;</button>
+        <h2>How to Play</h2>
+      <ul>
+        <li>🔍 <strong>See a Singer:</strong> An image will appear — your job is to identify the artist.</li>
+        <li>⌨️ <strong>Type Their Name:</strong> Enter their stage name correctly (capitalization doesn't matter—spelling does!).</li>
+        <li>⏱️ <strong>Beat the Clock:</strong> You have <strong>60 seconds</strong> to guess all 10 singers.</li>
+        <li>⏭️ <strong>Skip If Needed:</strong> Don’t know it? Click "Pass" to move on and revisit later unless time expires.</li>
+      </ul>
+      <button onclick="closeRules()">🚀 OK, Let’s Go!</button>
+    </div>
+  </div>
+  
+<!-- Firebase SDKs (using compat versions for simplicity) -->
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    
+    <script>
+      // Firebase configuration (replace with your own config)
+      const firebaseConfig = {
+        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+  authDomain: "guessthesinger10.firebaseapp.com",
+  databaseURL: "https://guessthesinger10.firebaseio.com",
+  projectId: "guessthesinger10",
+  storageBucket: "guessthesinger10.firebasestorage.app",
+  messagingSenderId: "97201023235",
+  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+  measurementId: "G-3R005HTKEW"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+// Initialize Firestore
+const db = firebase.firestore();
+
+    // --- Trivia question set: 50 sample artist objects.
+    // Replace image paths and names as needed.
+  
+    const triviaQuestions = [
+      { image: "images/ladygaga.jpg", correctAnswer: "Lady Gaga" },
+      { image: "images/adele.jpg", correctAnswer: "Adele" },
+      { image: "images/brunomars.jpg", correctAnswer: "Bruno Mars" },
+      { image: "images/usher.jpg", correctAnswer: "Usher" },
+      { image: "images/shawnmendes.jpg", correctAnswer: "Shawn Mendes" },
+
+      { image: "images/dualipa.jpg", correctAnswer: "Dua Lipa" },
+      { image: "images/prince.png", correctAnswer: "Prince" },
+      { image: "images/quavo.jpg", correctAnswer: "Quavo" },
+      { image: "images/justintimberlake.jpg", correctAnswer: "Justin Timberlake" },
+      { image: "images/selena.jpg", correctAnswer: "Selena" },
+
+    ];
+    
+    // --- Global variables.
+    let currentQuestionIndex = 0;
+    let correctCount = 0;
+    let startTime = null;
+    let timerInterval = null;
+    const totalTime = 120; // seconds
+    let skippedArtists = [];
+    let sessionId = null;
+    let isSkippedRound = false;
+let skippedIndex = 0;
+
+    
+    // DOM elements for quiz.
+    const progressText = document.getElementById("progressText");
+    const timerText = document.getElementById("timerText");
+    const singerImage = document.getElementById("singerImage");
+    const questionText = document.getElementById("questionText");
+    const resultText = document.getElementById("resultText");
+    
+    // DOM elements for start/login.
+    const startContainer = document.getElementById("startContainer");
+    const quizContainer = document.getElementById("quizContainer");
+
+    const answerInput = document.getElementById("answerInput");
+const autocompleteOptions = document.getElementById("autocompleteOptions");
+
+// Create a unique array of correct answers from triviaQuestions.
+const suggestionList = Array.from(new Set(triviaQuestions.map(q => q.correctAnswer)));
+
+answerInput.addEventListener("input", function() {
+  const text = answerInput.value.trim();
+  if (text.length >= 5) {
+    // Filter suggestions based on the typed text (case-insensitive).
+    const filtered = suggestionList.filter(name => name.toLowerCase().startsWith(text.toLowerCase()));
+    if (filtered.length > 0) {
+      autocompleteOptions.style.display = "block";
+      autocompleteOptions.innerHTML = filtered.map(item =>
+        `<div class="autocomplete-item" style="padding: 5px; cursor: pointer;">${item}</div>`
+      ).join('');
+      
+      // Attach click events to each suggestion.
+      document.querySelectorAll(".autocomplete-item").forEach(item => {
+        item.addEventListener("click", function() {
+          answerInput.value = this.textContent;
+          autocompleteOptions.style.display = "none";
+        });
+      });
+    } else {
+      autocompleteOptions.style.display = "none";
+    }
+  } else {
+    autocompleteOptions.style.display = "none";
+  }
+});
+function startQuiz() {
+  const userName = document.getElementById("userName").value.trim();
+  if (!userName) {
+    alert("Please enter your name to start.");
+    return;
+  }
+  // Log the user's name to the "users" collection.
+  db.collection("users").add({
+    name: userName,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(() => {
+    console.log("User logged:", userName);
+  })
+  .catch((error) => {
+    console.error("Error logging user:", error);
+  });
+  
+  // Create a quiz session document in Firestore.
+  db.collection("quizSessions").add({
+  userName: userName,
+  startTime: firebase.firestore.FieldValue.serverTimestamp()
+})
+.then((docRef) => {
+  sessionId = docRef.id;
+  console.log("Quiz session created with ID:", sessionId);
+})
+
+  .catch((error) => {
+    console.error("Error creating quiz session: ", error);
+  });
+  
+  // Hide start screen and show quiz container.
+  startContainer.style.display = "none";
+  quizContainer.style.display = "block";
+  
+  // Start timer and load first question.
+  startTime = new Date();
+  startTimer(totalTime);
+  loadQuestion();
+}
+
+    
+    function startTimer(duration) {
+      let timeRemaining = duration;
+      timerText.textContent = `${formatTime(timeRemaining)}`;
+      
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        timerText.textContent = `${formatTime(timeRemaining)}`;
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          endQuiz();
+        }
+      }, 1000);
+    }
+    
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function loadQuestion() {
+      // Update progress text.
+      progressText.textContent = `Question ${currentQuestionIndex + 1} of ${triviaQuestions.length}`;
+      // Get current question.
+      const currentData = triviaQuestions[currentQuestionIndex];
+      singerImage.src = currentData.image;
+      singerImage.alt = "Singer Image";
+      questionText.textContent = "Who is this singer?";
+      // Clear previous answer and result.
+      answerInput.value = "";
+      resultText.textContent = "";
+    }
+
+    function loadSkippedQuestion() {
+  progressText.textContent = `Skipped Round – ${skippedIndex + 1} of ${skippedArtists.length}`;
+  const currentData = skippedArtists[skippedIndex];
+  singerImage.src = currentData.image;
+  singerImage.alt = "Singer Image";
+  questionText.textContent = "Who is this singer?";
+  answerInput.value = "";
+  resultText.textContent = "";
+}
+function handleAnswer() {
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  if (userAnswer === "") {
+    alert("Please enter an answer.");
+    return;
+  }
+  autocompleteOptions.style.display = "none"; // Hide dropdown on submit
+
+  const currentData = isSkippedRound ? skippedArtists[skippedIndex] : triviaQuestions[currentQuestionIndex];
+  const correctAnswer = currentData.correctAnswer.toLowerCase();
+
+  if (userAnswer === correctAnswer) {
+    correctCount++;
+    resultText.textContent = "Correct!";
+
+    setTimeout(() => {
+      if (isSkippedRound) {
+        // Remove from skipped list
+        skippedArtists.splice(skippedIndex, 1);
+        if (skippedIndex >= skippedArtists.length) skippedIndex = 0;
+
+        if (skippedArtists.length > 0) {
+          loadSkippedQuestion();
+        } else {
+          endQuiz();
+        }
+      } else {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < triviaQuestions.length) {
+          loadQuestion();
+        } else if (skippedArtists.length > 0) {
+          isSkippedRound = true;
+          skippedIndex = 0;
+          loadSkippedQuestion();
+        } else {
+          endQuiz();
+        }
+      }
+    }, 800);
+  } else {
+    resultText.textContent = "Incorrect. Try again.";
+  }
+}
+
+function handlePass() {
+  const currentData = isSkippedRound ? skippedArtists[skippedIndex] : triviaQuestions[currentQuestionIndex];
+
+  if (!isSkippedRound) {
+    skippedArtists.push(currentData);
+    resultText.textContent = "Question skipped.";
+
+    setTimeout(() => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < triviaQuestions.length) {
+        loadQuestion();
+      } else if (skippedArtists.length > 0) {
+        isSkippedRound = true;
+        skippedIndex = 0;
+        loadSkippedQuestion();
+      } else {
+        endQuiz();
+      }
+    }, 500);
+  } else {
+    // Move to next skipped question
+    skippedIndex++;
+    if (skippedIndex >= skippedArtists.length) skippedIndex = 0;
+
+    loadSkippedQuestion();
+  }
+}
+
+
+function endQuiz() {
+  clearInterval(timerInterval);
+  const endTime = new Date();
+  const timeTaken = Math.floor((endTime - startTime) / 1000);
+
+  progressText.textContent = "Quiz Completed!";
+  singerImage.style.display = "none";
+  questionText.innerHTML = `<strong>You got ${correctCount} out of ${triviaQuestions.length} correct.</strong><br>Your time: ${formatTime(timeTaken)}`;
+
+  answerInput.style.display = "none";
+  document.querySelectorAll(".submit-btn").forEach(btn => btn.style.display = "none");
+  timerText.style.display = "none";
+
+  // Show skipped artists if any
+  if (skippedArtists.length > 0) {
+    const skippedSection = document.createElement("div");
+    skippedSection.classList.add("quiz-complete");
+    skippedSection.innerHTML = `<h3 style="margin-top: 30px;">Skipped Artists</h3>`;
+    
+    skippedArtists.forEach(artist => {
+      const card = document.createElement("div");
+      card.style.marginTop = "15px";
+
+      card.innerHTML = `
+        <img src="${artist.image}" alt="${artist.correctAnswer}" style="max-width: 150px; border-radius: 10px; box-shadow: 0 0 12px rgba(255,255,255,0.1);"><br>
+        <span style="color: #00ffcc; font-weight: bold;">${artist.correctAnswer}</span>
+      `;
+      skippedSection.appendChild(card);
+    });
+
+    quizContainer.appendChild(skippedSection);
+  }
+
+  // Update Firestore session if needed
+  if (sessionId) {
+    db.collection("quizSessions").doc(sessionId).update({
+      correctCount: correctCount,
+      totalQuestions: triviaQuestions.length,
+      timeTaken: timeTaken,
+      endTime: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      console.log("Quiz session successfully updated with results.");
+    }).catch((error) => {
+      console.error("Error updating quiz session: ", error);
+    });
+  }
+}
+function closeRules() {
+  document.getElementById("rulesOverlay").classList.remove("show");
+}
+
+document.getElementById("closeRulesBtn").addEventListener("click", closeRules);
+
+  </script>
+</body>
+</html>
