@@ -309,6 +309,109 @@ header .logo img {
   box-shadow: 0 0 10px #00ffcc;
   transition: all 0.3s ease;
 }
+#rulesOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.4s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#rulesOverlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#rulesBox {
+  background: #ffffff;
+  color: #1e3a5f;
+  padding: 40px 50px;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+#rulesBox h2 {
+  color: #4682b4;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+#rulesBox ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+  font-size: 1rem;
+}
+
+#rulesBox li {
+  margin-bottom: 12px;
+  line-height: 1.6;
+  color: #333;
+}
+
+#rulesBox img {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  margin: 25px 0 15px;
+}
+
+#rulesBox p {
+  font-size: 1rem;
+  color: #254a6d;
+}
+
+#rulesBox button {
+  margin-top: 20px;
+  padding: 14px 30px;
+  font-size: 1.1rem;
+  background: #3cb371;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#rulesBox button:hover {
+  background: #2e8b57;
+  transform: scale(1.05);
+}
+#rulesBox #closeRulesBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none !important;
+  border: none;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #4682b4 ;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#rulesBox #closeRulesBtn:hover {
+  color: #ff4d4d;
+}
+
+
 
   </style>
 </head>
@@ -327,6 +430,7 @@ header .logo img {
           </label>
           <input type="text" id="userName" class="login-input" placeholder="e.g. Taylor">
               </div>
+    </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
 
   </div>
@@ -336,6 +440,7 @@ header .logo img {
   <div class="quiz-container" id="quizContainer">
     <div class="progress" id="progressText">Question 1 of 10</div>
     <div class="timer" id="timerText">1:00</div>
+
     <!-- Singer image will be displayed here -->
     <img id="singerImage" class="singer-image" src="" alt="Singer Image">
     <!-- Question text -->
@@ -353,18 +458,18 @@ header .logo img {
         <div class="result" id="resultText"></div>
   </div>
 
-  <div id="rulesOverlay">
+
+  <div id="rulesOverlay" class="show">
     <div id="rulesBox">
-      <h2 style="color: #f1c40f; margin-bottom: 20px;">🎧 How to Play</h2>
-  
+        <button id="closeRulesBtn">&times;</button>
+        <h2>How to Play</h2>
       <ul>
-        <li>👀 <strong>See a Singer:</strong> An image will appear. Identify who it is.</li>
-        <li>⌨️ <strong>Type Their Name:</strong> Enter their stage name. Spelling counts!</li>
-        <li>⏱️ <strong>Beat the Clock:</strong> You have <strong>2 minutes</strong> total.</li>
-        <li>➡️ <strong>Skip If Needed:</strong> Click "Pass" to move on.</li>
+        <li>🔍 <strong>See a Singer:</strong> An image will appear — your job is to identify the artist.</li>
+        <li>⌨️ <strong>Type Their Name:</strong> Enter their stage name correctly (capitalization doesn't matter—spelling does!).</li>
+        <li>⏱️ <strong>Beat the Clock:</strong> You have <strong>60 seconds</strong> to guess all 10 singers.</li>
+        <li>⏭️ <strong>Skip If Needed:</strong> Don’t know it? Click "Pass" to move on and revisit later unless time expires.</li>
       </ul>
-  
-      <button onclick="closeRules()">Start</button>
+      <button onclick="closeRules()">🚀 OK, Let’s Go!</button>
     </div>
   </div>
   
@@ -673,14 +778,34 @@ if (missedArtists.length > 0) {
 
   quizContainer.appendChild(skippedSection);
 }
+  if (skippedArtists.length > 0) {
+    const skippedSection = document.createElement("div");
+    skippedSection.classList.add("quiz-complete");
+    skippedSection.innerHTML = `<h3 style="margin-top: 30px;">Skipped Artists</h3>`;
+    
+    skippedArtists.forEach(artist => {
+      const card = document.createElement("div");
+      card.style.marginTop = "15px";
+
+      card.innerHTML = `
+        <img src="${artist.image}" alt="${artist.correctAnswer}" style="max-width: 150px; border-radius: 10px; box-shadow: 0 0 12px rgba(255,255,255,0.1);"><br>
+        <span style="color: #00ffcc; font-weight: bold;">${artist.correctAnswer}</span>
+      `;
+      skippedSection.appendChild(card);
+    });
+
+    quizContainer.appendChild(skippedSection);
+  }
 
   // Update Firestore session if needed
   if (sessionId) {
     db.collection("quizSessions").doc(sessionId).update({
-      correctCount: correctCount,
-      totalQuestions: triviaQuestions.length,
-      timeTaken: timeTaken,
-      endTime: firebase.firestore.FieldValue.serverTimestamp()
+  displayName: firebase.auth().currentUser.displayName,
+  correctCount: correctCount,
+  totalQuestions: triviaQuestions.length,
+  timeTaken: timeTaken,
+  streak: currentStreak, // <-- add this line (make sure currentStreak is tracked)
+  lastPlayed: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
       console.log("Quiz session successfully updated with results.");
     }).catch((error) => {

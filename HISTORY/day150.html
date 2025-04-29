@@ -30,7 +30,7 @@
       min-height: 100vh;
     }
     :root {
-  --header-height: 140px; /* adjust as needed for your design */
+  --header-height: 120px; /* adjust as needed for your design */
 }
 @media (max-width: 768px) {
       :root {
@@ -872,7 +872,7 @@ padding: 0;
   
   <!-- Main Section -->
   <main class="main">
-    <div class="mystery-title">Week #20</div>
+    <div class="mystery-title">Week #21</div>
 
     <!-- Questions Progress Bar -->
     <div class="questions-progress-wrapper">
@@ -1025,8 +1025,8 @@ padding: 0;
     <div class="popup-content">
       <button class="close-popup" id="close-celebration-popup">&times;</button>
       <h2>Congratulations! 🎉</h2>
-      <p>You correctly guessed <strong id="correct-artist-name">Lana Del Rey</strong>!</p>
-      <img src="../images/lanadelrey.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>You correctly guessed <strong id="correct-artist-name">Chris Stapleton</strong>!</p>
+      <img src="../images/chrisstapleton.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="questions-used-popup">0</span></p>
       <p><strong>Hints Needed:</strong> <span id="hints-used-popup">0</span></p>      
       <p id="celebration-time" style="font-size: 1.2rem; font-weight: bold; margin: 10px 0;">
@@ -1044,8 +1044,8 @@ padding: 0;
     <div class="popup-content">
       <button class="close-popup" id="close-failure-popup">&times;</button>
       <h2>Game Over!</h2>
-      <p>Today's singer was <strong id="correct-artist-name-failure">Lana Del Rey</strong>!</p>
-      <img src="../images/lanadelrey.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
+      <p>Today's singer was <strong id="correct-artist-name-failure">Chris Stapleton</strong>!</p>
+      <img src="../images/chrisstapleton.jpg" alt="Celebration Image" style="max-width:100%; border-radius:8px; margin:15px 0;">
       <p><strong>Questions Asked:</strong> <span id="failure-questions-used">0</span></p>
 <p><strong>Hints Needed:</strong> <span id="failure-hints-used">0</span></p>
 <p id="failure-time" style="font-size: 1.2rem; margin: 10px 0;">
@@ -1103,9 +1103,9 @@ padding: 0;
       // Hints
       const hintThresholds = [4, 8, 12];
       const hintsArray = [
-        "Hint 1: They were born in Manhattan, NYC.",
-        "Hint 2: They are featured on the soundtrack of a Leonardo DiCaprio film.",
-        "Hint 3: Her birth name is Elizabeth Woolridge Grant."
+        "Hint 1: They have won more than 10 Grammys.",
+        "Hint 2: He has a thick beard.",
+        "Hint 3: He was born in Kentucky, but his most famous song is about Tennessee."
       ];
   
 
@@ -1135,7 +1135,7 @@ padding: 0;
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
-    const gameId = "day142"; // replace with the current game id
+    const gameId = "day150"; // replace with the current game id
     const firestore = getFirestore(app);
 
     onAuthStateChanged(auth, (user) => {
@@ -1221,7 +1221,7 @@ function viewCelebrationFromRecord() {
         // Check the result status. If "fail", populate failure popup; else, celebration popup.
         if (data.result && data.result === "fail") {
           // Populate failure popup elements.
-          document.getElementById("correct-artist-name-failure").textContent = "Lana Del Rey";
+          document.getElementById("correct-artist-name-failure").textContent = "Chris Stapleton";
           document.getElementById("failure-questions-used").textContent = data.questionsUsed;
           document.getElementById("failure-hints-used").textContent = data.hintsUsed || "0";
           // Assume your failure popup has an element with id "failure-time" for duration.
@@ -1238,7 +1238,7 @@ function viewCelebrationFromRecord() {
           }, 10);
         } else {
           // Populate celebration popup elements.
-          document.getElementById("correct-artist-name").textContent = "Lana Del Rey";
+          document.getElementById("correct-artist-name").textContent = "Chris Stapleton";
           document.getElementById("questions-used-popup").textContent = data.questionsUsed;
           document.getElementById("hints-used-popup").textContent = data.hintsUsed || "0";
           document.getElementById("celebration-time").innerHTML =
@@ -1265,18 +1265,18 @@ function viewCelebrationFromRecord() {
 
       // Predefined question responses
       const responses = {
-        "is this a male artist?": "No, they do not identify as male.",
-    "is this a female artist?": "Yes, they do identify as female.",
+        "is this a male artist?": "Yes, they do identify as male.",
+    "is this a female artist?": "No, they do not identify as female.",
     "are they still alive?": "Yes, they are still alive.",
     "are they over 30 years old?": "Yes, they are over 30 years old.",
-    "are they over 40 years old?": "No, they are not over 40 years old.",
+    "are they over 40 years old?": "Yes, they are over 40 years old.",
     "are they over 50 years old?": "No, they are not over 50 years old.",
  
     "debut before 2000?": "No, their debut was not before 2000.",
-    "debut before 2010?": "Yes, their debut was before 2010.",
+    "debut before 2010?": "No, their debut was not before 2010.",
     "debut before 2020?": "Yes, their debut was before 2020.",
-    "album release in last 2 years?": "No, they did not release an album in the last 2 years.",
-    "are they touring?": "No, they are not currently touring.",
+    "album release in last 2 years?": "Yes, they have released an album in the last 2 years.",
+    "are they touring?": "Yes, they are currently touring.",
     "are they married?": "Yes, they are currently married.",
     "divorced?": "No, they have not been divorced.",
     "LGBTQ?": "No, they have not publicly identified as LGBTQ+.",
@@ -1298,38 +1298,38 @@ function viewCelebrationFromRecord() {
 
     "different languages?": "No, they perform songs in one language.",
     "are they spanish?": "No, they do not perform in Spanish.",
-    "do they perform pop music?": "Yes, they do perform a type of pop music.",
+    "do they perform pop music?": "No, they do not perform pop music.",
     "do they perform rap music?": "No, they are not known for rap music.",
     "do they perform R&B music?": "No, their music is not classified as R&B.",
-    "do they perform rock music?": "Yes, their music has rock influences.",
-    "do they perform country music?": "No, they do not perform country music.",
+    "do they perform rock music?": "Yes, their music goes have rock vibes.",
+    "do they perform country music?": "Yes, they do perform country music.",
     "do they perform jazz music?": "No, they do not perform jazz music.",
-    "do they perform party music?": "No, their songs are not really suitable for parties.",
-    "do they perform sad music?": "Yes, most songs have sad vibes.",
+    "do they perform party music?": "No, thier songs would probably not be played at parties.",
+    "do they perform sad music?": "Yes, most songs have somber vibes.",
 
     "are they also an actor?": "No, they are not also considered an actor.",
     "disney or nick?": "No, they have not appeared on Disney Channel or Nickelodeon.",
     "singing competition?": "No, they did not compete on a TV singing competition.",
-    "have they won a grammy?": "No, they have not won a Grammy Award.",
+    "have they won a grammy?": "Yes, they have won a Grammy Award.",
     "super bowl?": "No, they have not performed at a Super Bowl Halftime Show.",
     "coachella?": "Yes, they have performed at Coachella.",
     "song over one billion streams?": "Yes, they do have a song with over one billion streams.",
     "do they have more than 10M TikTok followers?": "No, they do not have more than 10 million TikTok followers.",
-    "do they have more than 10M Instagram followers?": "Yes, they do have over 10 million Instagram followers.",
+    "do they have more than 10M Instagram followers?": "No, they do not have over 10 million Instagram followers.",
     "do they have more than 20M listeners?": "Yes, they do have over 20 million monthly listeners on Spotify.",
-    "do they have more than 50M listeners?": "Yes, they do have over 50 million monthly listeners.",
-    "were they ever in a band?": "No, they were not also in a band.",
+    "do they have more than 50M listeners?": "No, they do not have over 50 million monthly listeners.",
+    "were they ever in a band?": "Yes, they were not also in a band.",
 
-    "do they have dark hair?": "Yes, they sometimes have dark hair.",
-    "do they have blond hair?": "Yes, they sometimes have blond hair.",
+    "do they have dark hair?": "Yes, they do have black or brown hair.",
+    "do they have blond hair?": "No, they do not have blond hair.",
     "over 5.5 feet tall?": "Yes, they are over 5.5 feet tall.",
     "over 6 feet tall?": "No, they are not over 6 feet tall.",
     "do they have tattoos?": "No, they do not have visible tattoos.",
     "do they wear glasses?": "No, they are not typically seen wearing glasses.",
-    "do they go by their birth name?": "No, they do not go by their birth name.",
+    "do they go by their birth name?": "Yes, they mostly go by their birth name.",
     "do they go by one word?": "No, their name consists of more than one word.",
-    "do they go by two words?": "No, their name does not consist of two words.",
-    "do they have a common first name?": "Yes, their first name is quite common.",
+    "do they go by two words?": "Yes, their name does consist of two words.",
+    "do they have a common first name?": "Yes, their first name is very common.",
     "name starts A-M?": "Yes, their name does start with a letter between A and M."
 
 };
@@ -1410,7 +1410,7 @@ window.askQuestion = function() {
         guessCount++;
         updateProgressBar();
         guessInput.value = "";
-        const correctAnswer = "lana del rey";
+        const correctAnswer = "chris stapleton";
         
         if (guess === correctAnswer) {
           showCelebration();
@@ -1597,7 +1597,7 @@ function showFailure() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Populate the failure popup with stats
-  document.getElementById("correct-artist-name-failure").textContent = "Lana Del Rey";
+  document.getElementById("correct-artist-name-failure").textContent = "Chris Stapleton";
   document.getElementById("failure-questions-used").textContent = questionsAsked;
   document.getElementById("failure-hints-used").textContent = getHintsUsed();
   document.getElementById("failure-time").innerHTML =
@@ -1629,9 +1629,9 @@ function showFailure() {
     "Katy Perry", "Sabrina Carpenter", "Selena Gomez", "Dua Lipa", "Shawn Mendes", "blackbear", "Charli xcx", "Eddie Vedder",
     "Halsey", "Lizzo", "Olivia Rodrigo", "Lil Nas X", "Sam Smith", "Forrest Frank", "Chappell Roan", "Shakira", "Sam Barber",
     "Bad Bunny", "SZA", "Nicki Minaj", "Miley Cyrus", "Frank Ocean", "Phil Collins", "Prince", "Lauv", "Alexander Stewart",
-    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "NF", "Phoebe Bridgers", "Janet Jackson", "AURORA",
+    "Cardi B", "Travis Scott", "Maroon 5", "Adele", "Lana Del Rey", "NF", "Phoebe Bridgers", "Janet Jackson", "AURORA",
     "Khalid", "Imagine Dragons", "John Legend", "Charlie Puth", "Camila Cabello", "Central Cee", "Lil Peep", "Odetari",
-    "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown", "6ix9ine", "Bryson Tiller", "Lana Del Rey",
+    "Ellie Goulding", "ZAYN", "Meghan Trainor", "Jason Derulo", "Chris Brown", "6ix9ine", "Bryson Tiller", 
     "Demi Lovato", "Niall Horan", "Pitbull", "P!nk", "Juice WRLD", "Ruth B.", "Aretha Franklin", "BoyWithUke", "Kenia OS",
     "Coldplay", "Sia", "Kendrick Lamar", "Eminem", "Mariah Carey", "Ice Cube", "Rex Orange County", "Cordae",
     "David Guetta", "ROSÉ", "Elton John", "Calvin Harris", "Lorde", "Tove Lo", "Tyler Childers", "Grimes", "Lil Tjay",
@@ -1926,11 +1926,11 @@ function showCelebration() {
   const timeText = `${minutes} Minutes ${seconds} Seconds`;
 
   // Update popup content
-  document.getElementById("correct-artist-name").textContent = "Lana Del Rey";
+  document.getElementById("correct-artist-name").textContent = "Chris Stapleton";
   document.getElementById("questions-used-popup").textContent = questionsAsked;
   document.getElementById("hints-used-popup").textContent = getHintsUsed();
   document.getElementById("celebration-time").innerHTML = "Time to Guess: <span style='font-weight: normal;'>" + timeText + "</span>";
-  saveStatsForDay("day142", questionsAsked, getHintsUsed(), elapsedMs);
+  saveStatsForDay("day150", questionsAsked, getHintsUsed(), elapsedMs);
 
   const popup = document.getElementById("celebration-popup");
   popup.style.display = "flex";
@@ -2219,7 +2219,7 @@ const q = questionsAsked;
 const h = getHintsUsed();
 const t = new Date() - startTime;
 
-console.log("Saving stats for day142:", { q, h, t });
+console.log("Saving stats for day150:", { q, h, t });
 // Close dropdown when clicking outside of it
 document.addEventListener("click", function(event) {
   const dropdown = document.getElementById("customDropdown");
