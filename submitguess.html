@@ -270,7 +270,7 @@
 
   async function fetchAndDisplayStats() {
     try {
-      const docRef = doc(db, "daily_stats", "day150");
+      const docRef = doc(db, "daily_stats", "day158");
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -279,7 +279,7 @@
         document.getElementById("questions-used-popup").textContent = data.questionsUsed ?? 0;
         document.getElementById("hints-used-popup").textContent = data.hintsUsed ?? 0;
       } else {
-        console.warn("⚠️ No stats found for day150");
+        console.warn("⚠️ No stats found for day158");
       }
     } catch (error) {
       console.error("❌ Error fetching stats:", error);
@@ -294,13 +294,13 @@
   fetchAndDisplayStats(); // ✅ Get from Firestore
 }
   try {
-    const docRef = doc(db, "daily_stats", "day150");
+    const docRef = doc(db, "daily_stats", "day158");
     await setDoc(docRef, {
       questionsUsed,
       hintsUsed,
       timestamp: new Date().toISOString()
     });
-    console.log("✅ Stats saved to Firestore for day150");
+    console.log("✅ Stats saved to Firestore for day158");
   } catch (error) {
     console.error("❌ Error saving stats:", error);
   }
@@ -320,7 +320,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   </header>
   <nav class="navbar">
     <ul>
-      <li><a href="/HISTORY/day150.html">Back to Questions</a></li>
+      <li><a href="/HISTORY/day158.html">Back to Questions</a></li>
     </ul>
   </nav>
   <div class="search-container">
@@ -340,7 +340,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
     <button class="close-popup" onclick="closePopup()">&times;</button>
     <div id="popupImageContainer"></div>
     <h2 id="popupTitle">Congratulations!</h2>
-    <p id="popupMessage">The singer was <strong id="celebrationName">Chris Stapleton<n/strong>!</p>
+    <p id="popupMessage">The singer was <strong id="celebrationName">Megan Thee Stallion<n/strong>!</p>
     <div class="celebration-buttons">
         <button id="share-result-button" class="share-button">Share with Friends!</button>
     </div>
@@ -353,7 +353,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
     <p id="popupMessage">Sorry, that's not right.</p>
 
     <div class="popup-buttons">
-      <a href="/HISTORY/day150.html">
+      <a href="/HISTORY/day158.html">
         <button>More Questions</button>
       </a>
       <button onclick="resetAndClose()">Guess Again</button>
@@ -366,7 +366,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   <script>
     // Set the correct singer (all comparisons in lowercase)
     
-    const correctSinger = "chris stapleton";
+    const correctSinger = "megan thee stallion";
 
     // Array of singer objects (50 items)
     const singers = [
@@ -710,7 +710,7 @@ window.fetchAndDisplayStats = fetchAndDisplayStats;
   const chosenImg = this.getAttribute("data-img");
 
   if (chosenSinger === correctSinger) {
-    document.getElementById("celebrationName").textContent = "Chris Stapleton";
+    document.getElementById("celebrationName").textContent = "Megan Thee Stallion";
     await saveStatsToFirestore();       // ✅ Now valid
     fetchAndDisplayStats();             // ✅ Still fine
     showPopup(document.getElementById("celebrationPopup"), chosenImg, true);
@@ -738,7 +738,7 @@ searchBar.addEventListener("input", function () {
   // Set title and message text based on correctness
   popupElement.querySelector("#popupTitle").textContent = isCorrect ? "🎉 Congratulations!" : "❌ Nope!";
   popupElement.querySelector("#popupMessage").innerHTML = isCorrect
-    ? `The singer was <strong>Chris Stapleton</strong>.`
+    ? `The singer was <strong>Megan Thee Stallion</strong>.`
     : `Sorry, that's not right.`;
 
   // Add animation and background change
