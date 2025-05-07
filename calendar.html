@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Game History</title>
     <style>
-        /* General Body Styling */
+          :root {
+      --primary: #3a77c2;
+      --secondary: #87cefa;
+      --dark-blue: #1e3a5f;
+      --white: #fff;
+      --gray: #f5f5f5;
+    }
+       
+       /* General Body Styling */
         body {
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
@@ -14,53 +24,59 @@
             color: #333;
             line-height: 1.6;
         }
-
-        /* Header Styling */
         header {
-            background: linear-gradient(90deg, #87cefa, #4682b4);
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 20px 20px; /* reduce vertical padding */
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeDown 1s ease-out;
+}
 
-        header h1 {
-            margin: 0;
-            padding: 10px;
-            font-size: 2rem;
-            font-weight: bold;
-        }
+
+@keyframes fadeDown {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+    header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+    }
+
 
        /* Navbar Styling */
-       .navbar {
-display: flex;
-justify-content: center;
-gap: 20px;
-background-color: #315f85;
-padding: 15px 0;
-font-weight: bold;
-}
+       
+    .navbar {
+      background-color: var(--dark-blue);
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+    }
 
 .navbar ul {
 list-style: none;
 display: flex;
-gap: 15px;
 font-size: 16px;
+gap: 15px;
 margin: 0;
 padding: 0;
 }
 
-.navbar ul li a {
-text-decoration: none;
-color: white;
-font-size: 1rem;
-padding: 5px 10px;
-border-radius: 5px;
-transition: background-color 0.3s ease;
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
-
-.navbar ul li a:hover {
-background-color: #4682b4;
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
 }
 
 
@@ -152,13 +168,14 @@ background-color: #4682b4;
     <header>
         <h1>Game History</h1>
     </header>
+
     <nav class="navbar">
         <ul>
-            <li><a href="/index.html">Home</a></li>
-            <li><a href="/calendar.html">History</a></li>
-            <li><a href="/about.html">About</a></li>
+          <li><a href="/index.html">Home</a></li>
+          <li><a href="/calendar.html" class="active">History</a></li>
+          <li><a href="/about.html">About</a></li>
         </ul>
-    </nav>
+      </nav>
     <section class="calendar-section">
         <div class="calendar-container">
             <h2>December</h2>
