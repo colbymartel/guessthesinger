@@ -98,13 +98,22 @@
     }
 
     .grid {
-      display: grid;
-      grid-template-columns: repeat(6, 100px);
-      grid-template-rows: repeat(4, 100px);
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 30px;
-    }
+  display: grid;
+  grid-template-columns: repeat(6, 100px);
+  grid-template-rows: repeat(4, 100px);
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+/* On screens narrower than 768px (mobile), switch to 4x6 */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: repeat(6, 100px);
+  }
+}
+
 
     .card {
       background-color: #315f85;
