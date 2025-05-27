@@ -16,120 +16,48 @@
       flex-direction: column;
       min-height: 100vh;
     }
-
     nav {
-      width: 100%;
-      margin: 0;
+      background-color: #1e2b38;
       padding: 15px 30px;
-      background: #1e2b38;
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: white;
-      flex-wrap: wrap;
-      box-sizing: border-box;
     }
-
     .nav-links a {
       color: white;
       margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
-      font-size: 1rem;
     }
-
     .nav-links a:hover {
       color: #ffcb05;
     }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .search-bar {
-      padding: 8px 16px 8px 36px;
-      height: 40px;
-      border-radius: 20px;
-      border: none;
-      background: white;
-      color: #315f85;
-      font-size: 0.95rem;
-      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
-      background-size: 16px;
-      background-repeat: no-repeat;
-      background-position: 12px center;
-    }
-
-    .search-bar::placeholder {
-      color: #888;
-    }
-
-    .login-btn {
-      background-color: #ffcb05;
-      border: none;
-      padding: 8px 16px;
-      height: 40px;
-      border-radius: 20px;
-      font-weight: bold;
-      color: #1e2b38;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-      font-size: 0.95rem;
-    }
-
-    .login-btn:hover {
-      background-color: #e6b800;
-      transform: translateY(-1px);
-    }
-
     h1 {
-      color: #315f85;
-      margin: 30px auto 10px;
       text-align: center;
+      color: #315f85;
+      margin: 30px 0 10px;
     }
-
     #score {
       font-size: 1.2rem;
       color: #315f85;
       text-align: center;
       margin-bottom: 20px;
     }
-
     .grid {
-  display: grid;
-  grid-template-columns: repeat(6, 100px);
-  grid-template-rows: repeat(4, 100px);
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
-/* On screens narrower than 768px (mobile), switch to 4x6 */
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(4, 80px);
-    grid-template-rows: repeat(6, 80px);
-    margin-left: 30px;
-    margin-right: 30px;
-  }
-}img.responsive {
-  width: 100%;          /* default: full width of container */
-  height: auto;         /* maintain aspect ratio */
-  display: block;
-}
-
-/* Mobile-specific overrides */
-@media (max-width: 768px) {
-  img.responsive {
-    width: 80%;         /* shrink image on mobile */
-    margin-left: 10px;  /* add left margin */
-  }
-}
-
-
-
+      display: grid;
+      grid-template-columns: repeat(6, 100px);
+      grid-template-rows: repeat(4, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 0 auto 30px;
+    }
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(4, 80px);
+        grid-template-rows: repeat(6, 80px);
+      }
+    }
     .card {
       background-color: #315f85;
       color: white;
@@ -141,35 +69,37 @@
       font-size: 0;
       transition: background-color 0.3s;
     }
-
     .card.revealed {
       font-size: 0.9rem;
       background-color: #4caf50;
     }
-
     .card.match {
       background-color: #4caf50 !important;
       cursor: default;
     }
-
     .card.mismatch {
       background-color: #e74c3c !important;
     }
-
     img.singer-img {
-      width: 80%;
+      width: 100%;
       height: auto;
       object-fit: contain;
       border-radius: 6px;
     }
-
+    .singer-name {
+      font-size: 14px;
+      padding: 4px;
+      text-align: center;
+      word-wrap: break-word;
+      white-space: normal;
+      line-height: 1.2;
+    }
     #message {
       text-align: center;
       font-size: 1.1rem;
       color: #e74c3c;
       margin-bottom: 10px;
     }
-
     #restartBtn {
       display: none;
       margin: 0 auto 30px;
@@ -182,117 +112,68 @@
       font-weight: bold;
       cursor: pointer;
     }
-
-    #restartBtn:hover {
-      background-color: #ffd84d;
-    }
-    #rulesModal{
-      position: fixed;
-  top: 70px; /* Push below nav bar */
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(30, 43, 56, 0.95);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  padding: 30px;
-  text-align: center;
-    }
-    #startGameBtn{
-      background-color: #ffcb05;
-    color: #1e2b38;
-    border: none;
-    padding: 12px 24px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 25px;
-    cursor: pointer;
-    }
-   
-    .singer-card img {
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .singer-card {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.singer-name {
-  font-size: 14px;
-  margin-top: 5px;
-  padding: 0 6px;
-  text-align: center;
-  line-height: 1.2;
-  word-break: break-word;
-  white-space: normal;
-  overflow-wrap: break-word;
-  max-width: 100%;
-}
-
-
   </style>
 </head>
 <body>
-  
   <nav>
     <div class="nav-links">
       <a href="/index.html">Home</a>
+      <a href="/scores.html">Leaderboard</a>
       <a href="/about.html">About</a>
     </div>
   </nav>
-  <div id="rulesModal">
-  <h2 style="margin-bottom: 20px;">🎵 How to Play: Match the Singer</h2>
-  <p style="max-width: 500px; font-size: 1.1rem; margin-bottom: 20px;">
-    Flip two cards at a time to find matching pairs: one with a singer's <strong>name</strong>, one with their <strong>photo</strong>.
-    <br><br>
-    Match correctly to earn points! Every mismatch costs you 10 points.
-  </p>
 
-  <div style="display: flex; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center;">
-    <!-- Correct Match -->
-    <div style="text-align: center;">
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <div style="background:#4caf50; padding: 20px; border-radius: 10px; width: 120px; font-weight: bold;">Lady Gaga</div>
-        <div style="background:#4caf50; padding: 10px; border-radius: 10px; width: 120px;">
-          <img src="images/ladygaga.jpg" style="width: 100%; border-radius: 6px;" alt="Lady Gaga">
-        </div>
-      </div>
-      <div style="margin-top: 10px; color: #4caf50; font-weight: bold;">Correct Match ✅</div>
-    </div>
-
-    <!-- Incorrect Match -->
-    <div style="text-align: center;">
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <div style="background:#e74c3c; padding: 20px; border-radius: 10px; width: 120px; font-weight: bold;">Lady Gaga</div>
-        <div style="background:#e74c3c; padding: 10px; border-radius: 10px; width: 120px;">
-          <img src="images/drake.jpg" style="width: 100%; border-radius: 6px;" alt="Drake">
-        </div>
-      </div>
-      <div style="margin-top: 10px; color: #e74c3c; font-weight: bold;">Incorrect Match ❌</div>
-    </div>
-  </div>
-
-  <button id="startGameBtn">Start Game</button>
-</div>
-
-<div id="gameContainer" style="display: none;">
   <h1>Match the Singer</h1>
   <div id="score">Score: 1000 | High Score: <span id="highScore">0</span></div>
   <div id="message"></div>
   <div class="grid" id="gameGrid"></div>
   <button id="restartBtn" onclick="location.reload()">Play Again</button>
-</div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, setDoc, doc, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+    let currentUser = null;
+    let userCity = null;
+
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        currentUser = user;
+        const userRef = collection(db, "users");
+        const q = query(userRef, where("uid", "==", user.uid));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(doc => {
+          userCity = doc.data().city || null;
+        });
+      }
+    });
+
+    async function submitScore(finalScore) {
+      if (!currentUser) return console.warn("Not logged in, score not submitted.");
+      const username = currentUser.displayName || "Anonymous";
+      const date = new Date().toISOString().slice(0, 10);
+      await setDoc(doc(collection(db, "matchScores")), {
+        uid: currentUser.uid,
+        username,
+        score: finalScore,
+        city: userCity,
+        date
+      });
+    }
+
     const allSingers = [
       { name: 'Adele', image: 'adele.jpg' },
       { name: 'Ariana Grande', image: 'arianagrande.jpg' },
@@ -315,69 +196,58 @@
       { name: 'Snoop Dogg', image: 'snoopdogg.jpg' },
     ];
 
-    // Shuffle and select 12 singers
-    const selectedSingers = allSingers.sort(() => 0.5 - Math.random()).slice(0, 12);
-
-    const gameGrid = document.getElementById('gameGrid');
-    const scoreEl = document.getElementById('score');
-    const messageEl = document.getElementById('message');
-    const restartBtn = document.getElementById('restartBtn');
-    const highScoreEl = document.getElementById('highScore');
-
     let score = 1000;
     let highScore = localStorage.getItem('matchHighScore') || 0;
     let revealed = [];
     let lock = false;
     let matchesFound = 0;
-
+    const highScoreEl = document.getElementById('highScore');
     highScoreEl.textContent = highScore;
+    const grid = document.getElementById('gameGrid');
+    const scoreEl = document.getElementById('score');
+    const messageEl = document.getElementById('message');
+    const restartBtn = document.getElementById('restartBtn');
 
+    const selected = allSingers.sort(() => 0.5 - Math.random()).slice(0, 12);
     let cards = [];
-    selectedSingers.forEach(singer => {
-      cards.push({ type: 'name', value: singer.name, matchId: singer.name });
-      cards.push({ type: 'image', value: singer.image, matchId: singer.name });
+    selected.forEach(s => {
+      cards.push({ type: 'name', value: s.name, matchId: s.name });
+      cards.push({ type: 'image', value: s.image, matchId: s.name });
     });
-
     cards = cards.sort(() => 0.5 - Math.random());
 
-    cards.forEach((cardData) => {
+    cards.forEach(data => {
       const card = document.createElement('div');
       card.classList.add('card');
-      card.dataset.type = cardData.type;
-      card.dataset.value = cardData.value;
-      card.dataset.matchId = cardData.matchId;
-
+      card.dataset.type = data.type;
+      card.dataset.value = data.value;
+      card.dataset.matchId = data.matchId;
       card.addEventListener('click', () => handleCardClick(card));
-      gameGrid.appendChild(card);
+      grid.appendChild(card);
     });
 
-    function handleCardClick(card) {
+    async function handleCardClick(card) {
       if (lock || card.classList.contains('revealed') || card.classList.contains('match')) return;
-
       revealCard(card);
       revealed.push(card);
-
       if (revealed.length === 2) {
         lock = true;
         const [first, second] = revealed;
-        const isMatch =
-          first.dataset.matchId === second.dataset.matchId &&
-          first.dataset.type !== second.dataset.type;
-
+        const isMatch = first.dataset.matchId === second.dataset.matchId && first.dataset.type !== second.dataset.type;
         if (isMatch) {
           first.classList.add('match');
           second.classList.add('match');
           matchesFound++;
           revealed = [];
           lock = false;
-
-          if (matchesFound === selectedSingers.length) {
+          if (matchesFound === selected.length) {
             messageEl.textContent = '🎉 You won!';
             restartBtn.style.display = 'block';
             if (score > highScore) {
               localStorage.setItem('matchHighScore', score);
               highScoreEl.textContent = score;
             }
+            await submitScore(score);
           }
         } else {
           score -= 10;
@@ -390,12 +260,6 @@
             revealed = [];
             lock = false;
           }, 2000);
-
-          if (score <= 0) {
-            messageEl.textContent = '💀 Game Over!';
-            lock = true;
-            restartBtn.style.display = 'block';
-          }
         }
       }
     }
@@ -404,6 +268,7 @@
       card.classList.add('revealed');
       if (card.dataset.type === 'name') {
         card.textContent = card.dataset.value;
+        card.classList.add('singer-name');
       } else {
         card.innerHTML = `<img class="singer-img" src="images/${card.dataset.value}" alt="">`;
       }
@@ -418,25 +283,6 @@
     function updateScore() {
       scoreEl.innerHTML = `Score: ${score} | High Score: <span id="highScore">${highScoreEl.textContent}</span>`;
     }
-    const rulesModal = document.getElementById('rulesModal');
-const gameContainer = document.getElementById('gameContainer');
-const startGameBtn = document.getElementById('startGameBtn');
-
-if (localStorage.getItem('matchRulesShown') === 'true') {
-  rulesModal.style.display = 'none';
-  gameContainer.style.display = 'block';
-} else {
-  rulesModal.style.display = 'flex'; // in case styles changed
-  gameContainer.style.display = 'none';
-}
-
-startGameBtn.addEventListener('click', () => {
-  localStorage.setItem('matchRulesShown', 'true');
-  rulesModal.style.display = 'none';
-  gameContainer.style.display = 'block';
-});
-
-
   </script>
 </body>
 </html>

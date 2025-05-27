@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match the Singer | Leaderboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+    }
+
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+
+    h1 {
+      text-align: center;
+      color: #315f85;
+      margin: 30px 0 10px;
+    }
+
+    .tab-buttons {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .tab-buttons button {
+      background: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .tab-buttons button:hover {
+      background-color: #ffd84d;
+    }
+
+    table {
+      margin: auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 700px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    thead {
+      background-color: #1e2b38;
+      color: white;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/about.html">About</a>
+    </div>
+  </nav>
+
+  <h1>Leaderboard</h1>
+  <div class="tab-buttons">
+    <button onclick="switchTab('daily')">🏆 Daily</button>
+    <button onclick="switchTab('alltime')">🌍 All-Time</button>
+    <button onclick="switchTab('city')">📍 My City</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Score</th>
+        <th>City</th>
+      </tr>
+    </thead>
+    <tbody id="leaderboardBody"></tbody>
+  </table>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, query, orderBy, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+    let currentUserCity = null;
+
+    function switchTab(type) {
+      let q;
+      const scoresRef = collection(db, "matchScores");
+
+      if (type === "daily") {
+        const today = new Date().toISOString().slice(0, 10);
+        q = query(scoresRef, where("date", "==", today), orderBy("score", "desc"));
+      } else if (type === "city") {
+        if (!currentUserCity) return alert("Log in to view your city leaderboard.");
+        q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
+      } else {
+        q = query(scoresRef, orderBy("score", "desc"));
+      }
+
+      loadLeaderboard(q);
+    }
+
+    async function loadLeaderboard(q) {
+      const snapshot = await getDocs(q);
+      const tbody = document.getElementById("leaderboardBody");
+      tbody.innerHTML = "";
+      let rank = 1;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        tbody.innerHTML += `
+          <tr>
+            <td>${rank++}</td>
+            <td>${data.username || "Anonymous"}</td>
+            <td>${data.score}</td>
+            <td>${data.city || "-"}</td>
+          </tr>
+        `;
+      });
+    }
+
+    onAuthStateChanged(auth, user => {
+  if (user) {
+    const uid = user.uid;
+    getDocs(query(collection(db, "users"), where("uid", "==", uid))).then(snapshot => {
+      snapshot.forEach(doc => {
+        currentUserCity = doc.data().city || null;
+      });
+      switchTab("daily"); // ✅ move this inside here
+    });
+  } else {
+    switchTab("daily"); // ✅ run it here for guests
+  }
+});
+  </script>
+</body>
+</html>
