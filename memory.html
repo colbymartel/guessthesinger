@@ -109,10 +109,25 @@
 /* On screens narrower than 768px (mobile), switch to 4x6 */
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: repeat(4, 100px);
-    grid-template-rows: repeat(6, 100px);
+    grid-template-columns: repeat(4, 80px);
+    grid-template-rows: repeat(6, 80px);
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+}img.responsive {
+  width: 100%;          /* default: full width of container */
+  height: auto;         /* maintain aspect ratio */
+  display: block;
+}
+
+/* Mobile-specific overrides */
+@media (max-width: 768px) {
+  img.responsive {
+    width: 80%;         /* shrink image on mobile */
+    margin-left: 10px;  /* add left margin */
   }
 }
+
 
 
     .card {
@@ -197,6 +212,33 @@
     border-radius: 25px;
     cursor: pointer;
     }
+   
+    .singer-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .singer-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.singer-name {
+  font-size: 14px;
+  margin-top: 5px;
+  padding: 0 6px;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+
   </style>
 </head>
 <body>
@@ -204,12 +246,7 @@
   <nav>
     <div class="nav-links">
       <a href="/index.html">Home</a>
-      <a href=#>Games</a>
       <a href="/about.html">About</a>
-    </div>
-    <div class="nav-actions">
-      <input type="text" class="search-bar" placeholder="Search games...">
-      <button class="login-btn" href="/login.html">Login</button>
     </div>
   </nav>
   <div id="rulesModal">
