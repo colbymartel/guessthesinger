@@ -155,17 +155,23 @@
       tbody.innerHTML = "";
       let rank = 1;
       snapshot.forEach(doc => {
-        const data = doc.data();
-        tbody.innerHTML += `
-          <tr>
-            <td>${rank++}</td>
-            <td>${data.username || "Anonymous"}</td>
-            <td>${data.score}</td>
-            <td>${data.city || "-"}</td>
-          </tr>
-        `;
-      });
+  const data = doc.data();
+  const username = data.username ? data.username : "Anonymous";
+  const score = typeof data.score === "number" ? data.score : "—";
+  const city = data.city ? data.city : "-";
+
+  tbody.innerHTML += `
+    <tr>
+      <td>${rank++}</td>
+      <td>${username}</td>
+      <td>${score}</td>
+      <td>${city}</td>
+    </tr>
+  `;
+});
+
     }
+    
 
     onAuthStateChanged(auth, user => {
   if (user) {
