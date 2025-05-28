@@ -156,8 +156,21 @@
         const q = query(userRef, where("uid", "==", user.uid));
         const snapshot = await getDocs(q);
         snapshot.forEach(doc => {
-          userCity = doc.data().city || null;
-        });
+  const data = doc.data();
+  const username = data.username ? data.username : "Anonymous";
+  const score = typeof data.score === "number" ? data.score : "—";
+  const city = data.city ? data.city : "-";
+
+  tbody.innerHTML += `
+    <tr>
+      <td>${rank++}</td>
+      <td>${username}</td>
+      <td>${score}</td>
+      <td>${city}</td>
+    </tr>
+  `;
+});
+
       }
     });
 
