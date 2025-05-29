@@ -1,26 +1,17 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Guess The Singer: Create an account...">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GuessTheSinger.com - Log In</title>
-  <link rel="icon" href="/favicon.ico">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T42NG5C994"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T42NG5C994');
-</script>
-  <!-- Font Awesome, Google Fonts, your CSS, etc. -->
+  <meta name="description" content="Login to Guess The Singer and compete in daily music challenges!" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | GuessTheSinger.com</title>
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Font Awesome for icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./signup.css">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="./signup.css" />
 </head>
 <body>
   <!-- Header -->
@@ -33,23 +24,22 @@
   <!-- Main Section with Login Form -->
   <main class="main">
     <div class="auth-container">
-      <h2>Log Into Your Account</h2>
+      <h2>Log In</h2>
       <form id="loginForm">
         <div class="input-group">
-          <label for="loginEmail">Email</label>
-          <input type="email" id="loginEmail" name="loginEmail" placeholder="Your email" required>
+          <label for="identifier">Email</label>
+          <input type="text" id="identifier" name="identifier" placeholder="Enter email" required />
         </div>
-        
+
         <div class="input-group">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" name="loginPassword" placeholder="Your password" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter password" required />
         </div>
-        
-        <button type="submit" class="btn">Log-In</button>
-        
+
+        <button type="submit" class="btn">Log In</button>
+
         <p class="redirect">
-          Don’t have an account?
-          <a href="signup.html">Sign-Up</a>
+          Don’t have an account? <a href="signup.html">Sign-Up</a>
         </p>
       </form>
     </div>
@@ -57,50 +47,76 @@
 
   <!-- Footer -->
   <footer class="footer">
-      &copy; 2024 Colby Martel |
+      &copy; 2024 Colby Martel | 
       <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
       <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
       <a href="https://discord.gg/egQzdDSM" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
   </footer>
 
-  <!-- Use type="module" so we can import Firebase libraries -->
+  <!-- Firebase Auth Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-  
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+
     const firebaseConfig = {
-        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-  authDomain: "guessthesinger10.firebaseapp.com",
-  databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
-  projectId: "guessthesinger10",
-  storageBucket: "guessthesinger10.firebasestorage.app",
-  messagingSenderId: "97201023235",
-  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
-  measurementId: "G-3R005HTKEW"
-};
-  
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-  
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-      loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            console.log("Successfully logged in:", userCredential.user);
-            // Redirect to game page.
-            window.location.href = 'memory.html';
-          })
-          .catch((error) => {
-            console.error("Error logging in:", error.code, error.message);
-            alert("Login failed. " + error.message);
-          });
-      });
-    }
+    const db = getDatabase(app);
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const identifier = document.getElementById('identifier').value.trim();
+      const password = document.getElementById('password').value;
+      let emailToUse = identifier;
+
+      if (!identifier.includes('@')) {
+        // lookup username
+        const snapshot = await get(ref(db, 'signupForm'));
+        let found = false;
+        snapshot.forEach(child => {
+          const data = child.val();
+          if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
+            emailToUse = data.newEmail;
+            found = true;
+          }
+        });
+
+        if (!found) {
+          alert("Username not found. Please use your registered email.");
+          return;
+        }
+      }
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+        const user = userCredential.user;
+        console.log("✅ Logged in as:", user.email);
+        window.location.href = "memory.html";
+      } catch (error) {
+        alert("Login failed: " + error.message);
+      }
+    });
+    const userRef = ref(db, 'signupForm/' + user.uid);
+const userSnap = await get(userRef);
+
+if (!userSnap.exists() || !userSnap.val().newUsername) {
+  window.location.href = "set-username.html";
+} else {
+  window.location.href = "memory.html";
+}
+
   </script>
 </body>
 </html>

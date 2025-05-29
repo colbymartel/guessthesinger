@@ -68,18 +68,22 @@
       cursor: pointer;
       font-size: 0;
       transition: background-color 0.3s;
-    }
-    .card.revealed {
-      font-size: 0.9rem;
-      background-color: #4caf50;
-    }
-    .card.match {
-      background-color: #4caf50 !important;
-      cursor: default;
-    }
-    .card.mismatch {
-      background-color: #e74c3c !important;
-    }
+  border: 3px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.card.revealed {
+  border-color: #ffcb05; /* Yellow when revealed */
+}
+
+.card.match {
+  border-color: #4caf50 !important; /* Green on match */
+}
+
+.card.mismatch {
+  border-color: #e74c3c !important; /* Red on mismatch */
+}
+
     img.singer-img {
       width: 100%;
       height: auto;
@@ -133,6 +137,8 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getFirestore, collection, setDoc, doc, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { updateProfile } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
@@ -150,42 +156,60 @@
     let userCity = null;
 
     onAuthStateChanged(auth, async user => {
-      if (user) {
-        currentUser = user;
-        const userRef = collection(db, "users");
-        const q = query(userRef, where("uid", "==", user.uid));
-        const snapshot = await getDocs(q);
-        snapshot.forEach(doc => {
-  const data = doc.data();
-  const username = data.username ? data.username : "Anonymous";
-  const score = typeof data.score === "number" ? data.score : "—";
-  const city = data.city ? data.city : "-";
+  if (user) {
+    currentUser = user;
 
-  tbody.innerHTML += `
-    <tr>
-      <td>${rank++}</td>
-      <td>${username}</td>
-      <td>${score}</td>
-      <td>${city}</td>
-    </tr>
-  `;
-});
-
-      }
-    });
-
-    async function submitScore(finalScore) {
-      if (!currentUser) return console.warn("Not logged in, score not submitted.");
-      const username = currentUser.displayName || "Anonymous";
-      const date = new Date().toISOString().slice(0, 10);
-      await setDoc(doc(collection(db, "matchScores")), {
-        uid: currentUser.uid,
-        username,
-        score: finalScore,
-        city: userCity,
-        date
+    // Optional: Set display name if it's not set yet
+    if (!user.displayName) {
+      await updateProfile(user, {
+        displayName: "Anonymous" // or prompt user for name instead
       });
     }
+
+    // then load user profile/city etc
+    const userRef = collection(db, "users");
+    const q = query(userRef, where("uid", "==", user.uid));
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      userCity = doc.data().city || null;
+    });
+  }
+});
+
+    async function submitScore(finalScore) {
+  if (!currentUser) return console.warn("Not logged in, score not submitted.");
+
+  let username = currentUser.displayName || "Anonymous";
+  const date = new Date().toISOString().slice(0, 10);
+
+  // Optional: Try to get username from Firestore `users` collection if needed
+  try {
+    const userRef = collection(db, "users");
+    const q = query(userRef, where("uid", "==", currentUser.uid));
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      if (doc.data().username) {
+        username = doc.data().username;
+      }
+    });
+  } catch (err) {
+    console.warn("Could not fetch user profile from Firestore:", err);
+  }
+
+  const today = new Date().toISOString().slice(0, 10); // e.g., "2025-05-29"
+
+  await addDoc(collection(db, "matchScores"), {
+  username,
+  score: finalScore,
+  city: userCity || "-",
+  date: today,
+});
+
+
+  console.log("✅ Score submitted:", { username, score: finalScore });
+}
+
+
 
     const allSingers = [
       { name: 'Adele', image: 'adele.jpg' },
@@ -220,6 +244,8 @@
     const scoreEl = document.getElementById('score');
     const messageEl = document.getElementById('message');
     const restartBtn = document.getElementById('restartBtn');
+    const uid = currentUser?.uid || "guest";
+const username = currentUser?.displayName || "Anonymous";
 
     const selected = allSingers.sort(() => 0.5 - Math.random()).slice(0, 12);
     let cards = [];
@@ -239,6 +265,7 @@
       grid.appendChild(card);
     });
 
+    
     async function handleCardClick(card) {
       if (lock || card.classList.contains('revealed') || card.classList.contains('match')) return;
       revealCard(card);
