@@ -79,39 +79,41 @@
     const database = getDatabase(app);
 
     document.getElementById('signupForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+  e.preventDefault();
 
-      const username = document.getElementById('username').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-        // Set display name on the user profile
-        await updateProfile(user, { displayName: username });
+    // Set display name on the user profile
+    await updateProfile(user, { displayName: username });
 
-        // Store in database if needed
-        await set(ref(database, 'users/' + user.uid), {
-          username: username,
-          email: email,
-          uid: user.uid
-        });
-
-        console.log("✅ User signed up:", username);
-        window.location.href = 'memory.html';
-      } catch (error) {
-        console.error("❌ Signup Error:", error.message);
-        alert("Signup failed: " + error.message);
-        if (error.code === "auth/email-already-in-use") {
-  alert("That email is already registered. Please log in instead.");
-  window.location.href = "login.html";
-  return;
-}
-
-      }
+    // Save user data in Realtime Database
+    await set(ref(database, 'users/' + user.uid), {
+      username: username,
+      email: email,
+      uid: user.uid
     });
+
+    console.log("✅ User signed up:", username);
+
+    // 🔥 Redirect to the game page after signup success
+    window.location.href = 'memory.html';
+
+  } catch (error) {
+    console.error("❌ Signup Error:", error.message);
+    if (error.code === "auth/email-already-in-use") {
+      alert("That email is already registered. Please log in instead.");
+      window.location.href = "login.html";
+    } else {
+      alert("Signup failed: " + error.message);
+    }
+  }
+});
   </script>
 </body>
 </html>
