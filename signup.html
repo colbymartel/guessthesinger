@@ -104,6 +104,12 @@
       } catch (error) {
         console.error("❌ Signup Error:", error.message);
         alert("Signup failed: " + error.message);
+        if (error.code === "auth/email-already-in-use") {
+  alert("That email is already registered. Please log in instead.");
+  window.location.href = "login.html";
+  return;
+}
+
       }
     });
   </script>
