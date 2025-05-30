@@ -209,7 +209,8 @@ async function switchTab(type) {
   let q;
 
   if (type === "daily") {
-    const today = new Date().toISOString().slice(0, 10);
+    const estDate = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
+const today = estDate.toISOString().slice(0, 10);
     q = query(scoresRef, where("date", "==", today), orderBy("score", "desc"));
   } else if (type === "city") {
     if (!currentUserCity) return alert("City leaderboard coming soon!");
