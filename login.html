@@ -12,6 +12,49 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <!-- External CSS -->
   <link rel="stylesheet" href="./signup.css" />
+  <style>
+  .modal {
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-content {
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    text-align: center;
+  }
+  .modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  .modal-content .btn {
+    width: 100%;
+  }
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+  .hidden {
+    display: none;
+  }
+</style>  
 </head>
 <body>
   <!-- Header -->
@@ -41,9 +84,24 @@
         <p class="redirect">
           Don’t have an account? <a href="signup.html">Sign-Up</a>
         </p>
+        <p class="redirect">
+          Forgot password? <a href="#" id="forgotPasswordLink">Reset</a>
+        </p>
+        
       </form>
     </div>
   </main>
+  <!-- Forgot Password Modal -->
+<div id="forgotModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Reset Password</h2>
+    <p>Enter your email or username and we’ll send you a reset link.</p>
+    <input type="text" id="forgotInput" placeholder="Enter email or username" />
+    <button id="sendResetBtn" class="btn">Send Reset Link</button>
+  </div>
+</div>
+
 
   <!-- Footer -->
   <footer class="footer">
@@ -55,73 +113,133 @@
   </footer>
 
   <!-- Firebase Auth Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+  <!-- Firebase Auth Script -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+  import {
+    getDatabase,
+    ref,
+    get
+  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-      authDomain: "guessthesinger10.firebaseapp.com",
-      databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
-      projectId: "guessthesinger10",
-      storageBucket: "guessthesinger10.appspot.com",
-      messagingSenderId: "97201023235",
-      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+    authDomain: "guessthesinger10.firebaseapp.com",
+    databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
+    projectId: "guessthesinger10",
+    storageBucket: "guessthesinger10.appspot.com",
+    messagingSenderId: "97201023235",
+    appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
 
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+  // Elements
+  const forgotLink = document.getElementById('forgotPasswordLink');
+  const forgotModal = document.getElementById('forgotModal');
+  const closeModal = forgotModal.querySelector('.close');
+  const sendResetBtn = document.getElementById('sendResetBtn');
+  const forgotInput = document.getElementById('forgotInput');
 
-      const identifier = document.getElementById('identifier').value.trim();
-      const password = document.getElementById('password').value;
-      let emailToUse = identifier;
+  // Login form submission
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const identifier = document.getElementById('identifier').value.trim();
+    const password = document.getElementById('password').value;
+    let emailToUse = identifier;
 
-      if (!identifier.includes('@')) {
-        // lookup username
-        const snapshot = await get(ref(db, 'signupForm'));
-        let found = false;
-        snapshot.forEach(child => {
-          const data = child.val();
-          if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
-            emailToUse = data.newEmail;
-            found = true;
-          }
-        });
-
-        if (!found) {
-          alert("Username not found. Please use your registered email.");
-          return;
+    if (!identifier.includes('@')) {
+      const snapshot = await get(ref(db, 'signupForm'));
+      let found = false;
+      snapshot.forEach(child => {
+        const data = child.val();
+        if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
+          emailToUse = data.newEmail;
+          found = true;
         }
+      });
+
+      if (!found) {
+        alert("Username not found. Please use your registered email.");
+        return;
       }
+    }
 
-      try {
-  const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
-  const user = userCredential.user;
-  console.log("✅ Logged in as:", user.email);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+      const user = userCredential.user;
+      console.log("✅ Logged in as:", user.email);
 
-  // Check if the user has a username saved in the database
-  const userRef = ref(db, 'signupForm/' + user.uid);
-  const snapshot = await get(userRef);
+      const userRef = ref(db, 'signupForm/' + user.uid);
+      const snapshot = await get(userRef);
+      const userData = snapshot.exists() ? snapshot.val() : null;
 
-  const userData = snapshot.exists() ? snapshot.val() : null;
+      if (!userData || !userData.newUsername) {
+        window.location.href = "set-username.html";
+      } else {
+        window.location.href = "memory.html";
+      }
+    } catch (error) {
+      alert("Login failed: " + error.message);
+    }
+  });
 
-  if (!userData || !userData.newUsername) {
-    // Redirect to set username page if it's missing
-    window.location.href = "set-username.html";
-  } else {
-    // Otherwise go to the memory game
-    window.location.href = "memory.html";
-  }
-} catch (error) {
-  alert("Login failed: " + error.message);
-}
+  // Forgot password modal toggle
+  forgotLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    forgotModal.classList.remove('hidden');
+  });
 
-    });
-  </script>
+  closeModal.addEventListener('click', () => {
+    forgotModal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === forgotModal) {
+      forgotModal.classList.add('hidden');
+    }
+  });
+
+  // Handle password reset logic
+  sendResetBtn.addEventListener('click', async () => {
+    const input = forgotInput.value.trim();
+    if (!input) return alert("Please enter your email or username.");
+
+    let emailToUse = input;
+
+    if (!input.includes('@')) {
+      const snapshot = await get(ref(db, 'signupForm'));
+      let found = false;
+      snapshot.forEach(child => {
+        const data = child.val();
+        if (data.newUsername?.toLowerCase() === input.toLowerCase()) {
+          emailToUse = data.newEmail;
+          found = true;
+        }
+      });
+
+      if (!found) {
+        alert("Username not found. Try again or use your email.");
+        return;
+      }
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, emailToUse);
+      alert("Reset link sent to " + emailToUse);
+      forgotModal.classList.add('hidden');
+    } catch (error) {
+      alert("Error: " + error.message);
+    }
+  });
+</script>
+
 </body>
 </html>
