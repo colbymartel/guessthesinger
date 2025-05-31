@@ -6,6 +6,7 @@
   <title>Match the Singer | Guessing Games</title>
   <link rel="icon" href="/favicongg.ico">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     html, body {
       margin: 0;
@@ -123,18 +124,116 @@
 .welcome-msg:hover {
   text-decoration: underline;
 }
+.header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeDown 1s ease-out;
+}
+.header .logo img {
+  width: 200px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Responsive Logo */
+@media (max-width: 768px) {
+  .header .logo img {
+    width: 60%;
+    padding: 0px;
+  }
+  .header{
+    height: 35px;
+  }
+}
+/* Desktop only by default */
+.desktop-only {
+  display: flex;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+  color: #333;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.modal h2 {
+  color: #315f85;
+}
+
+.close {
+  position: absolute;
+  top: 10%;
+  right: 10%;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
   </style>
 </head>
 <body>
+  <header class="header">
+    <div class="logo">
+        <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+    </div>
+</header>
   <nav>
     <div class="nav-links">
       <a href="/index.html">Home</a>
       <a href="/scores.html">Leaderboard</a>
       <a href="/about.html">About</a>
+      <a href="#" id="infoIcon" title="Game Rules">
+        <i class="fas fa-info-circle"></i>
+      </a>    
     </div>
     <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
   </nav>
+  <div id="rulesModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>How to Play</h2>
+      <p>Flip two cards at a time. If they match a singer name with their photo, it stays revealed.</p>
+      <p>Every mismatch deducts 10 points. Get all matches with the highest score possible!</p>
+      <p>Your best score will be saved and submitted to the leaderboard.</p>
+    </div>
+  </div>
   
 
   <h1>Match the Singer</h1>
@@ -359,13 +458,33 @@ onAuthStateChanged(auth, async user => {
         }
       });
     }
-
     welcomeEl.textContent = `Welcome, ${displayName}`;
+mobileWelcome.textContent = `Welcome, ${displayName}`;
+
     welcomeEl.onclick = () => {
       window.location.href = "/set-username.html";
     };
   }
 });
+const infoIcon = document.getElementById('infoIcon');
+const rulesModal = document.getElementById('rulesModal');
+const closeBtn = rulesModal.querySelector('.close');
+
+infoIcon.addEventListener('click', (e) => {
+  e.preventDefault();
+  rulesModal.classList.remove('hidden');
+});
+
+closeBtn.addEventListener('click', () => {
+  rulesModal.classList.add('hidden');
+});
+
+window.addEventListener('click', (e) => {
+  if (e.target === rulesModal) {
+    rulesModal.classList.add('hidden');
+  }
+});
+
 
   </script>
 </body>
