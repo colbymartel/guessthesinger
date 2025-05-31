@@ -116,6 +116,14 @@
       font-weight: bold;
       cursor: pointer;
     }
+    .welcome-msg {
+  font-weight: bold;
+  color: #ffcb05;
+}
+.welcome-msg:hover {
+  text-decoration: underline;
+}
+
   </style>
 </head>
 <body>
@@ -125,7 +133,9 @@
       <a href="/scores.html">Leaderboard</a>
       <a href="/about.html">About</a>
     </div>
+    <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
   </nav>
+  
 
   <h1>Match the Singer</h1>
   <div id="score">Score: 1000 | High Score: <span id="highScore">0</span></div>
@@ -159,13 +169,17 @@
   if (user) {
     currentUser = user;
 
+    console.log("✅ Logged in user:", user.email || "(no email)");
+    console.log("🔍 Anonymous?", user.isAnonymous);
+    console.log("🧠 Firebase Auth Display Name:", user.displayName || "None");
+
+
     // Optional: Set display name if it's not set yet
     if (!user.displayName) {
       await updateProfile(user, {
-        displayName: "Anonymous" // or prompt user for name instead
+        displayName: "Anonymous"
       });
     }
-
     // then load user profile/city etc
     const userRef = collection(db, "users");
     const q = query(userRef, where("uid", "==", user.uid));
@@ -173,6 +187,8 @@
     snapshot.forEach(doc => {
       userCity = doc.data().city || null;
     });
+  } else {
+    console.log("❌ No user is logged in");
   }
 });
 
@@ -197,13 +213,16 @@
   }
 
   const today = new Date().toISOString().slice(0, 10); // e.g., "2025-05-29"
+const auth = getAuth();
 
-  await addDoc(collection(db, "matchScores"), {
-  username,
+await addDoc(collection(db, "matchScores"), {
   score: finalScore,
-  city: userCity || "-",
-  date: today,
+  userId: auth.currentUser.uid,
+  username: username, // ✅ Add this line
+  city: userCity,  // Optional if you collect city data
+  date: new Date().toISOString().slice(0, 10) // For daily leaderboard
 });
+
 
 
   console.log("✅ Score submitted:", { username, score: finalScore });
@@ -323,6 +342,31 @@ const username = currentUser?.displayName || "Anonymous";
     function updateScore() {
       scoreEl.innerHTML = `Score: ${score} | High Score: <span id="highScore">${highScoreEl.textContent}</span>`;
     }
+    const welcomeEl = document.getElementById('welcomeMessage');
+
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    let displayName = user.displayName || "Anonymous";
+
+    // Try getting username from Firestore if not set in Auth
+    if (displayName === "Anonymous") {
+      const userRef = collection(db, "users");
+      const q = query(userRef, where("uid", "==", user.uid));
+      const snapshot = await getDocs(q);
+      snapshot.forEach(doc => {
+        if (doc.data().username) {
+          displayName = doc.data().username;
+        }
+      });
+    }
+
+    welcomeEl.textContent = `Welcome, ${displayName}`;
+    welcomeEl.onclick = () => {
+      window.location.href = "/set-username.html";
+    };
+  }
+});
+
   </script>
 </body>
 </html>

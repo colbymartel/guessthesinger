@@ -100,23 +100,28 @@
       }
 
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
-        const user = userCredential.user;
-        console.log("✅ Logged in as:", user.email);
-        window.location.href = "memory.html";
-      } catch (error) {
-        alert("Login failed: " + error.message);
-      }
-    });
-    const userRef = ref(db, 'signupForm/' + user.uid);
-const userSnap = await get(userRef);
+  const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+  const user = userCredential.user;
+  console.log("✅ Logged in as:", user.email);
 
-if (!userSnap.exists() || !userSnap.val().newUsername) {
-  window.location.href = "set-username.html";
-} else {
-  window.location.href = "memory.html";
+  // Check if the user has a username saved in the database
+  const userRef = ref(db, 'signupForm/' + user.uid);
+  const snapshot = await get(userRef);
+
+  const userData = snapshot.exists() ? snapshot.val() : null;
+
+  if (!userData || !userData.newUsername) {
+    // Redirect to set username page if it's missing
+    window.location.href = "set-username.html";
+  } else {
+    // Otherwise go to the memory game
+    window.location.href = "memory.html";
+  }
+} catch (error) {
+  alert("Login failed: " + error.message);
 }
 
+    });
   </script>
 </body>
 </html>
