@@ -11,6 +11,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./signup.css" />
 </head>
+<style>
+
+.input-group select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  color: #333;
+  appearance: none; /* Removes native arrow in some browsers */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'12'%20height%3D'8'%20viewBox%3D'0%200%2012%208'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M6%208L0%200h12L6%208z'%20fill%3D'%23666'%20/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px top 50%;
+  background-size: 12px 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group select:focus {
+  outline: none;
+  border-color: #28a7ae;
+  box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
+}
+</style>
 <body>
   <!-- Header -->
   <header class="header">
@@ -23,7 +50,8 @@
   <main class="main">
     <div class="auth-container">
       <h2>Create an Account</h2>
-      <form id="signupForm">
+
+      <form id="step1Form">
         <div class="input-group">
           <label for="username">Username</label>
           <input type="text" id="username" name="username" placeholder="Choose a username" required />
@@ -39,25 +67,88 @@
           <input type="password" id="password" name="password" placeholder="Create a password" required />
         </div>
 
-        <button type="submit" class="btn">Sign Up</button>
-
-        <p class="redirect">
-          Already have an account? <a href="login.html">Log-In</a>
-        </p>
+        <button type="button" class="btn" onclick="goToStep2()">Next</button>
       </form>
+
+      <form id="step2Form" style="display:none;">
+        <div class="input-group">
+          <label for="city">City</label>
+          <select id="city" required>
+            <optgroup label="USA">
+              <option>Atlanta</option>
+              <option>Austin</option>
+              <option>Boston</option>
+              <option>Charlotte</option>
+              <option>Chicago</option>
+              <option>Dallas</option>
+              <option>Denver</option>
+              <option>Houston</option>
+              <option>Jacksonville</option>
+              <option>Las Vegas</option>
+              <option>Los Angeles</option>
+              <option>Miami</option>
+              <option>Minneapolis</option>
+              <option>Nashville</option>
+              <option>New Orleans</option>
+              <option>New York</option>
+              <option>Oklahoma City</option>
+              <option>Orlando</option>
+              <option>Philadelphia</option>
+              <option>Phoenix</option>
+              <option>Salt Lake City</option>
+              <option>San Diego</option>
+              <option>San Francisco</option>
+              <option>Seattle</option>
+              <option>Tampa</option>
+              <option>Washington, D.C.</option>
+            </optgroup>
+            <optgroup label="Worldwide">
+              <option>Bangkok</option>
+              <option>Beijing</option>
+              <option>Berlin</option>
+              <option>Buenos Aires</option>
+              <option>Delhi</option>
+              <option>Dubai</option>
+              <option>London</option>
+              <option>Madrid</option>
+              <option>Melbourne</option>
+              <option>Mexico City</option>
+              <option>Mumbai</option>
+              <option>Paris</option>
+              <option>Rome</option>
+              <option>Sao Paulo</option>
+              <option>Seoul</option>
+              <option>Shanghai</option>
+              <option>Singapore</option>
+              <option>Sydney</option>
+              <option>Tokyo</option>
+              <option>Toronto</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="artist">Favorite Music Artist</label>
+          <input type="text" id="artist" placeholder="e.g. Taylor Swift, Bad Bunny, etc." />
+        </div>
+
+        <button type="submit" class="btn">Finish Signup</button>
+      </form>
+
+      <p class="redirect">
+        Already have an account? <a href="login.html">Log-In</a>
+      </p>
     </div>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     &copy; 2024 Colby Martel |
-    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://discord.gg/egQzdDSM" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+    <a href="https://www.instagram.com/colbymartel19/" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.youtube.com/ColbyMartel" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://discord.gg/egQzdDSM" target="_blank"><i class="fab fa-discord"></i></a>
   </footer>
 
-  <!-- Firebase + Signup Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
@@ -70,50 +161,51 @@
       projectId: "guessthesinger10",
       storageBucket: "guessthesinger10.appspot.com",
       messagingSenderId: "97201023235",
-      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
-      measurementId: "G-3R005HTKEW"
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const database = getDatabase(app);
 
-    document.getElementById('signupForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+    let tempUserData = {};
 
-  const username = document.getElementById('username').value;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    // Set display name on the user profile
-    await updateProfile(user, { displayName: username });
-
-    // Save user data in Realtime Database
-    await set(ref(database, 'users/' + user.uid), {
-      username: username,
-      email: email,
-      uid: user.uid
-    });
-
-    console.log("✅ User signed up:", username);
-
-    // 🔥 Redirect to the game page after signup success
-    window.location.href = 'memory.html';
-
-  } catch (error) {
-    console.error("❌ Signup Error:", error.message);
-    if (error.code === "auth/email-already-in-use") {
-      alert("That email is already registered. Please log in instead.");
-      window.location.href = "login.html";
-    } else {
-      alert("Signup failed: " + error.message);
+    window.goToStep2 = function () {
+      tempUserData.username = document.getElementById('username').value;
+      tempUserData.email = document.getElementById('email').value;
+      tempUserData.password = document.getElementById('password').value;
+      if (!tempUserData.username || !tempUserData.email || !tempUserData.password) {
+        alert("Please fill out all fields");
+        return;
+      }
+      document.getElementById('step1Form').style.display = 'none';
+      document.getElementById('step2Form').style.display = 'block';
     }
-  }
-});
+
+    document.getElementById('step2Form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const city = document.getElementById('city').value;
+      const artist = document.getElementById('artist').value;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, tempUserData.email, tempUserData.password);
+        const user = userCredential.user;
+        await updateProfile(user, { displayName: tempUserData.username });
+
+        await set(ref(database, 'users/' + user.uid), {
+          username: tempUserData.username,
+          email: tempUserData.email,
+          uid: user.uid,
+          city: city,
+          favoriteArtist: artist
+        });
+
+        alert("Signup complete! 🎉");
+        window.location.href = 'memory.html';
+      } catch (err) {
+        alert("Signup error: " + err.message);
+      }
+    });
   </script>
 </body>
 </html>
