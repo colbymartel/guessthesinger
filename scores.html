@@ -210,14 +210,29 @@ async function switchTab(type) {
 
   if (type === "daily") {
     const estDate = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-const today = estDate.toISOString().slice(0, 10);
+    const today = estDate.toISOString().slice(0, 10);
     q = query(scoresRef, where("date", "==", today), orderBy("score", "desc"));
   } else if (type === "city") {
-    if (!currentUserCity) return alert("City leaderboard coming soon!");
+    if (!currentUserCity) {
+      alert("We couldn't detect your city. Make sure it's set in your profile.");
+      leaderboardData = [];
+      renderTablePage();
+      return;
+    }
+
     q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
   } else {
     // All-Time
     q = query(scoresRef, orderBy("score", "desc"));
+  }
+
+  try {
+    const snapshot = await getDocs(q);
+    leaderboardData = snapshot.docs.map(doc => doc.data()).slice(0, 50);
+    renderTablePage();
+  } catch (err) {
+    console.error("Failed to fetch leaderboard:", err);
+    alert("Failed to load leaderboard data.");
   }
 
   const snapshot = await getDocs(q);
@@ -227,18 +242,19 @@ const today = estDate.toISOString().slice(0, 10);
   renderTablePage();
 }
 
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        getDocs(query(collection(db, "users"), where("uid", "==", user.uid))).then(snapshot => {
-          snapshot.forEach(doc => {
-            currentUserCity = doc.data().city || null;
-          });
-          switchTab("daily");
-        });
-      } else {
-        switchTab("daily");
-      }
+onAuthStateChanged(auth, user => {
+  if (user) {
+    getDocs(query(collection(db, "users"), where("uid", "==", user.uid))).then(snapshot => {
+      snapshot.forEach(doc => {
+        currentUserCity = doc.data().city || null;
+      });
+      switchTab("daily"); // default tab
     });
+  } else {
+    switchTab("daily");
+  }
+});
+
     window.switchTab = switchTab;
 window.changePage = changePage;
 
