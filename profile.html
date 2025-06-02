@@ -61,6 +61,95 @@
   box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
 }
 
+nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+    .welcome-msg {
+  font-weight: bold;
+  color: #ffcb05;
+}
+.welcome-msg:hover {
+  text-decoration: underline;
+}
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  right: 15px;
+  top: 120px; /* adjust if needed to push below hamburger */
+  background-color: #1e2b38;
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  width: max-content;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Mobile nav styles */
+.hamburger {
+  display: block;
+  font-size: 24px;
+  cursor: pointer;
+}
+.mobile-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  font-weight: bold;
+  width: 100%;
+}
+
+.mobile-menu a:hover {
+  color: #ffcb05;
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
+/* Nav adjustments */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+    color: white;
+  }
+
+  nav {
+    justify-content: space-between;
+  }
+
+  .welcome-nav {
+    display: block;
+  }
+}
   </style>
 </head>
 <body>
@@ -70,9 +159,21 @@
       <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
     </div>
   </header>
-
-  <!-- Main Section -->
-  <!-- MAIN SECTION -->
+  <nav>
+    <div class="welcome-nav">
+      <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+  
+  <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="/index.html">Home</a>
+    <a href="/memory-leaderboard.html">Leaderboard</a>
+    <a href="/about.html">About</a>
+    <a href="#" id="infoIcon">Game Rules</a>
+  </div>
 <main class="main">
     <div class="auth-container">
       <h2>Create Your Profile</h2>
@@ -322,6 +423,34 @@
         });
       });
     });
+
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+const infoMobile = document.getElementById("infoIconMobile");
+
+if (hamburger) {
+  hamburger.addEventListener("click", () => {
+    mobileMenu.classList.toggle("show");
+  });
+}
+
+if (infoMobile) {
+  infoMobile.addEventListener("click", (e) => {
+    e.preventDefault();
+    mobileMenu.classList.remove("show");
+    rulesModal.classList.remove("hidden");
+  });
+}
+// Collapse menu on outside click
+window.addEventListener("click", (e) => {
+  const isClickInsideMenu = mobileMenu.contains(e.target);
+  const isClickOnHamburger = hamburger.contains(e.target);
+
+  if (!isClickInsideMenu && !isClickOnHamburger) {
+    mobileMenu.classList.remove("show");
+  }
+});
+
   </script>
 
 </body>

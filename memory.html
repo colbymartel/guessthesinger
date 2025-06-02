@@ -156,17 +156,15 @@
 .mobile-menu {
   display: none;
   flex-direction: column;
-  background-color: #1e2b38;
   position: absolute;
-  top: 120px; /* ⬅️ Increase this value for more space below hamburger */
-  right: 0;
-  width: 30vw;
+  right: 15px;
+  top: 120px; /* adjust if needed to push below hamburger */
+  background-color: #1e2b38;
+  padding: 10px 20px;
+  border-radius: 10px;
   z-index: 1000;
-  padding: 10px 15px;
-  border-top-left-radius: 10px;
-  box-shadow: -2px 4px 12px rgba(0, 0, 0, 0.2);
-  text-align: left;
-  align-items: flex-start;
+  width: max-content;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -278,7 +276,7 @@
 
 <div id="mobileMenu" class="mobile-menu hidden">
   <a href="/index.html">Home</a>
-  <a href="/scores.html">Leaderboard</a>
+  <a href="/memory-leaderboard.html">Leaderboard</a>
   <a href="/about.html">About</a>
   <a href="#" id="infoIcon">Game Rules</a>
 </div>

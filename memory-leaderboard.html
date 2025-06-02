@@ -40,7 +40,8 @@ html, body {
     h1 {
       text-align: center;
       color: #315f85;
-      margin: 30px 0 10px;
+      margin-top: 40px;
+      margin-bottom: 20px;
     }
 
     .tab-buttons {
@@ -102,7 +103,6 @@ html, body {
       color: white;
       border: none;
       padding: 10px 15px;
-      margin: 0 5px;
       border-radius: 5px;
       cursor: pointer;
     }
@@ -224,14 +224,15 @@ html, body {
       });
       document.getElementById("pageIndicator").textContent =
   `Page ${currentPage + 1} of ${Math.min(5, Math.ceil(leaderboardData.length / rowsPerPage))}`;
-      document.querySelector(".pagination").style.display = currentTab === "alltime" ? "none" : "block";
-    }
+  document.querySelector(".pagination").style.display = currentTab === "alltime" ? "block" : "block";
+}
 
     function changePage(offset) {
   const totalPages = Math.min(5, Math.ceil(leaderboardData.length / rowsPerPage));
   currentPage = Math.max(0, Math.min(currentPage + offset, totalPages - 1));
   renderTablePage();
 }
+
 async function switchTab(type) {
   updateTabStyle(type);
   currentTab = type;
@@ -254,24 +255,18 @@ async function switchTab(type) {
 
     q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
   } else {
-    // All-Time
     q = query(scoresRef, orderBy("score", "desc"));
   }
 
   try {
     const snapshot = await getDocs(q);
-    leaderboardData = snapshot.docs.map(doc => doc.data()).slice(0, 50);
+    leaderboardData = snapshot.docs.map(doc => doc.data());
+    console.log("Fetched leaderboardData:", leaderboardData.length); // ✅ debug log
     renderTablePage();
   } catch (err) {
     console.error("Failed to fetch leaderboard:", err);
     alert("Failed to load leaderboard data.");
   }
-
-  const snapshot = await getDocs(q);
-
-  // ⛔ No limit() used — just slice after fetch
-  leaderboardData = snapshot.docs.map(doc => doc.data()).slice(0, 50);
-  renderTablePage();
 }
 
 onAuthStateChanged(auth, user => {
