@@ -153,10 +153,22 @@
 .desktop-only {
   display: flex;
 }
-
 .mobile-menu {
   display: none;
+  flex-direction: column;
+  background-color: #1e2b38;
+  position: absolute;
+  top: 120px; /* ⬅️ Increase this value for more space below hamburger */
+  right: 0;
+  width: 50vw;
+  z-index: 1000;
+  padding: 10px 15px;
+  border-top-left-radius: 10px;
+  box-shadow: -2px 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  align-items: flex-start;
 }
+
 
 .modal {
   position: fixed;
@@ -205,6 +217,47 @@
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+/* Mobile nav styles */
+.hamburger {
+  display: block;
+  font-size: 24px;
+  cursor: pointer;
+}
+.mobile-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  font-weight: bold;
+  width: 100%;
+}
+
+.mobile-menu a:hover {
+  color: #ffcb05;
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
+/* Nav adjustments */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+    color: white;
+  }
+
+  nav {
+    justify-content: space-between;
+  }
+
+  .welcome-nav {
+    display: block;
+  }
+}
 
   </style>
 </head>
@@ -214,17 +267,22 @@
         <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
     </div>
 </header>
-  <nav>
-    <div class="nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/scores.html">Leaderboard</a>
-      <a href="/about.html">About</a>
-      <a href="#" id="infoIcon" title="Game Rules">
-        <i class="fas fa-info-circle"></i>
-      </a>    
-    </div>
+<nav>
+  <div class="welcome-nav">
     <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
-  </nav>
+  </div>
+  <div class="hamburger" id="hamburger">
+    <i class="fas fa-bars"></i>
+  </div>
+</nav>
+
+<div id="mobileMenu" class="mobile-menu hidden">
+  <a href="/index.html">Home</a>
+  <a href="/scores.html">Leaderboard</a>
+  <a href="/about.html">About</a>
+  <a href="#" id="infoIcon">Game Rules</a>
+</div>
+
   <div id="rulesModal" class="modal hidden">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -481,6 +539,33 @@ closeBtn.addEventListener('click', () => {
 window.addEventListener('click', (e) => {
   if (e.target === rulesModal) {
     rulesModal.classList.add('hidden');
+  }
+});
+
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+const infoMobile = document.getElementById("infoIconMobile");
+
+if (hamburger) {
+  hamburger.addEventListener("click", () => {
+    mobileMenu.classList.toggle("show");
+  });
+}
+
+if (infoMobile) {
+  infoMobile.addEventListener("click", (e) => {
+    e.preventDefault();
+    mobileMenu.classList.remove("show");
+    rulesModal.classList.remove("hidden");
+  });
+}
+// Collapse menu on outside click
+window.addEventListener("click", (e) => {
+  const isClickInsideMenu = mobileMenu.contains(e.target);
+  const isClickOnHamburger = hamburger.contains(e.target);
+
+  if (!isClickInsideMenu && !isClickOnHamburger) {
+    mobileMenu.classList.remove("show");
   }
 });
 
