@@ -232,7 +232,6 @@ html, body {
   currentPage = Math.max(0, Math.min(currentPage + offset, totalPages - 1));
   renderTablePage();
 }
-
 async function switchTab(type) {
   updateTabStyle(type);
   currentTab = type;
@@ -241,10 +240,12 @@ async function switchTab(type) {
   const scoresRef = collection(db, "matchScores");
   let q;
 
+  // ✅ Define this FIRST so it's accessible
+  const now = new Date();
+  const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  
   if (type === "daily") {
-    const estDate = new Date(new Date().toLocaleString("en-US", { timeZone: "America/New_York" }));
-    const today = estDate.toISOString().slice(0, 10);
-    q = query(scoresRef, where("date", "==", today), orderBy("score", "desc"));
+    q = query(scoresRef, where("date", "==", localDate), orderBy("score", "desc"));
   } else if (type === "city") {
     if (!currentUserCity) {
       alert("We couldn't detect your city. Make sure it's set in your profile.");
@@ -252,22 +253,21 @@ async function switchTab(type) {
       renderTablePage();
       return;
     }
-
     q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
   } else {
-    q = query(scoresRef, orderBy("score", "desc"));
+    q = query(scoresRef, orderBy("score", "desc")); // all-time
   }
 
   try {
     const snapshot = await getDocs(q);
     leaderboardData = snapshot.docs.map(doc => doc.data());
-    console.log("Fetched leaderboardData:", leaderboardData.length); // ✅ debug log
     renderTablePage();
   } catch (err) {
     console.error("Failed to fetch leaderboard:", err);
     alert("Failed to load leaderboard data.");
   }
 }
+
 
 onAuthStateChanged(auth, user => {
   if (user) {

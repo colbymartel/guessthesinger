@@ -367,7 +367,10 @@
     console.warn("Could not fetch user profile from Firestore:", err);
   }
 
-  const today = new Date().toISOString().slice(0, 10); // e.g., "2025-05-29"
+  const now = new Date();
+const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+// store this in Firestore under field "date"
 const auth = getAuth();
 
 await addDoc(collection(db, "matchScores"), {
