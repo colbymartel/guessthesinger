@@ -104,11 +104,22 @@ html, body {
         <div class="input-group">
           <label for="identifier">Email</label>
           <input type="text" id="identifier" name="identifier" placeholder="Enter email" required />
+
+          
         </div>
 
-        <div class="input-group">
+        <div class="input-group" style="position: relative;">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" placeholder="Enter password" required />
+          <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 38px; cursor: pointer;"></i>
+        </div>
+        
+
+        <div class="input-group">
+          <label>
+            <input type="checkbox" id="keepLoggedIn" />
+            Keep me logged in
+          </label>
         </div>
 
         <button type="submit" class="btn">Log In</button>
@@ -147,12 +158,17 @@ html, body {
   <!-- Firebase Auth Script -->
   <!-- Firebase Auth Script -->
 <script type="module">
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
   import {
-    getAuth,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail
-  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+  getAuth,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence
+} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
   import {
     getDatabase,
     ref,
@@ -168,7 +184,7 @@ html, body {
     messagingSenderId: "97201023235",
     appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
   };
-
+  
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase(app);
@@ -179,55 +195,50 @@ html, body {
   const closeModal = forgotModal.querySelector('.close');
   const sendResetBtn = document.getElementById('sendResetBtn');
   const forgotInput = document.getElementById('forgotInput');
+// Login form submission
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const identifier = document.getElementById('identifier').value.trim();
+  const password = document.getElementById('password').value;
+  const keepLoggedIn = document.getElementById('keepLoggedIn').checked;
+  let emailToUse = identifier;
 
-  // Login form submission
-  document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const identifier = document.getElementById('identifier').value.trim();
-    const password = document.getElementById('password').value;
-    let emailToUse = identifier;
-
-    if (!identifier.includes('@')) {
-      const snapshot = await get(ref(db, 'signupForm'));
-      let found = false;
-      snapshot.forEach(child => {
-        const data = child.val();
-        if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
-          emailToUse = data.newEmail;
-          found = true;
-        }
-      });
-
-      if (!found) {
-        alert("Username not found. Please use your registered email.");
-        return;
+  if (!identifier.includes('@')) {
+    const snapshot = await get(ref(db, 'signupForm'));
+    let found = false;
+    snapshot.forEach(child => {
+      const data = child.val();
+      if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
+        emailToUse = data.newEmail;
+        found = true;
       }
+    });
+
+    if (!found) {
+      alert("Username not found. Please use your registered email.");
+      return;
     }
+  }
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
-      const user = userCredential.user;
-      console.log("✅ Logged in as:", user.email);
+  try {
+    await setPersistence(auth, keepLoggedIn ? browserLocalPersistence : browserSessionPersistence);
+    const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+    const user = userCredential.user;
 
-      const userRef = ref(db, 'signupForm/' + user.uid);
-      const snapshot = await get(userRef);
-      const userData = snapshot.exists() ? snapshot.val() : null;
+    const userRef = ref(db, 'signupForm/' + user.uid);
+    const snapshot = await get(userRef);
+    const userData = snapshot.exists() ? snapshot.val() : null;
 
-      if (!userData || !userData.newUsername) {
-        window.location.href = "profile.html";
-      } else {
-        window.location.href = "memory.html";
-      }
-    } catch (error) {
-      alert("Login failed: " + error.message);
+    if (!userData || !userData.newUsername) {
+      window.location.href = "profile.html";
+    } else {
+      window.location.href = "memory.html";
     }
-  });
+  } catch (error) {
+    alert("Login failed: " + error.message);
+  }
+});
 
-  // Forgot password modal toggle
-  forgotLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    forgotModal.classList.remove('hidden');
-  });
 
   closeModal.addEventListener('click', () => {
     forgotModal.classList.add('hidden');
@@ -241,36 +252,50 @@ html, body {
 
   // Handle password reset logic
   sendResetBtn.addEventListener('click', async () => {
-    const input = forgotInput.value.trim();
-    if (!input) return alert("Please enter your email or username.");
+  const input = forgotInput.value.trim();
 
-    let emailToUse = input;
+  if (!input) {
+    alert("Please enter your email or username.");
+    return;
+  }
 
-    if (!input.includes('@')) {
-      const snapshot = await get(ref(db, 'signupForm'));
-      let found = false;
-      snapshot.forEach(child => {
-        const data = child.val();
-        if (data.newUsername?.toLowerCase() === input.toLowerCase()) {
-          emailToUse = data.newEmail;
-          found = true;
-        }
-      });
+  let emailToUse = input;
 
-      if (!found) {
-        alert("Username not found. Try again or use your email.");
-        return;
+  if (!input.includes('@')) {
+    const snapshot = await get(ref(db, 'signupForm'));
+    let found = false;
+    snapshot.forEach(child => {
+      const data = child.val();
+      if (data.newUsername?.toLowerCase() === input.toLowerCase()) {
+        emailToUse = data.newEmail;
+        found = true;
       }
-    }
+    });
 
-    try {
-      await sendPasswordResetEmail(auth, emailToUse);
-      alert("Reset link sent to " + emailToUse);
-      forgotModal.classList.add('hidden');
-    } catch (error) {
-      alert("Error: " + error.message);
+    if (!found) {
+      alert("Username not found. Try again or use your email.");
+      return;
     }
-  });
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, emailToUse);
+    alert("Reset link sent to " + emailToUse);
+    forgotModal.classList.add('hidden');
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+});
+// Toggle password visibility
+document.getElementById('togglePassword').addEventListener('click', () => {
+  const passwordInput = document.getElementById('password');
+  const toggleIcon = document.getElementById('togglePassword');
+  const isHidden = passwordInput.type === "password";
+  passwordInput.type = isHidden ? "text" : "password";
+  toggleIcon.classList.toggle("fa-eye");
+  toggleIcon.classList.toggle("fa-eye-slash");
+});
+
 </script>
 
 </body>

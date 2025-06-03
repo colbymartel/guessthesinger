@@ -242,6 +242,10 @@ html, body {
     <div class="welcome-nav">
       <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
     </div>
+    <div class="nav-links">
+      <a href="/memory.html">Back to Game</a>
+    </div>
+    
     <div class="hamburger" id="hamburger">
       <i class="fas fa-bars"></i>
     </div>
@@ -277,12 +281,12 @@ html, body {
     <button onclick="changePage(1)">Next &raquo;</button>
     <span id="pageIndicator">Page 1 of 5</span>
   </div>
-
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getFirestore, collection, query, orderBy, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getFirestore, collection, query, orderBy, where, getDocs, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-
+    
+    // ✅ Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
@@ -291,125 +295,149 @@ html, body {
       messagingSenderId: "97201023235",
       appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
-
+    
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth();
-
+    
     let currentUserEmail = null;
     let currentUserCity = null;
     let leaderboardData = [];
     let currentPage = 0;
     const rowsPerPage = 10;
     let currentTab = 'daily';
-
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      setupMobileMenu();
+    });
+    
+    function setupMobileMenu() {
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobileMenu");
+    
+      if (hamburger && mobileMenu) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("show");
+        });
+    
+        // Close menu on link click
+        mobileMenu.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.remove("show");
+          });
+        });
+    
+        // Close menu on outside click
+        window.addEventListener("click", (e) => {
+          if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+            mobileMenu.classList.remove("show");
+          }
+        });
+      }
+    }
+    
     function updateTabStyle(activeTab) {
       document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(activeTab + 'Btn').classList.add('active');
+      document.getElementById(`${activeTab}Btn`).classList.add('active');
     }
-
+    
     function renderTablePage() {
       const tbody = document.getElementById("leaderboardBody");
       tbody.innerHTML = "";
+    
       const start = currentPage * rowsPerPage;
       const pageData = leaderboardData.slice(start, start + rowsPerPage);
+    
       pageData.forEach((data, index) => {
         const username = data.username || "Anonymous";
         const score = typeof data.score === "number" ? data.score : "—";
         const city = data.city || "-";
         const isColby = currentUserEmail === "colbyma23@gmail.com";
-const deleteBtn = isColby ? `<button onclick="deleteEntry('${data.id}')">❌</button>` : "";
-tbody.innerHTML += `
-  <tr>
-    <td>${start + index + 1}</td>
-    <td>${username}</td>
-    <td>${score}</td>
-    <td>${city} ${deleteBtn}</td>
-  </tr>
-`;
-
+        const deleteBtn = isColby ? `<button onclick="deleteEntry('${data.id}')">❌</button>` : "";
+    
+        tbody.innerHTML += `
+          <tr>
+            <td>${start + index + 1}</td>
+            <td>${username}</td>
+            <td>${score}</td>
+            <td>${city} ${deleteBtn}</td>
+          </tr>`;
       });
-      document.getElementById("pageIndicator").textContent =
-  `Page ${currentPage + 1} of ${Math.min(5, Math.ceil(leaderboardData.length / rowsPerPage))}`;
-  document.querySelector(".pagination").style.display = currentTab === "alltime" ? "block" : "block";
-}
-
-    function changePage(offset) {
-  const totalPages = Math.min(5, Math.ceil(leaderboardData.length / rowsPerPage));
-  currentPage = Math.max(0, Math.min(currentPage + offset, totalPages - 1));
-  renderTablePage();
-}
-async function switchTab(type) {
-  updateTabStyle(type);
-  currentTab = type;
-  currentPage = 0;
-
-  const scoresRef = collection(db, "matchScores");
-  let q;
-
-  // ✅ Define this FIRST so it's accessible
-  const now = new Date();
-  const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-  
-  if (type === "daily") {
-    q = query(scoresRef, where("date", "==", localDate), orderBy("score", "desc"));
-  } else if (type === "city") {
-    if (!currentUserCity) {
-      alert("We couldn't detect your city. Make sure it's set in your profile.");
-      leaderboardData = [];
-      renderTablePage();
-      return;
+    
+      const totalPages = Math.min(5, Math.ceil(leaderboardData.length / rowsPerPage));
+      document.getElementById("pageIndicator").textContent = `Page ${currentPage + 1} of ${totalPages}`;
+      document.querySelector(".pagination").style.display = "block";
     }
-    q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
-  } else {
-    q = query(scoresRef, orderBy("score", "desc")); // all-time
-  }
-
-  try {
-    const snapshot = await getDocs(q);
-    leaderboardData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    renderTablePage();
-  } catch (err) {
-    console.error("Failed to fetch leaderboard:", err);
-    alert("Failed to load leaderboard data.");
-  }
-}
-
-
-onAuthStateChanged(auth, user => {
-  if (user) {
-    currentUserEmail = user.email; // ✅ Track user's email
-
-    getDocs(query(collection(db, "users"), where("uid", "==", user.uid))).then(snapshot => {
-      snapshot.forEach(doc => {
-        currentUserCity = doc.data().city || null;
-      });
-      switchTab("daily"); // default tab
+    
+    window.changePage = function (offset) {
+      const totalPages = Math.min(5, Math.ceil(leaderboardData.length / rowsPerPage));
+      currentPage = Math.max(0, Math.min(currentPage + offset, totalPages - 1));
+      renderTablePage();
+    };
+    
+    window.switchTab = async function (type) {
+      updateTabStyle(type);
+      currentTab = type;
+      currentPage = 0;
+    
+      const scoresRef = collection(db, "matchScores");
+      const now = new Date();
+      const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    
+      let q;
+      if (type === "daily") {
+        q = query(scoresRef, where("date", "==", localDate), orderBy("score", "desc"));
+      } else if (type === "city") {
+        if (!currentUserCity) {
+          alert("We couldn't detect your city. Make sure it's set in your profile.");
+          leaderboardData = [];
+          renderTablePage();
+          return;
+        }
+        q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
+      } else {
+        q = query(scoresRef, orderBy("score", "desc")); // All-time
+      }
+    
+      try {
+        const snapshot = await getDocs(q);
+        leaderboardData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderTablePage();
+      } catch (err) {
+        console.error("Failed to fetch leaderboard:", err);
+        alert("Failed to load leaderboard data.");
+      }
+    };
+    
+    window.deleteEntry = async function (id) {
+      if (!confirm("Are you sure you want to delete this entry?")) return;
+    
+      try {
+        await deleteDoc(doc(db, "matchScores", id));
+        alert("Entry deleted.");
+        switchTab(currentTab); // Refresh table
+      } catch (err) {
+        console.error("Error deleting entry:", err);
+        alert("Failed to delete entry.");
+      }
+    };
+    
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        currentUserEmail = user.email;
+    
+        getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              currentUserCity = doc.data().city || null;
+            });
+            switchTab("daily");
+          });
+      } else {
+        switchTab("daily");
+      }
     });
-  } else {
-    switchTab("daily");
-  }
-});
-
-
-    window.switchTab = switchTab;
-window.changePage = changePage;
-
-
-import { deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
-
-window.deleteEntry = async function(id) {
-  if (!confirm("Are you sure you want to delete this entry?")) return;
-  try {
-    await deleteDoc(doc(db, "matchScores", id));
-    alert("Entry deleted.");
-    switchTab(currentTab); // refresh
-  } catch (err) {
-    console.error("Error deleting entry:", err);
-    alert("Failed to delete.");
-  }
-};
-
-  </script>
+    </script>
+    
 </body>
 </html>

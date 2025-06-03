@@ -9,6 +9,7 @@
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <!-- External CSS (reuses signup.css) -->
   <link rel="stylesheet" href="./signup.css" />
@@ -60,96 +61,48 @@
   border-color: #28a7ae;
   box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
 }
-
 nav {
-      background-color: #1e2b38;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: white;
-    }
-
-    .nav-links a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .nav-links a:hover {
-      color: #ffcb05;
-    }
-    .welcome-msg {
-  font-weight: bold;
-  color: #ffcb05;
-}
-.welcome-msg:hover {
-  text-decoration: underline;
-}
-.mobile-menu {
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  right: 15px;
-  top: 120px; /* adjust if needed to push below hamburger */
   background-color: #1e2b38;
-  padding: 10px 20px;
-  border-radius: 10px;
-  z-index: 1000;
-  width: max-content;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.mobile-menu.show {
+  padding: 15px 30px;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: white;
 }
 
-.hidden {
-  display: none;
+/* Welcome on the left */
+.welcome-nav {
+  position: absolute;
+  left: 30px;
 }
 
-/* Mobile nav styles */
+/* Hamburger on the right */
 .hamburger {
-  display: block;
+  position: absolute;
+  right: 30px;
   font-size: 24px;
   cursor: pointer;
-}
-.mobile-menu a {
   color: white;
-  text-decoration: none;
-  padding: 10px 0;
-  font-weight: bold;
-  width: 100%;
 }
 
-.mobile-menu a:hover {
+/* Nav links centered */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-links a:hover {
   color: #ffcb05;
 }
 
-.mobile-menu.show {
-  display: flex;
-}
-
-/* Nav adjustments */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-
-  .hamburger {
-    display: block;
-    color: white;
-  }
-
-  nav {
-    justify-content: space-between;
-  }
-
-  .welcome-nav {
-    display: block;
-  }
-}
   </style>
 </head>
 <body>
@@ -163,17 +116,14 @@ nav {
     <div class="welcome-nav">
       <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
     </div>
-    <div class="hamburger" id="hamburger">
-      <i class="fas fa-bars"></i>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/memory.html">Play</a>
+      <a href="/memory-leaderboard.html">Leaderboard</a>
+      <a href="/about.html">About</a>
     </div>
   </nav>
   
-  <div id="mobileMenu" class="mobile-menu hidden">
-    <a href="/index.html">Home</a>
-    <a href="/memory-leaderboard.html">Leaderboard</a>
-    <a href="/about.html">About</a>
-    <a href="#" id="infoIcon">Game Rules</a>
-  </div>
 <main class="main">
     <div class="auth-container">
       <h2>Create Your Profile</h2>
@@ -280,8 +230,6 @@ nav {
                 <option>Zurich</option>
               </optgroup>
             </select>
-                               
-          </select>
         </div>
   
         <!-- Favorite Artist -->
@@ -303,14 +251,13 @@ nav {
       <a href="https://www.youtube.com/ColbyMartel" target="_blank"><i class="fab fa-youtube"></i></a>
       <a href="https://www.tiktok.com/@ColbyMartel" target="_blank"><i class="fab fa-tiktok"></i></a>
       <a href="https://discord.gg/egQzdDSM" target="_blank"><i class="fab fa-discord"></i></a>
-  </footer>
-  <script type="module">
+  </footer><script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     import { getDatabase, ref as dbRef, set as dbSet } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
-    import { getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
-
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  
+    // ✅ Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
@@ -327,63 +274,57 @@ nav {
     const firestore = getFirestore(app);
   
     document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById('profileForm');
-      const avatarImgs = document.querySelectorAll('.avatar-img');
+      const form = document.getElementById("profileForm");
+      const usernameInput = document.getElementById("username");
+      const cityInput = document.getElementById("city");
+      const favoriteArtistInput = document.getElementById("favoriteArtist");
+      const avatarImgs = document.querySelectorAll(".avatar-img");
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const infoMobile = document.getElementById("infoIconMobile");
       let selectedAvatar = "";
   
-      // Avatar selection
+      // ✅ Avatar selection logic
       avatarImgs.forEach(img => {
-        img.addEventListener('click', () => {
-          avatarImgs.forEach(i => i.classList.remove('selected'));
-          img.classList.add('selected');
-          selectedAvatar = img.getAttribute('data-avatar');
+        img.addEventListener("click", () => {
+          avatarImgs.forEach(i => i.classList.remove("selected"));
+          img.classList.add("selected");
+          selectedAvatar = img.getAttribute("data-avatar");
         });
       });
   
-      onAuthStateChanged(auth, (user) => {
+      // ✅ Handle user auth and profile loading
+      onAuthStateChanged(auth, async user => {
         if (!user) {
           window.location.href = "login.html";
           return;
         }
   
-        if (!form) {
-          console.error("Form not found");
-          return;
+        try {
+          const docRef = doc(firestore, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+  
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.username) usernameInput.value = data.username;
+            if (data.city) cityInput.value = data.city;
+            if (data.favoriteArtist) favoriteArtistInput.value = data.favoriteArtist;
+            if (data.avatar) {
+              const selected = [...avatarImgs].find(img => img.getAttribute("data-avatar") === data.avatar);
+              if (selected) selected.classList.add("selected");
+            }
+          }
+        } catch (error) {
+          console.error("Error loading user profile:", error);
         }
-
-(async () => {
-  try {
-    const docRef = doc(firestore, "users", user.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if (data.username) document.getElementById('username').value = data.username;
-      if (data.nickname) document.getElementById('username').value = data.nickname; // If you use a separate nickname field, update its ID
-      if (data.city) document.getElementById('city').value = data.city;
-      if (data.favoriteArtist) document.getElementById('favoriteArtist').value = data.favoriteArtist;
-
-      // Select avatar
-      if (data.avatar) {
-        const selected = [...document.querySelectorAll('.avatar-img')].find(img => img.getAttribute('data-avatar') === data.avatar);
-        if (selected) {
-          selected.classList.add('selected');
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching profile:", error);
-  }
-})();
-
-        form.addEventListener('submit', async (e) => {
+  
+        // ✅ Form submit
+        form.addEventListener("submit", async e => {
           e.preventDefault();
   
-          const username = document.getElementById('username').value.trim();
-          const nickname = document.getElementById('nickname')?.value.trim() || "";
-          const city = document.getElementById('city')?.value || "";
-          const favoriteArtist = document.getElementById('favoriteArtist')?.value.trim() || "";
-          const notifications = document.getElementById('notificationsToggle')?.checked || false;
+          const username = usernameInput.value.trim();
+          const city = cityInput.value || "";
+          const favoriteArtist = favoriteArtistInput.value.trim() || "";
   
           if (!username || !city) {
             alert("Please complete all required fields.");
@@ -391,15 +332,13 @@ nav {
           }
   
           try {
-            await dbSet(dbRef(db, 'signupForm/' + user.uid), {
+            await dbSet(dbRef(db, "signupForm/" + user.uid), {
               userId: user.uid,
               newUsername: username,
               newEmail: user.email,
               avatar: selectedAvatar,
-              nickname: nickname,
               city: city,
-              favoriteArtist: favoriteArtist,
-              notifications: notifications
+              favoriteArtist: favoriteArtist
             });
   
             await setDoc(doc(firestore, "users", user.uid), {
@@ -407,10 +346,8 @@ nav {
               email: user.email,
               username: username,
               avatar: selectedAvatar,
-              nickname: nickname,
               city: city,
-              favoriteArtist: favoriteArtist,
-              notifications: notifications
+              favoriteArtist: favoriteArtist
             });
   
             await updateProfile(user, { displayName: username });
@@ -422,36 +359,41 @@ nav {
           }
         });
       });
+  
+      // ✅ Mobile nav toggle
+      if (hamburger) {
+        hamburger.addEventListener("click", () => {
+          mobileMenu.classList.toggle("show");
+        });
+      }
+  
+      // ✅ Collapse menu when clicking a link
+      document.querySelectorAll("#mobileMenu a").forEach(link => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.remove("show");
+        });
+      });
+  
+      // ✅ Game rules link in mobile menu
+      if (infoMobile) {
+        infoMobile.addEventListener("click", e => {
+          e.preventDefault();
+          mobileMenu.classList.remove("show");
+          alert("Game rules coming soon!"); // Replace with modal logic if needed
+        });
+      }
+  
+      // ✅ Auto-close menu when clicking outside
+      window.addEventListener("click", e => {
+        const isInside = mobileMenu.contains(e.target);
+        const isHamburger = hamburger.contains(e.target);
+        if (!isInside && !isHamburger) {
+          mobileMenu.classList.remove("show");
+        }
+      });
     });
-
-const hamburger = document.getElementById("hamburger");
-const mobileMenu = document.getElementById("mobileMenu");
-const infoMobile = document.getElementById("infoIconMobile");
-
-if (hamburger) {
-  hamburger.addEventListener("click", () => {
-    mobileMenu.classList.toggle("show");
-  });
-}
-
-if (infoMobile) {
-  infoMobile.addEventListener("click", (e) => {
-    e.preventDefault();
-    mobileMenu.classList.remove("show");
-    rulesModal.classList.remove("hidden");
-  });
-}
-// Collapse menu on outside click
-window.addEventListener("click", (e) => {
-  const isClickInsideMenu = mobileMenu.contains(e.target);
-  const isClickOnHamburger = hamburger.contains(e.target);
-
-  if (!isClickInsideMenu && !isClickOnHamburger) {
-    mobileMenu.classList.remove("show");
-  }
-});
-
   </script>
+  
 
 </body>
 </html>
