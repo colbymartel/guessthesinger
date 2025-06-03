@@ -13,6 +13,33 @@
   <!-- External CSS -->
   <link rel="stylesheet" href="./signup.css" />
   <style>
+
+html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
   .modal {
     position: fixed;
     z-index: 999;
@@ -63,7 +90,12 @@
       <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
     </div>
   </header>
-
+  <nav>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/about.html">About</a>
+    </div>
+  </nav>
   <!-- Main Section with Login Form -->
   <main class="main">
     <div class="auth-container">
@@ -105,7 +137,7 @@
 
   <!-- Footer -->
   <footer class="footer">
-      &copy; 2024 Colby Martel | 
+      &copy; 2025 Colby Martel | 
       <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
       <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>

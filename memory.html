@@ -265,6 +265,35 @@
     display: block;
   }
 }
+.dropdown {
+  position: absolute;
+  top: 40px;
+  margin-right: 30px;
+  background-color: #1e2b38;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.dropdown a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-weight: bold;
+}
+
+.dropdown a:hover {
+  background-color: #ffcb05;
+  color: #1e2b38;
+}
+
+.dropdown.hidden {
+  display: none;
+}
 
   </style>
 </head>
@@ -275,9 +304,13 @@
     </div>
 </header>
 <nav>
-  <div class="welcome-nav">
-    <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
+  <div class="welcome-nav" style="position: relative;">
+    <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+    <div id="dropdownMenu" class="dropdown hidden"></div>
   </div>
+  
+  </div>
+  
   <div class="hamburger" id="hamburger">
     <i class="fas fa-bars"></i>
   </div>
@@ -330,29 +363,47 @@
     let userCity = null;
 
     onAuthStateChanged(auth, async user => {
+  const dropdown = document.getElementById('dropdownMenu');
+  dropdown.innerHTML = ''; // clear previous options
+
   if (user) {
-    currentUser = user;
+    // ✅ Logged in
+    let displayName = user.displayName || "Anonymous";
 
-    console.log("✅ Logged in user:", user.email || "(no email)");
-    console.log("🔍 Anonymous?", user.isAnonymous);
-    console.log("🧠 Firebase Auth Display Name:", user.displayName || "None");
-
-
-    // Optional: Set display name if it's not set yet
-    if (!user.displayName) {
-      await updateProfile(user, {
-        displayName: "Anonymous"
-      });
-    }
-    // then load user profile/city etc
     const userRef = collection(db, "users");
     const q = query(userRef, where("uid", "==", user.uid));
     const snapshot = await getDocs(q);
     snapshot.forEach(doc => {
-      userCity = doc.data().city || null;
+      if (doc.data().username) {
+        displayName = doc.data().username;
+      }
     });
+
+    welcomeEl.textContent = `Welcome, ${displayName}`;
+
+    dropdown.innerHTML = `
+      <a href="/profile.html">Edit Profile</a>
+      <a href="#" id="logoutBtn">Log Out</a>
+    `;
+
+    document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        await signOut(auth);
+        window.location.reload();
+      } catch (err) {
+        console.error("Logout failed:", err);
+      }
+    });
+
   } else {
-    console.log("❌ No user is logged in");
+    // ❌ Not logged in
+    welcomeEl.textContent = `Welcome, Anonymous`;
+
+    dropdown.innerHTML = `
+      <a href="/signup.html">Create Profile</a>
+      <a href="/login.html">Log In</a>
+    `;
   }
 });
 
@@ -510,8 +561,7 @@ const username = currentUser?.displayName || "Anonymous";
       scoreEl.innerHTML = `Score: ${score} | High Score: <span id="highScore">${highScoreEl.textContent}</span>`;
     }
     const welcomeEl = document.getElementById('welcomeMessage');
-
-onAuthStateChanged(auth, async user => {
+    onAuthStateChanged(auth, async user => {
   if (user) {
     let displayName = user.displayName || "Anonymous";
 
@@ -526,13 +576,17 @@ onAuthStateChanged(auth, async user => {
         }
       });
     }
-    welcomeEl.textContent = `Welcome, ${displayName}`;
 
+    welcomeEl.textContent = `Welcome, ${displayName}`;
     welcomeEl.onclick = () => {
       window.location.href = "/profile.html";
     };
+  } else {
+    welcomeEl.textContent = "Welcome, Anonymous";
+    welcomeEl.onclick = null;
   }
 });
+
 const infoIcon = document.getElementById('infoIcon');
 const rulesModal = document.getElementById('rulesModal');
 const closeBtn = rulesModal.querySelector('.close');
@@ -576,6 +630,32 @@ window.addEventListener("click", (e) => {
 
   if (!isClickInsideMenu && !isClickOnHamburger) {
     mobileMenu.classList.remove("show");
+  }
+});
+import { signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+const dropdown = document.getElementById('dropdownMenu');
+const logoutBtn = document.getElementById('logoutBtn');
+
+welcomeEl.addEventListener("mouseenter", () => {
+  dropdown.classList.remove("hidden");
+});
+welcomeEl.addEventListener("mouseleave", () => {
+  setTimeout(() => {
+    if (!dropdown.matches(':hover')) dropdown.classList.add("hidden");
+  }, 200);
+});
+dropdown.addEventListener("mouseleave", () => {
+  dropdown.classList.add("hidden");
+});
+
+logoutBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  try {
+    await signOut(auth);
+    window.location.reload();
+  } catch (err) {
+    console.error("Logout failed:", err);
   }
 });
 
