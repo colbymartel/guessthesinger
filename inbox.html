@@ -256,9 +256,19 @@ body {
   
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-  import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  addDoc,
+  serverTimestamp,
+  doc,
+  getDoc
+} from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
   import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-  import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
@@ -303,31 +313,47 @@ body {
     alert("You must be logged in.");
   }
 });
+function loadInbox() {
+  const messagesRef = collection(db, "messages");
+  const q = query(messagesRef, orderBy("timestamp"));
 
+  onSnapshot(q, snapshot => {
+    const addedUserIds = new Set();
+    userListEl.innerHTML = "";
 
-  function loadInbox() {
-    const messagesRef = collection(db, "messages");
-    const q = query(messagesRef, where("recipientId", "==", currentUser.uid), orderBy("timestamp"));
+    snapshot.forEach(docSnap => {
+      const msg = docSnap.data();
 
-    onSnapshot(q, snapshot => {
-      userMap.clear();
-      userListEl.innerHTML = "";
+      // Skip messages not involving current user
+      if (msg.senderId !== currentUser.uid && msg.recipientId !== currentUser.uid) return;
 
-      snapshot.forEach(doc => {
-        const msg = doc.data();
-        const senderId = msg.senderId;
-        if (!userMap.has(senderId)) {
-          userMap.set(senderId, msg.senderName || "Anonymous");
+      const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
 
-          const userEl = document.createElement("div");
-          userEl.classList.add("user-block");
-          userEl.textContent = msg.senderName || "Anonymous";
-          userEl.onclick = () => openChat(senderId, msg.senderName || "Anonymous");
-          userListEl.appendChild(userEl);
+      // Avoid showing yourself and avoid duplicates
+      if (otherUserId === currentUser.uid || addedUserIds.has(otherUserId)) return;
+      addedUserIds.add(otherUserId); // track early to prevent race condition
+
+      const userDocRef = doc(db, "users", otherUserId);
+      getDoc(userDocRef).then(userDocSnap => {
+        let username = "Unknown User";
+        let isVerified = false;
+
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          username = userData.username || username;
+          isVerified = userData.isVerified === true;
         }
+
+        const userEl = document.createElement("div");
+        userEl.classList.add("user-block");
+        userEl.innerHTML = `${username}${isVerified ? " ✅" : ""}`;
+        userEl.onclick = () => openChat(otherUserId, username);
+        userListEl.appendChild(userEl);
       });
     });
-  }
+  });
+}
+
   async function startNewChat(recipientId, fallbackEmail) {
   selectedRecipientId = recipientId;
   activeSenderId = recipientId;
@@ -359,35 +385,34 @@ chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
   loadConversation(recipientId);
 }
 
-  function loadConversation(senderId) {
-    const messagesRef = collection(db, "messages");
-    const q = query(messagesRef, where("recipientId", "in", [currentUser.uid, senderId]), orderBy("timestamp"));
+function loadConversation(senderId) {
+  const messagesRef = collection(db, "messages");
+  const q = query(messagesRef, orderBy("timestamp"));
 
-    onSnapshot(q, snapshot => {
-      messagesEl.innerHTML = "";
-      snapshot.forEach(doc => {
-        const msg = doc.data();
-        if (
-          (msg.senderId === senderId && msg.recipientId === currentUser.uid) ||
-          (msg.senderId === currentUser.uid && msg.recipientId === senderId)
-        ) {
-          const msgEl = document.createElement("div");
-msgEl.classList.add("message");
+  onSnapshot(q, snapshot => {
+    messagesEl.innerHTML = "";
 
-const isSentByMe = msg.senderId === currentUser.uid;
-msgEl.classList.add(isSentByMe ? "sent" : "received");
+    snapshot.forEach(docSnap => {
+      const msg = docSnap.data();
+      const isConversation =
+        (msg.senderId === currentUser.uid && msg.recipientId === senderId) ||
+        (msg.senderId === senderId && msg.recipientId === currentUser.uid);
 
-msgEl.innerHTML = `
-  <div class="sender">${msg.senderName || "Anonymous"}</div>
-  <div>${msg.text}</div>
-`;
-
-messagesEl.appendChild(msgEl);
-
-        }
-      });
+      if (isConversation) {
+        const msgEl = document.createElement("div");
+        msgEl.classList.add("message", msg.senderId === currentUser.uid ? "sent" : "received");
+        msgEl.innerHTML = `
+          <div class="sender">${msg.senderName || "Anonymous"}</div>
+          <div>${msg.text}</div>
+        `;
+        messagesEl.appendChild(msgEl);
+      }
     });
-  }
+
+    // Scroll to the bottom
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  });
+}
 
   sendBtn.addEventListener("click", async () => {
     const text = messageInput.value.trim();
