@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direct Messages | Guessing Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background-color: #f2f4f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background-color: #1e2b38;
+      color: white;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+    }
+    .chat-container {
+      max-width: 600px;
+      width: 100%;
+      margin-top: 20px;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .message {
+      background: #e0f0ff;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .sender {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .chat-input {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .chat-input button {
+      padding: 10px 20px;
+      background-color: #315f85;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Your Direct Messages</h1>
+  </header>
+
+  <div class="chat-container" id="chatContainer">
+    <div id="messages"></div>
+
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Type your reply...">
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+<!-- Everything above stays the same until inside <div id="messages"></div> -->
+<div id="messages"></div>
+<!-- Removed old input at bottom -->
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+  import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+    authDomain: "guessthesinger10.firebaseapp.com",
+    projectId: "guessthesinger10",
+    storageBucket: "guessthesinger10.appspot.com",
+    messagingSenderId: "97201023235",
+    appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth();
+  let currentUser = null;
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      currentUser = user;
+      loadMessages();
+    } else {
+      alert("You must be logged in to view messages.");
+    }
+  });
+
+  async function loadMessages() {
+    const messagesRef = collection(db, "messages");
+    const q = query(messagesRef, where("recipientId", "==", currentUser.uid), orderBy("timestamp"));
+
+    onSnapshot(q, snapshot => {
+      const messagesEl = document.getElementById("messages");
+      messagesEl.innerHTML = "";
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        const msgId = doc.id;
+        const msgEl = document.createElement("div");
+        msgEl.classList.add("message");
+        msgEl.innerHTML = `
+          <div class='sender'>From: ${msg.senderName || "Anonymous"}</div>
+          <div>${msg.text}</div>
+          <button onclick="replyTo('${msg.senderId}', '${msg.senderName || "Anonymous"}')">Reply</button>
+          <div id="replyBox-${msgId}" class="reply-box" style="display:none; margin-top:10px;">
+            <input type="text" id="replyText-${msgId}" placeholder="Type your reply..." style="width:80%; padding:6px; border-radius:6px;" />
+            <button onclick="sendReply('${msg.senderId}', '${msgId}')">Send</button>
+          </div>
+        `;
+        messagesEl.appendChild(msgEl);
+      });
+    });
+  }
+
+  window.replyTo = (senderId, senderName) => {
+    const allReplyBoxes = document.querySelectorAll(".reply-box");
+    allReplyBoxes.forEach(box => (box.style.display = "none")); // hide others
+    const replyBox = document.querySelector(`#replyBox-${senderId}`);
+    if (replyBox) replyBox.style.display = "block";
+  };
+
+  window.sendReply = async (recipientId, msgId) => {
+    const input = document.getElementById(`replyText-${msgId}`);
+    const text = input.value.trim();
+    if (!text || !currentUser) return;
+
+    await addDoc(collection(db, "messages"), {
+      senderId: currentUser.uid,
+      senderName: currentUser.displayName || "Anonymous",
+      recipientId: recipientId,
+      text,
+      timestamp: serverTimestamp()
+    });
+
+    input.value = "";
+    alert("Reply sent!");
+  };
+</script>
+
+</body>
+</html>
