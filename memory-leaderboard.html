@@ -313,7 +313,7 @@ html, body {
     <a href="/memory.html">Back to Game</a>
     <a href="/index.html">Home</a>
     <a href="/about.html">About</a>
-    <a href="/inbox.html">Inbox</a>
+    <a href="/inbox.html">Messages</a>
   </div>
   
   <h1>Memory Leaderboard</h1>
@@ -610,9 +610,8 @@ ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.emai
 // ✅ Make sure it's accessible globally
 window.showUserProfile = showUserProfile;
 
-window.openDMModal = function(id, email) {
-  recipientId = id;
-  document.getElementById("dmModal").classList.remove("hidden");
+window.openDMModal = function(recipientId, recipientEmail) {
+  window.location.href = `/inbox.html?recipientId=${encodeURIComponent(recipientId)}&recipientEmail=${encodeURIComponent(recipientEmail)}`;
 };
 
 

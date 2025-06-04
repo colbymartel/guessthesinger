@@ -258,6 +258,7 @@ body {
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
   import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
   import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+  import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
   const firebaseConfig = {
     apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
@@ -274,6 +275,7 @@ body {
 
   let currentUser = null;
   let activeSenderId = null;
+  let selectedRecipientId = null;
 
   const userListEl = document.getElementById("userList");
   const messagesEl = document.getElementById("messages");
@@ -285,13 +287,23 @@ body {
   const userMap = new Map();
 
   onAuthStateChanged(auth, user => {
-    if (user) {
-      currentUser = user;
-      loadInbox();
-    } else {
-      alert("You must be logged in.");
+  if (user) {
+    currentUser = user;
+    loadInbox();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipientId = urlParams.get('recipientId');
+    const recipientEmail = decodeURIComponent(urlParams.get('recipientEmail') || "Unknown User");
+
+    if (recipientId && recipientEmail) {
+      startNewChat(recipientId, recipientEmail);
     }
-  });
+
+  } else {
+    alert("You must be logged in.");
+  }
+});
+
 
   function loadInbox() {
     const messagesRef = collection(db, "messages");
@@ -316,6 +328,37 @@ body {
       });
     });
   }
+  async function startNewChat(recipientId, fallbackEmail) {
+  selectedRecipientId = recipientId;
+  activeSenderId = recipientId;
+
+  chatInputContainer.style.display = "flex";
+  document.getElementById("chatContainer").style.display = "flex";
+  document.getElementById("messageListView").style.display = "none";
+
+  try {
+    const userDocRef = doc(db, "users", recipientId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    let displayName = "Unknown User";
+let isVerified = false;
+
+if (userDocSnap.exists()) {
+  const userData = userDocSnap.data();
+  displayName = userData.username || "Unknown User";
+  isVerified = userData.isVerified === true;
+}
+
+chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
+
+  } catch (err) {
+    console.error("Error fetching user profile:", err);
+    chatHeader.textContent = `Chat with ${fallbackEmail}`;
+  }
+
+  loadConversation(recipientId);
+}
+
   function loadConversation(senderId) {
     const messagesRef = collection(db, "messages");
     const q = query(messagesRef, where("recipientId", "in", [currentUser.uid, senderId]), orderBy("timestamp"));
@@ -369,16 +412,33 @@ window.goBackToUserList = function () {
   document.getElementById("messageListView").style.display = "block";
 };
 
-function openChat(senderId, senderName) {
+async function openChat(senderId, fallbackName) {
   activeSenderId = senderId;
-  chatHeader.textContent = `Chat with ${senderName}`;
   chatInputContainer.style.display = "flex";
-
   document.getElementById("chatContainer").style.display = "flex";
   document.getElementById("messageListView").style.display = "none";
 
+  try {
+    const userDocRef = doc(db, "users", senderId);
+    const userDocSnap = await getDoc(userDocRef);
+    let displayName = "Unknown User";
+let isVerified = false;
+
+if (userDocSnap.exists()) {
+  const userData = userDocSnap.data();
+  displayName = userData.username || "Unknown User";
+  isVerified = userData.isVerified === true;
+}
+
+chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
+
+  } catch (e) {
+    chatHeader.textContent = `Chat with ${fallbackName}`;
+  }
+
   loadConversation(senderId);
 }
+
 
 </script>
 
