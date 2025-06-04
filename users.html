@@ -66,56 +66,153 @@
     </thead>
     <tbody id="userTableBody"></tbody>
   </table>
-
+  <div id="dmModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1001; justify-content:center; align-items:center;">
+    <div style="background:white; padding:30px; border-radius:12px; max-width:400px; width:90%; position:relative;">
+      <span id="closeDM" style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer;">&times;</span>
+      <h3 style="margin-top:0; color:#315f85;">Send a Message</h3>
+      <textarea id="dmText" placeholder="Type your message..." rows="4" style="width:100%; padding:10px; border-radius:8px;"></textarea>
+      <button id="sendDM" style="margin-top:10px; padding:10px 20px; background:#315f85; color:white; border:none; border-radius:6px; cursor:pointer;">Send</button>
+    </div>
+  </div>
+  
+  
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+  import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    addDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-      authDomain: "guessthesinger10.firebaseapp.com",
-      projectId: "guessthesinger10",
-      storageBucket: "guessthesinger10.appspot.com",
-      messagingSenderId: "97201023235",
-      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
-    };
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+    authDomain: "guessthesinger10.firebaseapp.com",
+    projectId: "guessthesinger10",
+    storageBucket: "guessthesinger10.appspot.com",
+    messagingSenderId: "97201023235",
+    appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+  };
 
-    async function loadUsersWithFavArtists() {
-      const usersRef = collection(db, "users");
-      const snapshot = await getDocs(usersRef);
-      const tbody = document.getElementById("userTableBody");
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth();
+  let currentUser = null;
 
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      currentUser = user;
     }
-    const content = document.getElementById("userTableBody");
-content.innerHTML = "";
+  });
 
-const snapshot = await getDocs(query(collection(db, "users"), where("favoriteArtist", "!=", "")));
+  const content = document.getElementById("userTableBody");
 
-snapshot.forEach(doc => {
-  const data = doc.data();
-  const username = data.username || "Anonymous";
-  const artist = data.favoriteArtist || "—";
-  const email = data.email || "—";
+  async function loadUsersWithFavArtists() {
+    content.innerHTML = "";
 
-  content.innerHTML += `
-    <tr>
-      <td>${username}</td>
-      <td>${email}</td>
-            <td>${artist}</td>
-    </tr>
-  `;
-});
+    const snapshot = await getDocs(query(collection(db, "users"), where("favoriteArtist", "!=", "")));
 
-    loadUsersWithFavArtists();
-  </script>
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const userId = doc.id;
+      const username = data.username || "Anonymous";
+      const artist = data.favoriteArtist || "—";
+      const email = data.email || "—";
+
+      content.innerHTML += `
+        <tr>
+          <td><a href="#" onclick="showProfile('${userId}')" style="color:#315f85; text-decoration:underline;">${username}</a></td>
+          <td>${email}</td>
+          <td>${artist}</td>
+        </tr>
+      `;
+    });
+  }
+
+  window.showProfile = async function(userId) {
+    const modal = document.createElement("div");
+    modal.id = "profileModal";
+    modal.style = "display:flex; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;";
+
+    const contentBox = document.createElement("div");
+    contentBox.style = "background:white; padding:30px; border-radius:12px; max-width:400px; width:90%; position:relative;";
+    contentBox.innerHTML = `<span id="closeProfileModal" style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer;">&times;</span><div id="modalContent">Loading...</div>`;
+    modal.appendChild(contentBox);
+    document.body.appendChild(modal);
+
+    const snapshot = await getDocs(query(collection(db, "users"), where("__name__", "==", userId)));
+    const userData = snapshot.docs[0]?.data();
+
+    const modalContent = document.getElementById("modalContent");
+
+    if (!userData) {
+      modalContent.innerHTML = "User profile not found.";
+      return;
+    }
+
+    const email = userData.email || "—";
+    const showEnvelope = ["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(email);
+    const insta = userData.instagram;
+
+    modalContent.innerHTML = `
+      <h2 style="margin-top: 0; color:#315f85;">${userData.username || "Anonymous"}</h2>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>City:</strong> ${userData.city || "—"}</p>
+      <p><strong>Favorite Artist:</strong> ${userData.favoriteArtist || "—"}</p>
+      <div style="margin-top:12px; display:flex; gap:20px; align-items:center;">
+        ${insta ? `<a href="https://instagram.com/${insta}" target="_blank" title="Instagram">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="24" height="24">
+        </a>` : ""}
+        ${showEnvelope ? `<i class="fas fa-envelope" title="Send Message" style="font-size:22px; color:#315f85; cursor:pointer;" onclick="openDMModal('${userId}', '${userData.username || 'Anonymous'}')"></i>` : ""}
+      </div>
+    `;
+
+    document.getElementById("closeProfileModal").onclick = () => modal.remove();
+    window.onclick = (e) => {
+      if (e.target === modal) modal.remove();
+    };
+  };
+
+  let dmRecipientId = null;
+
+  window.openDMModal = function(id, name) {
+    dmRecipientId = id;
+    document.getElementById("dmModal").style.display = "flex";
+  };
+
+  document.getElementById("closeDM").onclick = () => {
+    document.getElementById("dmModal").style.display = "none";
+    document.getElementById("dmText").value = "";
+  };
+
+  document.getElementById("sendDM").onclick = async () => {
+    const text = document.getElementById("dmText").value.trim();
+    if (!text || !dmRecipientId || !currentUser) return;
+
+    await addDoc(collection(db, "messages"), {
+      senderId: currentUser.uid,
+      senderName: currentUser.displayName || "Anonymous",
+      recipientId: dmRecipientId,
+      text,
+      timestamp: serverTimestamp()
+    });
+
+    document.getElementById("dmModal").style.display = "none";
+    document.getElementById("dmText").value = "";
+  };
+
+  loadUsersWithFavArtists();
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
 </body>
 </html>

@@ -585,17 +585,17 @@ ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.emai
 </h2>
   <p><strong>City:</strong> ${userData.city || "—"}</p>
   <p><strong>Favorite Artists:</strong> ${userData.favoriteArtist || "—"}</p>
-   <div style="margin-top: 12px;">
-${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email) ? `
-  <i class="fas fa-envelope" style="font-size: 22px; color: #315f85; cursor:pointer;" onclick="openDMModal('${userId}', '${userData.email}')"></i>
-` : ''}
+  <div style="margin-top: 12px; display: flex; gap: 16px; align-items: center;">
+ ${userData.instagram ? `
+  <a href="https://instagram.com/${userData.instagram}" target="_blank" title="Instagram">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="22" height="22" style="vertical-align:middle; cursor:pointer;">
+  </a>` : ''}
 
-${userData.instagram ? 
-    `<a href="https://instagram.com/${userData.instagram}" target="_blank">
-      <i class="fab fa-instagram" style="font-size: 24px; color: #e4405f; margin-right:12px;"></i>
-    </a>` : ''}
+
+  ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email) ? `
+    <i class="fas fa-envelope" title="Send Message" style="font-size: 22px; color: #315f85; cursor: pointer;" onclick="openDMModal('${userId}', '${userData.email}')"></i>
+  ` : ''}
 </div>
-  </div>
 `;
 
     });
