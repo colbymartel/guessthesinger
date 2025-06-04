@@ -14,6 +14,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Match the Singer | Leaderboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
 
 html, body {
@@ -258,6 +259,11 @@ html, body {
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
+@media (max-width: 768px) {
+  .modal-content {
+   max-width: 300px;
+  }
+}
 .close {
   position: absolute;
   right: 15px;
@@ -304,12 +310,11 @@ html, body {
   </nav>
   
   <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="/memory.html">Back to Game</a>
     <a href="/index.html">Home</a>
-    <a href="/memory-leaderboard.html">Leaderboard</a>
     <a href="/about.html">About</a>
-    <a href="#" id="infoIcon">Game Rules</a>
   </div>
-
+  
   <h1>Memory Leaderboard</h1>
   <div class="tab-buttons">
     <button id="dailyBtn" class="active" onclick="switchTab('daily')">🏆 Daily</button>
@@ -521,7 +526,7 @@ const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,
       content.innerHTML = `
   <h2 style="margin-top: 0; color: #315f85;">${userData.username || "Anonymous"}</h2>
   <p><strong>City:</strong> ${userData.city || "—"}</p>
-  <p><strong>Favorite Artist:</strong> ${userData.favoriteArtist || "—"}</p>
+  <p><strong>Favorite Artists:</strong> ${userData.favoriteArtist || "—"}</p>
 `;
     });
 
