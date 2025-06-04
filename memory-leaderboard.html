@@ -425,8 +425,9 @@ let currentUserCity = null;
     
       pageData.forEach((data, index) => {
 
-        const isColbyProfile = data.email === "colbyma23@gmail.com";
-const verifiedBadge = isColbyProfile ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
+        const verifiedEmails = ["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"];
+const isVerified = verifiedEmails.includes(data.email);
+const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
 
 const userLink = data.userId 
   ? `<a href="#" onclick="showUserProfile('${data.userId}')" style="color:#315f85; text-decoration:underline;">${data.username || "Anonymous"}${verifiedBadge}</a>`
@@ -578,15 +579,17 @@ setTimeout(() => btn.textContent = "Send", 1500);
 content.innerHTML = `
 <h2 style="margin-top: 0; color: #315f85;">
   ${userData.username || "Anonymous"}
-  ${userData.email === "colbyma23@gmail.com" ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:8px;" title="Verified"></i>' : ''}
+${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email) 
+  ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:8px;" title="Verified"></i>' 
+  : ''}
 </h2>
   <p><strong>City:</strong> ${userData.city || "—"}</p>
   <p><strong>Favorite Artists:</strong> ${userData.favoriteArtist || "—"}</p>
    <div style="margin-top: 12px;">
-  
-${userData.email === "colbyma23@gmail.com" ? `
+${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email) ? `
   <i class="fas fa-envelope" style="font-size: 22px; color: #315f85; cursor:pointer;" onclick="openDMModal('${userId}', '${userData.email}')"></i>
 ` : ''}
+
 ${userData.instagram ? 
     `<a href="https://instagram.com/${userData.instagram}" target="_blank">
       <i class="fab fa-instagram" style="font-size: 24px; color: #e4405f; margin-right:12px;"></i>

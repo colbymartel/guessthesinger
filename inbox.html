@@ -22,13 +22,31 @@ main {
   flex: 1;
   overflow: hidden;
 }
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 80px); /* leave room for header */
+}
+
+#messageListView, #chatContainer {
+  flex: 1;
+  overflow-y: auto;
+}
+body {
+  height: 100vh;
+  overflow: hidden;
+}
 
 .sidebar {
-  width: 250px;
+  width: 100%;
+  height: 100%;
   background-color: #1e2b38;
   color: white;
   padding: 20px;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .chat-container {
@@ -37,10 +55,11 @@ main {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  margin-bottom: 100px;
 }
 
     .chat-header {
-      font-size: 1.2em;
+      font-size: 1.4em;
       margin-bottom: 10px;
     }
 
@@ -62,11 +81,13 @@ main {
     }
 
     .chat-input input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px; 
+}
+
 
     .chat-input button {
       padding: 10px 20px;
@@ -112,7 +133,7 @@ main {
 }
 @media (max-width: 768px) {
   .sidebar {
-    width: 120px;
+    width: 100%;
     padding: 10px;
     font-size: 0.9em;
   }
@@ -123,7 +144,7 @@ main {
 
   .user-block {
     padding: 8px;
-    font-size: 0.9em;
+    font-size: 1.2em;
   }
 
   .chat-header {
@@ -138,6 +159,59 @@ main {
     padding: 8px 16px;
   }
 }
+.user-block {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #2f3e4f;
+}
+
+.user-block:hover {
+  background-color: #2f3e4f;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 10px;
+}
+
+.user-name {
+  flex: 1;
+}
+
+.unread-icon {
+  color: #ffcb05;
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+.user-block.unread {
+  background-color: #294053;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #315f85;
+  font-size: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+.message.sent {
+  background-color: #d3d3d3; /* light grey */
+  align-self: flex-end;
+}
+
+.message.received {
+  background-color: #e0f0ff; /* light blue (you already use this) */
+  align-self: flex-start;
+}
+
 
   </style>
 </head>
@@ -158,12 +232,18 @@ main {
       </div>
     </div>
   </header>
-  <main style="display: flex; width: 100%; height: calc(100vh - 100px);">
-    <div class="sidebar">
-      <h2>Messages</h2>
-      <div id="userList"></div>
+  <main style="width: 100%; height: calc(100vh - 100px);">
+    <!-- Full-screen message list -->
+    <div id="messageListView" style="width: 100%; height: 100%;">
+      <div class="sidebar">
+        <h2 style="padding: 0 0 10px 0;">Messages</h2>
+        <div id="userList"></div>
+      </div>
     </div>
-    <div class="chat-container">
+  
+    <!-- Full-screen conversation -->
+    <div class="chat-container" id="chatContainer" style="display: none;">
+      <button class="back-btn" onclick="goBackToUserList()">← Back to Messages</button>
       <div class="chat-header" id="chatHeader">Select a conversation</div>
       <div id="messages"></div>
       <div class="chat-input" style="display:none;" id="chatInputContainer">
@@ -173,7 +253,7 @@ main {
     </div>
   </main>
   
-
+  
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
   import { getFirestore, collection, query, where, orderBy, onSnapshot, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
@@ -236,14 +316,6 @@ main {
       });
     });
   }
-
-  function openChat(senderId, senderName) {
-    activeSenderId = senderId;
-    chatHeader.textContent = `Chat with ${senderName}`;
-    chatInputContainer.style.display = "flex";
-    loadConversation(senderId);
-  }
-
   function loadConversation(senderId) {
     const messagesRef = collection(db, "messages");
     const q = query(messagesRef, where("recipientId", "in", [currentUser.uid, senderId]), orderBy("timestamp"));
@@ -257,12 +329,18 @@ main {
           (msg.senderId === currentUser.uid && msg.recipientId === senderId)
         ) {
           const msgEl = document.createElement("div");
-          msgEl.classList.add("message");
-          msgEl.innerHTML = `
-            <div class="sender">${msg.senderName || "Anonymous"}</div>
-            <div>${msg.text}</div>
-          `;
-          messagesEl.appendChild(msgEl);
+msgEl.classList.add("message");
+
+const isSentByMe = msg.senderId === currentUser.uid;
+msgEl.classList.add(isSentByMe ? "sent" : "received");
+
+msgEl.innerHTML = `
+  <div class="sender">${msg.senderName || "Anonymous"}</div>
+  <div>${msg.text}</div>
+`;
+
+messagesEl.appendChild(msgEl);
+
         }
       });
     });
@@ -282,6 +360,26 @@ main {
 
     messageInput.value = "";
   });
+  function goBackToUserList() {
+  document.getElementById("chatContainer").style.display = "none";
+  document.querySelector(".sidebar").style.display = "block";
+}
+window.goBackToUserList = function () {
+  document.getElementById("chatContainer").style.display = "none";
+  document.getElementById("messageListView").style.display = "block";
+};
+
+function openChat(senderId, senderName) {
+  activeSenderId = senderId;
+  chatHeader.textContent = `Chat with ${senderName}`;
+  chatInputContainer.style.display = "flex";
+
+  document.getElementById("chatContainer").style.display = "flex";
+  document.getElementById("messageListView").style.display = "none";
+
+  loadConversation(senderId);
+}
+
 </script>
 
 </body>
