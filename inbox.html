@@ -1,57 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Direct Messages | Guessing Games</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Fredoka', sans-serif;
-      background-color: #f2f4f8;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+body {
+  font-family: 'Fredoka', sans-serif;
+  background-color: #f2f4f8;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #1e2b38;
+  color: white;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.chat-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+    .chat-header {
+      font-size: 1.2em;
+      margin-bottom: 10px;
     }
-    header {
-      background-color: #1e2b38;
-      color: white;
-      width: 100%;
-      padding: 20px;
-      text-align: center;
-    }
-    .chat-container {
-      max-width: 600px;
-      width: 100%;
-      margin-top: 20px;
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+
     .message {
       background: #e0f0ff;
       padding: 10px;
       border-radius: 8px;
       margin-bottom: 10px;
     }
+
     .sender {
       font-weight: bold;
-      margin-bottom: 4px;
     }
+
     .chat-input {
       margin-top: 20px;
       display: flex;
       gap: 10px;
     }
+
     .chat-input input {
       flex: 1;
       padding: 10px;
       border-radius: 6px;
       border: 1px solid #ccc;
     }
+
     .chat-input button {
       padding: 10px 20px;
       background-color: #315f85;
@@ -60,24 +76,103 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    .header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 10px 0;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  color: white;
+}
+
+.header .logo img {
+  width: 160px;
+  height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .header-inner {
+    flex-direction: row;
+  }
+
+  .header .logo img {
+    width: 150px;
+    margin-top:10px;
+    margin-bottom: 5px;
+  }
+}
+@media (max-width: 768px) {
+  .sidebar {
+    width: 120px;
+    padding: 10px;
+    font-size: 0.9em;
+  }
+
+  .chat-container {
+    padding: 10px;
+  }
+
+  .user-block {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  .chat-header {
+    font-size: 1em;
+  }
+
+  .chat-input input {
+    padding: 8px;
+  }
+
+  .chat-input button {
+    padding: 8px 16px;
+  }
+}
+
   </style>
 </head>
 <body>
-  <header>
-    <h1>Your Direct Messages</h1>
-  </header>
-
-  <div class="chat-container" id="chatContainer">
-    <div id="messages"></div>
-
-    <div class="chat-input">
-      <input type="text" id="messageInput" placeholder="Type your reply...">
-      <button id="sendBtn">Send</button>
+  <header class="header">
+    <div class="header-inner" style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+      <div class="logo">
+        <a href="/"><img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy"></a>
+      </div>
+  
+      <div class="nav-links" style="display: flex; align-items: center; gap: 20px;">
+        <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
+        <a href="/memory.html" style="color:white; text-decoration:none; font-weight:bold;">Back to Game</a>
+      </div>
+  
+      <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars" style="color:white;"></i>
+      </div>
     </div>
-  </div>
-<!-- Everything above stays the same until inside <div id="messages"></div> -->
-<div id="messages"></div>
-<!-- Removed old input at bottom -->
+  </header>
+  <main style="display: flex; width: 100%; height: calc(100vh - 100px);">
+    <div class="sidebar">
+      <h2>Messages</h2>
+      <div id="userList"></div>
+    </div>
+    <div class="chat-container">
+      <div class="chat-header" id="chatHeader">Select a conversation</div>
+      <div id="messages"></div>
+      <div class="chat-input" style="display:none;" id="chatInputContainer">
+        <input type="text" id="messageInput" placeholder="Type your reply...">
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </main>
+  
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
@@ -96,66 +191,97 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const auth = getAuth();
+
   let currentUser = null;
+  let activeSenderId = null;
+
+  const userListEl = document.getElementById("userList");
+  const messagesEl = document.getElementById("messages");
+  const messageInput = document.getElementById("messageInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const chatHeader = document.getElementById("chatHeader");
+  const chatInputContainer = document.getElementById("chatInputContainer");
+
+  const userMap = new Map();
 
   onAuthStateChanged(auth, user => {
     if (user) {
       currentUser = user;
-      loadMessages();
+      loadInbox();
     } else {
-      alert("You must be logged in to view messages.");
+      alert("You must be logged in.");
     }
   });
 
-  async function loadMessages() {
+  function loadInbox() {
     const messagesRef = collection(db, "messages");
     const q = query(messagesRef, where("recipientId", "==", currentUser.uid), orderBy("timestamp"));
 
     onSnapshot(q, snapshot => {
-      const messagesEl = document.getElementById("messages");
-      messagesEl.innerHTML = "";
+      userMap.clear();
+      userListEl.innerHTML = "";
+
       snapshot.forEach(doc => {
         const msg = doc.data();
-        const msgId = doc.id;
-        const msgEl = document.createElement("div");
-        msgEl.classList.add("message");
-        msgEl.innerHTML = `
-          <div class='sender'>From: ${msg.senderName || "Anonymous"}</div>
-          <div>${msg.text}</div>
-          <button onclick="replyTo('${msg.senderId}', '${msg.senderName || "Anonymous"}')">Reply</button>
-          <div id="replyBox-${msgId}" class="reply-box" style="display:none; margin-top:10px;">
-            <input type="text" id="replyText-${msgId}" placeholder="Type your reply..." style="width:80%; padding:6px; border-radius:6px;" />
-            <button onclick="sendReply('${msg.senderId}', '${msgId}')">Send</button>
-          </div>
-        `;
-        messagesEl.appendChild(msgEl);
+        const senderId = msg.senderId;
+        if (!userMap.has(senderId)) {
+          userMap.set(senderId, msg.senderName || "Anonymous");
+
+          const userEl = document.createElement("div");
+          userEl.classList.add("user-block");
+          userEl.textContent = msg.senderName || "Anonymous";
+          userEl.onclick = () => openChat(senderId, msg.senderName || "Anonymous");
+          userListEl.appendChild(userEl);
+        }
       });
     });
   }
 
-  window.replyTo = (senderId, senderName) => {
-    const allReplyBoxes = document.querySelectorAll(".reply-box");
-    allReplyBoxes.forEach(box => (box.style.display = "none")); // hide others
-    const replyBox = document.querySelector(`#replyBox-${senderId}`);
-    if (replyBox) replyBox.style.display = "block";
-  };
+  function openChat(senderId, senderName) {
+    activeSenderId = senderId;
+    chatHeader.textContent = `Chat with ${senderName}`;
+    chatInputContainer.style.display = "flex";
+    loadConversation(senderId);
+  }
 
-  window.sendReply = async (recipientId, msgId) => {
-    const input = document.getElementById(`replyText-${msgId}`);
-    const text = input.value.trim();
-    if (!text || !currentUser) return;
+  function loadConversation(senderId) {
+    const messagesRef = collection(db, "messages");
+    const q = query(messagesRef, where("recipientId", "in", [currentUser.uid, senderId]), orderBy("timestamp"));
+
+    onSnapshot(q, snapshot => {
+      messagesEl.innerHTML = "";
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        if (
+          (msg.senderId === senderId && msg.recipientId === currentUser.uid) ||
+          (msg.senderId === currentUser.uid && msg.recipientId === senderId)
+        ) {
+          const msgEl = document.createElement("div");
+          msgEl.classList.add("message");
+          msgEl.innerHTML = `
+            <div class="sender">${msg.senderName || "Anonymous"}</div>
+            <div>${msg.text}</div>
+          `;
+          messagesEl.appendChild(msgEl);
+        }
+      });
+    });
+  }
+
+  sendBtn.addEventListener("click", async () => {
+    const text = messageInput.value.trim();
+    if (!text || !activeSenderId || !currentUser) return;
 
     await addDoc(collection(db, "messages"), {
       senderId: currentUser.uid,
       senderName: currentUser.displayName || "Anonymous",
-      recipientId: recipientId,
+      recipientId: activeSenderId,
       text,
       timestamp: serverTimestamp()
     });
 
-    input.value = "";
-    alert("Reply sent!");
-  };
+    messageInput.value = "";
+  });
 </script>
 
 </body>
