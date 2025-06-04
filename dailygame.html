@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Guess the Artist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    nav {
+      width: 100%;
+      background: #1e2b38;
+      padding: 10px 0;
+      text-align: center;
+    }
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .score-box {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .artist-image {
+      max-width: 200px;
+      margin: 20px;
+      border-radius: 12px;
+    }
+    .question-box {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin: 20px 0;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    .question-text {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .option {
+      padding: 12px 20px;
+      margin: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #f9f9f9;
+    }
+    .option:hover {
+      background-color: #e1f0ff;
+    }
+    .correct {
+      background-color: #c8f7c5 !important;
+      border-color: green !important;
+    }
+    .incorrect {
+      background-color: #f7c5c5 !important;
+      border-color: red !important;
+    }
+    .progress-bar {
+      height: 20px;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 90%;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+    .progress {
+      height: 100%;
+      background: #4caf50;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+      max-width: 500px;
+      margin-top: 20px;
+    }
+    .nav-button {
+      padding: 10px 20px;
+      background-color: #315f85;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .nav-button:disabled {
+      background-color: #999;
+      cursor: not-allowed;
+    }
+    .final-input {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .final-input input {
+      padding: 10px;
+      width: 80%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .final-input button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/memory.html">Play</a>
+      <a href="/memory-leaderboard.html">Leaderboard</a>
+      <a href="/about.html">About</a>
+    </div>
+  </nav>
+
+  <div class="score-box">Score: <span id="score">0</span></div>
+  <img src="/images/addisonrae.jpg" alt="Mystery Artist" class="artist-image" />
+  <div class="progress-bar"><div class="progress" id="progress"></div></div>
+  <div id="quizContainer" class="question-box"></div>
+  <div class="navigation-buttons">
+    <button class="nav-button" id="backBtn">Back</button>
+    <button class="nav-button" id="nextBtn">Next</button>
+  </div>
+  <div class="final-input" id="finalGuess" style="display:none;">
+    <input type="text" id="artistInput" placeholder="Type your guess for the artist...">
+    <button onclick="checkFinalGuess()">Submit</button>
+    <p id="resultMsg"></p>
+  </div>
+
+  <script>
+    const questions = [
+      { question: "Is it a male artist?", correct: "No" },
+      { question: "Is it a solo artist?", correct: "Yes" },
+      { question: "Is it a pop artist?", correct: "Yes" },
+      { question: "Is it a rap artist?", correct: "No" },
+      { question: "Is the artist under 30?", correct: "Yes" },
+      { question: "Is the artist American?", correct: "Yes" },
+      { question: "Has the artist acted in a movie?", correct: "Yes" },
+      { question: "Did the artist become famous from TikTok?", correct: "Yes" },
+      { question: "Is the artist known for dancing?", correct: "Yes" },
+      { question: "Has the artist released music?", correct: "Yes" },
+      { question: "Does the artist have siblings?", correct: "Yes" },
+      { question: "Was the artist born in Louisiana?", correct: "Yes" },
+      { question: "Has the artist been on Netflix?", correct: "Yes" },
+      { question: "Does the artist have a makeup line?", correct: "Yes" },
+      { question: "Is the artist also a YouTuber?", correct: "Yes" },
+      { question: "Is the artist brunette?", correct: "Yes" },
+      { question: "Was the artist born after 2000?", correct: "No" },
+      { question: "Is the artist known for lip-sync videos?", correct: "Yes" },
+      { question: "Has the artist won a Grammy?", correct: "No" },
+      { question: "Has the artist done interviews on talk shows?", correct: "Yes" }
+    ];
+
+    let currentIndex = 0;
+    const userAnswers = [];
+    let score = 0;
+
+    const quizContainer = document.getElementById("quizContainer");
+    const progressEl = document.getElementById("progress");
+    const scoreEl = document.getElementById("score");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function renderQuestion() {
+      quizContainer.innerHTML = "";
+      const q = questions[currentIndex];
+
+      const qEl = document.createElement("div");
+      qEl.className = "question-text";
+      qEl.innerText = q.question;
+      quizContainer.appendChild(qEl);
+
+      ["Yes", "No"].forEach(option => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.innerText = option;
+        btn.onclick = () => {
+          if (userAnswers[currentIndex] != null) return;
+          userAnswers[currentIndex] = option;
+          if (option === q.correct) score += 10;
+          scoreEl.innerText = score;
+          btn.classList.add(option === q.correct ? "correct" : "incorrect");
+          highlightAnswer(option, q.correct);
+          updateProgress();
+          if (userAnswers.filter(ans => ans !== undefined).length === questions.length) {
+  document.getElementById("finalGuess").style.display = "block";
+}
+
+        };
+        quizContainer.appendChild(btn);
+      });
+
+      if (userAnswers[currentIndex]) {
+        highlightAnswer(userAnswers[currentIndex], q.correct);
+      }
+
+      backBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex >= questions.length - 1;
+    }
+
+    function highlightAnswer(userAnswer, correctAnswer) {
+      [...quizContainer.querySelectorAll(".option")].forEach(btn => {
+        btn.classList.add(
+          btn.innerText === correctAnswer ? "correct" :
+          btn.innerText === userAnswer ? "incorrect" : ""
+        );
+      });
+    }
+
+    function updateProgress() {
+      const percent = ((userAnswers.filter(Boolean).length) / questions.length) * 100;
+      progressEl.style.width = percent + "%";
+    }
+
+    backBtn.onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+      }
+    };
+
+    nextBtn.onclick = () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      }
+    };
+
+    function checkFinalGuess() {
+      const guess = document.getElementById("artistInput").value.trim().toLowerCase();
+      if (guess === "addison rae") {
+        score += 100;
+        scoreEl.innerText = score;
+        document.getElementById("resultMsg").innerText = "🎉 Correct! You guessed the artist!";
+      } else {
+        document.getElementById("resultMsg").innerText = "❌ Incorrect guess. Try again!";
+      }
+    }
+
+    renderQuestion();
+  </script>
+</body>
+</html>

@@ -114,28 +114,32 @@
   });
 
   const content = document.getElementById("userTableBody");
-
   async function loadUsersWithFavArtists() {
-    content.innerHTML = "";
+  content.innerHTML = "";
 
-    const snapshot = await getDocs(query(collection(db, "users"), where("favoriteArtist", "!=", "")));
+  const snapshot = await getDocs(collection(db, "users"));
 
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const userId = doc.id;
-      const username = data.username || "Anonymous";
-      const artist = data.favoriteArtist || "—";
-      const email = data.email || "—";
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if (!data.email) return; // Skip if no email
 
-      content.innerHTML += `
-        <tr>
-          <td><a href="#" onclick="showProfile('${userId}')" style="color:#315f85; text-decoration:underline;">${username}</a></td>
-          <td>${email}</td>
-          <td>${artist}</td>
-        </tr>
-      `;
-    });
-  }
+    const userId = doc.id;
+    const username = data.username || "Anonymous";
+    const email = data.email;
+    const artist = data.favoriteArtist || "—";
+    const city = data.city || "—";
+
+    content.innerHTML += `
+      <tr>
+        <td><a href="#" onclick="showProfile('${userId}')" style="color:#315f85; text-decoration:underline;">${username}</a></td>
+        <td>${email}</td>
+        <td>${artist}</td>
+      </tr>
+    `;
+  });
+}
+
+
 
   window.showProfile = async function(userId) {
     const modal = document.createElement("div");
