@@ -238,7 +238,12 @@ nav {
           <label for="favoriteArtist">Favorite Music Artists</label>
           <input type="text" id="favoriteArtist" placeholder="e.g. Beyoncé, Drake, Olivia Rodrigo" />
         </div>
-  
+  <!-- Instagram Username -->
+<div class="input-group">
+  <label for="instagram">Instagram Username</label>
+  <input type="text" id="instagram" placeholder="e.g. colbymartel19" />
+</div>
+
         <button type="submit" class="btn">Save Profile</button>
         <p class="redirect">This profile will be shown on the leaderboard.</p>
       </form>
@@ -279,6 +284,7 @@ nav {
       const usernameInput = document.getElementById("username");
       const cityInput = document.getElementById("city");
       const favoriteArtistInput = document.getElementById("favoriteArtist");
+      const instagramInput = document.getElementById("instagram");
       const avatarImgs = document.querySelectorAll(".avatar-img");
       const hamburger = document.getElementById("hamburger");
       const mobileMenu = document.getElementById("mobileMenu");
@@ -310,6 +316,7 @@ nav {
             if (data.username) usernameInput.value = data.username;
             if (data.city) cityInput.value = data.city;
             if (data.favoriteArtist) favoriteArtistInput.value = data.favoriteArtist;
+            if (data.instagram) instagramInput.value = data.instagram;
             if (data.avatar) {
               const selected = [...avatarImgs].find(img => img.getAttribute("data-avatar") === data.avatar);
               if (selected) selected.classList.add("selected");
@@ -326,7 +333,8 @@ nav {
           const username = usernameInput.value.trim();
           const city = cityInput.value || "";
           const favoriteArtist = favoriteArtistInput.value.trim() || "";
-  
+          const instagram = instagramInput.value.trim() || "";
+
           if (!username || !city) {
             alert("Please complete all required fields.");
             return;
@@ -334,22 +342,25 @@ nav {
   
           try {
             await dbSet(dbRef(db, "signupForm/" + user.uid), {
-              userId: user.uid,
-              newUsername: username,
-              newEmail: user.email,
-              avatar: selectedAvatar,
-              city: city,
-              favoriteArtist: favoriteArtist
-            });
-  
-            await setDoc(doc(firestore, "users", user.uid), {
-              uid: user.uid,
-              email: user.email,
-              username: username,
-              avatar: selectedAvatar,
-              city: city,
-              favoriteArtist: favoriteArtist
-            });
+  userId: user.uid,
+  newUsername: username,
+  newEmail: user.email,
+  avatar: selectedAvatar,
+  city: city,
+  favoriteArtist: favoriteArtist,
+  instagram: instagram
+});
+
+await setDoc(doc(firestore, "users", user.uid), {
+  uid: user.uid,
+  email: user.email,
+  username: username,
+  avatar: selectedAvatar,
+  city: city,
+  favoriteArtist: favoriteArtist,
+  instagram: instagram
+});
+
   
             await updateProfile(user, { displayName: username });
   

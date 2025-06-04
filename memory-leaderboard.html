@@ -523,11 +523,19 @@ const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,
       }
 
       const userData = snapshot.docs[0].data();
-      content.innerHTML = `
+   
+content.innerHTML = `
   <h2 style="margin-top: 0; color: #315f85;">${userData.username || "Anonymous"}</h2>
   <p><strong>City:</strong> ${userData.city || "—"}</p>
   <p><strong>Favorite Artists:</strong> ${userData.favoriteArtist || "—"}</p>
+   <div style="margin-top: 12px;">
+    ${userData.instagram ? 
+      `<a href="https://instagram.com/${userData.instagram}" target="_blank">
+        <i class="fab fa-instagram" style="font-size: 24px; color: #e4405f;"></i>
+      </a>` : ''}
+  </div>
 `;
+
     });
 
   closeBtn.onclick = () => modal.classList.add("hidden");

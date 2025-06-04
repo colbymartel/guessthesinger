@@ -364,6 +364,7 @@
     const auth = getAuth();
     let currentUser = null;
     let userCity = null;
+
     async function submitScore(finalScore) {
   const user = auth.currentUser;
   if (!user) return console.warn("Not logged in, score not submitted.");
@@ -376,11 +377,13 @@
     const q = query(userRef, where("uid", "==", currentUser.uid));
     const snapshot = await getDocs(q);
     snapshot.forEach(doc => {
-      if (doc.data().username) {
-        username = doc.data().username;
-      }
-      console.log("Fetched username:", username);
-    });
+  const data = doc.data();
+  if (data.username) username = data.username;
+  if (data.city) userCity = data.city;
+  console.log("Fetched username:", username);
+  console.log("Fetched city:", userCity);
+});
+
   } catch (err) {
     console.warn("Could not fetch user profile from Firestore:", err);
   }
