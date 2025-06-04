@@ -123,7 +123,8 @@ nav {
       <a href="/about.html">About</a>
     </div>
   </nav>
-  
+
+
 <main class="main">
     <div class="auth-container">
       <h2>Create Your Profile</h2>
@@ -385,7 +386,7 @@ nav {
   
       // ✅ Auto-close menu when clicking outside
       window.addEventListener("click", e => {
-        const isInside = mobileMenu.contains(e.target);
+        const isInside = mobileMenu && mobileMenu.contains(e.target);
         const isHamburger = hamburger.contains(e.target);
         if (!isInside && !isHamburger) {
           mobileMenu.classList.remove("show");

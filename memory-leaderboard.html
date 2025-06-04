@@ -229,6 +229,58 @@ html, body {
 .dropdown.hidden {
   display: none;
 }
+.modal {
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 40px 30px 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  text-align: left;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #1e2b38; /* Dark blue to match your theme */
+  background: white;
+  border: 2px solid #1e2b38;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  line-height: 30px;
+  text-align: center;
+  transition: background 0.3s, color 0.3s;
+}
+
+.close:hover {
+  background: #ffcb05;
+  color: #1e2b38;
+}
+
 
   </style>
 </head>
@@ -281,6 +333,13 @@ html, body {
     <button onclick="changePage(1)">Next &raquo;</button>
     <span id="pageIndicator">Page 1 of 5</span>
   </div>
+  <div id="profileModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span> 
+      <div id="profileContent">Loading...</div>
+    </div>
+  </div>
+  
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getFirestore, collection, query, orderBy, where, getDocs, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
@@ -349,7 +408,12 @@ html, body {
       const pageData = leaderboardData.slice(start, start + rowsPerPage);
     
       pageData.forEach((data, index) => {
-        const username = data.username || "Anonymous";
+
+        const userLink = data.userId 
+  ? `<a href="#" onclick="showUserProfile('${data.userId}')" style="color:#315f85; text-decoration:underline;">${data.username || "Anonymous"}</a>`
+  : (data.username || "Anonymous");
+
+
         const score = typeof data.score === "number" ? data.score : "—";
         const city = data.city || "-";
         const isColby = currentUserEmail === "colbyma23@gmail.com";
@@ -358,7 +422,7 @@ html, body {
         tbody.innerHTML += `
           <tr>
             <td>${start + index + 1}</td>
-            <td>${username}</td>
+            <td>${userLink}</td>
             <td>${score}</td>
             <td>${city} ${deleteBtn}</td>
           </tr>`;
@@ -382,8 +446,8 @@ html, body {
     
       const scoresRef = collection(db, "matchScores");
       const now = new Date();
-      const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    
+const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
       let q;
       if (type === "daily") {
         q = query(scoresRef, where("date", "==", localDate), orderBy("score", "desc"));
@@ -437,6 +501,41 @@ html, body {
         switchTab("daily");
       }
     });
+
+  function showUserProfile(userId) {
+  const modal = document.getElementById("profileModal");
+  const content = document.getElementById("profileContent");
+  const closeBtn = modal.querySelector(".close");
+
+  modal.classList.remove("hidden");
+  content.innerHTML = "Loading...";
+
+  getDocs(query(collection(db, "users"), where("uid", "==", userId)))
+    .then(snapshot => {
+      if (snapshot.empty) {
+        content.innerHTML = "User profile not found.";
+        return;
+      }
+
+      const userData = snapshot.docs[0].data();
+      content.innerHTML = `
+  <h2 style="margin-top: 0; color: #315f85;">${userData.username || "Anonymous"}</h2>
+  <p><strong>City:</strong> ${userData.city || "—"}</p>
+  <p><strong>Favorite Artist:</strong> ${userData.favoriteArtist || "—"}</p>
+`;
+    });
+
+  closeBtn.onclick = () => modal.classList.add("hidden");
+
+  window.onclick = (e) => {
+    if (e.target === modal) modal.classList.add("hidden");
+  };
+}
+
+// ✅ Make sure it's accessible globally
+window.showUserProfile = showUserProfile;
+
+
     </script>
     
 </body>

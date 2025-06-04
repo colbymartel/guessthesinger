@@ -265,18 +265,23 @@
     display: block;
   }
 }
+
+
 .dropdown {
+  display: none;
   position: absolute;
   top: 40px;
   margin-right: 30px;
   background-color: #1e2b38;
   padding: 10px;
   border-radius: 10px;
-  display: flex;
   flex-direction: column;
   min-width: 150px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 10;
+}
+
+.dropdown.show {
+  display: flex;
 }
 
 .dropdown a {
@@ -291,9 +296,6 @@
   color: #1e2b38;
 }
 
-.dropdown.hidden {
-  display: none;
-}
 
   </style>
 </head>
@@ -306,8 +308,9 @@
 <nav>
   <div class="welcome-nav" style="position: relative;">
     <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
-    <div id="dropdownMenu" class="dropdown hidden"></div>
+    <div id="dropdownMenu" class="dropdown"></div>
   </div>
+  
   
   </div>
   
@@ -343,7 +346,7 @@
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getFirestore, collection, setDoc, doc, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
-    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
     import { addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
     import { updateProfile } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
@@ -361,59 +364,13 @@
     const auth = getAuth();
     let currentUser = null;
     let userCity = null;
-
-    onAuthStateChanged(auth, async user => {
-  const dropdown = document.getElementById('dropdownMenu');
-  dropdown.innerHTML = ''; // clear previous options
-
-  if (user) {
-    // ✅ Logged in
-    let displayName = user.displayName || "Anonymous";
-
-    const userRef = collection(db, "users");
-    const q = query(userRef, where("uid", "==", user.uid));
-    const snapshot = await getDocs(q);
-    snapshot.forEach(doc => {
-      if (doc.data().username) {
-        displayName = doc.data().username;
-      }
-    });
-
-    welcomeEl.textContent = `Welcome, ${displayName}`;
-
-    dropdown.innerHTML = `
-      <a href="/profile.html">Edit Profile</a>
-      <a href="#" id="logoutBtn">Log Out</a>
-    `;
-
-    document.getElementById("logoutBtn").addEventListener("click", async (e) => {
-      e.preventDefault();
-      try {
-        await signOut(auth);
-        window.location.reload();
-      } catch (err) {
-        console.error("Logout failed:", err);
-      }
-    });
-
-  } else {
-    // ❌ Not logged in
-    welcomeEl.textContent = `Welcome, Anonymous`;
-
-    dropdown.innerHTML = `
-      <a href="/signup.html">Create Profile</a>
-      <a href="/login.html">Log In</a>
-    `;
-  }
-});
-
     async function submitScore(finalScore) {
-  if (!currentUser) return console.warn("Not logged in, score not submitted.");
+  const user = auth.currentUser;
+  if (!user) return console.warn("Not logged in, score not submitted.");
 
-  let username = currentUser.displayName || "Anonymous";
+  let username = user.displayName || "Anonymous";
   const date = new Date().toISOString().slice(0, 10);
 
-  // Optional: Try to get username from Firestore `users` collection if needed
   try {
     const userRef = collection(db, "users");
     const q = query(userRef, where("uid", "==", currentUser.uid));
@@ -422,30 +379,26 @@
       if (doc.data().username) {
         username = doc.data().username;
       }
+      console.log("Fetched username:", username);
     });
   } catch (err) {
     console.warn("Could not fetch user profile from Firestore:", err);
   }
 
   const now = new Date();
-const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
-// store this in Firestore under field "date"
-const auth = getAuth();
-
-await addDoc(collection(db, "matchScores"), {
-  score: finalScore,
-  userId: auth.currentUser.uid,
-  username: username, // ✅ Add this line
-  city: userCity,  // Optional if you collect city data
-  date: new Date().toISOString().slice(0, 10) // For daily leaderboard
-});
-
-
+  const docRef = doc(collection(db, "matchScores"));
+  await setDoc(docRef, {
+    userId: user.uid,
+    username: username,
+    score: finalScore,
+    city: userCity,
+    date: localDate
+  });
 
   console.log("✅ Score submitted:", { username, score: finalScore });
 }
-
 
 
     const allSingers = [
@@ -519,6 +472,7 @@ const username = currentUser?.displayName || "Anonymous";
           lock = false;
           if (matchesFound === selected.length) {
             messageEl.textContent = '🎉 You won!';
+messageEl.style.color = '#4caf50'; 
             restartBtn.style.display = 'block';
             if (score > highScore) {
               localStorage.setItem('matchHighScore', score);
@@ -562,43 +516,76 @@ const username = currentUser?.displayName || "Anonymous";
     }
     const welcomeEl = document.getElementById('welcomeMessage');
     onAuthStateChanged(auth, async user => {
+      currentUser = user; 
+  const dropdown = document.getElementById('dropdownMenu');
+  const welcomeEl = document.getElementById('welcomeMessage');
+  dropdown.innerHTML = '';
+
   if (user) {
+    console.log("✅ Logged in as:", user.uid);
     let displayName = user.displayName || "Anonymous";
 
-    // Try getting username from Firestore if not set in Auth
-    if (displayName === "Anonymous") {
-      const userRef = collection(db, "users");
-      const q = query(userRef, where("uid", "==", user.uid));
-      const snapshot = await getDocs(q);
-      snapshot.forEach(doc => {
-        if (doc.data().username) {
-          displayName = doc.data().username;
-        }
-      });
-    }
+    const userRef = collection(db, "users");
+    const q = query(userRef, where("uid", "==", user.uid));
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+      if (doc.data().username) {
+        displayName = doc.data().username;
+      }
+    });
 
     welcomeEl.textContent = `Welcome, ${displayName}`;
-    welcomeEl.onclick = () => {
-      window.location.href = "/profile.html";
-    };
+    dropdown.innerHTML = `
+  <a href="/profile.html">Edit Profile</a>
+  <a href="#" id="logoutBtn">Log Out</a>
+`;
+
+// Wait for DOM to update
+setTimeout(() => {
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try {
+        await signOut(auth);
+        console.log("✅ User logged out");
+        window.location.reload();
+      } catch (err) {
+        console.error("Logout failed:", err);
+      }
+    });
   } else {
-    welcomeEl.textContent = "Welcome, Anonymous";
-    welcomeEl.onclick = null;
+    console.warn("⚠️ logoutBtn not found in DOM");
   }
+}, 0);
+
+  } else {
+    console.log("🚫 User not logged in");
+    welcomeEl.textContent = "Welcome, Anonymous";
+
+    dropdown.innerHTML = `
+      <a href="/signup.html">Create Profile</a>
+      <a href="/login.html">Log In</a>
+    `;
+  }
+
 });
+
 
 const infoIcon = document.getElementById('infoIcon');
 const rulesModal = document.getElementById('rulesModal');
-const closeBtn = rulesModal.querySelector('.close');
 
 infoIcon.addEventListener('click', (e) => {
   e.preventDefault();
   rulesModal.classList.remove('hidden');
 });
 
-closeBtn.addEventListener('click', () => {
-  rulesModal.classList.add('hidden');
-});
+const closeBtn = rulesModal.querySelector('.close');
+if (closeBtn) {
+  closeBtn.addEventListener('click', () => {
+    rulesModal.classList.add('hidden');
+  });
+}
 
 window.addEventListener('click', (e) => {
   if (e.target === rulesModal) {
@@ -623,7 +610,6 @@ if (infoMobile) {
     rulesModal.classList.remove("hidden");
   });
 }
-// Collapse menu on outside click
 window.addEventListener("click", (e) => {
   const isClickInsideMenu = mobileMenu.contains(e.target);
   const isClickOnHamburger = hamburger.contains(e.target);
@@ -632,33 +618,20 @@ window.addEventListener("click", (e) => {
     mobileMenu.classList.remove("show");
   }
 });
-import { signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+const welcomeMessage = document.getElementById("welcomeMessage");
+const dropdownMenu = document.getElementById("dropdownMenu");
 
-const dropdown = document.getElementById('dropdownMenu');
-const logoutBtn = document.getElementById('logoutBtn');
-
-welcomeEl.addEventListener("mouseenter", () => {
-  dropdown.classList.remove("hidden");
-});
-welcomeEl.addEventListener("mouseleave", () => {
-  setTimeout(() => {
-    if (!dropdown.matches(':hover')) dropdown.classList.add("hidden");
-  }, 200);
-});
-dropdown.addEventListener("mouseleave", () => {
-  dropdown.classList.add("hidden");
+welcomeMessage.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdownMenu.classList.toggle("show");
 });
 
-logoutBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
-  try {
-    await signOut(auth);
-    window.location.reload();
-  } catch (err) {
-    console.error("Logout failed:", err);
+// Close dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (!dropdownMenu.contains(e.target) && e.target !== welcomeMessage) {
+    dropdownMenu.classList.remove("show");
   }
 });
-
 
   </script>
 </body>
