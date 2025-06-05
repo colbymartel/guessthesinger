@@ -212,6 +212,14 @@ body {
   align-self: flex-start;
 }
 
+.user-block.unread {
+  background-color: #294053;
+}
+.unread-icon {
+  color: #fff;
+  font-size: 16px;
+  margin-left: 8px;
+}
 
   </style>
 </head>
@@ -295,25 +303,7 @@ import {
   const chatInputContainer = document.getElementById("chatInputContainer");
 
   const userMap = new Map();
-
-  onAuthStateChanged(auth, user => {
-  if (user) {
-    currentUser = user;
-    loadInbox();
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const recipientId = urlParams.get('recipientId');
-    const recipientEmail = decodeURIComponent(urlParams.get('recipientEmail') || "Unknown User");
-
-    if (recipientId && recipientEmail) {
-      startNewChat(recipientId, recipientEmail);
-    }
-
-  } else {
-    alert("You must be logged in.");
-  }
-});
-function loadInbox() {
+  function loadInbox() {
   const messagesRef = collection(db, "messages");
   const q = query(messagesRef, orderBy("timestamp"));
 
@@ -324,14 +314,12 @@ function loadInbox() {
     snapshot.forEach(docSnap => {
       const msg = docSnap.data();
 
-      // Skip messages not involving current user
+      if (!currentUser) return;
       if (msg.senderId !== currentUser.uid && msg.recipientId !== currentUser.uid) return;
 
       const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
-
-      // Avoid showing yourself and avoid duplicates
-      if (otherUserId === currentUser.uid || addedUserIds.has(otherUserId)) return;
-      addedUserIds.add(otherUserId); // track early to prevent race condition
+      if (addedUserIds.has(otherUserId)) return;
+      addedUserIds.add(otherUserId);
 
       const userDocRef = doc(db, "users", otherUserId);
       getDoc(userDocRef).then(userDocSnap => {
@@ -344,15 +332,47 @@ function loadInbox() {
           isVerified = userData.isVerified === true;
         }
 
-        const userEl = document.createElement("div");
-        userEl.classList.add("user-block");
-        userEl.innerHTML = `${username}${isVerified ? " ✅" : ""}`;
-        userEl.onclick = () => openChat(otherUserId, username);
-        userListEl.appendChild(userEl);
+        getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId)).then(statusSnap => {
+          const lastOpened = statusSnap.exists() ? statusSnap.data().lastOpened?.toMillis() : 0;
+          const isUnread = !lastOpened || msg.timestamp?.toMillis() > lastOpened;
+
+          const userEl = document.createElement("div");
+          userEl.classList.add("user-block");
+          if (isUnread) userEl.classList.add("unread");
+
+          userEl.innerHTML = `
+            <div class="user-avatar"></div>
+            <div class="user-name" style="font-weight:${isUnread ? 'bold' : 'normal'};">
+              ${username}${isVerified ? " ✅" : ""} ${isUnread ? '<span class="unread-icon">⚪️</span>' : ''}
+            </div>
+          `;
+          userEl.onclick = () => openChat(otherUserId, username);
+          userListEl.appendChild(userEl);
+        });
       });
     });
   });
 }
+
+  onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUser = user;
+    loadInbox();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const recipientId = urlParams.get('recipientId');
+    const recipientEmail = decodeURIComponent(urlParams.get('recipientEmail') || "Unknown User");
+   
+    if (recipientId && recipientEmail) {
+      startNewChat(recipientId, recipientEmail);
+    }
+
+  } else {
+    alert("You must be logged in.");
+  }
+});
+
+
 
   async function startNewChat(recipientId, fallbackEmail) {
   selectedRecipientId = recipientId;
@@ -436,6 +456,7 @@ window.goBackToUserList = function () {
   document.getElementById("chatContainer").style.display = "none";
   document.getElementById("messageListView").style.display = "block";
 };
+import { setDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 async function openChat(senderId, fallbackName) {
   activeSenderId = senderId;
@@ -443,27 +464,30 @@ async function openChat(senderId, fallbackName) {
   document.getElementById("chatContainer").style.display = "flex";
   document.getElementById("messageListView").style.display = "none";
 
+  await setDoc(doc(db, "users", currentUser.uid, "chatStatus", senderId), {
+    lastOpened: serverTimestamp()
+  });
+
+  // Existing code...
   try {
     const userDocRef = doc(db, "users", senderId);
     const userDocSnap = await getDoc(userDocRef);
     let displayName = "Unknown User";
-let isVerified = false;
+    let isVerified = false;
 
-if (userDocSnap.exists()) {
-  const userData = userDocSnap.data();
-  displayName = userData.username || "Unknown User";
-  isVerified = userData.isVerified === true;
-}
+    if (userDocSnap.exists()) {
+      const userData = userDocSnap.data();
+      displayName = userData.username || "Unknown User";
+      isVerified = userData.isVerified === true;
+    }
 
-chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
-
+    chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
   } catch (e) {
     chatHeader.textContent = `Chat with ${fallbackName}`;
   }
 
   loadConversation(senderId);
 }
-
 
 </script>
 

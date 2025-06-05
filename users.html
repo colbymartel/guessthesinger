@@ -59,11 +59,12 @@
   <table>
     <thead>
       <tr>
+        <th>#</th>
         <th>Username</th>
         <th>Email</th>
         <th>Favorite Artist</th>
       </tr>
-    </thead>
+    </thead>    
     <tbody id="userTableBody"></tbody>
   </table>
   <div id="dmModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1001; justify-content:center; align-items:center;">
@@ -119,7 +120,8 @@
 
   const snapshot = await getDocs(collection(db, "users"));
 
-  snapshot.forEach(doc => {
+  let count = 1;
+snapshot.forEach(doc => {
     const data = doc.data();
     if (!data.email) return; // Skip if no email
 
@@ -130,12 +132,13 @@
     const city = data.city || "—";
 
     content.innerHTML += `
-      <tr>
-        <td><a href="#" onclick="showProfile('${userId}')" style="color:#315f85; text-decoration:underline;">${username}</a></td>
-        <td>${email}</td>
-        <td>${artist}</td>
-      </tr>
-    `;
+  <tr>
+    <td>${count++}</td>
+    <td><a href="#" onclick="showProfile('${userId}')" style="color:#315f85; text-decoration:underline;">${username}</a></td>
+    <td>${email}</td>
+    <td>${artist}</td>
+  </tr>
+`;
   });
 }
 
