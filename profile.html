@@ -6,11 +6,11 @@
   <title>My Profile | GuessTheSinger.com</title>
   <link rel="icon" href="/favicon.ico" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./signup.css" />
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Fredoka', sans-serif;
       background: #f5f6fa;
       padding: 0;
       margin: 0;
@@ -121,7 +121,7 @@
   width: 100%;
   padding: 12px 14px;
   font-size: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Fredoka', sans-serif;
   border: 2px solid #ccc;
   border-radius: 12px;
   background-color: #f9f9f9;
@@ -222,7 +222,7 @@
   width: 100%;
   padding: 12px 14px;
   font-size: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Fredoka', sans-serif;
   border: 2px solid #ccc;
   border-radius: 12px;
   background-color: #f9f9f9;
@@ -236,14 +236,67 @@
   border-color: #28a7ae;
   box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
 }
+.popup {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.popup.show {
+  opacity: 1;
+}
+
+.popup.hidden {
+  display: none;
+}
+nav,
+.nav-links a,
+.welcome-msg,
+.mobile-menu a {
+  font-family: 'Fredoka', sans-serif;
+}
+.locked-avatar {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar-img.locked {
+  filter: grayscale(100%) brightness(80%);
+  cursor: not-allowed;
+}
+
+.lock-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: white;
+  text-shadow: 0 0 6px rgba(0,0,0,0.6);
+  pointer-events: none;
+}
 
   </style>
 </head>
 <body>
   <header class="header">
     <div class="logo">
-      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+      </a>
     </div>
+    
   </header>
   <nav>
     <div class="welcome-nav">
@@ -261,8 +314,8 @@
       <div class="avatar-display">
         <img src="images/avatars/popstarpenguin.jpg" id="currentAvatar" alt="Avatar" />
         <div>
-          <div id="profileName" style="font-weight: 600; font-size: 18px;">Colby Martel</div>
-          <div style="font-size: 14px; color: gray;"><i class="fas fa-map-marker-alt"></i> <span id="profileCity">Boston</span></div>
+          <div id="profileName" style="font-weight: 600; font-size: 18px;"></div>
+          <div style="font-size: 14px; color: gray;"><i class="fas fa-map-marker-alt"></i> <span id="profileCity"></span></div>
         </div>
       </div>
       <div class="edit-icon" onclick="openEditPopup()">
@@ -285,20 +338,29 @@
           <input type="text" id="vibeSearch" placeholder="Add artist..." />
                     <div id="editableVibes" class="status-tags" style="margin-bottom:10px;"></div>
           <button class="btn" onclick="saveVibes()">Save</button>
-          <button class="btn" style="background:#ccc; color:#333; margin-top:10px;" onclick="closeVibesEditor()">Cancel</button>
+          <button class="btn" style="background:#ccc; color:#333; margin-top:10px;" onclick="closeVibesEditor()">Close</button>
         </div>
       </div>
       
       
     <div class="dashboard-section">
       <h4>Dashboard</h4>
+      <button class="btn" style="background: #ffcb05; color: #000;" onclick="showPersonalBests()">View Personal Bests</button>
+      <div id="personalBestsModal" class="modal">
+        <div class="modal-content">
+          <h3>Personal Bests</h3>
+          <p id="myScoreText">🎯 Your Personal Best: </p>
+          <p id="myRankText">🏆 Ranking: </p>
+          <button class="btn" onclick="document.getElementById('personalBestsModal').classList.remove('show')">Close</button>
+        </div>
+      </div>
+
     <button class="btn" style="background: #e74c3c;" onclick="logout()">Log Out</button>
   </div>
 
-  <!-- Edit Profile Popup -->
   <div id="editPopup" class="modal">
     <div class="modal-content">
-      <h3>Edit Profile</h3>
+      <h3 style="margin-bottom: 10px;">Edit Profile</h3>
       <div class="input-group">
         <label for="editUsername">Nickname</label>
         <input type="text" id="editUsername" placeholder="Enter nickname" />
@@ -397,7 +459,7 @@
             </optgroup>
           </select>
       <div class="input-group">
-        <label>Avatar</label>
+        <label for="avatar">Select Your Avatar</label>
         <div class="avatar-grid">
           <img src="images/avatars/popstarpenguin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
           <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this)" />
@@ -406,10 +468,24 @@
           <img src="images/avatars/souptimmy.jpg" class="avatar-img" onclick="selectAvatar(this)" />
           <img src="images/avatars/vincent.jpg" class="avatar-img" onclick="selectAvatar(this)" />
         </div>
+        
+        <div class="avatar-grid">
+          <div class="locked-avatar">
+            <img src="images/avatars/ShowerSloth.jpg" class="avatar-img locked" />
+            <div class="lock-icon"><i class="fas fa-lock"></i></div>
+          </div>
+          <div class="locked-avatar">
+            <img src="images/avatars/KaraokeKoala.jpg" class="avatar-img locked" />
+            <div class="lock-icon"><i class="fas fa-lock"></i></div>
+          </div>
+        </div>
       </div>
       <button class="btn" onclick="saveProfileEdits()">Save</button>
-      <button class="btn" style="background:#ccc; color:#000;" onclick="closeEditPopup()">Cancel</button>
+      <button class="btn" style="background:#ccc; color:#000;" onclick="closeEditPopup()">Close</button>
     </div>
+  </div>
+  <div id="savePopup" class="popup hidden">
+    <div class="popup-content">✅ Profile saved!</div>
   </div>
   
   <script type="module">
@@ -511,7 +587,7 @@
   favoriteArtist: selectedArtists.join(",")
 });
             await updateProfile(user, { displayName: username });
-            alert("Profile updated successfully!");
+            showSavePopup();
           } catch (err) {
             console.error("Error saving profile:", err);
             alert("Error saving profile: " + err.message);
@@ -566,8 +642,17 @@ window.openVibesEditor = function () {
 window.removeArtist = function (index) {
   selectedArtists.splice(index, 1);
   openVibesEditor(); 
-};
-window.saveVibes = async function () {
+};window.saveVibes = async function () {
+  const input = document.getElementById("vibeSearch");
+  const val = input.value.trim();
+
+  // Add input value to selectedArtists if valid
+  if (val && selectedArtists.length < 10 && !selectedArtists.includes(val)) {
+    selectedArtists.push(val);
+    input.value = "";
+  }
+
+  // Render the tags in profile view
   const tagContainer = document.getElementById("vibingTags");
   tagContainer.innerHTML = "";
   selectedArtists.forEach(artist => {
@@ -577,6 +662,7 @@ window.saveVibes = async function () {
     tagContainer.appendChild(tag);
   });
 
+  // Save to Firestore
   const user = auth.currentUser;
   if (user) {
     await setDoc(doc(firestore, "users", user.uid), {
@@ -584,12 +670,15 @@ window.saveVibes = async function () {
     }, { merge: true });
   }
 
+  // Close modal
   window.closeVibesEditor(); 
 };
+
 
 window.closeVibesEditor = function () {
   document.getElementById("vibesModal").style.display = "none";
 };
+
 window.logout = function () {
   signOut(auth).then(() => {
     console.log("✅ Logged out successfully");
@@ -598,6 +687,63 @@ window.logout = function () {
     console.error("❌ Logout error:", error);
     alert("Logout failed. Please try again.");
   });
+};
+
+window.showPersonalBests = async function () {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  try {
+    // Get current user's personal best
+    const bestRef = doc(firestore, "matchBests", user.uid);
+    const bestSnap = await getDoc(bestRef);
+    const myScore = bestSnap.exists() ? bestSnap.data().bestScore : 0;
+
+    // Pull all matchScores instead of matchBests
+    const allScoreSnapshot = await getDocs(collection(firestore, "matchScores"));
+    const allScores = [];
+
+    allScoreSnapshot.forEach(doc => {
+      const data = doc.data();
+      if (data && typeof data.score === "number") {
+        allScores.push(data.score);
+      }
+    });
+
+    allScores.sort((a, b) => b - a);
+    const myRank = allScores.indexOf(myScore) + 1;
+
+    document.getElementById("myScoreText").innerText = `🎯 Your Personal Best: ${myScore}`;
+    document.getElementById("myRankText").innerText = `🏆 Ranking: #${myRank} of ${allScores.length}`;
+
+    document.getElementById("personalBestsModal").classList.add("show");
+  } catch (error) {
+    console.error("Error fetching personal bests:", error);
+  }
+};
+
+
+window.closePersonalBestsModal = function () {
+  document.getElementById("personalBestsModal").classList.remove("show");
+};
+function showSavePopup() {
+  const popup = document.getElementById("savePopup");
+  popup.classList.remove("hidden");
+  popup.classList.add("show");
+
+  setTimeout(() => {
+    popup.classList.remove("show");
+    popup.classList.add("hidden");
+  }, 3000);
+}
+window.selectAvatar = function (img) {
+  if (img.classList.contains("locked")) {
+    alert("This avatar is locked! Earn it by leveling up 🎉");
+    return;
+  }
+  selectedAvatar = img.src;
+  document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
+  img.classList.add("selected");
 };
 
   </script>

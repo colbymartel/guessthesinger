@@ -8,7 +8,7 @@
   <title>GuessTheSinger.com - Sign Up</title>
   <link rel="icon" href="/favicon.ico" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./signup.css" />
 </head>
 <style>
@@ -43,7 +43,7 @@ html, body {
   width: 100%;
   padding: 12px 14px;
   font-size: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Fredoka', sans-serif;
   border: 2px solid #ccc;
   border-radius: 12px;
   background-color: #f9f9f9;
@@ -63,6 +63,33 @@ html, body {
   border-color: #28a7ae;
   box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
 }
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.avatar-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  object-fit: cover;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.avatar-img:hover {
+  transform: scale(1.05);
+}
+
+.avatar-img.selected {
+  border-color: #ffcb05;
+  box-shadow: 0 0 10px rgba(255, 203, 5, 0.6);
+}
+
 </style>
 <body>
   <!-- Header -->
@@ -159,10 +186,23 @@ html, body {
         </div>
 
         <div class="input-group">
-          <label for="artist">Favorite Music Artists</label>
-          <input type="text" id="artist" placeholder="e.g. Taylor Swift, Bad Bunny, etc." />
+          <label>Choose Avatar</label>
+          <div class="avatar-grid">
+            <img src="images/avatars/popstarpenguin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/discodolphin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/musicalmonkey.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/souptimmy.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/vincent.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+          </div>
         </div>
-
+        
+        <div class="input-group">
+          <label for="vibeSearch">Favorite Music Artists</label>
+          <input type="text" id="vibeSearch" placeholder="e.g. Taylor Swift, Bad Bunny, etc." />
+          <div id="editableVibes" class="status-tags"></div>
+        </div>
+        
         <button type="submit" class="btn">Finish Sign-Up</button>
       </form>
 
@@ -237,6 +277,66 @@ html, body {
         alert("Signup error: " + err.message);
       }
     });
+    let selectedAvatar = "images/avatars/popstarpenguin.jpg"; // default
+let selectedArtists = [];
+
+window.selectAvatar = function (img) {
+  selectedAvatar = img.src;
+  document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
+  img.classList.add("selected");
+};
+
+document.getElementById("vibeSearch").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const val = e.target.value.trim();
+    if (val && selectedArtists.length < 10 && !selectedArtists.includes(val)) {
+      selectedArtists.push(val);
+      e.target.value = "";
+      renderVibeTags();
+    }
+  }
+});
+
+function renderVibeTags() {
+  const container = document.getElementById("editableVibes");
+  container.innerHTML = "";
+  selectedArtists.forEach((artist, i) => {
+    const tag = document.createElement("div");
+    tag.className = "status-tag";
+    tag.innerHTML = `${artist} <span style="cursor:pointer; margin-left:8px;" onclick="removeArtist(${i})">&times;</span>`;
+    container.appendChild(tag);
+  });
+}
+
+window.removeArtist = function (index) {
+  selectedArtists.splice(index, 1);
+  renderVibeTags();
+};
+document.getElementById('step2Form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const city = document.getElementById('city').value;
+  const artist = document.getElementById('artist').value;
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, tempUserData.email, tempUserData.password);
+    const user = userCredential.user;
+    await updateProfile(user, { displayName: tempUserData.username });
+
+    await set(ref(database, 'users/' + user.uid), {
+      username: tempUserData.username,
+      email: tempUserData.email,
+      uid: user.uid,
+      city: city,
+      favoriteArtist: artist
+    });
+
+    alert("Signup complete! 🎉");
+    window.location.href = 'memory.html';
+  } catch (err) {
+    alert("Signup error: " + err.message);
+  }
+});
+
   </script>
 </body>
 </html>

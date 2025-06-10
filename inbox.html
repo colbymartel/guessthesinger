@@ -332,23 +332,39 @@ import {
           isVerified = userData.isVerified === true;
         }
 
-        getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId)).then(statusSnap => {
-          const lastOpened = statusSnap.exists() ? statusSnap.data().lastOpened?.toMillis() : 0;
-          const isUnread = !lastOpened || msg.timestamp?.toMillis() > lastOpened;
+        getDoc(userDocRef).then(userDocSnap => {
+  let username = "Unknown User";
+  let isVerified = false;
+  let userData = {}; // ✅ declare upfront
 
-          const userEl = document.createElement("div");
-          userEl.classList.add("user-block");
-          if (isUnread) userEl.classList.add("unread");
+  if (userDocSnap.exists()) {
+    userData = userDocSnap.data(); // ✅ assign safely
+    username = userData.username || username;
+    isVerified = userData.isVerified === true;
+  }
 
-          userEl.innerHTML = `
-            <div class="user-avatar"></div>
-            <div class="user-name" style="font-weight:${isUnread ? 'bold' : 'normal'};">
-              ${username}${isVerified ? " ✅" : ""} ${isUnread ? '<span class="unread-icon">⚪️</span>' : ''}
-            </div>
-          `;
-          userEl.onclick = () => openChat(otherUserId, username);
-          userListEl.appendChild(userEl);
-        });
+  getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId)).then(statusSnap => {
+    const lastOpened = statusSnap.exists() ? statusSnap.data().lastOpened?.toMillis() : 0;
+    const isUnread = !lastOpened || msg.timestamp?.toMillis() > lastOpened;
+
+    const avatarUrl = userData.avatar || "/images/avatars/popstarpenguin.jpg"; 
+
+    const userEl = document.createElement("div");
+    userEl.classList.add("user-block");
+    if (isUnread) userEl.classList.add("unread");
+
+    userEl.innerHTML = `
+      <img class="user-avatar" src="${avatarUrl}" alt="${username}'s avatar" />
+      <div class="user-name" style="font-weight:${isUnread ? 'bold' : 'normal'};">
+        ${username}${isVerified ? " ✅" : ""} ${isUnread ? '<span class="unread-icon">⚪️</span>' : ''}
+      </div>
+    `;
+
+    userEl.onclick = () => openChat(otherUserId, username);
+    userListEl.appendChild(userEl);
+  });
+});
+
       });
     });
   });
