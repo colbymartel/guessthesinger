@@ -102,9 +102,19 @@
 }
 
 .modal.show {
-  display: flex !important; 
+  display: flex !important;
 }
-
+.friend-finder-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  flex-direction: column;
+}
 
     .modal-content {
       background: white;
@@ -142,23 +152,18 @@
   border-color: #28a7ae;
   box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
 }
-    nav {
+nav {
   background-color: #1e2b38;
-  padding: 15px 30px;
+  padding: 20px 30px; 
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  position: relative;
   color: white;
+  height: 70px; 
 }
 
-/* Welcome on the left */
-.welcome-nav {
-  position: absolute;
-  left: 30px;
-}
 
-/* Hamburger on the right */
+
 .hamburger {
   position: absolute;
   right: 30px;
@@ -167,7 +172,6 @@
   color: white;
 }
 
-/* Nav links centered */
 .nav-links {
   display: flex;
   gap: 20px;
@@ -206,6 +210,7 @@
   cursor: pointer;
   color: #aaa;
 }
+
 
 .close:hover {
   color: #000;
@@ -252,6 +257,16 @@
   opacity: 0;
   transition: opacity 0.4s ease;
 }
+#friendFinderModal {
+  z-index: 3000;
+}
+.friend-finder-modal.hidden {
+  display: none !important;
+}
+
+.friend-finder-modal.show {
+  display: flex !important;
+}
 
 .popup.show {
   opacity: 1;
@@ -260,6 +275,10 @@
 .popup.hidden {
   display: none;
 }
+.hidden {
+  display: none !important;
+}
+
 nav,
 .nav-links a,
 .welcome-msg,
@@ -286,6 +305,35 @@ nav,
   text-shadow: 0 0 6px rgba(0,0,0,0.6);
   pointer-events: none;
 }
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background-color: #1e2b38;
+  position: absolute;
+  top: 110px;
+    right: 30px;
+  z-index: 2000;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  font-weight: bold;
+}
+
+.mobile-menu a {
+  color: white;
+  padding: 10px 0;
+  text-decoration: none;
+  text-align: right;
+}
+
+.mobile-menu a:hover {
+  color: #ffcb05;
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
 
   </style>
 </head>
@@ -296,19 +344,22 @@ nav,
         <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
       </a>
     </div>
-    
   </header>
+  
   <nav>
-    <div class="welcome-nav">
-      <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
-    </div>
-    <div class="nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/memory.html">Play</a>
-      <a href="/memory-leaderboard.html">Leaderboard</a>
-      <a href="/about.html">About</a>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
     </div>
   </nav>
+  
+  <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="/index.html">Home</a>
+    <a href="/memory.html">Memory Match</a>
+    <a href="/memory-leaderboard.html">Leaderboard</a>
+    <a href="/inbox.html">Messages</a>
+    <a href="/about.html">About</a>
+  </div>
+  
   <div class="profile-container">
     <div class="profile-header">
       <div class="avatar-display">
@@ -333,33 +384,33 @@ nav,
       </div>
 
       <div id="vibesModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000088; justify-content:center; align-items:center;">
-        <div style="background:white; padding:20px; border-radius:12px; max-width:400px; width:90%;">
-          <h3>Edit Vibing Artists</h3>
+        <div style="background:white; padding:20px; border-radius:12px; max-width:400px; width:90%; position:relative;">
+          <span class="close" onclick="closeVibesEditor()">&times;</span>
+          <h3 style="margin-bottom:12px;">Edit Favorite Artists</h3>
           <input type="text" id="vibeSearch" placeholder="Add artist..." />
-                    <div id="editableVibes" class="status-tags" style="margin-bottom:10px;"></div>
+          <div id="editableVibes" class="status-tags" style="margin-bottom:10px;"></div>
           <button class="btn" onclick="saveVibes()">Save</button>
-          <button class="btn" style="background:#ccc; color:#333; margin-top:10px;" onclick="closeVibesEditor()">Close</button>
         </div>
       </div>
-      
       
     <div class="dashboard-section">
       <h4>Dashboard</h4>
       <button class="btn" style="background: #ffcb05; color: #000;" onclick="showPersonalBests()">View Personal Bests</button>
       <div id="personalBestsModal" class="modal">
         <div class="modal-content">
+          <span class="close" onclick="closePersonalBestsModal()">&times;</span>
           <h3>Personal Bests</h3>
           <p id="myScoreText">🎯 Your Personal Best: </p>
           <p id="myRankText">🏆 Ranking: </p>
-          <button class="btn" onclick="document.getElementById('personalBestsModal').classList.remove('show')">Close</button>
         </div>
       </div>
-
+      <button class="btn" style="background: #7bafe7;" onclick="openFriendFinder()">Find Friends</button>
     <button class="btn" style="background: #e74c3c;" onclick="logout()">Log Out</button>
   </div>
 
   <div id="editPopup" class="modal">
     <div class="modal-content">
+      <span class="close" onclick="closeEditPopup()">&times;</span>
       <h3 style="margin-bottom: 10px;">Edit Profile</h3>
       <div class="input-group">
         <label for="editUsername">Nickname</label>
@@ -476,6 +527,10 @@ nav,
         </div>
         
         <div class="avatar-grid">
+          <img src="images/avatars/rhythmicraccoon.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          /> 
+          <img src="images/avatars/lyricalllama.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
           <img src="images/avatars/DancingDumpling.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
           />
           <img src="images/avatars/Sauceman.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
@@ -486,17 +541,18 @@ nav,
             <img src="images/avatars/ShowerSloth.jpg" class="avatar-img locked" />
             <div class="lock-icon"><i class="fas fa-lock"></i></div>
           </div>
-          <div class="locked-avatar">
-            <img src="images/avatars/KaraokeKoala.jpg" class="avatar-img locked" />
-            <div class="lock-icon"><i class="fas fa-lock"></i></div>
-          </div>
-          <div class="locked-avatar">
-            <img src="images/avatars/TalentShowTurtle.jpg" class="avatar-img locked" />
-            <div class="lock-icon"><i class="fas fa-lock"></i></div>
-          </div>
+    
           </div>
 
           <div class="avatar-grid">
+            <div class="locked-avatar">
+              <img src="images/avatars/KaraokeKoala.jpg" class="avatar-img locked" />
+              <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </div>
+            <div class="locked-avatar">
+              <img src="images/avatars/TalentShowTurtle.jpg" class="avatar-img locked" />
+              <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </div>
             <div class="locked-avatar">
               <img src="images/avatars/RisingStarfish.jpg" class="avatar-img locked" />
               <div class="lock-icon"><i class="fas fa-lock"></i></div>
@@ -507,9 +563,9 @@ nav,
             </div>
       </div>
       <button class="btn" onclick="saveProfileEdits()">Save</button>
-      <button class="btn" style="background:#ccc; color:#000;" onclick="closeEditPopup()">Close</button>
     </div>
   </div>
+
   <div id="savePopup" class="popup hidden">
     <div class="popup-content">✅ Profile saved!</div>
   </div>
@@ -519,8 +575,19 @@ nav,
       <img id="previewAvatarImg" src="" alt="Avatar Preview" style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 4px solid #fff; display: block; margin: auto;" />
     </div>
   </div>
-  <script type="module">
+</div>
+</div>
 
+  <div id="friendFinderModal" class="friend-finder-modal hidden">
+    <div class="modal-content" style="position:relative;">
+      <span class="close" onclick="closeFriendFinder()" style="position:absolute; top:12px; right:16px; font-size:24px; color:#333; cursor:pointer;">&times;</span>
+      <h2 style="margin-bottom: 10px;">Find Friends</h2>
+      <input id="friendSearchInput" type="text" placeholder="Search by username or favorite artist" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; margin-bottom:20px;" />
+      <div id="friendResults"></div>
+    </div>
+  </div>
+
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
@@ -538,257 +605,237 @@ nav,
     const auth = getAuth(app);
     const firestore = getFirestore(app);
   
+    let selectedArtists = [];
+    let selectedAvatar = "";
     document.addEventListener("DOMContentLoaded", () => {
-      const profileName = document.getElementById("profileName");
-      const profileCity = document.getElementById("profileCity");
-      const currentAvatar = document.getElementById("currentAvatar");
-      const editUsername = document.getElementById("editUsername");
-      const editCity = document.getElementById("city");
-      const avatarImages = document.querySelectorAll(".avatar-img");
-      let selectedAvatar = "";
-  
-      onAuthStateChanged(auth, async user => {
+  const profileName = document.getElementById("profileName");
+  const profileCity = document.getElementById("profileCity");
+  const currentAvatar = document.getElementById("currentAvatar");
+  const editUsername = document.getElementById("editUsername");
+  const editCity = document.getElementById("city");
+  const avatarImages = document.querySelectorAll(".avatar-img");
 
-        if (!user) {
-          window.location.href = "login.html";
-          return;
-        }
-  
-        try {
-          const docRef = doc(firestore, "users", user.uid);
-          const docSnap = await getDoc(docRef);
-  
-          if (docSnap.exists()) {
-  const data = docSnap.data();
-  profileName.innerText = data.username || "";
-  profileCity.innerText = data.city || "";
-  currentAvatar.src = data.avatar || "";
-  editUsername.value = data.username || "";
-  editCity.value = data.city || "";
-  selectedAvatar = data.avatar || "";
+  onAuthStateChanged(auth, async user => {
+    if (!user) return (window.location.href = "login.html");
 
-  avatarImages.forEach(i => {
-  if (i.src.includes(selectedAvatar)) {
-    i.classList.add("selected");
-  } else {
-    i.classList.remove("selected");
-  }
-});
+    const docSnap = await getDoc(doc(firestore, "users", user.uid));
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      profileName.innerText = data.username || "";
+      profileCity.innerText = data.city || "";
+      currentAvatar.src = data.avatar || "";
+      editUsername.value = data.username || "";
+      editCity.value = data.city || "";
+      selectedAvatar = data.avatar || "";
 
-  selectedArtists = data.favoriteArtist
-  ? data.favoriteArtist.split(",").map(s => s.trim())
-  : [];
-
-  const tagContainer = document.getElementById("vibingTags");
-  tagContainer.innerHTML = "";
-  selectedArtists.forEach(artist => {
-    const tag = document.createElement("div");
-    tag.className = "status-tag";
-    tag.innerText = artist;
-    tagContainer.appendChild(tag);
-  });
-  
-            avatarImages.forEach(img => {
-              if (img.src.includes(data.avatar)) {
-                img.classList.add("selected");
-              } else {
-                img.classList.remove("selected");
-              }
-            });
-          }
-        } catch (error) {
-          console.error("Error loading profile:", error);
-        }
-  
-        window.saveProfileEdits = async function () {
-          const username = editUsername.value.trim();
-          const city = editCity.value;
-  
-          profileName.innerText = username;
-          profileCity.innerText = city;
-          currentAvatar.src = selectedAvatar;
-  
-          try {
-            await setDoc(doc(firestore, "users", user.uid), {
-  uid: user.uid,
-  email: user.email,
-  username,
-  city,
-  avatar: selectedAvatar,
-  favoriteArtist: selectedArtists.join(",")
-});
-            await updateProfile(user, { displayName: username });
-            showSavePopup();
-          } catch (err) {
-            console.error("Error saving profile:", err);
-            alert("Error saving profile: " + err.message);
-          }
-        };
-  
-        window.selectAvatar = function (img) {
-          selectedAvatar = img.src;
-          avatarImages.forEach(i => i.classList.remove("selected"));
-          img.classList.add("selected");
-        };
-  
-        window.openEditPopup = function () {
-          document.getElementById('editPopup').style.display = 'flex';
-          editUsername.value = profileName.innerText;
-          editCity.value = profileCity.innerText;
-        };
-  
-        window.closeEditPopup = function () {
-          document.getElementById('editPopup').style.display = 'none';
-        };
-      });
-    });
-
-let selectedArtists = [];
-
-document.getElementById("vibeSearch").addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    const val = e.target.value.trim();
-    if (val && selectedArtists.length < 10 && !selectedArtists.includes(val)) {
-      selectedArtists.push(val);
-      e.target.value = "";
-      openVibesEditor(); // re-render tags with new artist
+      selectedArtists = data.favoriteArtist?.split(",").map(s => s.trim()) || [];
+      document.getElementById("vibingTags").innerHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
     }
-  }
-});
-
-window.openVibesEditor = function () {
-  const tagContainer = document.getElementById("editableVibes");
-  tagContainer.innerHTML = "";
-
-  selectedArtists.forEach((artist, index) => {
-    const tag = document.createElement("div");
-    tag.className = "status-tag";
-    tag.innerHTML = `${artist} <span style="cursor:pointer; margin-left:8px;" onclick="removeArtist(${index})">&times;</span>`;
-    tagContainer.appendChild(tag);
   });
 
-  document.getElementById("vibesModal").style.display = "flex";
-};
-
-window.removeArtist = function (index) {
-  selectedArtists.splice(index, 1);
-  openVibesEditor(); 
-};window.saveVibes = async function () {
-  const input = document.getElementById("vibeSearch");
-  const val = input.value.trim();
-
-  // Add input value to selectedArtists if valid
-  if (val && selectedArtists.length < 10 && !selectedArtists.includes(val)) {
-    selectedArtists.push(val);
-    input.value = "";
-  }
-
-  // Render the tags in profile view
-  const tagContainer = document.getElementById("vibingTags");
-  tagContainer.innerHTML = "";
-  selectedArtists.forEach(artist => {
-    const tag = document.createElement("div");
-    tag.className = "status-tag";
-    tag.innerText = artist;
-    tagContainer.appendChild(tag);
+  document.getElementById("vibeSearch").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const val = e.target.value.trim();
+      if (val && !selectedArtists.includes(val)) {
+        selectedArtists.push(val);
+        e.target.value = "";
+        openVibesEditor();
+      }
+    }
   });
 
-  // Save to Firestore
-  const user = auth.currentUser;
-  if (user) {
-    await setDoc(doc(firestore, "users", user.uid), {
-      favoriteArtist: selectedArtists.join(",")
-    }, { merge: true });
-  }
+  // ✅ Friend Finder Search
+  document.getElementById("friendSearchInput").addEventListener("input", async function () {
+    const query = this.value.toLowerCase().trim();
+    const resultsContainer = document.getElementById("friendResults");
 
-  // Close modal
-  window.closeVibesEditor(); 
-};
+    if (query.length < 3) {
+      resultsContainer.innerHTML = "<p>Type at least 3 characters to search.</p>";
+      return;
+    }
 
+    resultsContainer.innerHTML = "Searching...";
 
-window.closeVibesEditor = function () {
-  document.getElementById("vibesModal").style.display = "none";
-};
+    const snapshot = await getDocs(collection(firestore, "users"));
+    const matches = [];
 
-window.logout = function () {
-  signOut(auth).then(() => {
-    console.log("✅ Logged out successfully");
-    window.location.href = "login.html"; // redirect after logout
-  }).catch((error) => {
-    console.error("❌ Logout error:", error);
-    alert("Logout failed. Please try again.");
-  });
-};
-
-window.showPersonalBests = async function () {
-  const user = auth.currentUser;
-  if (!user) return;
-
-  try {
-    // Get current user's personal best
-    const bestRef = doc(firestore, "matchBests", user.uid);
-    const bestSnap = await getDoc(bestRef);
-    const myScore = bestSnap.exists() ? bestSnap.data().bestScore : 0;
-
-    // Pull all matchScores instead of matchBests
-    const allScoreSnapshot = await getDocs(collection(firestore, "matchScores"));
-    const allScores = [];
-
-    allScoreSnapshot.forEach(doc => {
+    snapshot.forEach(doc => {
       const data = doc.data();
-      if (data && typeof data.score === "number") {
-        allScores.push(data.score);
+      const username = data.username?.toLowerCase() || "";
+      const artists = data.favoriteArtist?.toLowerCase() || "";
+      if ((username.includes(query) || artists.includes(query)) && doc.id !== auth.currentUser?.uid) {
+        matches.push(data);
       }
     });
 
-    allScores.sort((a, b) => b - a);
-    const myRank = allScores.indexOf(myScore) + 1;
+    const limitedMatches = matches.slice(0, 3);
 
-    document.getElementById("myScoreText").innerText = `🎯 Your Personal Best: ${myScore}`;
-    document.getElementById("myRankText").innerText = `🏆 Ranking: #${myRank} of ${allScores.length}`;
+    resultsContainer.innerHTML = limitedMatches.length === 0
+  ? "<p>No matches found.</p>"
+  : limitedMatches.map(user => `
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:8px">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="${user.avatar || '/images/avatars/popstarpenguin.jpg'}" style="width:50px; height:50px; border-radius:50%;">
+        <div>
+          <strong>${user.username || "Anonymous"}</strong><br>
+          <small>${user.favoriteArtist || ""}</small>
+        </div>
+      </div>
+      <button class="btn" style="margin-top:8px" onclick="startConversation('${user.uid}', '${user.username || "Anonymous"}')">Message</button>
+    </div>
+  `).join("");
+  });
+});
 
-    document.getElementById("personalBestsModal").classList.add("show");
-  } catch (error) {
-    console.error("Error fetching personal bests:", error);
-  }
-};
-
-
-window.closePersonalBestsModal = function () {
-  document.getElementById("personalBestsModal").classList.remove("show");
-};
-function showSavePopup() {
-  const popup = document.getElementById("savePopup");
-  popup.classList.remove("hidden");
-  popup.classList.add("show");
-
-  setTimeout(() => {
-    popup.classList.remove("show");
-    popup.classList.add("hidden");
-  }, 3000);
-}
-window.selectAvatar = function (img) {
-  if (img.classList.contains("locked")) {
-    alert("This avatar is locked! Earn it by leveling up 🎉");
-    return;
-  }
-  selectedAvatar = img.src;
-  document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
-  img.classList.add("selected");
-};
-window.previewAvatar = function (img) {
-  if (img.classList.contains("locked")) return; // skip locked avatars
-  const modal = document.getElementById("avatarPreviewModal");
-  const previewImg = document.getElementById("previewAvatarImg");
-  previewImg.src = img.src;
-  modal.classList.add("show");
-};
-
-window.closeAvatarPreview = function () {
-  document.getElementById("avatarPreviewModal").classList.remove("show");
-};
-
-  </script>
+    window.openVibesEditor = () => {
+      const container = document.getElementById("editableVibes");
+      container.innerHTML = "";
+      selectedArtists.forEach((artist, index) => {
+        const div = document.createElement("div");
+        div.className = "status-tag";
+        div.innerHTML = `${artist} <span style='cursor:pointer;' onclick='removeArtist(${index})'>&times;</span>`;
+        container.appendChild(div);
+      });
+      document.getElementById("vibesModal").style.display = "flex";
+    };
   
+    window.removeArtist = index => {
+      selectedArtists.splice(index, 1);
+      openVibesEditor();
+    };
+  
+    window.saveVibes = async () => {
+      const val = document.getElementById("vibeSearch").value.trim();
+      if (val && !selectedArtists.includes(val)) selectedArtists.push(val);
+      const tagHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
+      document.getElementById("vibingTags").innerHTML = tagHTML;
+      document.getElementById("vibeSearch").value = "";
+      await setDoc(doc(firestore, "users", auth.currentUser.uid), { favoriteArtist: selectedArtists.join(",") }, { merge: true });
+      document.getElementById("vibesModal").style.display = "none";
+    };
+  
+    window.saveProfileEdits = async () => {
+      const user = auth.currentUser;
+      const username = document.getElementById("editUsername").value.trim();
+      const city = document.getElementById("city").value;
+      await setDoc(doc(firestore, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        username,
+        city,
+        avatar: selectedAvatar,
+        favoriteArtist: selectedArtists.join(",")
+      });
+      await updateProfile(user, { displayName: username });
+      document.getElementById("profileName").innerText = username;
+      document.getElementById("profileCity").innerText = city;
+      document.getElementById("currentAvatar").src = selectedAvatar;
+      showSavePopup();
+    };
+  
+    window.showPersonalBests = async () => {
+      const uid = auth.currentUser.uid;
+      const bestSnap = await getDoc(doc(firestore, "matchBests", uid));
+      const myScore = bestSnap.exists() ? bestSnap.data().bestScore : 0;
+      const scores = (await getDocs(collection(firestore, "matchScores"))).docs.map(d => d.data().score).filter(n => typeof n === 'number');
+      scores.sort((a, b) => b - a);
+      const rank = scores.indexOf(myScore) + 1;
+      document.getElementById("myScoreText").innerText = `🎯 Your Personal Best: ${myScore}`;
+      document.getElementById("myRankText").innerText = `🏆 Ranking: #${rank} of ${scores.length}`;
+      document.getElementById("personalBestsModal").classList.add("show");
+    };
+  
+    window.openEditPopup = () => document.getElementById("editPopup").style.display = "flex";
+    window.closeEditPopup = () => document.getElementById("editPopup").style.display = "none";
+    window.closeVibesEditor = () => document.getElementById("vibesModal").style.display = "none";
+    window.closePersonalBestsModal = () => document.getElementById("personalBestsModal").classList.remove("show");
+  
+    window.selectAvatar = img => {
+      if (img.classList.contains("locked")) return alert("This avatar is locked! Earn it by leveling up 🎉");
+      selectedAvatar = img.src;
+      document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
+      img.classList.add("selected");
+    };
+  
+    window.previewAvatar = img => {
+      if (img.classList.contains("locked")) return;
+      document.getElementById("previewAvatarImg").src = img.src;
+      document.getElementById("avatarPreviewModal").classList.add("show");
+    };
+  
+    window.closeAvatarPreview = () => document.getElementById("avatarPreviewModal").classList.remove("show");
+  
+    window.logout = () => signOut(auth).then(() => window.location.href = "login.html").catch(err => alert("Logout failed."));
+   
+    window.openFriendFinder = () => {
+  const modal = document.getElementById("friendFinderModal");
+  modal.classList.add("show");
+  modal.classList.remove("hidden");
+};
+
+
+window.closeFriendFinder = () => {
+  const modal = document.getElementById("friendFinderModal");
+  modal.classList.remove("show");
+  modal.classList.add("hidden");
+};
+
+  
+    window.startConversation = async (receiverUid, receiverName) => {
+  const sender = auth.currentUser;
+  if (!sender || !receiverUid) return;
+
+  // Generate consistent thread ID
+  const convoId = [sender.uid, receiverUid].sort().join("_");
+
+  // Initialize the thread in 'messages' if it doesn't exist
+  await setDoc(doc(firestore, "messages", convoId), {
+    participants: [sender.uid, receiverUid],
+    startedAt: new Date(),
+    lastMessage: "",
+    lastTimestamp: new Date()
+  }, { merge: true });
+
+  // Save current chat context
+  localStorage.setItem("chatWithUid", receiverUid);
+  localStorage.setItem("chatWithName", receiverName);
+  localStorage.setItem("convoId", convoId); // Optional: pre-load thread
+
+  // Redirect to inbox
+  window.location.href = "inbox.html";
+};
+
+
+    function showSavePopup() {
+      const popup = document.getElementById("savePopup");
+      popup.classList.remove("hidden");
+      popup.classList.add("show");
+      setTimeout(() => popup.classList.replace("show", "hidden"), 3000);
+    }
+    const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+const dropdownMenu = document.getElementById("dropdownMenu");
+
+hamburger.addEventListener("click", () => {
+  if (mobileMenu.classList.contains("show")) {
+  mobileMenu.classList.remove("show");
+  mobileMenu.classList.add("hidden");
+} else {
+  mobileMenu.classList.remove("hidden");
+  mobileMenu.classList.add("show");
+}
+});
+document.addEventListener("click", function (e) {
+  const mobileMenu = document.getElementById("mobileMenu");
+  const hamburger = document.getElementById("hamburger");
+
+  const clickedInsideMenu = mobileMenu.contains(e.target);
+  const clickedHamburger = hamburger.contains(e.target);
+
+  if (!clickedInsideMenu && !clickedHamburger) {
+    mobileMenu.classList.remove("show");
+  }
+});
+  </script>
 </body>
 </html>

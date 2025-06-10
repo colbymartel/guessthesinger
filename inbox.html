@@ -375,13 +375,12 @@ import {
     currentUser = user;
     loadInbox();
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const recipientId = urlParams.get('recipientId');
-    const recipientEmail = decodeURIComponent(urlParams.get('recipientEmail') || "Unknown User");
-   
-    if (recipientId && recipientEmail) {
-      startNewChat(recipientId, recipientEmail);
-    }
+    const recipientId = localStorage.getItem("chatWithUid");
+const recipientName = localStorage.getItem("chatWithName");
+
+if (recipientId) {
+  startNewChat(recipientId, recipientName || "Unknown User");
+}
 
   } else {
     alert("You must be logged in.");
@@ -504,6 +503,14 @@ async function openChat(senderId, fallbackName) {
 
   loadConversation(senderId);
 }
+document.addEventListener("DOMContentLoaded", async () => {
+  const convoId = localStorage.getItem("convoId");
+  const chatWithName = localStorage.getItem("chatWithName");
+
+  if (convoId) {
+    openChatWithUser(convoId, chatWithName); // Call your existing logic
+  }
+});
 
 </script>
 

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guess the Artist</title>
+  <title>Guess The Singer</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       font-family: 'Fredoka', sans-serif;
@@ -13,14 +14,29 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding-bottom: 40px;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
     }
     nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
       width: 100%;
-      background: #1e2b38;
-      padding: 10px 0;
-      text-align: center;
     }
     .nav-links a {
       color: white;
@@ -28,354 +44,312 @@
       text-decoration: none;
       font-weight: bold;
     }
-    .artist-image {
-      max-width: 200px;
-      margin: 20px;
-      border-radius: 12px;
+    .nav-links a:hover {
+      color: #ffcb05;
     }
-    .question-box {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 30px;
-      margin: 20px 0;
-      width: 90%;
-      max-width: 500px;
-      text-align: center;
-    }
-    .question-text {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-    }
-    .option {
-      padding: 12px 20px;
-      margin: 10px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
+    .hamburger {
+      display: none;
+      font-size: 24px;
       cursor: pointer;
+      color: white;
+    }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      right: 15px;
+      top: 70px;
+      background-color: #1e2b38;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: max-content;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
       font-weight: bold;
-      background: #f9f9f9;
     }
-    .option:hover {
-      background-color: #e1f0ff;
+    .mobile-menu a:hover {
+      color: #ffcb05;
     }
-    .correct {
-      background-color: #c8f7c5 !important;
-      border-color: green !important;
-    }
-    .incorrect {
-      background-color: #f7c5c5 !important;
-      border-color: red !important;
+    .mobile-menu.show {
+      display: flex;
     }
     .progress-bar {
-      height: 20px;
-      background: #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      width: 90%;
-      max-width: 500px;
-      margin-bottom: 20px;
+      height: 12px;
+      background: #ccc;
+      width: 100%;
     }
     .progress {
       height: 100%;
-      background: #f44336;
-      width: 100%;
+      background: #4a90e2;
+      width: 0%;
       transition: width 0.3s ease;
     }
-    .final-input {
-      margin-top: 20px;
+    .container {
+      max-width: 500px;
+      width: 90%;
+      background: white;
+      margin: 40px auto;
+      padding: 30px 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       text-align: center;
     }
-    .final-input input {
-      padding: 10px;
-      width: 80%;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
+    .question {
+      font-size: 1.6rem;
+      margin-bottom: 30px;
+      color: #1e2b38;
     }
-    /* Navigation Buttons */
-.nav-button {
-  margin: 10px 10px;
-  padding: 12px 24px;
-  font-size: 1rem;
-  font-weight: bold;
-  background: #4a90e2;
+    .option {
+      border: 2px solid #ccc;
+      padding: 16px;
+      margin: 10px 0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      background-color: #f7faff;
+      font-weight: bold;
+    }
+    .option:hover {
+      background: #e1f0ff;
+    }
+    .option.correct {
+      background-color: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+    }
+    .option.incorrect {
+      background-color: #f8d7da;
+      border-color: #dc3545;
+      color: #721c24;
+    }
+    .option.selected {
+      border-color: #4a90e2;
+      background-color: #e6f0ff;
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    .buttons button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to bottom, #4a90e2, #357ab8);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      flex: 1;
+      margin: 0 5px;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .buttons button:hover {
+      background: #357ab8;
+    }
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+    .option.correct {
+  background-color: #28a745 !important;
+  border-color: #28a745;
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.nav-button:hover {
-  background: #357ab8;
-  transform: scale(1.05);
-}
-
-/* Option Buttons */
-.option {
-  padding: 12px 20px;
-  margin: 10px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  background: #ffffff;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.option:hover {
-  background-color: #e6f0ff;
-  border-color: #4a90e2;
-  transform: translateY(-2px);
-}
-
-/* Correct & Incorrect States */
-.correct {
-  background-color: #d4edda !important;
-  border-color: #28a745 !important;
-  color: #155724;
-}
-
-.incorrect {
-  background-color: #f8d7da !important;
-  border-color: #dc3545 !important;
-  color: #721c24;
-}
-
-/* Final Guess Button */
-.final-input button {
-  margin-top: 10px;
-  padding: 12px 24px;
-  background-color: #28a745;
+.option.incorrect {
+  background-color: #dc3545 !important;
+  border-color: #dc3545;
   color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-
-.final-input button:hover {
-  background-color: #218838;
-  transform: scale(1.05);
-}
-
-.header {
-  background: linear-gradient(135deg, #3b7bbf, #234d7d);
-  padding: 40px 20px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  animation: fadeDown 1s ease-out;
-  width: 100%;
-}
-.header .logo img {
-  width: 200px;
-  height: auto;
-  margin: 0 auto;
-  display: block;
-}
-
-/* Responsive Logo */
-@media (max-width: 768px) {
-  .header .logo img {
-    width: 60%;
-    padding: 0px;
-  }
-  .header {
-    padding: 20px 10px;
-  }
-}
-
 
   </style>
 </head>
 <body>
   <header class="header">
     <div class="logo">
+      <a href="/index.html">
         <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+      </a>
     </div>
-</header>
+  </header>
   <nav>
+    <div class="welcome-nav">
+      <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+    </div>
     <div class="nav-links">
       <a href="/index.html">Home</a>
       <a href="/memory.html">Play</a>
       <a href="/memory-leaderboard.html">Leaderboard</a>
       <a href="/about.html">About</a>
     </div>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
   </nav>
-  
-  <h1 style="margin-top: 40px; font-size: 2rem; text-align: center; color: #1e2b38;">
-    Can you guess his favorite music artist?
-  </h1>
-  
-  <img src="/images/addisonrae.jpg" alt="Mystery Artist" class="artist-image" />
+  <div id="mobileMenu" class="mobile-menu">
+    <a href="/index.html">Home</a>
+    <a href="/memory.html">Play</a>
+    <a href="/memory-leaderboard.html">Leaderboard</a>
+    <a href="/about.html">About</a>
+  </div>
+
   <div class="progress-bar"><div class="progress" id="progress"></div></div>
-<div id="guessCounter">Guesses Left: 20</div>
+  <div class="container" id="quizContainer">
+    <div class="buttons">
+      <button onclick="goBack()" title="Go Back">←</button>
+      <button onclick="submitAnswer()" title="Guess">✔</button>
+      <button onclick="skipCategory()" title="Skip">→</button>
+    </div>
+  </div>
 
-  <div id="quizContainer" class="question-box"></div>
-  <div class="navigation-buttons">
-    <button class="nav-button" id="backBtn">Back</button>
-    <button class="nav-button" id="nextBtn">Next</button>
-  </div>
-  
-  <div class="final-input" id="finalGuess" style="display:none;">
-    <input type="text" id="artistInput" placeholder="Guess the artist...">
-    <button onclick="checkFinalGuess()">Submit</button>
-    <p id="resultMsg"></p>
-  </div>
   <script>
-    const questions = [
-      { question: "Guess the Gender", options: ["Male", "Female", "Other"], correct: "Female" },
-      { question: "Guess the Genre", options: ["Pop", "Rap", "Country", "Rock", "R&B", "EDM"], correct: "Pop" },
-      { question: "Guess the Age", options: ["Under 25", "25-29", "30-39", "40-50", "50-59", "Over 60"], correct: "20-25" },
-      { question: "Guess the Debut", options: ["1950-1969", "1970-1989", "1990s", "2000s", "2010s", "2020s"], correct: "2000s" },
-      { question: "Guess the Location", options: ["USA", "UK", "Canada", "Australia", "France", "Other"], correct: "USA" },
-      { question: "Guess the Awards", options: ["Grammy", "MTV", "Billboard", "AMA", "Kids' Choice", "None"], correct: "None" },
-        { question: "Guess the Collab", options: ["Grammy", "MTV", "Billboard", "AMA", "Kids' Choice", "None"], correct: "None" },
-        { question: "Guess the Followers", options: ["Grammy", "MTV", "Billboard", "AMA", "Kids' Choice", "None"], correct: "None" }
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
 
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("show");
+    });
+
+    const questions = [
+      {
+        question: "Guess the Gender",
+        options: ["Male", "Female", "Non-Binary"],
+        correct: "Female"
+      },
+      {
+        question: "Guess the Genre",
+        options: ["Pop", "Rap", "Country", "R&B", "Rock"],
+        correct: "Pop"
+      },
+      {
+        question: "Guess the Age",
+        options: ["Under 25", "25-29", "30-39", "40-49","50-59", "Over 60"],
+        correct: "Under 25"
+      },
+      {
+        question: "Guess the Country",
+        options: ["USA", "Canada", "Australia", "United Kingdom"],
+        correct: "USA"
+      },
+      {
+        question: "Guess the Instagram Following",
+        options: ["Less Than 1 Million", "1-10 Million", "10-50 Million", "50+ Million"],
+        correct: "1-10 Million"
+      },
+      {
+        question: "Guess the Monthly Listeners",
+        options: ["Less Than 1 Million", "1-10 Million", "10-50 Million", "50+ Million"],
+        correct: "50+ Million"
+      }
     ];
-  
-    let currentIndex = 0;
+
+    let current = 0;
     const userAnswers = [];
-  
-    const maxGuesses = 20;
-    let guessesLeft = maxGuesses;
-  
-    const backBtn = document.getElementById("backBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const quizContainer = document.getElementById("quizContainer");
-    const progressEl = document.getElementById("progress");
-  
-    function updateProgress() {
-      const percent = (guessesLeft / maxGuesses) * 100;
-      progressEl.style.width = percent + "%";
-      document.getElementById("guessCounter").innerText = `Guesses Left: ${guessesLeft}`;
-    }
-  
-    function highlightAnswer(userAnswer, correctAnswer, options) {
-      const buttons = quizContainer.querySelectorAll(".option");
-  
-      buttons.forEach(btn => {
-        const text = btn.innerText;
-        if (Array.isArray(userAnswer)) {
-          if (userAnswer.includes(text)) {
-            btn.classList.add(text === correctAnswer ? "correct" : "incorrect");
-          }
-        } else {
-          if (text === userAnswer) {
-            btn.classList.add(text === correctAnswer ? "correct" : "incorrect");
-          }
-        }
-  
-        const remaining = options.filter(opt => !userAnswer.includes(opt));
-        if (remaining.length === 1 && remaining[0] === correctAnswer && text === correctAnswer) {
-          btn.classList.add("correct");
-        }
-      });
-    }
-  
+
     function renderQuestion() {
-      quizContainer.innerHTML = "";
-      const q = questions[currentIndex];
-  
-      const qEl = document.createElement("div");
-      qEl.className = "question-text";
-      qEl.innerText = q.question;
-      quizContainer.appendChild(qEl);
-  
-      if (!userAnswers[currentIndex]) {
-        userAnswers[currentIndex] = [];
-      }
-  
-      q.options.forEach(option => {
-        const btn = document.createElement("div");
-        btn.className = "option";
-        btn.innerText = option;
-  
-        if (userAnswers[currentIndex].includes(option)) {
-          if (option === q.correct) btn.classList.add("correct");
-          else btn.classList.add("incorrect");
-        }
-  
-        if (userAnswers[currentIndex].includes(q.correct)) {
-          btn.style.pointerEvents = "none";
+  const q = questions[current];
+  const container = document.getElementById('quizContainer');
+  const userAnswer = userAnswers[current];
+  const selected = userAnswer?.selected;
+  const isCorrect = userAnswer?.isCorrect;
+
+  const optionsHTML = q.options.map(opt => {
+    let className = "option";
+    if (selected === opt) {
+      className += isCorrect ? " correct" : " incorrect";
+    } else if (selected && opt === q.correct && !isCorrect) {
+      className += " correct"; // show correct answer even if they picked wrong
+    }
+    return `<div class="${className}" onclick="selectOption(this)">${opt}</div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="question">${q.question}</div>
+    ${optionsHTML}
+    <div class="buttons">
+      <button onclick="goBack()" title="Go Back">←</button>
+      <button onclick="submitAnswer()" title="Guess">✔</button>
+      <button onclick="skipCategory()" title="Skip">→</button>
+    </div>
+  `;
+
+  document.getElementById('progress').style.width = `${((current + 1) / questions.length) * 100}%`;
+
+  // Disable click if already answered
+  if (userAnswer) {
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.style.pointerEvents = "none";
+    });
+  }
+}
+
+    function selectOption(el) {
+      document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function submitAnswer() {
+  const selected = document.querySelector('.option.selected');
+  if (!selected) return;
+
+  const answer = selected.innerText;
+  const correct = questions[current].correct;
+
+  if (answer === correct) {
+    selected.classList.add("correct");
+  } else {
+    selected.classList.add("incorrect");
+  }
+
+  // Disable further clicks
+  document.querySelectorAll('.option').forEach(opt => {
+    opt.style.pointerEvents = "none";
+  });
+
+  userAnswers[current] = {
+    selected: answer,
+    isCorrect: answer === correct
+  };
+
+      setTimeout(() => {
+        current++;
+        if (current < questions.length) {
+          renderQuestion();
         } else {
-          btn.onclick = () => {
-            if (userAnswers[currentIndex].includes(option)) return;
-  
-            userAnswers[currentIndex].push(option);
-            guessesLeft--;
-            updateProgress();
-  
-            if (guessesLeft === 0) {
-              quizContainer.innerHTML = "<h2>❌ Out of guesses! Game over.</h2>";
-              document.querySelector(".navigation-buttons").style.display = "none";
-              document.getElementById("finalGuess").style.display = "none";
-              return;
-            }
-  
-            if (option === q.correct) {
-            
-              highlightAnswer(userAnswers[currentIndex], q.correct, q.options);
-  
-              setTimeout(() => {
-                if (currentIndex < questions.length - 1) {
-                  currentIndex++;
-                  renderQuestion();
-                } else {
-                  document.getElementById("finalGuess").style.display = "block";
-                }
-              }, 1000);
-            } else {
-              highlightAnswer(userAnswers[currentIndex], q.correct, q.options);
-  
-              const remaining = q.options.filter(opt => !userAnswers[currentIndex].includes(opt));
-              if (remaining.length === 1 && remaining[0] === q.correct) {
-                highlightAnswer([remaining[0]], q.correct, q.options);
-              }
-            }
-          };
+          alert('End of quiz!');
         }
-  
-        quizContainer.appendChild(btn);
-      });
-  
-      backBtn.disabled = currentIndex === 0;
+      }, 1000);
     }
-  
-    function checkFinalGuess() {
-      const guess = document.getElementById("artistInput").value.trim().toLowerCase();
-      if (guess === "addison rae") {
-        document.getElementById("resultMsg").innerText = "🎉 Correct! You guessed the artist!";
+
+    function skipCategory() {
+      userAnswers[current] = null;
+      current++;
+      if (current < questions.length) {
+        renderQuestion();
       } else {
-        document.getElementById("resultMsg").innerText = "❌ Incorrect. Try again!";
+        alert('End of quiz!');
       }
     }
-  
-    backBtn.onclick = () => {
-      if (currentIndex > 0) {
-        currentIndex--;
+
+    function goBack() {
+      if (current > 0) {
+        current--;
         renderQuestion();
       }
-    };
-  
-    nextBtn.onclick = () => {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
-        renderQuestion();
-      }
-    };
-  
+    }
+
     renderQuestion();
-    updateProgress();
   </script>
-  
 </body>
 </html>

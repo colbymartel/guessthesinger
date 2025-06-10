@@ -102,7 +102,14 @@ html, body {
     tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
-
+    table td:nth-child(2),
+table th:nth-child(2) {
+  width: 180px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
     .pagination {
       text-align: center;
       margin: 20px;
@@ -488,10 +495,18 @@ let currentUserCity = null;
         const verifiedEmails = ["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"];
 const isVerified = verifiedEmails.includes(data.email);
 const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
+const avatarUrl = data.avatar || "images/avatars/popstarpenguin.jpg";
 
 const userLink = data.userId 
-  ? `<a href="#" onclick="showUserProfile('${data.userId}')" style="color:#315f85; text-decoration:underline;">${data.username || "Anonymous"}${verifiedBadge}</a>`
-  : `${data.username || "Anonymous"}${verifiedBadge}`;
+  ? `<a href="#" onclick="showUserProfile('${data.userId}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
+      <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+      <span style="text-decoration:underline;">${data.username || "Anonymous"}${verifiedBadge}</span>
+    </a>`
+  : `<div style="display:flex; align-items:center; gap:10px;">
+      <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+      <span>${data.username || "Anonymous"}${verifiedBadge}</span>
+    </div>`;
+
 
 
         const score = typeof data.score === "number" ? data.score : "—";
@@ -545,7 +560,23 @@ const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,
     
       try {
         const snapshot = await getDocs(q);
-        leaderboardData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        leaderboardData = await Promise.all(
+  snapshot.docs.map(async (docSnap) => {
+    const scoreData = docSnap.data();
+    const userId = scoreData.userId;
+    let avatar = "images/avatars/popstarpenguin.jpg"; // default fallback
+
+    if (userId) {
+      const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", userId)));
+      if (!userSnap.empty) {
+        const userData = userSnap.docs[0].data();
+        avatar = userData.avatar || avatar;
+      }
+    }
+
+    return { id: docSnap.id, ...scoreData, avatar };
+  })
+);
         renderTablePage();
       } catch (err) {
         console.error("Failed to fetch leaderboard:", err);
