@@ -1,43 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Choose your username to appear on the leaderboard!" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Set Username | GuessTheSinger.com</title>
+  <title>My Profile | GuessTheSinger.com</title>
   <link rel="icon" href="/favicon.ico" />
-  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <!-- External CSS (reuses signup.css) -->
   <link rel="stylesheet" href="./signup.css" />
   <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f6fa;
+      padding: 0;
+      margin: 0;
+    }
+    .profile-container {
+      max-width: 420px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
     .avatar-grid {
   display: flex;
   gap: 10px;
+  justify-content: center;
   margin-top: 10px;
 }
 
 .avatar-img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
-  transition: 0.3s;
+  object-fit: cover;
 }
 
-.avatar-img:hover {
-  opacity: 0.8;
+    .avatar-display {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .avatar-display img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+    .edit-icon {
+      cursor: pointer;
+      color: #28a7ae;
+    }
+    .status-section, .dashboard-section, .socials-section {
+      margin-top: 30px;
+    }
+    .status-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .status-tag {
+      background: #e6f9f9;
+      color: #28a7ae;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #28a7ae;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .btn:hover {
+      background: #23949b;
+    }
+    .modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: column;
 }
 
-.avatar-img.selected {
-  border-color: #28a7ae;
-  box-shadow: 0 0 8px rgba(40, 167, 174, 0.6);
+.modal.show {
+  display: flex !important; 
 }
-.input-group select {
+
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group select {
   width: 100%;
   padding: 12px 14px;
   font-size: 16px;
@@ -54,6 +134,7 @@
   background-position: right 16px top 50%;
   background-size: 12px 8px;
   transition: border-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 15px;
 }
 
 .input-group select:focus {
@@ -61,7 +142,7 @@
   border-color: #28a7ae;
   box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
 }
-nav {
+    nav {
   background-color: #1e2b38;
   padding: 15px 30px;
   display: flex;
@@ -102,11 +183,63 @@ nav {
 .nav-links a:hover {
   color: #ffcb05;
 }
+.edit-btn {
+  background: none;
+  border: none;
+  color: #28a7ae;
+  font-weight: bold;
+  cursor: pointer;
+}
+.edit-btn:hover {
+  text-decoration: underline;
+}
+.avatar-img.selected {
+  border-color: #ffcb05; /* Yellow border */
+  box-shadow: 0 0 8px rgba(255, 203, 5, 0.6); /* Optional glow */
+}
+.close {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.close:hover {
+  color: #000;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+}
+#vibeSearch {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  color: #333;
+  margin-bottom: 15px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#vibeSearch:focus {
+  outline: none;
+  border-color: #28a7ae;
+  box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
+}
 
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="logo">
       <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
@@ -123,151 +256,171 @@ nav {
       <a href="/about.html">About</a>
     </div>
   </nav>
-
-
-<main class="main">
-    <div class="auth-container">
-      <h2>Create Your Profile</h2>
-      <form id="profileForm">
-
-        <!-- Username -->
-        <div class="input-group">
-          <label for="username">Nickname</label>
-          <input type="text" id="username" placeholder="What should we call you?" required />
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="avatar-display">
+        <img src="images/avatars/popstarpenguin.jpg" id="currentAvatar" alt="Avatar" />
+        <div>
+          <div id="profileName" style="font-weight: 600; font-size: 18px;">Colby Martel</div>
+          <div style="font-size: 14px; color: gray;"><i class="fas fa-map-marker-alt"></i> <span id="profileCity">Boston</span></div>
         </div>
-      
-  
-        <!-- City -->
-        <div class="input-group">
-          <label for="city">Select Your City</label>
-          <select id="city" required>
-            <option value="">--Choose a city--</option>
-            
-              <optgroup label="🇺🇸 United States">
-                <option>Atlanta</option>
-                <option>Austin</option>
-                <option>Boise</option>
-                <option>Boston</option>
-                <option>Charlotte</option>
-                <option>Chicago</option>
-                <option>Cincinnati</option>
-                <option>Dallas</option>
-                <option>Denver</option>
-                <option>Detroit</option>
-                <option>El Paso</option>
-                <option>Houston</option>
-                <option>Jacksonville</option>
-                <option>Kansas City</option>
-                <option>Las Vegas</option>
-                <option>Los Angeles</option>
-                <option>Miami</option>
-                <option>Minneapolis</option>
-                <option>Nashville</option>
-                <option>New Orleans</option>
-                <option>New York</option>
-                <option>Oklahoma City</option>
-                <option>Orlando</option>
-                <option>Philadelphia</option>
-                <option>Phoenix</option>
-                <option>Portland</option>
-                <option>Salt Lake City</option>
-                <option>San Diego</option>
-                <option>San Francisco</option>
-                <option>Seattle</option>
-                <option>Tampa</option>
-                <option>Washington, D.C.</option>
-              </optgroup>
-            
-              <optgroup label="🌍 Worldwide">
-                <option>Amsterdam</option>
-                <option>Auckland</option>
-                <option>Bangkok</option>
-                <option>Barcelona</option>
-                <option>Beijing</option>
-                <option>Berlin</option>
-                <option>Bogotá</option>
-                <option>Brussels</option>
-                <option>Buenos Aires</option>
-                <option>Cape Town</option>
-                <option>Copenhagen</option>
-                <option>Delhi</option>
-                <option>Dubai</option>
-                <option>Dublin</option>
-                <option>Frankfurt</option>
-                <option>Hanoi</option>
-                <option>Hong Kong</option>
-                <option>Istanbul</option>
-                <option>Jakarta</option>
-                <option>Johannesburg</option>
-                <option>Kyoto</option>
-                <option>Lima</option>
-                <option>Lisbon</option>
-                <option>London</option>
-                <option>Madrid</option>
-                <option>Manila</option>
-                <option>Melbourne</option>
-                <option>Mexico City</option>
-                <option>Milan</option>
-                <option>Montreal</option>
-                <option>Mumbai</option>
-                <option>Nairobi</option>
-                <option>Osaka</option>
-                <option>Paris</option>
-                <option>Prague</option>
-                <option>Rio de Janeiro</option>
-                <option>Rome</option>
-                <option>Santiago</option>
-                <option>São Paulo</option>
-                <option>Seoul</option>
-                <option>Shanghai</option>
-                <option>Singapore</option>
-                <option>Stockholm</option>
-                <option>Sydney</option>
-                <option>Tokyo</option>
-                <option>Toronto</option>
-                <option>Vancouver</option>
-                <option>Vienna</option>
-                <option>Warsaw</option>
-                <option>Zurich</option>
-              </optgroup>
-            </select>
-        </div>
-  
-        <!-- Favorite Artist -->
-        <div class="input-group">
-          <label for="favoriteArtist">Favorite Music Artists</label>
-          <input type="text" id="favoriteArtist" placeholder="e.g. Beyoncé, Drake, Olivia Rodrigo" />
-        </div>
-  <!-- Instagram Username -->
-<div class="input-group">
-  <label for="instagram">Instagram Username</label>
-  <input type="text" id="instagram" placeholder="e.g. colbymartel19" />
-</div>
-
-        <button type="submit" class="btn">Save Profile</button>
-        <p class="redirect">This profile will be shown on the leaderboard.</p>
-      </form>
+      </div>
+      <div class="edit-icon" onclick="openEditPopup()">
+        <i class="fas fa-pen"></i>
+      </div>
     </div>
-  </main>
+
+    <div class="status-section">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h4>Currently Vibing To...</h4>
+          <button class="edit-btn" onclick="openVibesEditor()">Edit</button>
+        </div>
+        <div class="status-tags" id="vibingTags">
+        </div>
+      </div>
+
+      <div id="vibesModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000088; justify-content:center; align-items:center;">
+        <div style="background:white; padding:20px; border-radius:12px; max-width:400px; width:90%;">
+          <h3>Edit Vibing Artists</h3>
+          <input type="text" id="vibeSearch" placeholder="Add artist..." />
+                    <div id="editableVibes" class="status-tags" style="margin-bottom:10px;"></div>
+          <button class="btn" onclick="saveVibes()">Save</button>
+          <button class="btn" style="background:#ccc; color:#333; margin-top:10px;" onclick="closeVibesEditor()">Cancel</button>
+        </div>
+      </div>
+      
+      
+    <div class="dashboard-section">
+      <h4>Dashboard</h4>
+    <button class="btn" style="background: #e74c3c;" onclick="logout()">Log Out</button>
+  </div>
+
+  <!-- Edit Profile Popup -->
+  <div id="editPopup" class="modal">
+    <div class="modal-content">
+      <h3>Edit Profile</h3>
+      <div class="input-group">
+        <label for="editUsername">Nickname</label>
+        <input type="text" id="editUsername" placeholder="Enter nickname" />
+      </div>
+      <div class="input-group">
+        <label for="city">Select Your City</label>
+        <select id="city" required>
+          <option value="">--Choose a city--</option>
+          
+            <optgroup label="🇺🇸 United States">
+              <option>Atlanta</option>
+              <option>Austin</option>
+              <option>Boise</option>
+              <option>Boston</option>
+              <option>Charlotte</option>
+              <option>Chicago</option>
+              <option>Cincinnati</option>
+              <option>Dallas</option>
+              <option>Denver</option>
+              <option>Detroit</option>
+              <option>El Paso</option>
+              <option>Houston</option>
+              <option>Jacksonville</option>
+              <option>Kansas City</option>
+              <option>Las Vegas</option>
+              <option>Los Angeles</option>
+              <option>Miami</option>
+              <option>Minneapolis</option>
+              <option>Nashville</option>
+              <option>New Orleans</option>
+              <option>New York</option>
+              <option>Oklahoma City</option>
+              <option>Orlando</option>
+              <option>Philadelphia</option>
+              <option>Phoenix</option>
+              <option>Portland</option>
+              <option>Salt Lake City</option>
+              <option>San Diego</option>
+              <option>San Francisco</option>
+              <option>Seattle</option>
+              <option>Tampa</option>
+              <option>Washington, D.C.</option>
+            </optgroup>
+          
+            <optgroup label="🌍 Worldwide">
+              <option>Amsterdam</option>
+              <option>Auckland</option>
+              <option>Bangkok</option>
+              <option>Barcelona</option>
+              <option>Beijing</option>
+              <option>Berlin</option>
+              <option>Bogotá</option>
+              <option>Brussels</option>
+              <option>Buenos Aires</option>
+              <option>Cape Town</option>
+              <option>Copenhagen</option>
+              <option>Delhi</option>
+              <option>Dubai</option>
+              <option>Dublin</option>
+              <option>Frankfurt</option>
+              <option>Hanoi</option>
+              <option>Hong Kong</option>
+              <option>Istanbul</option>
+              <option>Jakarta</option>
+              <option>Johannesburg</option>
+              <option>Kyoto</option>
+              <option>Lima</option>
+              <option>Lisbon</option>
+              <option>London</option>
+              <option>Madrid</option>
+              <option>Manila</option>
+              <option>Melbourne</option>
+              <option>Mexico City</option>
+              <option>Milan</option>
+              <option>Montreal</option>
+              <option>Mumbai</option>
+              <option>Nairobi</option>
+              <option>Osaka</option>
+              <option>Paris</option>
+              <option>Prague</option>
+              <option>Rio de Janeiro</option>
+              <option>Rome</option>
+              <option>Santiago</option>
+              <option>São Paulo</option>
+              <option>Seoul</option>
+              <option>Shanghai</option>
+              <option>Singapore</option>
+              <option>Stockholm</option>
+              <option>Sydney</option>
+              <option>Tokyo</option>
+              <option>Toronto</option>
+              <option>Vancouver</option>
+              <option>Vienna</option>
+              <option>Warsaw</option>
+              <option>Zurich</option>
+            </optgroup>
+          </select>
+      <div class="input-group">
+        <label>Avatar</label>
+        <div class="avatar-grid">
+          <img src="images/avatars/popstarpenguin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+          <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+          <img src="images/avatars/discodolphin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+          <img src="images/avatars/musicalmonkey.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+          <img src="images/avatars/souptimmy.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+          <img src="images/avatars/vincent.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+        </div>
+      </div>
+      <button class="btn" onclick="saveProfileEdits()">Save</button>
+      <button class="btn" style="background:#ccc; color:#000;" onclick="closeEditPopup()">Cancel</button>
+    </div>
+  </div>
   
-  <!-- Footer -->
-  <footer class="footer">
-      &copy; 2024 Colby Martel | 
-      <a href="https://www.instagram.com/colbymartel19/" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.youtube.com/ColbyMartel" target="_blank"><i class="fab fa-youtube"></i></a>
-      <a href="https://www.tiktok.com/@ColbyMartel" target="_blank"><i class="fab fa-tiktok"></i></a>
-      <a href="https://discord.gg/egQzdDSM" target="_blank"><i class="fab fa-discord"></i></a>
-  </footer><script type="module">
+  <script type="module">
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getDatabase, ref as dbRef, set as dbSet } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
   
-    // ✅ Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
-      databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
       projectId: "guessthesinger10",
       storageBucket: "guessthesinger10.appspot.com",
       messagingSenderId: "97201023235",
@@ -276,32 +429,19 @@ nav {
   
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getDatabase(app);
     const firestore = getFirestore(app);
   
     document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("profileForm");
-      const usernameInput = document.getElementById("username");
-      const cityInput = document.getElementById("city");
-      const favoriteArtistInput = document.getElementById("favoriteArtist");
-      const instagramInput = document.getElementById("instagram");
-      const avatarImgs = document.querySelectorAll(".avatar-img");
-      const hamburger = document.getElementById("hamburger");
-      const mobileMenu = document.getElementById("mobileMenu");
-      const infoMobile = document.getElementById("infoIconMobile");
+      const profileName = document.getElementById("profileName");
+      const profileCity = document.getElementById("profileCity");
+      const currentAvatar = document.getElementById("currentAvatar");
+      const editUsername = document.getElementById("editUsername");
+      const editCity = document.getElementById("city");
+      const avatarImages = document.querySelectorAll(".avatar-img");
       let selectedAvatar = "";
   
-      // ✅ Avatar selection logic
-      avatarImgs.forEach(img => {
-        img.addEventListener("click", () => {
-          avatarImgs.forEach(i => i.classList.remove("selected"));
-          img.classList.add("selected");
-          selectedAvatar = img.getAttribute("data-avatar");
-        });
-      });
-  
-      // ✅ Handle user auth and profile loading
       onAuthStateChanged(auth, async user => {
+
         if (!user) {
           window.location.href = "login.html";
           return;
@@ -312,100 +452,155 @@ nav {
           const docSnap = await getDoc(docRef);
   
           if (docSnap.exists()) {
-            const data = docSnap.data();
-            if (data.username) usernameInput.value = data.username;
-            if (data.city) cityInput.value = data.city;
-            if (data.favoriteArtist) favoriteArtistInput.value = data.favoriteArtist;
-            if (data.instagram) instagramInput.value = data.instagram;
-            if (data.avatar) {
-              const selected = [...avatarImgs].find(img => img.getAttribute("data-avatar") === data.avatar);
-              if (selected) selected.classList.add("selected");
-            }
+  const data = docSnap.data();
+  profileName.innerText = data.username || "";
+  profileCity.innerText = data.city || "";
+  currentAvatar.src = data.avatar || "";
+  editUsername.value = data.username || "";
+  editCity.value = data.city || "";
+  selectedAvatar = data.avatar || "";
+
+  avatarImages.forEach(i => {
+  if (i.src.includes(selectedAvatar)) {
+    i.classList.add("selected");
+  } else {
+    i.classList.remove("selected");
+  }
+});
+
+  selectedArtists = data.favoriteArtist
+  ? data.favoriteArtist.split(",").map(s => s.trim())
+  : [];
+
+  const tagContainer = document.getElementById("vibingTags");
+  tagContainer.innerHTML = "";
+  selectedArtists.forEach(artist => {
+    const tag = document.createElement("div");
+    tag.className = "status-tag";
+    tag.innerText = artist;
+    tagContainer.appendChild(tag);
+  });
+  
+            avatarImages.forEach(img => {
+              if (img.src.includes(data.avatar)) {
+                img.classList.add("selected");
+              } else {
+                img.classList.remove("selected");
+              }
+            });
           }
         } catch (error) {
-          console.error("Error loading user profile:", error);
+          console.error("Error loading profile:", error);
         }
   
-        // ✅ Form submit
-        form.addEventListener("submit", async e => {
-          e.preventDefault();
+        window.saveProfileEdits = async function () {
+          const username = editUsername.value.trim();
+          const city = editCity.value;
   
-          const username = usernameInput.value.trim();
-          const city = cityInput.value || "";
-          const favoriteArtist = favoriteArtistInput.value.trim() || "";
-          const instagram = instagramInput.value.trim() || "";
-
-          if (!username || !city) {
-            alert("Please complete all required fields.");
-            return;
-          }
+          profileName.innerText = username;
+          profileCity.innerText = city;
+          currentAvatar.src = selectedAvatar;
   
           try {
-            await dbSet(dbRef(db, "signupForm/" + user.uid), {
-  userId: user.uid,
-  newUsername: username,
-  newEmail: user.email,
-  avatar: selectedAvatar,
-  city: city,
-  favoriteArtist: favoriteArtist,
-  instagram: instagram
-});
-
-await setDoc(doc(firestore, "users", user.uid), {
+            await setDoc(doc(firestore, "users", user.uid), {
   uid: user.uid,
   email: user.email,
-  username: username,
+  username,
+  city,
   avatar: selectedAvatar,
-  city: city,
-  favoriteArtist: favoriteArtist,
-  instagram: instagram
+  favoriteArtist: selectedArtists.join(",")
 });
-
-  
             await updateProfile(user, { displayName: username });
-  
-            alert("Profile created successfully!");
-            window.location.href = "memory.html";
+            alert("Profile updated successfully!");
           } catch (err) {
+            console.error("Error saving profile:", err);
             alert("Error saving profile: " + err.message);
           }
-        });
-      });
+        };
   
-      // ✅ Mobile nav toggle
-      if (hamburger) {
-        hamburger.addEventListener("click", () => {
-          mobileMenu.classList.toggle("show");
-        });
-      }
+        window.selectAvatar = function (img) {
+          selectedAvatar = img.src;
+          avatarImages.forEach(i => i.classList.remove("selected"));
+          img.classList.add("selected");
+        };
   
-      // ✅ Collapse menu when clicking a link
-      document.querySelectorAll("#mobileMenu a").forEach(link => {
-        link.addEventListener("click", () => {
-          mobileMenu.classList.remove("show");
-        });
-      });
+        window.openEditPopup = function () {
+          document.getElementById('editPopup').style.display = 'flex';
+          editUsername.value = profileName.innerText;
+          editCity.value = profileCity.innerText;
+        };
   
-      // ✅ Game rules link in mobile menu
-      if (infoMobile) {
-        infoMobile.addEventListener("click", e => {
-          e.preventDefault();
-          mobileMenu.classList.remove("show");
-          alert("Game rules coming soon!"); // Replace with modal logic if needed
-        });
-      }
-  
-      // ✅ Auto-close menu when clicking outside
-      window.addEventListener("click", e => {
-        const isInside = mobileMenu && mobileMenu.contains(e.target);
-        const isHamburger = hamburger.contains(e.target);
-        if (!isInside && !isHamburger) {
-          mobileMenu.classList.remove("show");
-        }
+        window.closeEditPopup = function () {
+          document.getElementById('editPopup').style.display = 'none';
+        };
       });
     });
+
+let selectedArtists = [];
+
+document.getElementById("vibeSearch").addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    const val = e.target.value.trim();
+    if (val && selectedArtists.length < 10 && !selectedArtists.includes(val)) {
+      selectedArtists.push(val);
+      e.target.value = "";
+      openVibesEditor(); // re-render tags with new artist
+    }
+  }
+});
+
+window.openVibesEditor = function () {
+  const tagContainer = document.getElementById("editableVibes");
+  tagContainer.innerHTML = "";
+
+  selectedArtists.forEach((artist, index) => {
+    const tag = document.createElement("div");
+    tag.className = "status-tag";
+    tag.innerHTML = `${artist} <span style="cursor:pointer; margin-left:8px;" onclick="removeArtist(${index})">&times;</span>`;
+    tagContainer.appendChild(tag);
+  });
+
+  document.getElementById("vibesModal").style.display = "flex";
+};
+
+window.removeArtist = function (index) {
+  selectedArtists.splice(index, 1);
+  openVibesEditor(); 
+};
+window.saveVibes = async function () {
+  const tagContainer = document.getElementById("vibingTags");
+  tagContainer.innerHTML = "";
+  selectedArtists.forEach(artist => {
+    const tag = document.createElement("div");
+    tag.className = "status-tag";
+    tag.innerText = artist;
+    tagContainer.appendChild(tag);
+  });
+
+  const user = auth.currentUser;
+  if (user) {
+    await setDoc(doc(firestore, "users", user.uid), {
+      favoriteArtist: selectedArtists.join(",")
+    }, { merge: true });
+  }
+
+  window.closeVibesEditor(); 
+};
+
+window.closeVibesEditor = function () {
+  document.getElementById("vibesModal").style.display = "none";
+};
+window.logout = function () {
+  signOut(auth).then(() => {
+    console.log("✅ Logged out successfully");
+    window.location.href = "login.html"; // redirect after logout
+  }).catch((error) => {
+    console.error("❌ Logout error:", error);
+    alert("Logout failed. Please try again.");
+  });
+};
+
   </script>
   
-
 </body>
 </html>

@@ -286,6 +286,62 @@ html, body {
   background: #ffcb05;
   color: #1e2b38;
 }
+.vibe-tag {
+  background: #e6f9f9;
+  color: #28a7ae;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-block;
+}
+.profile-modal {
+  text-align: center;
+  padding-top: 10px;
+}
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 5px 0;
+  color: #1e2b38;
+}
+.profile-city {
+  font-size: 14px;
+  color: #777;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+.vibe-header {
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  color: #1e2b38;
+}
+.vibe-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.vibe-tag {
+  background: #e6f9f9;
+  color: #28a7ae;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 14px;
+}
 
 
   </style>
@@ -572,8 +628,7 @@ async function checkUnreadMessages() {
     link.innerHTML += " ⚪";
   }
 }
-
-  function showUserProfile(userId) {
+function showUserProfile(userId) {
   const modal = document.getElementById("profileModal");
   const content = document.getElementById("profileContent");
   const closeBtn = modal.querySelector(".close");
@@ -589,39 +644,59 @@ async function checkUnreadMessages() {
       }
 
       const userData = snapshot.docs[0].data();
-   
-content.innerHTML = `
-<h2 style="margin-top: 0; color: #315f85;">
-  ${userData.username || "Anonymous"}
-${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email) 
-  ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:8px;" title="Verified"></i>' 
-  : ''}
-</h2>
-  <p><strong>City:</strong> ${userData.city || "—"}</p>
-  <p><strong>Favorite Artists:</strong> ${userData.favoriteArtist || "—"}</p>
-  <div style="margin-top: 12px; display: flex; gap: 16px; align-items: center;">
- ${userData.instagram ? `
-  <a href="https://instagram.com/${userData.instagram}" target="_blank" title="Instagram">
-    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="22" height="22" style="vertical-align:middle; cursor:pointer;">
-  </a>` : ''}
 
+      const avatar = userData.avatar || "/avatars/avatar1.png";
+      const artists = userData.favoriteArtist || "";
+const artistTags = artists
+  .split(",")
+  .map(tag => `<div class="vibe-tag">${tag.trim()}</div>`)
+  .join("");
 
-  ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email) ? `
-    <i class="fas fa-envelope" title="Send Message" style="font-size: 22px; color: #315f85; cursor: pointer;" onclick="openDMModal('${userId}', '${userData.email}')"></i>
-  ` : ''}
-</div>
+  content.innerHTML = `
+  <div class="profile-modal" style="text-align:left;">
+    <div class="profile-top" style="display:flex; align-items:center; gap:16px;">
+      <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" alt="Avatar" class="profile-avatar" style="width:64px; height:64px;" />
+      <div>
+        <div class="profile-name">
+          ${userData.username || "Anonymous"}
+          ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email)
+            ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
+            : ''}
+        </div>
+        <div class="profile-city">
+          <i class="fas fa-map-marker-alt"></i> ${userData.city || "—"}
+        </div>
+      </div>
+    </div>
+
+    <div class="vibe-header">Currently Vibing To…</div>
+    <div class="vibe-tags">
+      ${
+        (userData.favoriteArtist || "")
+          .split(",")
+          .map(artist => `<div class="vibe-tag">${artist.trim()}</div>`)
+          .join("") || '<div style="color:#888;">—</div>'
+      }
+    </div>
+
+    <div class="vibe-header" style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
+      <span>DM Me!</span>
+      <a href="/inbox.html?recipientId=${userId}" title="Send Message">
+        <i class="fas fa-envelope" style="color:#28a7ae; font-size:20px;"></i>
+      </a>
+    </div>
+    <p style="font-size:13px; color:#555;">Ask me a question, challenge me to guess your favorite artist, or just say hey.</p>
+  </div>
 `;
 
     });
 
   closeBtn.onclick = () => modal.classList.add("hidden");
-
   window.onclick = (e) => {
     if (e.target === modal) modal.classList.add("hidden");
   };
 }
 
-// ✅ Make sure it's accessible globally
 window.showUserProfile = showUserProfile;
 
 window.openDMModal = function(recipientId, recipientEmail) {
