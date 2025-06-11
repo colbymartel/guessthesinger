@@ -489,19 +489,15 @@ const username = currentUser?.displayName || "Anonymous";
   messageEl.style.color = '#4caf50'; 
   restartBtn.style.display = 'block';
 
-  if (currentUser) {
-  await saveBestScore(currentUser, score);
-  const updatedBest = await fetchBestScore(currentUser.uid);
-  highScoreEl.textContent = updatedBest;
-}
-
   await submitScore(score);
+  await awardCoinsIfEligible(score);
 
   if (currentUser) {
     await saveBestScore(currentUser, score);
+    const updatedBest = await fetchBestScore(currentUser.uid);
+    highScoreEl.textContent = updatedBest;
   }
 }
-
         } else {
           score -= 10;
           updateScore();
@@ -697,6 +693,21 @@ async function updateBestScoreToFirestore(score) {
     console.log("✅ Best score updated to Firestore:", score);
   } else {
     console.log("⛔️ Not a new personal best.");
+  }
+}
+import { updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+
+async function awardCoinsIfEligible(score) {
+  if (!currentUser || score < 900) return;
+
+  const userDocRef = doc(db, "users", currentUser.uid);
+  try {
+    await updateDoc(userDocRef, {
+      coins: increment(10)
+    });
+    console.log("🎉 10 coins awarded!");
+  } catch (error) {
+    console.error("Error awarding coins:", error);
   }
 }
 
