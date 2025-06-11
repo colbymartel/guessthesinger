@@ -295,6 +295,52 @@
   background-color: #ffcb05;
   color: #1e2b38;
 }
+#coinDisplay {
+  margin-left: auto;
+  margin-right: 15px;
+}
+.coin-gain {
+  color: #27ae60;
+  font-weight: bold;
+  margin-left: 4px;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(0px);
+  transition: all 0.6s ease-out;
+}
+
+.coin-gain.animate {
+  opacity: 1;
+  transform: translateY(-10px);
+}
+
+.hidden {
+  display: none;
+}
+.coin-emoji {
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+  border-radius: 50%;
+  box-shadow:
+    0 2px 0 #cfa300,
+    0 4px 0 #b8860b,
+    0 6px 0 #8c6e00;
+  position: relative;
+  display: inline-block;
+}
+
+.coin-emoji::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+  border-radius: 50%;
+  z-index: 1;
+}
 
 
   </style>
@@ -308,19 +354,27 @@
     </div>
     
 </header>
-<nav>
-  <div class="welcome-nav" style="position: relative;">
-    <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
-    <div id="dropdownMenu" class="dropdown"></div>
+<nav style="display: flex; align-items: center; justify-content: space-between;">
+  <div style="display: flex; align-items: center; gap: 20px;">
+    <div class="welcome-nav" style="position: relative;">
+      <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+      <div id="dropdownMenu" class="dropdown"></div>
+    </div>
+
+    <!-- Coin Display aligned next to Welcome -->
+    <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+      <div class="coin-emoji"></div>
+      <span id="coinCount" style="font-weight: bold;">0</span>
+      <span id="coinGain" class="coin-gain hidden">+10</span>
+    </div>
   </div>
-  
-  
-  </div>
-  
+
+  <!-- Hamburger menu on far right -->
   <div class="hamburger" id="hamburger">
     <i class="fas fa-bars"></i>
   </div>
 </nav>
+
 
 <div id="mobileMenu" class="mobile-menu hidden">
   <a href="/index.html">Home</a>
@@ -542,52 +596,63 @@ const username = currentUser?.displayName || "Anonymous";
 
     console.log("✅ Logged in as:", user.uid);
     let displayName = currentUser.displayName || "Anonymous";
+    let coinCount = 0;
 
     const userRef = collection(db, "users");
     const q = query(userRef, where("uid", "==", currentUser.uid));
     const snapshot = await getDocs(q);
+
     snapshot.forEach(doc => {
-      if (doc.data().username) {
-        displayName = doc.data().username;
-      }
+      const data = doc.data();
+      if (data.username) displayName = data.username;
+      if (data.coins) coinCount = data.coins;
     });
 
     welcomeEl.textContent = `Welcome, ${displayName}`;
     dropdownMenu.innerHTML = `
-  <a href="/profile.html">Edit Profile</a>
-  <a href="#" id="logoutBtn">Log Out</a>
-`;
+      <a href="/profile.html">Edit Profile</a>
+      <a href="#" id="logoutBtn">Log Out</a>
+    `;
 
+    // ✅ Update the coin count display
+    const coinDisplayEl = document.getElementById("coinCount");
+    if (coinDisplayEl) {
+      coinDisplayEl.textContent = coinCount;
+    }
 
-// Wait for DOM to update
-setTimeout(() => {
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      try {
-        await signOut(auth);
-        console.log("✅ User logged out");
-        window.location.reload();
-      } catch (err) {
-        console.error("Logout failed:", err);
+    // Attach logout listener after DOM updates
+    setTimeout(() => {
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          try {
+            await signOut(auth);
+            console.log("✅ User logged out");
+            window.location.reload();
+          } catch (err) {
+            console.error("Logout failed:", err);
+          }
+        });
+      } else {
+        console.warn("⚠️ logoutBtn not found in DOM");
       }
-    });
-  } else {
-    console.warn("⚠️ logoutBtn not found in DOM");
-  }
-}, 0);
+    }, 0);
 
   } else {
     console.log("🚫 User not logged in");
     welcomeEl.textContent = "Welcome, Anonymous";
-
     dropdownMenu.innerHTML = `
       <a href="/signup.html">Create Profile</a>
       <a href="/login.html">Log In</a>
     `;
-  }
 
+    // Set coin display to 0 for guests
+    const coinDisplayEl = document.getElementById("coinCount");
+    if (coinDisplayEl) {
+      coinDisplayEl.textContent = "0";
+    }
+  }
 });
 
 
@@ -696,7 +761,6 @@ async function updateBestScoreToFirestore(score) {
   }
 }
 import { updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
-
 async function awardCoinsIfEligible(score) {
   if (!currentUser || score < 900) return;
 
@@ -706,9 +770,34 @@ async function awardCoinsIfEligible(score) {
       coins: increment(10)
     });
     console.log("🎉 10 coins awarded!");
+
+    // animate +10
+    animateCoinGain(10);
+
+    // Optionally update coin count live
+    const userSnap = await getDoc(userDocRef);
+    if (userSnap.exists()) {
+      const newTotal = userSnap.data().coins || 0;
+      document.getElementById("coinCount").textContent = newTotal;
+    }
+
   } catch (error) {
     console.error("Error awarding coins:", error);
   }
+}
+
+function animateCoinGain(amount = 10) {
+  const coinGain = document.getElementById("coinGain");
+  if (!coinGain) return;
+
+  coinGain.textContent = `+${amount}`;
+  coinGain.classList.remove("hidden");
+  coinGain.classList.add("animate");
+
+  setTimeout(() => {
+    coinGain.classList.remove("animate");
+    coinGain.classList.add("hidden");
+  }, 1000);
 }
 
 
