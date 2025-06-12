@@ -751,23 +751,29 @@ body {
   const avatarImages = document.querySelectorAll(".avatar-img");
 
   onAuthStateChanged(auth, async user => {
-    if (!user) return (window.location.href = "login.html");
+  if (!user) return (window.location.href = "login.html");
 
-    const docSnap = await getDoc(doc(firestore, "users", user.uid));
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      profileName.innerText = data.username || "";
-      profileCity.innerText = data.city || "";
-      currentAvatar.src = data.avatar || "";
-      editUsername.value = data.username || "";
-      editCity.value = data.city || "";
-      selectedAvatar = data.avatar || "";
+  const docSnap = await getDoc(doc(firestore, "users", user.uid));
+  if (docSnap.exists()) {
+    const data = docSnap.data();
 
-      selectedArtists = data.favoriteArtist?.split(",").map(s => s.trim()) || [];
-      document.getElementById("vibingTags").innerHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
-    }
-    
-  });
+    // Fix here: safely get selectedArtists as array
+    selectedArtists = Array.isArray(data.favoriteArtist)
+      ? data.favoriteArtist
+      : (data.favoriteArtist || "").split(",").map(a => a.trim());
+
+    // Update profile UI
+    profileName.innerText = data.username || "";
+    profileCity.innerText = data.city || "";
+    currentAvatar.src = data.avatar || "";
+    editUsername.value = data.username || "";
+    editCity.value = data.city || "";
+    selectedAvatar = data.avatar || "";
+
+    // **Display the vibing tags here:**
+    document.getElementById("vibingTags").innerHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
+  }
+});
 
   document.getElementById("vibeSearch").addEventListener("keydown", e => {
     if (e.key === "Enter") {
@@ -797,12 +803,18 @@ body {
     snapshot.forEach(doc => {
       const data = doc.data();
       const username = data.username?.toLowerCase() || "";
-      const artists = data.favoriteArtist?.toLowerCase() || "";
-      if ((username.includes(query) || artists.includes(query)) && doc.id !== auth.currentUser?.uid) {
-        matches.push(data);
-      }
+const artists = Array.isArray(data.favoriteArtist)
+  ? data.favoriteArtist.join(",").toLowerCase()
+  : (data.favoriteArtist || "").toLowerCase();
+
+if ((username.includes(query) || artists.includes(query)) && doc.id !== auth.currentUser?.uid) {
+  matches.push(data);
+}
+
     });
 
+
+    
     const limitedMatches = matches.slice(0, 3);
 
     resultsContainer.innerHTML = limitedMatches.length === 0
@@ -854,13 +866,14 @@ body {
       const username = document.getElementById("editUsername").value.trim();
       const city = document.getElementById("city").value;
       await setDoc(doc(firestore, "users", user.uid), {
-        uid: user.uid,
-        email: user.email,
-        username,
-        city,
-        avatar: selectedAvatar,
-        favoriteArtist: selectedArtists.join(",")
-      });
+  uid: user.uid,
+  email: user.email,
+  username,
+  city,
+  avatar: selectedAvatar,
+  favoriteArtist: selectedArtists.join(",")
+}, { merge: true });
+
       await updateProfile(user, { displayName: username });
       document.getElementById("profileName").innerText = username;
       document.getElementById("profileCity").innerText = city;
@@ -934,12 +947,15 @@ window.closeFriendFinder = () => {
   const convoId = [sender.uid, receiverUid].sort().join("_");
 
   // Initialize the thread in 'messages' if it doesn't exist
-  await setDoc(doc(firestore, "messages", convoId), {
-    participants: [sender.uid, receiverUid],
-    startedAt: new Date(),
-    lastMessage: "",
-    lastTimestamp: new Date()
-  }, { merge: true });
+  await setDoc(doc(firestore, "users", user.uid), {
+  username,
+  city,
+  avatar: selectedAvatar,
+  favoriteArtist: selectedArtists, 
+  email: user.email,
+  uid: user.uid
+}, { merge: true });
+
 
   // Save current chat context
   localStorage.setItem("chatWithUid", receiverUid);
