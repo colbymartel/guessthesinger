@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Direct Messages | Guessing Games</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
@@ -236,6 +236,7 @@ html, body {
   padding: 8px 0;
 }
 
+
 .search-bar input {
   flex: 1;
   padding: 6px 10px;
@@ -343,6 +344,58 @@ html, body {
 .back-btn:hover {
   background-color: #e0ecf7;
 }
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+  padding-bottom: 100px; /* prevents keyboard from covering buttons */
+}
+body, html {
+  scroll-padding-bottom: 120px;
+}
+input, textarea, select {
+  font-size: 16px;
+}
+
+.scroll-area {
+  max-height: 300px; /* adjust as needed */
+  overflow-y: auto;
+  padding-bottom: 80px; /* leaves space for the keyboard */
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1e2b38;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav .nav-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.bottom-nav .nav-item i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.bottom-nav .nav-item:hover {
+  color: #ffcb05;
+}
+
+body {
+  padding-bottom: 70px; /* ensures content doesn't get hidden behind bottom nav */
+}
+
 
   </style>
 
@@ -401,7 +454,24 @@ html, body {
       </div>
     </div>
   </main>
-  
+  <footer class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboard</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
   
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
@@ -722,6 +792,13 @@ searchInput.addEventListener("input", async (e) => {
         }
       });
     }
+  });
+});
+document.querySelectorAll('input, textarea').forEach(input => {
+  input.addEventListener('focus', () => {
+    setTimeout(() => {
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300); // delay helps with keyboard animation
   });
 });
 

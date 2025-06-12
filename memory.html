@@ -341,7 +341,39 @@
   border-radius: 50%;
   z-index: 1;
 }
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1e2b38;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
 
+.bottom-nav .nav-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.bottom-nav .nav-item i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.bottom-nav .nav-item:hover {
+  color: #ffcb05;
+}
+
+body {
+  padding-bottom: 70px; /* ensures content doesn't get hidden behind bottom nav */
+}
 
   </style>
 </head>
@@ -377,11 +409,8 @@
 
 
 <div id="mobileMenu" class="mobile-menu hidden">
-  <a href="/index.html">Home</a>
-  <a href="/memory-leaderboard.html">Leaderboard</a>
-  <a href="/inbox.html">Messages</a>
-  <a href="/profile.html">My Profile</a>
   <a href="#" id="infoIcon">Game Rules</a>
+  <a href="/inbox.html">Messages</a>
   <a href="/about.html">About</a>
 
 </div>
@@ -401,7 +430,25 @@
   <div id="message"></div>
   <div class="grid" id="gameGrid"></div>
   <button id="restartBtn" onclick="location.reload()">Play Again</button>
-
+  <footer class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboard</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+  
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getFirestore, collection, setDoc, doc, getDocs, getDoc, query, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
@@ -761,20 +808,26 @@ async function updateBestScoreToFirestore(score) {
   }
 }
 import { updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+
 async function awardCoinsIfEligible(score) {
-  if (!currentUser || score < 900) return;
+  if (!currentUser || score < 800) return;
+
+let coinsToAward = 0;
+if (score >= 900) {
+  coinsToAward = 10;
+} else if (score >= 800) {
+  coinsToAward = 5;
+}
 
   const userDocRef = doc(db, "users", currentUser.uid);
   try {
     await updateDoc(userDocRef, {
-      coins: increment(10)
-    });
-    console.log("🎉 10 coins awarded!");
+  coins: increment(coinsToAward)
+});
+console.log(`🎉 ${coinsToAward} coins awarded!`);
 
-    // animate +10
-    animateCoinGain(10);
+animateCoinGain(coinsToAward);
 
-    // Optionally update coin count live
     const userSnap = await getDoc(userDocRef);
     if (userSnap.exists()) {
       const newTotal = userSnap.data().coins || 0;

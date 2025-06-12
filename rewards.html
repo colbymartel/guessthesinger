@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Rewards | Guess The Singer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      padding-bottom: 90px;
+    }
+
+    .header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeDown 1s ease-out;
+}
+.header .logo img {
+  width: 200px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Responsive Logo */
+@media (max-width: 768px) {
+  .header .logo img {
+    width: 60%;
+    padding: 0px;
+  }
+  .header{
+    height: 35px;
+  }
+}
+    .points-banner {
+      background-color: #1e2b38;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 25px;
+      font-size: 16px;
+    }
+
+    .points-banner span {
+      font-weight: bold;
+      font-size: 22px;
+      color: #ffcb05;
+    }
+
+    .reward-section {
+      padding: 20px;
+    }
+
+    .reward-card {
+      background: white;
+      border-radius: 15px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reward-info {
+      max-width: 75%;
+    }
+
+    .reward-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: #1e2b38;
+    }
+
+    .reward-desc {
+      color: #555;
+      font-size: 14px;
+    }
+    .coin-tag {
+  background-color: #ffcb05;
+  color: #1e2b38;
+  border-radius: 40px;
+  padding: 6px 12px;
+  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+}
+
+.coin-emoji {
+  width: 15px;
+  height: 15px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+  border-radius: 50%;
+  margin-bottom: 3px;
+  box-shadow:
+    0 1px 0 #cfa300,
+    0 2px 0 #b8860b,
+    0 3px 0 #8c6e00;
+  position: relative;
+}
+
+.coin-emoji::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+  
+    .modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+body, html {
+  scroll-padding-bottom: 120px;
+}
+input, textarea, select {
+  font-size: 16px;
+}
+.modal-content {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px 25px;
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  animation: popIn 0.3s ease-out;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #1e2b38;
+  font-size: 22px;
+}
+
+#redeemText {
+  font-size: 16px;
+  color: #444;
+  margin: 15px 0 25px;
+  line-height: 1.5;
+}
+
+.modal-content button {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+#confirmRedeem {
+  background-color: #28a745;
+  color: white;
+  margin-right: 10px;
+}
+
+#confirmRedeem:hover {
+  background-color: #218838;
+}
+
+#cancelRedeem {
+  background-color: #f44336;
+  color: white;
+}
+
+#cancelRedeem:hover {
+  background-color: #c0392b;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.disabled-reward {
+  opacity: 0.6;
+  pointer-events: none;
+  filter: grayscale(70%);
+  cursor: not-allowed;
+}
+
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <a href="/index.html">
+            <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+          </a>
+        </div>
+      </header>
+  <div class="points-banner">
+    <div style="display: flex; align-items: center; gap: 6px;">
+        <div>Total Coins: <span id="coinTotal">0</span></div>
+        <div class="coin-emoji"></div>
+      </div>
+  </div>
+
+  <div class="reward-section">
+    <div class="reward-card disabled-reward">
+        <div class="reward-info">
+        <div class="reward-title">1-Year Spotify Premium</div>
+        <div class="reward-desc">Enjoy ad-free music for a whole year.</div>
+      </div>
+      <div class="coin-tag">
+        <span class="coin-amount">5,000</span>
+        <span class="coin-emoji"></span>
+      </div>
+               
+    </div>
+
+    <div class="reward-card disabled-reward">
+        <div class="reward-info">
+        <div class="reward-title">25% Off Merch Coupon</div>
+        <div class="reward-desc">Apply to your next GuessTheSinger order.</div>
+      </div>
+      <div class="coin-tag">
+        <span class="coin-amount">250</span>
+        <span class="coin-emoji"></span>
+      </div>
+          </div>
+
+    <div class="reward-card">
+      <div class="reward-info">
+        <div class="reward-title">Mystery Mascot Sticker</div>
+        <div class="reward-desc">A surprise Guess The Singer die-cut sticker.</div>
+      </div>
+      <div class="coin-tag">
+        <span class="coin-amount">100</span>
+        <span class="coin-emoji"></span>
+      </div>
+          </div>
+  </div>
+  <div id="redeemModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Confirm Redemption</h2>
+      <p id="redeemText">Are you sure you want to redeem this reward?</p>
+      <div style="margin-top: 20px;">
+        <button id="confirmRedeem" style="margin-right: 10px;">Yes</button>
+        <button id="cancelRedeem">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="bottom-nav">
+   
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboard</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+    <a href="/inbox.html" class="nav-item">
+        <i class="fas fa-envelope"></i>
+        <span>Messages</span>
+      </a>
+      
+  </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    
+    window.onload = () => {
+      const coinEl = document.getElementById("coinTotal");
+    
+      onAuthStateChanged(auth, async (user) => {
+        if (user && coinEl) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+    
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            const coins = data.coins || 0;
+            coinEl.textContent = coins;
+          } else {
+            coinEl.textContent = "0";
+          }
+        } else if (coinEl) {
+          coinEl.textContent = "0";
+        }
+      });
+    };
+    import { updateDoc, increment, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+let selectedReward = null;
+
+document.querySelectorAll('.reward-card:not(.disabled-reward)').forEach(card => {
+    card.addEventListener('click', () => {
+    const title = card.querySelector('.reward-title').textContent;
+    const coinCost = parseInt(card.querySelector('.coin-tag').textContent);
+    selectedReward = { title, coinCost };
+
+    document.getElementById('redeemText').textContent = `Redeem "${title}" for ${coinCost} coins?`;
+    document.getElementById('redeemModal').classList.remove('hidden');
+  });
+});
+
+document.getElementById('cancelRedeem').addEventListener('click', () => {
+  document.getElementById('redeemModal').classList.add('hidden');
+});
+
+document.getElementById('confirmRedeem').addEventListener('click', async () => {
+  if (!auth.currentUser || !selectedReward) return;
+
+  const userRef = doc(db, "users", auth.currentUser.uid);
+  const userSnap = await getDoc(userRef);
+  const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
+
+  if (currentCoins < selectedReward.coinCost) {
+    alert("Not enough coins!");
+    document.getElementById('redeemModal').classList.add('hidden');
+    return;
+  }
+
+  // Deduct coins
+  await updateDoc(userRef, {
+    coins: increment(-selectedReward.coinCost)
+  });
+
+  // Save redemption request
+  await addDoc(collection(db, "redemptions"), {
+  uid: auth.currentUser.uid,
+  reward: selectedReward.title,
+  cost: selectedReward.coinCost,
+  timestamp: serverTimestamp(),
+  email: auth.currentUser.email || "N/A", 
+});
+
+
+  // Update UI
+  document.getElementById('coinTotal').textContent = currentCoins - selectedReward.coinCost;
+  alert(`✅ Redeemed ${selectedReward.title}!`);
+  document.getElementById('redeemModal').classList.add('hidden');
+});
+
+    </script>
+    
+</body>
+</html>

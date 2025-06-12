@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reward Redemptions | Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .redemption-list {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .redemption-card {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    .redemption-card h3 {
+      margin: 0;
+      color: #1e2b38;
+    }
+    .redemption-card p {
+      margin: 4px 0;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎁 Reward Redemptions</h1>
+  <div class="redemption-list" id="redemptionList">
+    <!-- Redemptions will load here -->
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const redemptionList = document.getElementById("redemptionList");
+
+    onSnapshot(q, (snapshot) => {
+      redemptionList.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const card = document.createElement("div");
+        card.className = "redemption-card";
+        card.innerHTML = `
+          <h3>${data.reward}</h3>
+          <p><strong>User ID:</strong> ${data.uid}</p>
+          <p><strong>Cost:</strong> ${data.cost} coins</p>
+          <p><strong>Email:</strong> ${data.email || "-"}</p>
+          <p><strong>Time:</strong> ${new Date(data.timestamp?.seconds * 1000).toLocaleString()}</p>
+        `;
+        redemptionList.appendChild(card);
+      });
+    });
+  </script>
+</body>
+</html>

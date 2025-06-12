@@ -192,8 +192,9 @@ html, body {
             <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this)" />
             <img src="images/avatars/discodolphin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
             <img src="images/avatars/musicalmonkey.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/MusicalMatcha.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/DancingDumpling.jpg" class="avatar-img" onclick="selectAvatar(this)" />
             <img src="images/avatars/souptimmy.jpg" class="avatar-img" onclick="selectAvatar(this)" />
-            <img src="images/avatars/vincent.jpg" class="avatar-img" onclick="selectAvatar(this)" />
           </div>
         </div>
         
@@ -219,124 +220,112 @@ html, body {
     <a href="https://www.tiktok.com/@ColbyMartel" target="_blank"><i class="fab fa-tiktok"></i></a>
     <a href="https://discord.gg/egQzdDSM" target="_blank"><i class="fab fa-discord"></i></a>
   </footer>
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
-
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
-      databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
       projectId: "guessthesinger10",
       storageBucket: "guessthesinger10.appspot.com",
       messagingSenderId: "97201023235",
       appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
-
+  
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const database = getDatabase(app);
-
+    const db = getFirestore(app);
+  
     let tempUserData = {};
-
     window.goToStep2 = function () {
-      tempUserData.username = document.getElementById('username').value;
-      tempUserData.email = document.getElementById('email').value;
-      tempUserData.password = document.getElementById('password').value;
-      if (!tempUserData.username || !tempUserData.email || !tempUserData.password) {
-        alert("Please fill out all fields");
-        return;
-      }
-      document.getElementById('step1Form').style.display = 'none';
-      document.getElementById('step2Form').style.display = 'block';
-    }
+  tempUserData.username = document.getElementById('username').value.trim();
+  tempUserData.email = document.getElementById('email').value.trim();
+  tempUserData.password = document.getElementById('password').value;
 
+  if (!tempUserData.username || !tempUserData.email || !tempUserData.password) {
+    alert("Please fill out all fields");
+    return;
+  }
+
+  if (tempUserData.password.length < 6) {
+    alert("Password must be at least 6 characters long.");
+    return;
+  }
+
+  document.getElementById('step1Form').style.display = 'none';
+  document.getElementById('step2Form').style.display = 'block';
+};
+
+  
+    let selectedAvatar = "images/avatars/popstarpenguin.jpg"; // default
+    let selectedArtists = [];
+  
+    window.selectAvatar = function (img) {
+      selectedAvatar = img.src;
+      document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
+      img.classList.add("selected");
+    };
+  
+    document.getElementById("vibeSearch").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        const val = e.target.value.trim();
+        if (val && selectedArtists.length < 10 && !selectedArtists.includes(val)) {
+          selectedArtists.push(val);
+          e.target.value = "";
+          renderVibeTags();
+        }
+      }
+    });
+  
+    function renderVibeTags() {
+      const container = document.getElementById("editableVibes");
+      container.innerHTML = "";
+      selectedArtists.forEach((artist, i) => {
+        const tag = document.createElement("div");
+        tag.className = "status-tag";
+        tag.innerHTML = `${artist} <span style="cursor:pointer; margin-left:8px;" onclick="removeArtist(${i})">&times;</span>`;
+        container.appendChild(tag);
+      });
+    }
+  
+    window.removeArtist = function (index) {
+      selectedArtists.splice(index, 1);
+      renderVibeTags();
+    };
+  
     document.getElementById('step2Form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const city = document.getElementById('city').value;
-      const artist = document.getElementById('artist').value;
-
+      const artist = selectedArtists;
+  
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, tempUserData.email, tempUserData.password);
         const user = userCredential.user;
-        await updateProfile(user, { displayName: tempUserData.username });
-
-        await set(ref(database, 'users/' + user.uid), {
+  
+        await updateProfile(user, {
+          displayName: tempUserData.username,
+          photoURL: selectedAvatar
+        });
+  
+        await setDoc(doc(db, "users", user.uid), {
           username: tempUserData.username,
           email: tempUserData.email,
           uid: user.uid,
           city: city,
-          favoriteArtist: artist
+          favoriteArtists: artist,
+          avatar: selectedAvatar,
+          coins: 0
         });
-
+  
         alert("Signup complete! 🎉");
         window.location.href = 'memory.html';
       } catch (err) {
         alert("Signup error: " + err.message);
       }
     });
-    let selectedAvatar = "images/avatars/popstarpenguin.jpg"; // default
-let selectedArtists = [];
-
-window.selectAvatar = function (img) {
-  selectedAvatar = img.src;
-  document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
-  img.classList.add("selected");
-};
-
-document.getElementById("vibeSearch").addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    const val = e.target.value.trim();
-    if (val && selectedArtists.length < 10 && !selectedArtists.includes(val)) {
-      selectedArtists.push(val);
-      e.target.value = "";
-      renderVibeTags();
-    }
-  }
-});
-
-function renderVibeTags() {
-  const container = document.getElementById("editableVibes");
-  container.innerHTML = "";
-  selectedArtists.forEach((artist, i) => {
-    const tag = document.createElement("div");
-    tag.className = "status-tag";
-    tag.innerHTML = `${artist} <span style="cursor:pointer; margin-left:8px;" onclick="removeArtist(${i})">&times;</span>`;
-    container.appendChild(tag);
-  });
-}
-
-window.removeArtist = function (index) {
-  selectedArtists.splice(index, 1);
-  renderVibeTags();
-};
-document.getElementById('step2Form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const city = document.getElementById('city').value;
-  const artist = document.getElementById('artist').value;
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, tempUserData.email, tempUserData.password);
-    const user = userCredential.user;
-    await updateProfile(user, { displayName: tempUserData.username });
-
-    await set(ref(database, 'users/' + user.uid), {
-      username: tempUserData.username,
-      email: tempUserData.email,
-      uid: user.uid,
-      city: city,
-      favoriteArtist: artist
-    });
-
-    alert("Signup complete! 🎉");
-    window.location.href = 'memory.html';
-  } catch (err) {
-    alert("Signup error: " + err.message);
-  }
-});
-
   </script>
+  
 </body>
 </html>

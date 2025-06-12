@@ -16,13 +16,20 @@
       margin: 0;
     }
     .profile-container {
-      max-width: 420px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
+  max-width: 420px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+@media (max-width: 480px) {
+  .profile-container {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
     .profile-header {
       display: flex;
       align-items: center;
@@ -332,16 +339,20 @@ nav,
 
 .mobile-menu.show {
   display: flex;
-}.stats-popup {
+}
+.stats-popup {
   padding: 24px;
   border-radius: 20px;
-  background: #0f1a24;
-  color: white;
+  background: #1e2b38;
+    color: white;
   text-align: left;
-  width: 100%;
+  width: calc(100% - 40px); 
   max-width: 440px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
+  border: 2px solid #23394d; 
 }
+
 
 .stats-popup h2 {
   font-size: 22px;
@@ -355,17 +366,17 @@ nav,
   flex-wrap: wrap;
   gap: 12px;
 }
-
 .stat-card {
-  background: #1a2b3a;
+  background: #2c3e50; 
   border-radius: 14px;
   padding: 16px 20px;
   flex: 1 1 calc(50% - 12px);
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: inset 0 0 0 1px #23394d;
+  box-shadow: inset 0 0 0 1px #3a556f; 
 }
+
 
 .stat-card .icon {
   font-size: 20px;
@@ -391,6 +402,39 @@ nav,
   letter-spacing: 0.4px;
 }
 
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1e2b38;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav .nav-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.bottom-nav .nav-item i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.bottom-nav .nav-item:hover {
+  color: #ffcb05;
+}
+
+body {
+  padding-bottom: 70px; /* ensures content doesn't get hidden behind bottom nav */
+}
 
   </style>
 </head>
@@ -402,16 +446,17 @@ nav,
       </a>
     </div>
   </header>
-  
-  <nav>
-    <div class="hamburger" id="hamburger">
-      <i class="fas fa-bars"></i>
-    </div>
-  </nav>
+  <!--
+<nav>
+  <div class="hamburger" id="hamburger">
+    <i class="fas fa-bars"></i>
+  </div>
+</nav>
+-->
   
   <div id="mobileMenu" class="mobile-menu hidden">
     <a href="/index.html">Home</a>
-    <a href="/memory.html">Memory Match</a>
+    <a href="/memory.html">Play Game</a>
     <a href="/memory-leaderboard.html">Leaderboard</a>
     <a href="/inbox.html">Messages</a>
     <a href="/about.html">About</a>
@@ -452,7 +497,7 @@ nav,
       
     <div class="dashboard-section">
       <h4>Dashboard</h4>
-      <button class="btn" style="background: #ffcb05; color: #000;" onclick="showPersonalBests()">View Stats</button>
+      <button class="btn" style="background: #ffcb05; color: #000;" onclick="showPersonalBests()">View  Bests</button>
    
       <div id="personalBestsModal" class="modal">
         <div class="modal-content stats-popup">
@@ -591,41 +636,37 @@ nav,
         <div class="avatar-grid">
           <img src="images/avatars/popstarpenguin.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
           />
-          <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
-          />
           <img src="images/avatars/discodolphin.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
           />
           <img src="images/avatars/musicalmonkey.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/MusicalMatcha.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+        </div>
+        
+        <div class="avatar-grid">
+
+
+          <img src="images/avatars/DancingDumpling.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
           />
           <img src="images/avatars/souptimmy.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
           />
           <img src="images/avatars/vincent.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
           />
-        </div>
-        
-        <div class="avatar-grid">
-          <img src="images/avatars/rhythmicraccoon.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
-          /> 
-          <img src="images/avatars/lyricalllama.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
-          />
-          <img src="images/avatars/DancingDumpling.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
-          />
-          <img src="images/avatars/Sauceman.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
-          />
-          <img src="images/avatars/MusicalMatcha.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
-          />
           <div class="locked-avatar">
-            <img src="images/avatars/ShowerSloth.jpg" class="avatar-img locked" />
+            <img src="images/avatars/ShowerSloth.jpg" class="avatar-img locked" onclick="unlockAvatar(this)" data-avatar="images/avatars/ShowerSloth.jpg" />
+            <div class="lock-icon"><i class="fas fa-lock"></i></div>
+          </div>          
+          <div class="locked-avatar">
+            <img src="images/avatars/KaraokeKoala.jpg" class="avatar-img locked" />
             <div class="lock-icon"><i class="fas fa-lock"></i></div>
           </div>
-    
           </div>
 
           <div class="avatar-grid">
-            <div class="locked-avatar">
-              <img src="images/avatars/KaraokeKoala.jpg" class="avatar-img locked" />
-              <div class="lock-icon"><i class="fas fa-lock"></i></div>
-            </div>
+           
             <div class="locked-avatar">
               <img src="images/avatars/TalentShowTurtle.jpg" class="avatar-img locked" />
               <div class="lock-icon"><i class="fas fa-lock"></i></div>
@@ -659,11 +700,28 @@ nav,
     <div class="modal-content" style="position:relative;">
       <span class="close" onclick="closeFriendFinder()" style="position:absolute; top:12px; right:16px; font-size:24px; color:#333; cursor:pointer;">&times;</span>
       <h2 style="margin-bottom: 10px;">Find Friends</h2>
-      <input id="friendSearchInput" type="text" placeholder="Search by username or favorite artist" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; margin-bottom:20px;" />
+      <input id="friendSearchInput" type="text" placeholder="Search by username or favorite artist" style="width:100%; padding:10px; font-size:16px; border:1px solid #ccc; border-radius:8px; margin-bottom:20px;" />
       <div id="friendResults"></div>
     </div>
   </div>
-
+  <footer class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboard</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
@@ -708,6 +766,7 @@ nav,
       selectedArtists = data.favoriteArtist?.split(",").map(s => s.trim()) || [];
       document.getElementById("vibingTags").innerHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
     }
+    
   });
 
   document.getElementById("vibeSearch").addEventListener("keydown", e => {
@@ -721,7 +780,6 @@ nav,
     }
   });
 
-  // ✅ Friend Finder Search
   document.getElementById("friendSearchInput").addEventListener("input", async function () {
     const query = this.value.toLowerCase().trim();
     const resultsContainer = document.getElementById("friendResults");
@@ -923,6 +981,55 @@ document.addEventListener("click", function (e) {
     mobileMenu.classList.remove("show");
   }
 });
+if (userData.favoriteArtist && Array.isArray(userData.favoriteArtist)) {
+  const favContainer = document.getElementById("favoriteArtists");
+  favContainer.innerHTML = userData.favoriteArtist.map(artist => `
+    <div class="status-tag">${artist}</div>
+  `).join('');
+}
+window.unlockAvatar = async (img) => {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const avatarPath = img.getAttribute('data-avatar');
+  const userRef = doc(firestore, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
+  let unlocked = userSnap.exists() ? (userSnap.data().unlockedAvatars || []) : [];
+
+  if (unlocked.includes(avatarPath)) {
+    alert("You already unlocked this avatar!");
+    return;
+  }
+
+  if (currentCoins < 10) {
+    alert("Not enough coins to unlock this avatar.");
+    return;
+  }
+
+  const confirmUnlock = confirm("Unlock this avatar for 10 coins?");
+  if (!confirmUnlock) return;
+
+  // Deduct coins and update unlocked list
+  unlocked.push(avatarPath);
+  await setDoc(userRef, {
+    coins: currentCoins - 10,
+    unlockedAvatars: unlocked
+  }, { merge: true });
+
+  // Update UI
+  img.classList.remove("locked");
+  img.removeAttribute("onclick");
+  img.addEventListener("click", () => {
+    selectAvatar(img);
+    previewAvatar(img);
+  });
+  img.nextElementSibling?.remove(); // remove lock icon
+
+  alert("🎉 Avatar unlocked!");
+};
+
   </script>
 </body>
 </html>
