@@ -233,8 +233,7 @@ html, body {
 .search-bar {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
-}
+  padding: 8px 0;}
 
 
 .search-bar input {
@@ -396,6 +395,34 @@ body {
   padding-bottom: 70px; /* ensures content doesn't get hidden behind bottom nav */
 }
 
+.highlight {
+  color: #ffcb05; /* yellow */
+}
+
+.highlight i {
+  color: #ffcb05; /* yellow */
+}.user-search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 90%;
+  max-width: 500px;
+  margin: 10px auto;
+  padding: 0 10px;
+}
+
+.user-search-wrapper i {
+  color: #ccc;
+  font-size: 18px;
+}
+
+.user-search-input {
+  flex: 1;
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
 
   </style>
 
@@ -432,12 +459,22 @@ body {
      
       
       <div class="sidebar">
-     
-        <div class="dm-tabs">
-          <button class="tab active" onclick="switchTab('primary')">Primary</button>
-          <button class="tab" onclick="switchTab('general')">General</button>
-          <button class="tab" onclick="switchTab('requests')">Requests</button>
+        <div class="user-search-wrapper">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="userSearchInput"
+            class="user-search-input"
+            placeholder="Search users by name or favorite artist"
+          />
         </div>
+     
+      <div class="dm-tabs">
+        <button class="tab active">Friends</button>
+        <button class="tab">General</button>
+        <button class="tab">Requests</button>
+      </div>
+      
         <div id="userList"></div>
       </div>
       
@@ -459,13 +496,13 @@ body {
       <i class="fas fa-home"></i>
       <span>Home</span>
     </a>
-    <a href="/profile.html" class="nav-item">
-      <i class="fas fa-user"></i>
-      <span>My Profile</span>
+    <a href="/inbox.html" class="nav-item highlight">
+      <i class="fas fa-users"></i>
+      <span>Social</span>
     </a>
     <a href="/memory-leaderboard.html" class="nav-item">
       <i class="fas fa-trophy"></i>
-      <span>Leaderboard</span>
+      <span>Leaderboards</span>
     </a>
     <a href="/rewards.html" class="nav-item">
       <i class="fas fa-gift"></i>
@@ -473,8 +510,7 @@ body {
     </a>
   </footer>
   
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+<script type="module">import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
 import {
   getFirestore,
   collection,
@@ -485,10 +521,14 @@ import {
   addDoc,
   serverTimestamp,
   doc,
-  getDoc
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc
 } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
-  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+  
   const firebaseConfig = {
     apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
     authDomain: "guessthesinger10.firebaseapp.com",
@@ -497,310 +537,366 @@ import {
     messagingSenderId: "97201023235",
     appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
   };
-
+  
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const messagesRef = collection(db, "messages");
   const auth = getAuth();
-
+  
   let currentUser = null;
-  let activeSenderId = null;
-  let selectedRecipientId = null;
-
+  let activeChatUserId = null;
+  let activeTab = "friends"; // default tab
+  
   const userListEl = document.getElementById("userList");
   const messagesEl = document.getElementById("messages");
   const messageInput = document.getElementById("messageInput");
   const sendBtn = document.getElementById("sendBtn");
   const chatHeader = document.getElementById("chatHeader");
   const chatInputContainer = document.getElementById("chatInputContainer");
-
-  const userMap = new Map();
-  function loadInbox() {
-  const messagesRef = collection(db, "messages");
-  const q = query(messagesRef, orderBy("timestamp"));
-
-  onSnapshot(q, snapshot => {
-    const addedUserIds = new Set();
-    userListEl.innerHTML = "";
-
-    snapshot.forEach(docSnap => {
-      const msg = docSnap.data();
-
-      if (!currentUser) return;
-      if (msg.senderId !== currentUser.uid && msg.recipientId !== currentUser.uid) return;
-
-      const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
-      if (addedUserIds.has(otherUserId)) return;
-      addedUserIds.add(otherUserId);
-
-      const userDocRef = doc(db, "users", otherUserId);
-      getDoc(userDocRef).then(userDocSnap => {
-        let username = "Unknown User";
-        let isVerified = false;
-        
-
-        if (userDocSnap.exists()) {
-          const userData = userDocSnap.data();
-          username = userData.username || username;
-          isVerified = userData.isVerified === true;
-        }
-
-        getDoc(userDocRef).then(userDocSnap => {
-  let username = "Unknown User";
-  let isVerified = false;
-  let userData = {}; // ✅ declare upfront
-
-  if (userDocSnap.exists()) {
-    userData = userDocSnap.data(); // ✅ assign safely
-    username = userData.username || username;
-    isVerified = userData.isVerified === true;
-  }
-
-  getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId)).then(statusSnap => {
-    const lastOpened = statusSnap.exists() ? statusSnap.data().lastOpened?.toMillis() : 0;
-    const isUnread = !lastOpened || msg.timestamp?.toMillis() > lastOpened;
-
-    const avatarUrl = userData.avatar || "/images/avatars/popstarpenguin.jpg"; 
-
+  const tabs = document.querySelectorAll(".dm-tabs .tab");
+  
+  // Setup tab switching UI and logic
+  tabs.forEach(tabEl => {
+    tabEl.addEventListener("click", () => {
+      if (tabEl.classList.contains("active")) return;
+      tabs.forEach(t => t.classList.remove("active"));
+      tabEl.classList.add("active");
+      activeTab = tabEl.textContent.toLowerCase();
+      if (currentUser) {
+        loadConversationsByTab(activeTab);
+      }
+    });
+  });
+  
+  // Utility: Render a user block with an optional action button to move conversation
+  function renderUserBlock(userData, isUnread, moveActionLabel, onMoveClick, onClick) {
     const userEl = document.createElement("div");
     userEl.classList.add("user-block");
     if (isUnread) userEl.classList.add("unread");
-
+  
     userEl.innerHTML = `
-      <img class="user-avatar" src="${avatarUrl}" alt="${username}'s avatar" />
+      <img class="user-avatar" src="${userData.avatar || '/images/avatars/popstarpenguin.jpg'}" alt="Avatar" />
       <div class="user-name" style="font-weight:${isUnread ? 'bold' : 'normal'};">
-        ${username}${isVerified ? " ✅" : ""} ${isUnread ? '<span class="unread-icon">⚪️</span>' : ''}
+        ${userData.username || "Unknown User"} ${userData.isVerified ? "✅" : ""}
+        ${isUnread ? '<span class="unread-icon">⚪️</span>' : ''}
       </div>
     `;
+  
+    // Add move button if label and handler are provided
+    if (moveActionLabel && onMoveClick) {
+      const btn = document.createElement("button");
+      btn.textContent = moveActionLabel;
+      btn.style.marginLeft = "auto";
+      btn.style.padding = "4px 8px";
+      btn.style.backgroundColor = "#315f85";
+      btn.style.color = "white";
+      btn.style.border = "none";
+      btn.style.borderRadius = "6px";
+      btn.style.cursor = "pointer";
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        onMoveClick();
+      };
+      userEl.style.display = "flex";
+      userEl.style.alignItems = "center";
+      userEl.appendChild(btn);
+    }
+  
+    userEl.onclick = onClick;
+    return userEl;
+  }
+  
+  // Load conversations, split by tab
+  async function loadConversationsByTab(tab) {
 
-    userEl.onclick = () => openChat(otherUserId, username);
-    userListEl.appendChild(userEl);
-  });
-});
-
-      });
+    if (!currentUser) return;
+  
+    userListEl.innerHTML = `<p style="padding: 10px; color: #666;">Loading...</p>`;
+  
+    // Step 1: Get all conversations user has a conversation doc for (i.e., categorized)
+    const convsRef = collection(db, "users", currentUser.uid, "conversations");
+    const convsSnapshot = await getDocs(convsRef);
+    const categorizedConversations = {};
+    convsSnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      categorizedConversations[docSnap.id] = data.tab || "friends";
     });
-  });
-}
+  
+    // Step 2: Get all messages involving current user
+    const messagesRef = collection(db, "messages");
 
-  onAuthStateChanged(auth, user => {
-  if (user) {
-    currentUser = user;
-    loadInbox();
+const messagesQuery = query(
+  messagesRef,
+  where("participants", "array-contains", currentUser.uid),
+  orderBy("timestamp", "desc")
+);
 
-    const recipientId = localStorage.getItem("chatWithUid");
-const recipientName = localStorage.getItem("chatWithName");
+const messagesSnapshot = await getDocs(messagesQuery);
 
-if (recipientId) {
-  startNewChat(recipientId, recipientName || "Unknown User");
-}
-
-  } else {
-    alert("You must be logged in.");
-  }
-});
-
-
-
-  async function startNewChat(recipientId, fallbackEmail) {
-  selectedRecipientId = recipientId;
-  activeSenderId = recipientId;
-
-  chatInputContainer.style.display = "flex";
-  document.getElementById("chatContainer").style.display = "flex";
-  document.getElementById("messageListView").style.display = "none";
-
-  try {
-    const userDocRef = doc(db, "users", recipientId);
-    const userDocSnap = await getDoc(userDocRef);
-
-    let displayName = "Unknown User";
-let isVerified = false;
-
-if (userDocSnap.exists()) {
-  const userData = userDocSnap.data();
-  displayName = userData.username || "Unknown User";
-  isVerified = userData.isVerified === true;
-}
-
-chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
-
-  } catch (err) {
-    console.error("Error fetching user profile:", err);
-    chatHeader.textContent = `Chat with ${fallbackEmail}`;
-  }
-
-  loadConversation(recipientId);
-}
-
-function loadConversation(senderId) {
-  const messagesRef = collection(db, "messages");
-  const q = query(messagesRef, orderBy("timestamp"));
-
-  onSnapshot(q, snapshot => {
-    messagesEl.innerHTML = "";
-
-    snapshot.forEach(docSnap => {
+    // Track users who messaged or received messages by current user
+    const messagedUserIds = new Set();
+    const incomingNewUsers = new Set(); // For requests tab
+  
+    // Track latest message per user for unread check
+    const latestMessages = {};
+  
+    messagesSnapshot.forEach(docSnap => {
       const msg = docSnap.data();
-      const isConversation =
-        (msg.senderId === currentUser.uid && msg.recipientId === senderId) ||
-        (msg.senderId === senderId && msg.recipientId === currentUser.uid);
-
-      if (isConversation) {
-        const msgEl = document.createElement("div");
-        msgEl.classList.add("message", msg.senderId === currentUser.uid ? "sent" : "received");
-        msgEl.innerHTML = `
-          <div class="sender">${msg.senderName || "Anonymous"}</div>
-          <div>${msg.text}</div>
-        `;
-        messagesEl.appendChild(msgEl);
+      if (msg.senderId !== currentUser.uid && msg.recipientId !== currentUser.uid) return;
+  
+      const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
+      messagedUserIds.add(otherUserId);
+  
+      // Save latest timestamp for each conversation
+      if (!latestMessages[otherUserId] || msg.timestamp?.toMillis() > latestMessages[otherUserId]) {
+        latestMessages[otherUserId] = msg.timestamp?.toMillis() || 0;
       }
     });
-
-    // Scroll to the bottom
-    messagesEl.scrollTop = messagesEl.scrollHeight;
-  });
-}
-
-  sendBtn.addEventListener("click", async () => {
-    const text = messageInput.value.trim();
-    if (!text || !activeSenderId || !currentUser) return;
-
-    await addDoc(collection(db, "messages"), {
-      senderId: currentUser.uid,
-      senderName: currentUser.displayName || "Anonymous",
-      recipientId: activeSenderId,
-      text,
-      timestamp: serverTimestamp()
-    });
-
-    messageInput.value = "";
-  });
-  function goBackToUserList() {
-  document.getElementById("chatContainer").style.display = "none";
-  document.querySelector(".sidebar").style.display = "block";
-}
-window.goBackToUserList = function () {
-  document.getElementById("chatContainer").style.display = "none";
-  document.getElementById("messageListView").style.display = "block";
-};
-import { setDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
-
-async function openChat(senderId, fallbackName) {
-  activeSenderId = senderId;
-  chatInputContainer.style.display = "flex";
-  document.getElementById("chatContainer").style.display = "flex";
-  document.getElementById("messageListView").style.display = "none";
-
-  await setDoc(doc(db, "users", currentUser.uid, "chatStatus", senderId), {
-    lastOpened: serverTimestamp()
-  });
-
-  // Existing code...
-  try {
-    const userDocRef = doc(db, "users", senderId);
-    const userDocSnap = await getDoc(userDocRef);
-    let displayName = "Unknown User";
-    let isVerified = false;
-
-    if (userDocSnap.exists()) {
+  
+    // Step 3: Determine users per tab
+    let userIdsToShow = [];
+  
+    if (tab === "friends" || tab === "general") {
+      userIdsToShow = Object.entries(categorizedConversations)
+        .filter(([uid, tabName]) => tabName === tab)
+        .map(([uid]) => uid);
+    } else if (tab === "requests") {
+      // Users messaged current user but NOT categorized in conversations subcollection
+      userIdsToShow = [...messagedUserIds].filter(uid => !(uid in categorizedConversations));
+    }
+  
+    if (userIdsToShow.length === 0) {
+      userListEl.innerHTML = `<p style="padding: 10px; color: #666;">No conversations in ${tab} tab.</p>`;
+      return;
+    }
+  
+    // Step 4: Fetch user data & chat status for each userId
+    userListEl.innerHTML = "";
+  
+    for (const otherUserId of userIdsToShow) {
+      const userDocSnap = await getDoc(doc(db, "users", otherUserId));
+      if (!userDocSnap.exists()) continue;
       const userData = userDocSnap.data();
-      displayName = userData.username || "Unknown User";
-      isVerified = userData.isVerified === true;
+  
+      // Check unread status
+      const chatStatusSnap = await getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId));
+      const lastOpened = chatStatusSnap.exists() ? chatStatusSnap.data().lastOpened?.toMillis() || 0 : 0;
+      const isUnread = !lastOpened || (latestMessages[otherUserId] || 0) > lastOpened;
+  
+      // Determine move button label and handler
+      let moveBtnLabel = null;
+      let moveBtnHandler = null;
+  
+      if (tab === "friends") {
+        moveBtnLabel = "Move to General";
+        moveBtnHandler = async () => {
+          await setDoc(doc(db, "users", currentUser.uid, "conversations", otherUserId), { tab: "general" });
+          await loadConversationsByTab(activeTab);
+        };
+      } else if (tab === "general") {
+        moveBtnLabel = "Move to Friends";
+        moveBtnHandler = async () => {
+          await setDoc(doc(db, "users", currentUser.uid, "conversations", otherUserId), { tab: "friends" });
+          await loadConversationsByTab(activeTab);
+        };
+      }
+  
+      // Requests tab has no move button
+  
+      const userEl = renderUserBlock(
+        userData,
+        isUnread,
+        moveBtnLabel,
+        moveBtnHandler,
+        () => openChatWithUser(otherUserId, userData.username)
+      );
+  
+      userListEl.appendChild(userEl);
     }
-
-    chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
-  } catch (e) {
-    chatHeader.textContent = `Chat with ${fallbackName}`;
   }
-
-  loadConversation(senderId);
-}
-document.addEventListener("DOMContentLoaded", async () => {
-  const convoId = localStorage.getItem("convoId");
-  const chatWithName = localStorage.getItem("chatWithName");
-
-  if (convoId) {
-    openChatWithUser(convoId, chatWithName); // Call your existing logic
-  }
-});
-document.addEventListener("DOMContentLoaded", () => {
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
-
-    if (hamburger && mobileMenu) {
-      hamburger.addEventListener("click", () => {
-        mobileMenu.classList.toggle("show");
-      });
+  
+  async function openChatWithUser(userId, usernameFallback) {
+    if (!currentUser) return;
+  
+    activeChatUserId = userId;
+    chatInputContainer.style.display = "flex";
+    document.getElementById("chatContainer").style.display = "flex";
+    document.getElementById("messageListView").style.display = "none";
+  
+    // Mark chat as opened (for unread tracking)
+    await setDoc(doc(db, "users", currentUser.uid, "chatStatus", userId), {
+      lastOpened: serverTimestamp()
+    });
+  
+    // Also automatically categorize the conversation into "friends" tab if it was a request before
+    const convDocRef = doc(db, "users", currentUser.uid, "conversations", userId);
+    const convSnap = await getDoc(convDocRef);
+    if (!convSnap.exists()) {
+      // Assign to friends by default when opening from requests
+      await setDoc(convDocRef, { tab: "friends" });
+      // Reload current tab user list since it might affect requests
+      loadConversationsByTab(activeTab);
     }
-  });
-
-document.addEventListener("click", function (e) {
-  const mobileMenu = document.getElementById("mobileMenu");
-  const hamburger = document.getElementById("hamburger");
-
-  const clickedInsideMenu = mobileMenu.contains(e.target);
-  const clickedHamburger = hamburger.contains(e.target);
-
-  if (!clickedInsideMenu && !clickedHamburger) {
-    mobileMenu.classList.remove("show");
-  }
-});
-searchInput.addEventListener("input", async (e) => {
-  const query = e.target.value.trim().toLowerCase();
-  userListEl.innerHTML = "";
-
-  if (!query || !currentUser) return;
-
-  const messagesRef = collection(db, "messages");
-  const msgQuery = query(messagesRef, orderBy("timestamp"));
-  const snapshot = await getDocs(msgQuery); // ✅ FIXED
-
-  const addedUserIds = new Set();
-
-  snapshot.forEach(docSnap => {
-    const msg = docSnap.data();
-    const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
-
-    if (
-      (msg.senderId === currentUser.uid || msg.recipientId === currentUser.uid) &&
-      !addedUserIds.has(otherUserId)
-    ) {
-      addedUserIds.add(otherUserId);
-
-      getDoc(doc(db, "users", otherUserId)).then(userDocSnap => {
-        if (!userDocSnap.exists()) return;
-
+  
+    // Fetch user info for header
+    let displayName = usernameFallback || "Unknown User";
+    let isVerified = false;
+    try {
+      const userDocSnap = await getDoc(doc(db, "users", userId));
+      if (userDocSnap.exists()) {
         const userData = userDocSnap.data();
-        const username = userData.username?.toLowerCase() || "";
+        displayName = userData.username || displayName;
+        isVerified = userData.isVerified === true;
+      }
+    } catch {}
+  
+    chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
+  
+    loadMessagesRealtime(userId);
+  }
+  
+  function loadMessagesRealtime(otherUserId) {
+    const messagesRef = collection(db, "messages");
+    const q = query(
+  messagesRef,
+  where("participants", "array-contains", currentUser.uid),
+  orderBy("timestamp")
+);
 
-        if (username.includes(query)) {
-          const avatarUrl = userData.avatar || "/images/avatars/popstarpenguin.jpg";
-          const isVerified = userData.isVerified === true;
-
-          const userEl = document.createElement("div");
-          userEl.classList.add("user-block");
-
-          userEl.innerHTML = `
-            <img class="user-avatar" src="${avatarUrl}" />
-            <div class="user-name">
-              ${userData.username}${isVerified ? " ✅" : ""}
-            </div>
+    if (window.unsubscribeMessages) {
+      window.unsubscribeMessages();
+    }
+  
+    window.unsubscribeMessages = onSnapshot(q, (snapshot) => {
+      messagesEl.innerHTML = "";
+  
+      snapshot.forEach(docSnap => {
+        const msg = docSnap.data();
+        if (
+          (msg.senderId === currentUser.uid && msg.recipientId === otherUserId) ||
+          (msg.senderId === otherUserId && msg.recipientId === currentUser.uid)
+        ) {
+          const msgEl = document.createElement("div");
+          msgEl.classList.add("message", msg.senderId === currentUser.uid ? "sent" : "received");
+          msgEl.innerHTML = `
+            <div class="sender">${msg.senderName || "Anonymous"}</div>
+            <div>${msg.text}</div>
           `;
-
-          userEl.onclick = () => openChat(otherUserId, userData.username);
-          userListEl.appendChild(userEl);
+          messagesEl.appendChild(msgEl);
         }
       });
+  
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    });
+  }
+  
+  sendBtn.addEventListener("click", async () => {
+    if (!currentUser || !activeChatUserId) return;
+  
+    const text = messageInput.value.trim();
+    if (!text) return;
+  
+    await addDoc(collection(db, "messages"), {
+  senderId: currentUser.uid,
+  senderName: currentUser.displayName || "Anonymous",
+  recipientId: activeChatUserId,
+  text,
+  timestamp: serverTimestamp(),
+  participants: [currentUser.uid, activeChatUserId]
+});
+
+  
+    messageInput.value = "";
+  });
+  
+  function goBackToUserList() {
+    activeChatUserId = null;
+    document.getElementById("chatContainer").style.display = "none";
+    document.getElementById("messageListView").style.display = "block";
+    chatInputContainer.style.display = "none";
+    loadConversationsByTab(activeTab);
+  }
+  
+  function setupUserSearch() {
+    const userSearchInput = document.getElementById("userSearchInput");
+  
+    userSearchInput.addEventListener("input", async () => {
+      const queryText = userSearchInput.value.toLowerCase().trim();
+      userListEl.innerHTML = "";
+  
+      if (!currentUser) return;
+  
+      if (queryText.length < 3) {
+        userListEl.innerHTML = `<p style="padding:10px; color:#666;">Type at least 3 characters to search.</p>`;
+        return;
+      }
+  
+      const usersSnapshot = await getDocs(collection(db, "users"));
+      const matches = [];
+  
+      usersSnapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const username = (data.username || "").toLowerCase();
+        const favoriteArtists = Array.isArray(data.favoriteArtist)
+          ? data.favoriteArtist.join(", ").toLowerCase()
+          : (data.favoriteArtist || "").toLowerCase();
+  
+        if ((username.includes(queryText) || favoriteArtists.includes(queryText)) && docSnap.id !== currentUser.uid) {
+          matches.push({ uid: docSnap.id, ...data });
+        }
+      });
+  
+      if (matches.length === 0) {
+        userListEl.innerHTML = "<p style='padding:10px; color:#666;'>No matches found.</p>";
+        return;
+      }
+  
+      userListEl.innerHTML = matches.slice(0, 10).map(user => `
+        <div class="user-block" style="cursor:pointer;">
+          <img class="user-avatar" src="${user.avatar || '/images/avatars/popstarpenguin.jpg'}" alt="Avatar" />
+          <div class="user-name">${user.username || "Anonymous"}</div>
+        </div>
+      `).join("");
+  
+      Array.from(userListEl.children).forEach((el, i) => {
+        el.addEventListener("click", () => openChatWithUser(matches[i].uid, matches[i].username));
+      });
+    });
+  }
+  onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    alert("You must be logged in.");
+    return;
+  }
+
+  currentUser = user;
+
+  setupUserSearch();
+  loadConversationsByTab(activeTab);
+  backfillParticipants(); // 👈 Call here
+});
+
+  
+  // Expose goBackToUserList for inline onclick usage
+  window.goBackToUserList = goBackToUserList;
+
+async function backfillParticipants() {
+
+  const snapshot = await getDocs(
+    query(messagesRef, where("participants", "array-contains", currentUser.uid))
+  );
+
+  snapshot.forEach(async (docSnap) => {
+    const data = docSnap.data();
+    if (!data.participants && data.senderId && data.recipientId) {
+      await updateDoc(docSnap.ref, {
+        participants: [data.senderId, data.recipientId]
+      });
     }
   });
-});
-document.querySelectorAll('input, textarea').forEach(input => {
-  input.addEventListener('focus', () => {
-    setTimeout(() => {
-      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300); // delay helps with keyboard animation
-  });
-});
+}
+
+
 
 </script>
 

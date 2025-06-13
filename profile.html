@@ -264,16 +264,6 @@ nav {
   opacity: 0;
   transition: opacity 0.4s ease;
 }
-#friendFinderModal {
-  z-index: 3000;
-}
-.friend-finder-modal.hidden {
-  display: none !important;
-}
-
-.friend-finder-modal.show {
-  display: flex !important;
-}
 
 .popup.show {
   opacity: 1;
@@ -526,7 +516,6 @@ body {
       
       
       </div>
-      <button class="btn" style="background: #7bafe7;" onclick="openFriendFinder()">Find Friends</button>
     <button class="btn" style="background: #e74c3c;" onclick="logout()">Log Out</button>
   </div>
 
@@ -696,31 +685,24 @@ body {
 </div>
 </div>
 
-  <div id="friendFinderModal" class="friend-finder-modal hidden">
-    <div class="modal-content" style="position:relative;">
-      <span class="close" onclick="closeFriendFinder()" style="position:absolute; top:12px; right:16px; font-size:24px; color:#333; cursor:pointer;">&times;</span>
-      <h2 style="margin-bottom: 10px;">Find Friends</h2>
-      <input id="friendSearchInput" type="text" placeholder="Search by username or favorite artist" style="width:100%; padding:10px; font-size:16px; border:1px solid #ccc; border-radius:8px; margin-bottom:20px;" />
-      <div id="friendResults"></div>
-    </div>
-  </div>
   <footer class="bottom-nav">
     <a href="/index.html" class="nav-item">
       <i class="fas fa-home"></i>
       <span>Home</span>
     </a>
-    <a href="/profile.html" class="nav-item">
-      <i class="fas fa-user"></i>
-      <span>My Profile</span>
-    </a>
+    <a href="/inbox.html" class="nav-item">
+      <i class="fas fa-users"></i>
+      <span>Social</span>
+    </a>    
     <a href="/memory-leaderboard.html" class="nav-item">
       <i class="fas fa-trophy"></i>
-      <span>Leaderboard</span>
+      <span>Leaderboards</span>
     </a>
     <a href="/rewards.html" class="nav-item">
-      <i class="fas fa-gift"></i>
-      <span>Rewards</span>
-    </a>
+        <i class="fas fa-gift"></i>
+        <span>Rewards</span>
+      </a>
+      
   </footer>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
@@ -924,47 +906,7 @@ document.getElementById("myCoinsValue").innerText = coins;
     window.closeAvatarPreview = () => document.getElementById("avatarPreviewModal").classList.remove("show");
   
     window.logout = () => signOut(auth).then(() => window.location.href = "login.html").catch(err => alert("Logout failed."));
-   
-    window.openFriendFinder = () => {
-  const modal = document.getElementById("friendFinderModal");
-  modal.classList.add("show");
-  modal.classList.remove("hidden");
-};
-
-
-window.closeFriendFinder = () => {
-  const modal = document.getElementById("friendFinderModal");
-  modal.classList.remove("show");
-  modal.classList.add("hidden");
-};
-
   
-    window.startConversation = async (receiverUid, receiverName) => {
-  const sender = auth.currentUser;
-  if (!sender || !receiverUid) return;
-
-  // Generate consistent thread ID
-  const convoId = [sender.uid, receiverUid].sort().join("_");
-
-  // Initialize the thread in 'messages' if it doesn't exist
-  await setDoc(doc(firestore, "users", user.uid), {
-  username,
-  city,
-  avatar: selectedAvatar,
-  favoriteArtist: selectedArtists, 
-  email: user.email,
-  uid: user.uid
-}, { merge: true });
-
-
-  // Save current chat context
-  localStorage.setItem("chatWithUid", receiverUid);
-  localStorage.setItem("chatWithName", receiverName);
-  localStorage.setItem("convoId", convoId); // Optional: pre-load thread
-
-  // Redirect to inbox
-  window.location.href = "inbox.html";
-};
 
 
     function showSavePopup() {

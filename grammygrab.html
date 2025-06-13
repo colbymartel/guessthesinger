@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammy Grab</title>
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #fff, #e7f1f9);
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #gameContainer {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .artist {
+      position: absolute;
+      padding: 10px 20px;
+      background-color: #fff;
+      border: 2px solid #315f85;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .artist:hover {
+      transform: scale(1.1);
+    }
+    #scoreboard {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #315f85;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameContainer">
+    <div id="scoreboard">Score: 0</div>
+  </div>
+
+  <script>
+    const gameContainer = document.getElementById("gameContainer");
+    const scoreboard = document.getElementById("scoreboard");
+
+    let score = 0;
+    const artists = [
+      { name: "Taylor Swift", hasGrammy: true },
+      { name: "Doja Cat", hasGrammy: true },
+      { name: "Lana Del Rey", hasGrammy: false },
+      { name: "SZA", hasGrammy: true },
+      { name: "Nicki Minaj", hasGrammy: false },
+      { name: "Drake", hasGrammy: true },
+      { name: "Ice Spice", hasGrammy: false },
+      { name: "Adele", hasGrammy: true }
+    ];
+
+    function spawnArtist() {
+      const artist = artists[Math.floor(Math.random() * artists.length)];
+
+      const div = document.createElement("div");
+      div.classList.add("artist");
+      div.textContent = artist.name;
+
+      const x = Math.random() * (window.innerWidth - 150);
+      const y = Math.random() * (window.innerHeight - 100);
+      div.style.left = `${x}px`;
+      div.style.top = `${y}px`;
+
+      div.onclick = () => {
+        if (artist.hasGrammy) {
+          score += 1;
+        } else {
+          score = Math.max(score - 1, 0);
+        }
+        scoreboard.textContent = `Score: ${score}`;
+        gameContainer.removeChild(div);
+      };
+
+      gameContainer.appendChild(div);
+
+      setTimeout(() => {
+        if (div.parentNode) gameContainer.removeChild(div);
+      }, 2000);
+    }
+
+    setInterval(spawnArtist, 1000);
+  </script>
+</body>
+</html>
