@@ -313,7 +313,7 @@ input, textarea, select {
 
 @media (min-width: 769px) {
   .reward-grid {
-    grid-template-columns: repeat(4, 1fr); /* 4 per row on desktop */
+    grid-template-columns: repeat(6, 1fr); /* 4 per row on desktop */
   }
 }
 
@@ -321,7 +321,32 @@ input, textarea, select {
   width: 100%;
   max-width: 160px;
 }
+body {
+  background: linear-gradient(to bottom, #f9fbfd, #d6eaf8);
+}
 
+.alert-bar {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1e2b38;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  font-weight: bold;
+  z-index: 2000;
+  font-size: 14px;
+  animation: fadeSlideUp 0.3s ease;
+}
+.hidden {
+  display: none;
+}
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
 
 
   </style>
@@ -417,7 +442,7 @@ input, textarea, select {
     </div>
   </div>
 
-  <div class="reward-card shop-style" data-title="Raffle Entries" data-cost="400">
+  <div class="reward-card shop-style" data-title="10 Raffle Entries" data-cost="400">
     <img src="images/premium.jpg" alt="Raffle Entries" class="reward-image-top">
     <div class="reward-title center-text">10 Raffle Entries</div>
     <div class="reward-desc center-text">10 entries into raffle for a 1-Year Spotify Premium Subscription!</div>
@@ -444,7 +469,7 @@ input, textarea, select {
       <h2>Confirm Redemption</h2>
       <p id="redeemText">Are you sure you want to redeem this reward?</p>
       <div style="margin-top: 20px;">
-        <button id="confirmRedeem" style="margin-right: 10px;">Yes</button>
+        <button id="confirmRedeem" style="margin-right: 10px;">Redeem</button>
         <button id="cancelRedeem">Cancel</button>
       </div>
     </div>
@@ -468,6 +493,7 @@ input, textarea, select {
             <span>Rewards</span>
           </a>
           
+          <div id="alertBar" class="alert-bar hidden"></div>
 
   </footer>
   <script type="module">
@@ -529,14 +555,17 @@ document.getElementById('cancelRedeem').addEventListener('click', () => {
 });
 
 document.getElementById('confirmRedeem').addEventListener('click', async () => {
-  if (!auth.currentUser || !selectedReward) return;
+  if (!auth.currentUser || !selectedReward) {
+  showAlert("⚠️ Please log in to redeem.", "#f39c12");
+  return;
+}
 
   const userRef = doc(db, "users", auth.currentUser.uid);
   const userSnap = await getDoc(userRef);
   const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
 
   if (currentCoins < selectedReward.coinCost) {
-    alert("Not enough coins!");
+    showAlert("⚠️ Not enough coins to redeem.", "#c0392b");
     document.getElementById('redeemModal').classList.add('hidden');
     return;
   }
@@ -558,9 +587,19 @@ document.getElementById('confirmRedeem').addEventListener('click', async () => {
 
   // Update UI
   document.getElementById('coinTotal').textContent = currentCoins - selectedReward.coinCost;
-  alert(`✅ Redeemed ${selectedReward.title}!`);
+  showAlert(`🎉 Redeemed: ${selectedReward.title}!`, "#28a745");
   document.getElementById('redeemModal').classList.add('hidden');
 });
+function showAlert(message, color = "#1e2b38") {
+  const alertBar = document.getElementById("alertBar");
+  alertBar.textContent = message;
+  alertBar.style.backgroundColor = color;
+  alertBar.classList.remove("hidden");
+
+  setTimeout(() => {
+    alertBar.classList.add("hidden");
+  }, 3000);
+}
 
     </script>
     
