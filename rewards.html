@@ -57,17 +57,70 @@
     .reward-section {
       padding: 20px;
     }
+    .shop-style {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px;
+  width: 160px;
+  border: 2px solid #ccc;
+  border-radius: 15px;
+  background: #fdfdfd;
+  margin: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+.shop-style:hover {
+  transform: scale(1.03);
+}
 
-    .reward-card {
-      background: white;
-      border-radius: 15px;
-      padding: 16px 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+.reward-image-top {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.center-text {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.price-tag {
+  background: linear-gradient(to right, #f1c40f, #f39c12);
+  color: #1e2b38;
+  font-weight: bold;
+  border-radius: 12px;
+  padding: 6px 14px;
+  font-size: 16px;
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.coin-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+  box-shadow:
+    0 1px 0 #cfa300,
+    0 2px 0 #b8860b;
+}
+
+
+.reward-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #eee;
+}
+
 
     .reward-info {
       max-width: 75%;
@@ -250,6 +303,13 @@ input, textarea, select {
 .highlight i {
   color: #ffcb05; /* yellow */
 }
+.reward-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
 
   </style>
 </head>
@@ -257,7 +317,7 @@ input, textarea, select {
     <header class="header">
         <div class="logo">
           <a href="/index.html">
-            <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+            <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
           </a>
         </div>
       </header>
@@ -267,41 +327,53 @@ input, textarea, select {
         <div class="coin-emoji"></div>
       </div>
   </div>
+  <div class="reward-grid">
 
-  <div class="reward-section">
-    <div class="reward-card disabled-reward">
-        <div class="reward-info">
-        <div class="reward-title">1-Year Spotify Premium</div>
-        <div class="reward-desc">Enjoy ad-free music for a whole year.</div>
-      </div>
-      <div class="coin-tag">
-        <span class="coin-amount">5,000</span>
-        <span class="coin-emoji"></span>
-      </div>
-               
+
+    <div class="reward-card shop-style" data-title="Pop-Star Penguin Sticker" data-cost="100">
+      <img src="images/avatars/penguindecal.png" alt="Penguin Sticker" class="reward-image-top">
+    <div class="reward-title center-text">Pop-Star Penguin Sticker</div>
+    <div class="reward-desc center-text">2'' die-cut sticker</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      100
     </div>
+  </div>
+  
 
-    <div class="reward-card disabled-reward">
-        <div class="reward-info">
-        <div class="reward-title">25% Off Merch Coupon</div>
-        <div class="reward-desc">Apply to your next GuessTheSinger order.</div>
-      </div>
-      <div class="coin-tag">
-        <span class="coin-amount">250</span>
-        <span class="coin-emoji"></span>
-      </div>
-          </div>
+  <div class="reward-card shop-style" data-title="Disco Dolphin Sticker" data-cost="100">
+    <img src="images/avatars/discodecal.png" alt="Dolphin Sticker" class="reward-image-top">
+    <div class="reward-title center-text">Disco Dolphin Sticker</div>
+    <div class="reward-desc center-text">2'' die-cut sticker</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      100
+    </div>
+  </div>
 
-    <div class="reward-card">
-      <div class="reward-info">
-        <div class="reward-title">Mystery Mascot Sticker</div>
-        <div class="reward-desc">A surprise Guess The Singer die-cut sticker.</div>
-      </div>
-      <div class="coin-tag">
-        <span class="coin-amount">100</span>
-        <span class="coin-emoji"></span>
-      </div>
-          </div>
+
+  <div class="reward-card shop-style" data-title="Dancing Dumpling Sticker" data-cost="100">
+    <img src="images/avatars/dumpling.png" alt="Dumpling Sticker" class="reward-image-top">
+    <div class="reward-title center-text">Dancing Dumpling Sticker</div>
+    <div class="reward-desc center-text">2'' die-cut sticker</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      100
+    </div>
+  </div>
+
+
+  <div class="reward-card shop-style" data-title="Musical Matcha Sticker" data-cost="100">
+    <img src="images/avatars/MusicalMatcha.png" alt="Matcha Sticker" class="reward-image-top">
+    <div class="reward-title center-text">Musical Matcha Sticker</div>
+    <div class="reward-desc center-text">2'' die-cut sticker</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      100
+    </div>
+  </div>
+
+      </div>    
   </div>
   <div id="redeemModal" class="modal hidden">
     <div class="modal-content">
@@ -376,16 +448,17 @@ input, textarea, select {
 
 let selectedReward = null;
 
-document.querySelectorAll('.reward-card:not(.disabled-reward)').forEach(card => {
-    card.addEventListener('click', () => {
-    const title = card.querySelector('.reward-title').textContent;
-    const coinCost = parseInt(card.querySelector('.coin-tag').textContent);
+  document.querySelectorAll('.reward-card:not(.disabled-reward)').forEach(card => {
+  card.addEventListener('click', () => {
+    const title = card.dataset.title;
+    const coinCost = parseInt(card.dataset.cost);
     selectedReward = { title, coinCost };
 
     document.getElementById('redeemText').textContent = `Redeem "${title}" for ${coinCost} coins?`;
     document.getElementById('redeemModal').classList.remove('hidden');
   });
 });
+
 
 document.getElementById('cancelRedeem').addEventListener('click', () => {
   document.getElementById('redeemModal').classList.add('hidden');
