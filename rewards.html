@@ -304,11 +304,24 @@ input, textarea, select {
   color: #ffcb05; /* yellow */
 }
 .reward-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* default: 2 per row */
   gap: 20px;
+  justify-items: center;
+  padding: 0 16px;
 }
+
+@media (min-width: 769px) {
+  .reward-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 per row on desktop */
+  }
+}
+
+.shop-style {
+  width: 100%;
+  max-width: 160px;
+}
+
 
 
   </style>
@@ -352,6 +365,7 @@ input, textarea, select {
   </div>
 
 
+
   <div class="reward-card shop-style" data-title="Dancing Dumpling Sticker" data-cost="100">
     <img src="images/avatars/dumpling.png" alt="Dumpling Sticker" class="reward-image-top">
     <div class="reward-title center-text">Dancing Dumpling Sticker</div>
@@ -370,6 +384,56 @@ input, textarea, select {
     <div class="price-tag">
       <span class="coin-icon"></span>
       100
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="Jazzy Jaguar Sticker" data-cost="100">
+    <img src="images/avatars/jazzyjaguar.png" alt="Jaguar Sticker" class="reward-image-top">
+    <div class="reward-title center-text">Jazzy Jaguar Sticker</div>
+    <div class="reward-desc center-text">2'' die-cut sticker</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      100
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="SoupTimmy Sticker" data-cost="125">
+    <img src="images/avatars/timmysticker.png" alt="SoupTimmy Sticker" class="reward-image-top">
+    <div class="reward-title center-text">SoupTimmy Sticker</div>
+    <div class="reward-desc center-text">2'' die-cut sticker</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      125
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="Raffle Entry" data-cost="5">
+    <img src="images/premium.jpg" alt="Raffle Entry" class="reward-image-top">
+    <div class="reward-title center-text">1 Raffle Entry</div>
+    <div class="reward-desc center-text">One entry into raffle for a 1-Year Spotify Premium Subscription!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      50
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="Raffle Entries" data-cost="400">
+    <img src="images/premium.jpg" alt="Raffle Entries" class="reward-image-top">
+    <div class="reward-title center-text">10 Raffle Entries</div>
+    <div class="reward-desc center-text">10 entries into raffle for a 1-Year Spotify Premium Subscription!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      400
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="Call with Colby" data-cost="3500">
+    <img src="images/avatars/colbypfp.jpeg" alt="Colby Martel" class="reward-image-top">
+    <div class="reward-title center-text">Call with Colby</div>
+    <div class="reward-desc center-text">I will guess your favorite singer on a live call!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      3500
     </div>
   </div>
 
