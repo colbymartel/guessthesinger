@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spell the Singer</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom right, #e7f1f9, #ffffff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    nav {
+      width: 100%;
+      margin: 0;
+      padding: 15px 30px;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+    }
+
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .search-bar {
+      padding: 8px 16px 8px 36px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      background: white;
+      color: #315f85;
+      font-size: 0.95rem;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: 12px center;
+    }
+
+    .search-bar::placeholder {
+      color: #888;
+    }
+
+    .login-btn {
+      background-color: #ffcb05;
+      border: none;
+      padding: 8px 16px;
+      height: 40px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #1e2b38;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .login-btn:hover {
+      background-color: #e6b800;
+      transform: translateY(-1px);
+    }
+    .container {
+      margin-top: 40px;
+      max-width: 600px;
+      width: 100%;
+    }
+    #blanks {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      word-spacing: 10px;
+    }
+    .guess-input {
+      padding: 10px;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    .btn-row {
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      font-weight: bold;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ffd84d;
+    }
+    .stats {
+      font-size: 1.2rem;
+      margin-bottom: 35px;
+      color: #315f85;
+    }
+    .message {
+      font-size: 1.2rem;
+      color: #28a745;
+      margin-top: 20px;
+    }
+    .emoji {
+      font-size: 2rem;
+      margin-top: 20px;
+    }
+
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1e2b38;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav .nav-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.bottom-nav .nav-item i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.bottom-nav .nav-item:hover {
+  color: #ffcb05;
+}
+.welcome-msg {
+  font-weight: bold;
+  color: #ffcb05;
+}
+.welcome-msg:hover {
+  text-decoration: underline;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  background-color: #1e2b38;
+  padding: 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 10;
+}
+.dropdown.show {
+  display: flex;
+}
+.dropdown a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-weight: bold;
+}
+.dropdown a:hover {
+  background-color: #ffcb05;
+  color: #1e2b38;
+}
+.coin-emoji {
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+  border-radius: 50%;
+  box-shadow:
+    0 2px 0 #cfa300,
+    0 4px 0 #b8860b,
+    0 6px 0 #8c6e00;
+  position: relative;
+  display: inline-block;
+}
+.coin-emoji::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+  border-radius: 50%;
+  z-index: 1;
+}
+.coin-gain {
+  color: #27ae60;
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: 4px;
+  opacity: 0;
+  transform: translateY(0px);
+  transition: all 0.6s ease-out;
+}
+.coin-gain.animate {
+  opacity: 1;
+  transform: translateY(-10px);
+}
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  right: 15px;
+  top: 80px;
+  background-color: #1e2b38;
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  width: max-content;
+}
+.mobile-menu a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  font-weight: bold;
+  width: 100%;
+}
+.mobile-menu.show {
+  display: flex;
+}
+.hamburger {
+  display: block;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+.header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeDown 1s ease-out;
+  width: 100%;
+}
+.header .logo img {
+  width: 200px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Responsive Logo */
+@media (max-width: 768px) {
+  .header .logo img {
+    width: 60%;
+    padding: 0px;
+  }
+  .header{
+    height: 35px;
+  }
+}
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <a href="/index.html">
+            <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+          </a>
+        </div>
+        
+    </header>
+    <nav style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div class="welcome-nav" style="position: relative;">
+            <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+            <div id="dropdownMenu" class="dropdown"></div>
+          </div>
+      
+          <!-- Coin Display aligned next to Welcome -->
+          <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+            <div class="coin-emoji"></div>
+            <span id="coinCount" style="font-weight: bold;">0</span>
+            <span id="coinGain" class="coin-gain hidden">+10</span>
+          </div>
+        </div>
+      
+        <!-- Hamburger menu on far right -->
+        <div class="hamburger" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+      
+      <div id="mobileMenu" class="mobile-menu hidden">
+        <a href="/profile.html" class="nav-item">
+          <i class="fas fa-user"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="/about.html">About</a>
+      </div>
+      
+
+  <div class="container">
+    <div class="emoji">🐝</div>
+    <h1 class="game-title">Spell the Singer</h1>
+    <div class="stats">
+      Time Left: <span id="timer">100</span> | High Score: <span id="highscore">0</span> | Correct: <span id="correctCount">0</span>/5
+    </div>
+    <div id="blanks"></div>
+    <input type="text" id="guessInput" class="guess-input" placeholder="Guess the singer...">
+    <div class="btn-row">
+      <button onclick="submitGuess()">Submit Guess</button>
+      <button id="play-again" onclick="startGame()" style="display:none">Play Again</button>
+    </div>
+    <div id="message" class="message"></div>
+  </div>
+  <footer class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+  <script>
+
+    const singers = [
+      "Adele", "Taylor Swift", "Bruno Mars", "Ed Sheeran", "Lady Gaga", "Justin Bieber", "Beyonce",
+      "Rihanna", "Harry Styles", "Ariana Grande", "Billie Eilish", "Sam Smith", "Dua Lipa", "Shawn Mendes",
+      "Camila Cabello", "Selena Gomez", "Katy Perry", "Nicki Minaj", "Doja Cat", "Post Malone", "Olivia Rodrigo",
+      "The Weeknd", "Drake", "Lizzo", "Miley Cyrus", "Halsey", "SZA", "Frank Ocean", "Charlie Puth",
+      "Jennifer Lopez", "Kelly Clarkson", "Jason Derulo", "Zayn Malik", "Liam Payne", "Louis Tomlinson",
+      "Niall Horan", "Avril Lavigne", "Britney Spears", "Mariah Carey", "Alicia Keys", "John Legend",
+      "Elton John", "Stevie Wonder", "Aretha Franklin", "Whitney Houston", "Celine Dion", "Michael Bublé",
+      "Eminem", "50 Cent", "Kendrick Lamar", "Travis Scott", "Tyler Creator", "Ice Spice", "Flo Rida",
+      "Pitbull", "Sia", "Adam Levine", "Chris Brown", "Tinashe", "Lana Del Rey", "Lorde", "Troye Sivan",
+      "Tove Lo", "Becky G", "Anitta", "Karol G", "Bad Bunny", "Rosalia", "J Balvin", "Shakira",
+      "Ricky Martin", "Luis Fonsi", "Paul McCartney", "Mick Jagger", "Freddie Mercury", "David Bowie",
+      "George Michael", "Elvis Presley", "Prince", "Billy Joel", "Bob Dylan", "James Taylor", "Phil Collins",
+      "Jon Bon Jovi", "Sting"
+    ];
+
+    let currentSinger = "";
+    let revealedLetters = [];
+    let correctCount = 0;
+    let timeLeft = 100;
+    let timerInterval, revealInterval;
+    let singerQueue = [];
+    let highScore = localStorage.getItem('spellSingerHighScore') || 0;
+    document.getElementById('highscore').textContent = highScore;
+
+    function shuffle(array) {
+      return array.sort(() => 0.5 - Math.random());
+    }
+    function startGame() {
+  singerQueue = shuffle([...singers]);
+  correctCount = 0;
+  timeLeft = 100;
+  document.getElementById('correctCount').textContent = correctCount;
+  document.getElementById('timer').textContent = timeLeft;
+  document.getElementById('play-again').style.display = 'none';
+  document.getElementById('message').textContent = '';
+  document.querySelector('button[onclick="submitGuess()"]').style.display = 'inline-block'; // ✅ Restore submit
+  clearInterval(timerInterval);
+  clearInterval(revealInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timer').textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+  loadNextSinger();
+}
+
+    function updateBlanks() {
+  document.getElementById('blanks').innerHTML = revealedLetters
+    .map(char => {
+      if (char === ' ') {
+        return `<span style="display: inline-block; width: 24px; height: 40px; margin: 5px;"></span>`;
+      } else {
+        return `<span style="
+          display: inline-block;
+          width: 24px;
+          height: 40px;
+          margin: 5px;
+          background-color: #ffffff;
+          border: 2px solid #315f85;
+          border-radius: 6px;
+          font-size: 1.4rem;
+          font-weight: bold;
+          line-height: 40px;
+          text-align: center;
+          vertical-align: middle;
+          color: #315f85;
+        ">${char === '_' ? '&nbsp;' : char}</span>`;
+      }
+    })
+    .join('');
+}
+
+
+    function loadNextSinger() {
+      if (singerQueue.length === 0) singerQueue = shuffle([...singers]);
+      currentSinger = singerQueue.shift().toUpperCase();
+      revealedLetters = currentSinger.split('').map(char => char === ' ' ? ' ' : '_');
+      updateBlanks();
+      clearInterval(revealInterval);
+      let unrevealedIndices = currentSinger.split('').map((_, i) => i).filter(i => currentSinger[i] !== ' ');
+
+      revealInterval = setInterval(() => {
+        if (unrevealedIndices.length === 0) return;
+        const randIndex = unrevealedIndices.splice(Math.floor(Math.random() * unrevealedIndices.length), 1)[0];
+        revealedLetters[randIndex] = currentSinger[randIndex];
+        updateBlanks();
+      }, 4000);
+    }
+
+    function submitGuess() {
+      const guess = document.getElementById('guessInput').value.trim().toUpperCase();
+      document.getElementById('guessInput').value = '';
+      if (guess === currentSinger) {
+        correctCount++;
+        document.getElementById('correctCount').textContent = correctCount;
+        if (correctCount >= 5) {
+          endGame(true);
+        } else {
+          loadNextSinger();
+        }
+      } else {
+        document.getElementById('message').textContent = '❌ Incorrect. Try again!';
+        setTimeout(() => document.getElementById('message').textContent = '', 2000);
+      }
+    }
+    async function endGame(won) {
+  clearInterval(timerInterval);
+  clearInterval(revealInterval);
+
+  const score = won ? timeLeft : 0;
+  const messageEl = document.getElementById('message');
+  messageEl.textContent = won 
+    ? `🎉 You win! Score: ${score}` 
+    : '⏰ Time is up!';
+
+  if (score > highScore) {
+    localStorage.setItem('spellSingerHighScore', score);
+    document.getElementById('highscore').textContent = score;
+  }
+
+  document.getElementById('play-again').style.display = 'inline-block';
+  document.querySelector('button[onclick="submitGuess()"]').style.display = 'inline-block';
+
+  const coinsEarned = score > 50 ? 10 : 5;
+
+  try {
+    const user = auth.currentUser;
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await window.getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const currentCoins = userSnap.data().coins || 0;
+        const newCoinAmount = currentCoins + coinsEarned;
+
+        await window.updateDoc(userRef, { coins: newCoinAmount });
+
+        // Animate coin gain
+        const gainEl = document.getElementById("coinGain");
+        const countEl = document.getElementById("coinCount");
+        gainEl.textContent = `+${coinsEarned}`;
+        gainEl.classList.add("animate");
+        if (countEl) countEl.textContent = newCoinAmount;
+        setTimeout(() => {
+          gainEl.classList.remove("animate");
+        }, 1500);
+      }
+
+      // Leaderboard entry
+      const scoreEntry = {
+        uid: user.uid,
+        score: score,
+        timestamp: new Date(),
+        username: user.displayName || "Anonymous",
+        city: "", // optionally replace with user.city
+      };
+
+      await addDoc(collection(db, "spellingScores"), scoreEntry);
+
+const bestRef = doc(db, "spellingBests", user.uid);
+const bestSnap = await getDoc(bestRef);
+
+   
+      if (!bestSnap.exists() || bestSnap.data().score < score) {
+        await window.setDoc(bestRef, scoreEntry);
+    }
+    }
+  } catch (error) {
+    console.error("Error awarding coins or updating leaderboard:", error);
+  }
+}
+
+
+    window.onload = startGame;
+  </script>
+  <script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+import {
+  getDoc,
+  setDoc,
+  updateDoc,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+window.firebaseApp = app;
+window.db = db;
+window.auth = auth;
+window.collection = collection;
+window.firebaseApp = app;
+window.db = db;
+window.auth = auth;
+window.collection = collection;
+window.getDocs = getDocs;
+window.query = query;
+window.where = where;
+window.doc = doc;
+window.getDoc = getDoc;
+window.setDoc = setDoc;
+window.updateDoc = updateDoc;
+window.addDoc = addDoc;
+
+    
+    const welcomeEl = document.getElementById("welcomeMessage");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const coinDisplayEl = document.getElementById("coinCount");
+    
+    onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const userRef = collection(db, "users");
+    const q = query(userRef, where("uid", "==", user.uid));
+    const snapshot = await getDocs(q);
+
+    let displayName = "User";
+    let coinCount = 0;
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.username) displayName = data.username;
+      if (data.coins !== undefined) coinCount = data.coins;
+    });
+
+    welcomeEl.textContent = `Welcome, ${displayName}`;
+    coinDisplayEl.textContent = coinCount;
+
+    dropdownMenu.innerHTML = `
+      <a href="/profile.html">Edit Profile</a>
+      <a href="#" id="logoutBtn">Log Out</a>
+    `;
+    document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      await signOut(auth);
+      location.reload();
+    });
+
+  } else {
+    welcomeEl.textContent = "Welcome, Anonymous";
+    coinDisplayEl.textContent = "";
+    dropdownMenu.innerHTML = `
+      <a href="/signup.html">Create Profile</a>
+      <a href="/login.html">Log In</a>
+    `;
+  }
+});
+
+    welcomeEl.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeEl) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+    
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("show");
+    });
+    document.addEventListener("click", (e) => {
+  if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+    mobileMenu.classList.remove("show");
+  }
+});
+
+    </script>
+    
+</body>
+</html>

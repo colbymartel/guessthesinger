@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Guess The Singer: Test your music knowledge with daily challenges." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guessing Games</title>
+  <link rel="icon" href="/favicongg.ico" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    /* Nav Links */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #315f85;
+  padding: 15px 30px;
+  color: white;
+}
+
+.nav-links a {
+  color: white;
+  margin-left: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1rem;
+}
+.nav-links a:hover {
+  color: #ffcb05;
+}
+
+/* Section Titles */
+.category-row {
+  margin-top: 40px;
+}
+
+.category-row h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Game Grid (Reuse Previous) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 25px;
+}
+
+
+    /* Main Grid */
+    .main {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* tighter spacing between Music and More Games */
+}
+
+
+
+    .game-tile {
+      width: 180px;
+      height: 180px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #4682b4, #315f85);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .game-tile:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 18px rgba(70, 130, 180, 0.6);
+    }
+
+    .game-tile.character {
+      background: linear-gradient(135deg, #30b5bc, #117379);
+    }
+
+    .game-tile.locked {
+      background: #c1c1c1;
+      color: #666;
+      cursor: not-allowed;
+    }
+
+    .game-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 30px;
+    }
+
+    .footer {
+      background-color: #315f85;
+      color: white;
+      text-align: center;
+      padding: 15px 10px;
+      font-size: 1rem;
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .footer a:hover {
+      color: #ff914d;
+    }
+
+.category-header{
+  padding: 30px 20px 20px 30px; /* top, right, bottom, left */
+  margin-bottom: -40px;
+
+}
+.category-header h2 {
+  font-size: 1.8rem;
+  color: #222;
+}
+
+.category-header p {
+  color: #555;
+  margin-top: 6px;
+  margin-bottom: 20px;
+
+}
+
+.tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px; /* Increase from 25px */
+}
+
+
+.tab {
+  padding: 8px 16px;
+  border: none;
+  background-color: #e1ecf4;
+  color: #333;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab.active, .tab:hover {
+  background-color: #4682b4;
+  color: white;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  justify-items: center;
+  padding: 0 16px;
+}
+@media (min-width: 769px) {
+  .game-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.more-games .game-scroll-row{
+  margin-bottom: 40px;
+}
+.game-card {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px;
+  width: 160px;
+  border: 2px solid #ccc;
+  border-radius: 15px;
+  background: #fdfdfd;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+.game-card:hover {
+  transform: scale(1.03);
+}
+.game-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 12px;
+  border-radius: 10px;
+}
+
+.nav-links a:last-of-type {
+  margin-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 20px;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+    margin-left: 12px;
+  }
+
+  .game-card {
+    width: 160px;
+  }
+}
+
+
+.game-card h3 {
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+.game-card p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.game-card.locked {
+  position: relative;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.logo img {
+  height: 40px;
+  width: auto;
+}
+.search-suggestions {
+  position: absolute;
+  top: 50px;
+  right: 30px;
+  width: 300px;
+  background: white;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 999;
+  display: none;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.search-suggestion {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.search-suggestion:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion:hover {
+  background-color: #f0f4fa;
+}
+.search-bar {
+  padding: 8px 16px 8px 36px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  background-color: white;
+  color: #315f85;
+  width: 220px;
+  background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+  background-size: 16px;
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.search-bar::placeholder {
+  color: #888;
+}
+.login-btn {
+  background-color: #ffcb05;
+  border: none;
+  padding: 8px 16px;
+  height: 40px;
+  border-radius: 20px;
+  font-weight: bold;
+  color: #1e2b38;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.95rem;
+}
+
+.login-btn:hover {
+  background-color: #e6b800;  /* slightly darker yellow */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.game-card.locked {
+  position: relative;
+  opacity: 0.6;
+  pointer-events: none;
+  filter: grayscale(100%);
+  overflow: hidden;
+}
+
+.locked-text {
+  font-weight: 500;
+}
+.badge-trending {
+  background-color: #ffcb05;
+  color: #1e2b38;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.game-card {
+  position: relative;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-links a {
+    margin: 10px 0;
+    font-size: 1rem;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .search-bar {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .login-btn {
+    width: 100%;
+  }
+
+  .main {
+    padding: 10px;
+  }
+
+  .game-scroll-row {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .game-card {
+    width: 140px;
+  }
+
+  .game-card img {
+    height: 140px;
+  }
+
+  .category-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .category-header p {
+    font-size: 0.95rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: center;
+  }
+
+  .stats {
+    font-size: 1rem;
+  }
+
+  .footer {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .footer a {
+    font-size: 1rem;
+    margin: 0 5px;
+  }
+}.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.bar {
+  height: 3px;
+  width: 25px;
+  background-color: white;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 15px 20px;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #315f85;
+    padding: 10px 0;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a,
+  .nav-links .search-bar,
+  .nav-links .login-btn {
+    margin: 8px 20px;
+  }
+
+  .search-bar {
+    width: calc(100% - 40px);
+  }
+
+  .login-btn {
+    width: calc(100% - 40px);
+  }
+
+  .search-suggestions {
+    position: static;
+    width: calc(100% - 40px);
+    margin: 0 auto;
+  }
+}
+
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1e2b38;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav .nav-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.bottom-nav .nav-item i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.bottom-nav .nav-item:hover {
+  color: #ffcb05;
+}
+.header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.header .logo img {
+  width: 200px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.category-header {
+  text-align: center;
+  padding: 30px 20px 10px 20px;
+}
+.category-header h2 {
+  font-size: 1.6rem;
+  color: #1e2b38;
+}
+.category-header p {
+  color: #555;
+  font-size: 14px;
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+.play-now-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  background-color: #ffcb05;
+  color: #1e2b38;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.play-now-btn:hover {
+  background-color: #e6b800;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.games-section {
+  padding: 30px 20px;
+  color: white;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.games-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color:  #234d7d;
+
+}
+
+.games-header h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.games-header a {
+  color: #a78bfa;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.games-header a:hover {
+  text-decoration: underline;
+}
+
+.games-gallery {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.game-box {
+  position: relative; /* Add this */
+  flex: 0 0 auto;
+  width: 180px;
+  height: 250px;
+  background-color: #1e1e1e;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+
+.game-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-box:hover {
+  transform: scale(1.04);
+}
+.play-now-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffcb05;
+  color: #1e2b38;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 10;
+}
+
+.play-now-overlay:hover {
+  background-color: #e6b800;
+  transform: translateX(-50%) translateY(-1px);
+}
+body {
+  font-family: 'Fredoka', sans-serif;
+  background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+  padding-bottom: 90px;
+  margin: 0;
+}
+
+nav {
+  background-color: #1e2b38;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.welcome-msg {
+  font-weight: bold;
+  color: #ffcb05;
+  cursor: pointer;
+}
+.welcome-msg:hover {
+  text-decoration: underline;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  margin-right: 30px;
+  background-color: #1e2b38;
+  padding: 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 10;
+}
+.dropdown.show {
+  display: flex;
+}
+.dropdown a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-weight: bold;
+}
+.dropdown a:hover {
+  background-color: #ffcb05;
+  color: #1e2b38;
+}
+
+.coin-emoji {
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+  border-radius: 50%;
+  box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
+  position: relative;
+  display: inline-block;
+}
+
+#coinDisplay {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+#coinCount {
+  font-weight: bold;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1e2b38;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav .nav-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+.bottom-nav .nav-item i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+.bottom-nav .nav-item:hover {
+  color: #ffcb05;
+}
+
+
+
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <a href="/index.html">
+            <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+          </a>
+        </div>
+      </header>
+      
+      <nav>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div class="welcome-nav" style="position: relative;">
+            <div id="welcomeMessage" class="welcome-msg">Welcome</div>
+            <div id="dropdownMenu" class="dropdown"></div>
+          </div>
+      
+          <div id="coinDisplay">
+            <div class="coin-emoji"></div>
+            <span id="coinCount">0</span>
+          </div>
+        </div>
+      
+      
+    <!-- Collapsible nav menu -->
+    <div class="nav-links" id="mobileMenu">
+       
+      <!-- Search and login within dropdown -->
+      <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
+      <div class="search-suggestions" id="suggestions"></div>
+      <button class="login-btn">Login</button>
+    </div>
+  </nav>
+  
+<section class="category-block">
+  <section class="games-section">
+    <div class="games-header">
+      <h2>Original Games</h2>
+      <a href="/games.html">View more</a>
+    </div>
+    <div class="games-gallery">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="game-box">
+              <a href="/memory.html">
+                <img src="/images/memorymatch.png" alt="Memory Match">
+              </a>
+            </div>
+            <a href="/memory.html" class="play-now-btn">▶️ Play</a>
+          </div>          
+          <div style="display: flex; flex-direction: column; align-items: center;">
+
+      <div class="game-box" onclick="location.href='/spelling.html'">
+        <img src="/images/spellingbee.jpg" alt="Spelling Bee">
+      </div>
+      <a href="/spelling.html" class="play-now-btn">▶️ Play</a>
+</div>
+  </section>
+  
+    
+  </div>
+</section>
+<footer class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+        <div style="display: block; margin-bottom: 2px;">
+            <i class="fas fa-home"></i>
+        </div>
+          <span>Home</span>
+        </a>
+    
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+  
+    const welcomeEl = document.getElementById("welcomeMessage");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+  
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        let username = "User";
+        let coins = 0;
+  
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+  
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.username) username = data.username;
+            if (data.coins !== undefined) coins = data.coins;
+          });
+  
+          welcomeEl.textContent = `Welcome, ${username}`;
+          const coinDisplayEl = document.getElementById("coinCount");
+          if (coinDisplayEl) coinDisplayEl.textContent = coins;
+  
+          dropdownMenu.innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="#" id="logoutBtn">Log Out</a>
+          `;
+  
+          setTimeout(() => {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                try {
+                  await signOut(auth);
+                  location.reload();
+                } catch (err) {
+                  console.error("Logout failed:", err);
+                }
+              });
+            }
+          }, 0);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+  
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+        const coinDisplayEl = document.getElementById("coinCount");
+        if (coinDisplayEl) coinDisplayEl.textContent = "0";
+      }
+    });
+  </script>  
+</body>  
+</html>

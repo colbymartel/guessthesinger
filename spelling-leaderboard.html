@@ -390,29 +390,6 @@ body {
 .highlight i {
   color: #ffcb05; /* yellow */
 }
-.leaderboard-selector {
-  text-align: center;
-  margin-top: 40px;
-  margin-bottom: 10px;
-}
-
-.leaderboard-selector select {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  background: #315f85;
-  color: #fff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.leaderboard-selector select:hover {
-  background: #3b7bbf;
-}
 
 
   </style>
@@ -444,17 +421,13 @@ body {
       <i class="fas fa-user"></i>
       <span>My Profile</span>
     </a>
-    <a href="/memory.html">Back to Game</a>
+    <a href="/spelling.html">Back to Game</a>
 
     <a href="/about.html">About</a>
   </div>
   
-
-    <div style="text-align:center;">
-      <h1 class="leaderboard-title">🎯 Memory Leaderboard</h1>
-    
-      
-    <div class="tab-buttons">
+  <h1>Spelling Leaderboard</h1>
+  <div class="tab-buttons">
     <button id="dailyBtn" class="active" onclick="switchTab('daily')">🏆 Daily</button>
     <button id="alltimeBtn" onclick="switchTab('alltime')">🌍 All-Time</button>
     <button id="cityBtn" onclick="switchTab('city')">📍 My City</button>
@@ -510,10 +483,9 @@ body {
   </footer>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getFirestore, collection, query, orderBy, where, getDocs, deleteDoc, doc, addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getFirestore, collection, query, orderBy, where, getDocs, deleteDoc, doc, addDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
     
-    // ✅ Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
@@ -626,7 +598,7 @@ const userLink = data.userId
       currentTab = type;
       currentPage = 0;
     
-      const scoresRef = collection(db, "matchScores");
+      const scoresRef = collection(db, "spellingScores");
       const now = new Date();
 const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
@@ -653,13 +625,20 @@ const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,
     const userId = scoreData.userId;
     let avatar = "images/avatars/popstarpenguin.jpg"; // default fallback
 
-    if (userId) {
-      const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", userId)));
-      if (!userSnap.empty) {
-        const userData = userSnap.docs[0].data();
-        avatar = userData.avatar || avatar;
-      }
+
+
+if (userId) {
+  try {
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      avatar = userData.avatar || avatar;
     }
+  } catch (e) {
+    console.warn("Failed to fetch avatar for user:", userId, e);
+  }
+}
 
     return { id: docSnap.id, ...scoreData, avatar };
   })
@@ -685,20 +664,20 @@ const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2,
       }
     };
     
-    onAuthStateChanged(auth, user => {
+    onAuthStateChanged(auth, async user => {
   if (user) {
-    currentUser = user; // ✅ This was missing
+    currentUser = user;
     currentUserEmail = user.email;
 
-    getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          currentUserCity = doc.data().city || null;
-        });
-        switchTab("daily");
-        checkUnreadMessages(); 
-      });
-      
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      currentUserCity = userSnap.data().city || null;
+    }
+
+    switchTab("daily");
+    checkUnreadMessages();
   } else {
     switchTab("daily");
   }
@@ -750,6 +729,7 @@ async function checkUnreadMessages() {
     link.innerHTML += " ⚪";
   }
 }
+
 function showUserProfile(userId) {
   const modal = document.getElementById("profileModal");
   const content = document.getElementById("profileContent");
@@ -758,59 +738,53 @@ function showUserProfile(userId) {
   modal.classList.remove("hidden");
   content.innerHTML = "Loading...";
 
-  getDocs(query(collection(db, "users"), where("uid", "==", userId)))
-    .then(snapshot => {
-      if (snapshot.empty) {
+  getDoc(doc(db, "users", userId))
+    .then((userSnap) => {
+      if (!userSnap.exists()) {
         content.innerHTML = "User profile not found.";
         return;
       }
 
-      const userData = snapshot.docs[0].data();
+      const userData = userSnap.data();
+      const avatar = userData.avatar || "images/avatars/popstarpenguin.jpg";
+      const artistTags = (userData.favoriteArtist || "")
+        .split(",")
+        .map(tag => `<div class="vibe-tag">${tag.trim()}</div>`)
+        .join("") || '<div style="color:#888;">—</div>';
 
-      const avatar = userData.avatar || "/avatars/avatar1.png";
-      const artists = userData.favoriteArtist || "";
-const artistTags = artists
-  .split(",")
-  .map(tag => `<div class="vibe-tag">${tag.trim()}</div>`)
-  .join("");
+      content.innerHTML = `
+        <div class="profile-modal" style="text-align:left;">
+          <div class="profile-top" style="display:flex; align-items:center; gap:16px;">
+            <img src="${avatar}" alt="Avatar" class="profile-avatar" style="width:64px; height:64px;" />
+            <div>
+              <div class="profile-name">
+                ${userData.username || "Anonymous"}
+                ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email)
+                  ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
+                  : ''}
+              </div>
+              <div class="profile-city">
+                <i class="fas fa-map-marker-alt"></i> ${userData.city || "—"}
+              </div>
+            </div>
+          </div>
 
-  content.innerHTML = `
-  <div class="profile-modal" style="text-align:left;">
-    <div class="profile-top" style="display:flex; align-items:center; gap:16px;">
-      <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" alt="Avatar" class="profile-avatar" style="width:64px; height:64px;" />
-      <div>
-        <div class="profile-name">
-          ${userData.username || "Anonymous"}
-          ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email)
-            ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
-            : ''}
+          <div class="vibe-header">Currently Vibing To…</div>
+          <div class="vibe-tags">${artistTags}</div>
+
+          <div class="vibe-header" style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
+            <span>DM Me!</span>
+            <a href="/inbox.html?recipientId=${userId}" title="Send Message">
+              <i class="fas fa-envelope" style="color:#28a7ae; font-size:20px;"></i>
+            </a>
+          </div>
+          <p style="font-size:13px; color:#555;">Ask me a question, challenge me to guess your favorite artist, or just say hey.</p>
         </div>
-        <div class="profile-city">
-          <i class="fas fa-map-marker-alt"></i> ${userData.city || "—"}
-        </div>
-      </div>
-    </div>
-
-    <div class="vibe-header">Currently Vibing To…</div>
-    <div class="vibe-tags">
-      ${
-        (userData.favoriteArtist || "")
-          .split(",")
-          .map(artist => `<div class="vibe-tag">${artist.trim()}</div>`)
-          .join("") || '<div style="color:#888;">—</div>'
-      }
-    </div>
-
-    <div class="vibe-header" style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
-      <span>DM Me!</span>
-      <a href="/inbox.html?recipientId=${userId}" title="Send Message">
-        <i class="fas fa-envelope" style="color:#28a7ae; font-size:20px;"></i>
-      </a>
-    </div>
-    <p style="font-size:13px; color:#555;">Ask me a question, challenge me to guess your favorite artist, or just say hey.</p>
-  </div>
-`;
-
+      `;
+    })
+    .catch((err) => {
+      console.error("Failed to fetch profile:", err);
+      content.innerHTML = "Error loading profile.";
     });
 
   closeBtn.onclick = () => modal.classList.add("hidden");
@@ -818,6 +792,7 @@ const artistTags = artists
     if (e.target === modal) modal.classList.add("hidden");
   };
 }
+
 
 window.showUserProfile = showUserProfile;
 
