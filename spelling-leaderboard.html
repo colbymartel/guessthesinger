@@ -483,9 +483,9 @@ body {
   </footer>
     
 <!-- Firebase -->
-<script type="module">
+  <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getFirestore, collection, query, orderBy, where, getDocs, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getFirestore, collection, query, orderBy, where, getDocs, deleteDoc, doc, addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
     
     const firebaseConfig = {
@@ -502,8 +502,8 @@ body {
     const auth = getAuth();
     
     let currentUser = null;
-    let currentUserEmail = null;
-    let currentUserCity = null;
+let currentUserEmail = null;
+let currentUserCity = null;
     let allScores = [];
     let currentPage = 1;
     const entriesPerPage = 10;
@@ -578,7 +578,7 @@ body {
                         };
                     })
                 );
-
+    
                 // Filter out null entries and sort
                 allScores = allScores.filter(entry => entry !== null);
                 allScores.sort((a, b) => b.score - a.score);
@@ -657,7 +657,7 @@ body {
             alert('Error deleting score. Please try again.');
         }
     }
-
+    
     function renderLeaderboardPage() {
         const tbody = document.querySelector('tbody');
         tbody.innerHTML = '';
@@ -674,17 +674,17 @@ body {
 
         pageScores.forEach((entry, index) => {
             const isVerified = verifiedEmails.includes(entry.email);
-            const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
+const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
             const avatarUrl = entry.avatar || "images/avatars/popstarpenguin.jpg";
             const userLink = entry.uid
                 ? `<a href="#" onclick="showUserProfile('${entry.uid}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
-                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+      <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
                     <span style="text-decoration:underline;">${entry.username}${verifiedBadge}</span>
-                  </a>`
-                : `<div style="display:flex; align-items:center; gap:10px;">
-                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+    </a>`
+  : `<div style="display:flex; align-items:center; gap:10px;">
+      <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
                     <span>${entry.username}${verifiedBadge}</span>
-                  </div>`;
+    </div>`;
 
             const deleteButton = isAdmin ? 
                 `<button onclick="deleteScore('${entry.id}')" style="background:none; border:none; color:#e74c3c; cursor:pointer; padding:5px;">
@@ -694,7 +694,7 @@ body {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${startIdx + index + 1}</td>
-                <td>${userLink}</td>
+            <td>${userLink}</td>
                 <td>${entry.score}</td>
                 <td>${entry.city} ${deleteButton}</td>
             `;
@@ -737,9 +737,9 @@ body {
 
         // Set up auth state listener
         onAuthStateChanged(auth, user => {
-            if (user) {
-                currentUser = user;
-                currentUserEmail = user.email;
+  if (user) {
+    currentUser = user;
+    currentUserEmail = user.email;
                 getDocs(query(collection(db, "users"), where("uid", "==", user.uid)))
                     .then(snapshot => {
                         snapshot.forEach(doc => {
@@ -747,7 +747,7 @@ body {
                         });
                         fetchSpellingLeaderboard('daily');
                     });
-            } else {
+  } else {
                 fetchSpellingLeaderboard('daily');
             }
         });
@@ -756,9 +756,9 @@ body {
     // Make functions globally accessible
     window.deleteScore = async function(scoreId) {
         if (!confirm('Are you sure you want to delete this score?')) {
-            return;
-        }
-        
+        return;
+      }
+
         try {
             await deleteDoc(doc(db, "spellingScores", scoreId));
             // Remove the score from allScores array
@@ -771,9 +771,95 @@ body {
         }
     };
 
-    window.showUserProfile = function(uid) {
-        // Implement user profile display logic
+    // Add showUserProfile function
+    window.showUserProfile = async function(uid) {
+        const modal = document.getElementById('profileModal');
+        const content = document.getElementById('profileContent');
+        modal.classList.remove('hidden');
+        content.innerHTML = 'Loading...';
+
+        try {
+            const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
+            if (!userSnap.empty) {
+                const userData = userSnap.docs[0].data();
+                const isVerified = verifiedEmails.includes(userData.email);
+                const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
+                
+                content.innerHTML = `
+                    <div style="text-align:center; padding:20px;">
+                        <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" 
+                             alt="Profile" 
+                             style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:15px;">
+                        <h2 style="color:#315f85; margin-bottom:10px;">${userData.username}${verifiedBadge}</h2>
+                        <p style="color:#666; margin:5px 0;">${userData.city || 'No city set'}</p>
+                        ${currentUser && currentUser.uid !== uid ? 
+                            `<button onclick="showDMModal('${uid}')" 
+                                     style="margin-top:15px; padding:8px 16px; background:#315f85; color:white; border:none; border-radius:6px; cursor:pointer;">
+                                Send Message
+                            </button>` : ''}
+                    </div>
+                `;
+            } else {
+                content.innerHTML = '<p>User not found</p>';
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error);
+            content.innerHTML = '<p>Error loading profile</p>';
+        }
     };
-</script>
+
+    // Add showDMModal function
+    window.showDMModal = function(recipientUid) {
+        const modal = document.getElementById('dmModal');
+        modal.classList.remove('hidden');
+        window.currentRecipientUid = recipientUid;
+    };
+
+    // Add event listeners for modal close buttons
+    document.addEventListener('DOMContentLoaded', () => {
+        const closeButtons = document.querySelectorAll('.close');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                document.getElementById('profileModal').classList.add('hidden');
+                document.getElementById('dmModal').classList.add('hidden');
+            });
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (event) => {
+            const profileModal = document.getElementById('profileModal');
+            const dmModal = document.getElementById('dmModal');
+            if (event.target === profileModal) {
+                profileModal.classList.add('hidden');
+            }
+            if (event.target === dmModal) {
+                dmModal.classList.add('hidden');
+            }
+        });
+
+        // Handle DM send button
+        document.getElementById('sendDM').addEventListener('click', async () => {
+            const message = document.getElementById('dmText').value.trim();
+            if (!message) return;
+
+            try {
+                await addDoc(collection(db, "messages"), {
+                    senderUid: currentUser.uid,
+                    recipientUid: window.currentRecipientUid,
+                    message: message,
+                    timestamp: new Date(),
+                    read: false
+                });
+
+                document.getElementById('dmText').value = '';
+                document.getElementById('dmModal').classList.add('hidden');
+                alert('Message sent successfully!');
+            } catch (error) {
+                console.error('Error sending message:', error);
+                alert('Error sending message. Please try again.');
+            }
+        });
+    });
+    </script>
 </body>
 </html>
