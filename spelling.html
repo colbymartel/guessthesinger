@@ -519,7 +519,72 @@
       <span>Rewards</span>
     </a>
   </footer>
-  <script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, getDocs, query, where, doc, getDoc, updateDoc, setDoc, addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+
+    const welcomeEl = document.getElementById('welcomeMessage');
+    const coinDisplayEl = document.getElementById('coinCount');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        let username = "User";
+        let coins = 0;
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.username) username = data.username;
+            if (data.coins !== undefined) coins = data.coins;
+          });
+          welcomeEl.textContent = `Welcome, ${username}`;
+          if (coinDisplayEl) coinDisplayEl.textContent = coins;
+          dropdownMenu.innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="#" id="logoutBtn">Log Out</a>
+          `;
+          setTimeout(() => {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                try {
+                  await signOut(auth);
+                  location.reload();
+                } catch (err) {
+                  console.error("Logout failed:", err);
+                }
+              });
+            }
+          }, 0);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+        if (coinDisplayEl) coinDisplayEl.textContent = "0";
+      }
+    });
 
     const singers = [
       "Adele", "Taylor Swift", "Bruno Mars", "Ed Sheeran", "Lady Gaga", "Justin Bieber", "Beyonce",
@@ -766,13 +831,13 @@
         const user = auth.currentUser;
         if (user) {
           const userRef = doc(db, "users", user.uid);
-          const userSnap = await window.getDoc(userRef);
+          const userSnap = await getDoc(userRef);
 
           if (userSnap.exists()) {
             const currentCoins = userSnap.data().coins || 0;
             const newCoinAmount = currentCoins + coinsEarned;
 
-            await window.updateDoc(userRef, { coins: newCoinAmount });
+            await updateDoc(userRef, { coins: newCoinAmount });
 
             // Animate coin gain
             const gainEl = document.getElementById("coinGain");
@@ -803,7 +868,7 @@
           const bestSnap = await getDoc(bestRef);
 
           if (!bestSnap.exists() || bestSnap.data().score < score) {
-            await window.setDoc(bestRef, scoreEntry);
+            await setDoc(bestRef, scoreEntry);
           }
         }
       } catch (error) {
@@ -819,6 +884,9 @@
       if (livesElement) livesElement.textContent = `Lives: ${lives}`;
       if (coinsElement) coinsElement.textContent = `Coins: ${coins}`;
     }
+
+    window.startGame = startGame;
+    window.submitGuess = submitGuess;
   </script>
 </body>
 </html>
