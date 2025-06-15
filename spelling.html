@@ -446,6 +446,11 @@
 .leaderboard-dropdown select option:hover {
   background-color: #f0f7ff;
 }
+
+.option:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
@@ -887,6 +892,24 @@
 
     window.startGame = startGame;
     window.submitGuess = submitGuess;
+
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (hamburger) {
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("show");
+      });
+    }
+
+    window.addEventListener("click", (e) => {
+      const isClickInsideMenu = mobileMenu.contains(e.target);
+      const isClickOnHamburger = hamburger.contains(e.target);
+
+      if (!isClickInsideMenu && !isClickOnHamburger) {
+        mobileMenu.classList.remove("show");
+      }
+    });
   </script>
 </body>
 </html>
