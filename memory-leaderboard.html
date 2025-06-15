@@ -414,6 +414,28 @@ body {
   background: #3b7bbf;
 }
 
+h1 select {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  background: #315f85;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+h1 select:hover {
+  background: #3b7bbf;
+}
+
+h1 select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffcb05;
+}
 
   </style>
 </head>
@@ -431,7 +453,7 @@ body {
       <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;"></div>
     </div>
     <div class="nav-links">
-      <a href="/memory.html">Back to Game</a>
+      <a href="/games.html">Back to Games</a>
     </div>
     
     <div class="hamburger" id="hamburger">
@@ -451,7 +473,12 @@ body {
   
 
     <div style="text-align:center;">
-      <h1 class="leaderboard-title">🎯 Memory Leaderboard</h1>
+      <h1>
+        <select id="leaderboardType" onchange="switchLeaderboardType()">
+            <option value="memory">Memory Leaderboard</option>
+            <option value="spelling">Spelling Leaderboard</option>
+        </select>
+    </h1>
     
       
     <div class="tab-buttons">
@@ -527,14 +554,226 @@ body {
     const db = getFirestore(app);
     const auth = getAuth();
     
-    let currentUser = null; // Add this
+    let currentUser = null;
 let currentUserEmail = null;
 let currentUserCity = null;
     let leaderboardData = [];
     let currentPage = 0;
     const rowsPerPage = 10;
     let currentTab = 'daily';
-    
+    let userCache = new Map(); // Cache for user data
+
+    // Function to get user data with caching
+    async function getUserData(uid) {
+        if (userCache.has(uid)) {
+            return userCache.get(uid);
+        }
+
+        const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
+        if (!userSnap.empty) {
+            const userData = userSnap.docs[0].data();
+            userCache.set(uid, userData);
+            return userData;
+        }
+        return null;
+    }
+
+    // Make functions globally accessible
+    window.switchLeaderboardType = function() {
+        const leaderboardType = document.getElementById('leaderboardType').value;
+        // Clear user cache when switching leaderboard types
+        userCache.clear();
+        if (leaderboardType === 'memory') {
+            switchTab('daily');
+        } else if (leaderboardType === 'spelling') {
+            fetchSpellingLeaderboard('daily');
+        }
+    };
+
+    window.switchTab = async function(type) {
+        updateTabStyle(type);
+        currentTab = type;
+        currentPage = 0;
+
+        const leaderboardType = document.getElementById('leaderboardType').value;
+        if (leaderboardType === 'memory') {
+            const scoresRef = collection(db, "matchScores");
+            const now = new Date();
+            const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+            let q;
+            if (type === "daily") {
+                q = query(scoresRef, where("date", "==", localDate), orderBy("score", "desc"));
+            } else if (type === "city") {
+                if (!currentUserCity) {
+                    alert("We couldn't detect your city. Make sure it's set in your profile.");
+                    leaderboardData = [];
+                    renderTablePage();
+                    return;
+                }
+                q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
+            } else {
+                q = query(scoresRef, orderBy("score", "desc")); // All-time
+            }
+
+            try {
+                const snapshot = await getDocs(q);
+                leaderboardData = await Promise.all(
+                    snapshot.docs.map(async (docSnap) => {
+                        const scoreData = docSnap.data();
+                        const userId = scoreData.userId;
+                        let avatar = "images/avatars/popstarpenguin.jpg";
+
+                        if (userId) {
+                            const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", userId)));
+                            if (!userSnap.empty) {
+                                const userData = userSnap.docs[0].data();
+                                avatar = userData.avatar || avatar;
+                            }
+                        }
+
+                        return { id: docSnap.id, ...scoreData, avatar };
+                    })
+                );
+                renderTablePage();
+            } catch (err) {
+                console.error("Failed to fetch leaderboard:", err);
+                alert("Failed to load leaderboard data.");
+            }
+        } else if (leaderboardType === 'spelling') {
+            // Map the tab type to the correct timeframe
+            let timeframe;
+            if (type === 'daily') timeframe = 'daily';
+            else if (type === 'alltime') timeframe = 'all-time';
+            else if (type === 'city') timeframe = 'by-city';
+            fetchSpellingLeaderboard(timeframe);
+        }
+    };
+
+    async function fetchSpellingLeaderboard(timeframe = 'daily') {
+        try {
+            const tbody = document.getElementById('leaderboardBody');
+            if (!tbody) {
+                console.error('Table body element not found');
+                return;
+            }
+
+            // Show loading state
+            tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+
+            const now = new Date();
+            let startDate;
+            if (timeframe === 'daily') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            } else if (timeframe === 'all-time') {
+                startDate = new Date(0);
+            } else if (timeframe === 'by-city') {
+                if (!currentUser) {
+                    tbody.innerHTML = '<tr><td colspan="4">Please log in to view city-specific scores.</td></tr>';
+                    return;
+                }
+                if (!currentUserCity) {
+                    tbody.innerHTML = '<tr><td colspan="4">City not set in profile.</td></tr>';
+                    return;
+                }
+
+                // First get all users in the same city
+                const usersSnapshot = await getDocs(query(collection(db, "users"), where("city", "==", currentUserCity)));
+                if (usersSnapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="4">No users found in your city.</td></tr>';
+                    return;
+                }
+
+                // Get all user IDs from the city
+                const userIds = usersSnapshot.docs.map(doc => doc.data().uid);
+
+                // Then get all spelling scores
+                const scoresSnapshot = await getDocs(collection(db, "spellingScores"));
+                
+                // Process data in parallel
+                leaderboardData = await Promise.all(
+                    scoresSnapshot.docs.map(async (doc) => {
+                        const data = doc.data();
+                        const uid = data.uid;
+                        
+                        // Only include scores from users in the same city
+                        if (!userIds.includes(uid)) {
+                            return null;
+                        }
+
+                        let userData = null;
+                        if (uid) {
+                            userData = await getUserData(uid);
+                        }
+
+                        return {
+                            username: data.username || "Anonymous",
+                            score: data.score || 0,
+                            city: userData?.city || data.city || "-",
+                            uid: uid,
+                            email: data.email || null,
+                            avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
+                        };
+                    })
+                );
+
+                // Filter out null entries and sort
+                leaderboardData = leaderboardData.filter(entry => entry !== null);
+                leaderboardData.sort((a, b) => b.score - a.score);
+                leaderboardData = leaderboardData.slice(0, rowsPerPage * 5);
+                currentPage = 0;
+                renderTablePage();
+                return;
+            }
+
+            // Build query for daily and all-time
+            let q = query(collection(db, "spellingScores"), 
+                where("timestamp", ">=", startDate), 
+                orderBy("timestamp", "desc"));
+
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="4">No scores yet for this time period.</td></tr>';
+                leaderboardData = [];
+                renderTablePage();
+                return;
+            }
+
+            // Process data in parallel
+            leaderboardData = await Promise.all(
+                snapshot.docs.map(async (doc) => {
+                    const data = doc.data();
+                    const uid = data.uid;
+                    let userData = null;
+                    
+                    if (uid) {
+                        userData = await getUserData(uid);
+                    }
+
+                    return {
+                        username: data.username || "Anonymous",
+                        score: data.score || 0,
+                        city: userData?.city || data.city || "-",
+                        uid: uid,
+                        email: data.email || null,
+                        avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
+                    };
+                })
+            );
+
+            // Sort and limit data
+            leaderboardData.sort((a, b) => b.score - a.score);
+            leaderboardData = leaderboardData.slice(0, rowsPerPage * 5);
+            currentPage = 0;
+            renderTablePage();
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
+            const tbody = document.getElementById('leaderboardBody');
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="4">Error loading leaderboard. Please try again later.</td></tr>';
+            }
+        }
+    }
     
     document.addEventListener("DOMContentLoaded", () => {
       setupMobileMenu();
@@ -619,56 +858,6 @@ const userLink = data.userId
       const totalPages = Math.min(5, Math.ceil(leaderboardData.length / rowsPerPage));
       currentPage = Math.max(0, Math.min(currentPage + offset, totalPages - 1));
       renderTablePage();
-    };
-    
-    window.switchTab = async function (type) {
-      updateTabStyle(type);
-      currentTab = type;
-      currentPage = 0;
-    
-      const scoresRef = collection(db, "matchScores");
-      const now = new Date();
-const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-
-      let q;
-      if (type === "daily") {
-        q = query(scoresRef, where("date", "==", localDate), orderBy("score", "desc"));
-      } else if (type === "city") {
-        if (!currentUserCity) {
-          alert("We couldn't detect your city. Make sure it's set in your profile.");
-          leaderboardData = [];
-          renderTablePage();
-          return;
-        }
-        q = query(scoresRef, where("city", "==", currentUserCity), orderBy("score", "desc"));
-      } else {
-        q = query(scoresRef, orderBy("score", "desc")); // All-time
-      }
-    
-      try {
-        const snapshot = await getDocs(q);
-        leaderboardData = await Promise.all(
-  snapshot.docs.map(async (docSnap) => {
-    const scoreData = docSnap.data();
-    const userId = scoreData.userId;
-    let avatar = "images/avatars/popstarpenguin.jpg"; // default fallback
-
-    if (userId) {
-      const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", userId)));
-      if (!userSnap.empty) {
-        const userData = userSnap.docs[0].data();
-        avatar = userData.avatar || avatar;
-      }
-    }
-
-    return { id: docSnap.id, ...scoreData, avatar };
-  })
-);
-        renderTablePage();
-      } catch (err) {
-        console.error("Failed to fetch leaderboard:", err);
-        alert("Failed to load leaderboard data.");
-      }
     };
     
     window.deleteEntry = async function (id) {
@@ -824,7 +1013,6 @@ window.showUserProfile = showUserProfile;
 window.openDMModal = function(recipientId, recipientEmail) {
   window.location.href = `/inbox.html?recipientId=${encodeURIComponent(recipientId)}&recipientEmail=${encodeURIComponent(recipientEmail)}`;
 };
-
 
     </script>
     

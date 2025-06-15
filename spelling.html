@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">  <style>
     body {
       font-family: 'Fredoka', sans-serif;
-      background: linear-gradient(to bottom right, #e7f1f9, #ffffff);
+      background: #e7f1f9;
       margin: 0;
       padding: 0;
       display: flex;
@@ -91,6 +91,50 @@
       font-size: 2rem;
       margin-bottom: 20px;
       word-spacing: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 10px;
+    }
+
+    .blank-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      max-width: 100%;
+    }
+
+    .blank-row {
+      display: flex;
+      gap: 10px;
+      margin: 5px 0;
+    }
+
+    .blank {
+      width: 40px;
+      height: 50px;
+      border: 2px solid #315f85;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: white;
+      color: #315f85;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      #blanks {
+        font-size: 1.5rem;
+      }
+      .blank {
+        width: 35px;
+        height: 45px;
+        font-size: 1.2rem;
+      }
     }
     .guess-input {
       padding: 10px;
@@ -103,18 +147,57 @@
     .btn-row {
       margin-top: 10px;
     }
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      background-color: #ffcb05;
-      color: #1e2b38;
-      font-weight: bold;
+    .play-button {
+      background: linear-gradient(135deg, #315f85, #3ba4f1);
+      color: white;
       border: none;
-      border-radius: 20px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 160px;
     }
-    button:hover {
-      background-color: #ffd84d;
+
+    .play-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      background: linear-gradient(135deg, #3ba4f1, #315f85);
+    }
+
+    .play-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .play-button i {
+      font-size: 20px;
+    }
+
+    .play-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    #play-again {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px 0;
     }
     .stats {
       font-size: 1.2rem;
@@ -284,6 +367,56 @@
     height: 35px;
   }
 }
+
+.leaderboard-dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 300px;
+}
+
+.leaderboard-dropdown select {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 2px solid #315f85;
+  border-radius: 8px;
+  background-color: white;
+  color: #315f85;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315f85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.leaderboard-dropdown select:hover {
+  border-color: #3ba4f1;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.leaderboard-dropdown select:focus {
+  outline: none;
+  border-color: #3ba4f1;
+  box-shadow: 0 0 0 3px rgba(59,164,241,0.2);
+}
+
+.leaderboard-dropdown select option {
+  padding: 10px;
+  font-size: 16px;
+  background-color: white;
+  color: #315f85;
+}
+
+.leaderboard-dropdown select option:hover {
+  background-color: #f0f7ff;
+}
   </style>
 </head>
 <body>
@@ -326,16 +459,25 @@
       
 
   <div class="container">
-    <div class="emoji">🐝</div>
     <h1 class="game-title">Spell the Singer</h1>
     <div class="stats">
       Time Left: <span id="timer">100</span> | High Score: <span id="highscore">0</span> | Correct: <span id="correctCount">0</span>/5
     </div>
     <div id="blanks"></div>
     <input type="text" id="guessInput" class="guess-input" placeholder="Guess the singer...">
-    <div class="btn-row">
-      <button onclick="submitGuess()">Submit Guess</button>
-      <button id="play-again" onclick="startGame()" style="display:none">Play Again</button>
+    <div class="button-container">
+      <button onclick="startGame()" class="play-button">
+        <i class="fas fa-play"></i>
+        Start Game
+      </button>
+      <button onclick="submitGuess()" class="play-button" style="display: none;">
+        <i class="fas fa-check"></i>
+        Submit Guess
+      </button>
+      <button id="play-again" onclick="startGame()" class="play-button">
+        <i class="fas fa-redo"></i>
+        Play Again
+      </button>
     </div>
     <div id="message" class="message"></div>
   </div>
@@ -383,55 +525,43 @@
     let singerQueue = [];
     let highScore = localStorage.getItem('spellSingerHighScore') || 0;
     document.getElementById('highscore').textContent = highScore;
+    let score = 0;
+    let lives = 3;
+    let coins = 0;
+    let letterRevealInterval;
 
     function shuffle(array) {
       return array.sort(() => 0.5 - Math.random());
     }
     function startGame() {
-  singerQueue = shuffle([...singers]);
-  correctCount = 0;
-  timeLeft = 100;
-  document.getElementById('correctCount').textContent = correctCount;
-  document.getElementById('timer').textContent = timeLeft;
-  document.getElementById('play-again').style.display = 'none';
-  document.getElementById('message').textContent = '';
-  document.querySelector('button[onclick="submitGuess()"]').style.display = 'inline-block'; // ✅ Restore submit
-  clearInterval(timerInterval);
-  clearInterval(revealInterval);
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    document.getElementById('timer').textContent = timeLeft;
-    if (timeLeft <= 0) endGame();
-  }, 1000);
-  loadNextSinger();
-}
+      score = 0;
+      lives = 3;
+      coins = 0;
+      updateStats();
+      singerQueue = shuffle([...singers]);
+      correctCount = 0;
+      timeLeft = 100;
+      document.getElementById('correctCount').textContent = correctCount;
+      document.getElementById('timer').textContent = timeLeft;
+      document.getElementById('play-again').style.display = 'none';
+      document.getElementById('message').textContent = '';
+      document.querySelector('button[onclick="submitGuess()"]').style.display = 'inline-block';
+      clearInterval(timerInterval);
+      clearInterval(revealInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+      loadNextSinger();
 
-    function updateBlanks() {
-  document.getElementById('blanks').innerHTML = revealedLetters
-    .map(char => {
-      if (char === ' ') {
-        return `<span style="display: inline-block; width: 24px; height: 40px; margin: 5px;"></span>`;
-      } else {
-        return `<span style="
-          display: inline-block;
-          width: 24px;
-          height: 40px;
-          margin: 5px;
-          background-color: #ffffff;
-          border: 2px solid #315f85;
-          border-radius: 6px;
-          font-size: 1.4rem;
-          font-weight: bold;
-          line-height: 40px;
-          text-align: center;
-          vertical-align: middle;
-          color: #315f85;
-        ">${char === '_' ? '&nbsp;' : char}</span>`;
-      }
-    })
-    .join('');
-}
-
+      // Add event listener for Enter key
+      document.getElementById('guessInput').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+          submitGuess();
+        }
+      });
+    }
 
     function loadNextSinger() {
       if (singerQueue.length === 0) singerQueue = shuffle([...singers]);
@@ -446,7 +576,116 @@
         const randIndex = unrevealedIndices.splice(Math.floor(Math.random() * unrevealedIndices.length), 1)[0];
         revealedLetters[randIndex] = currentSinger[randIndex];
         updateBlanks();
-      }, 4000);
+      }, 2000);
+    }
+
+    function updateBlanks() {
+      const blanksDiv = document.getElementById('blanks');
+      blanksDiv.innerHTML = '';
+      blanksDiv.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      `;
+      
+      // Split the name into words
+      const words = currentSinger.split(' ');
+      
+      // Calculate total width needed for all words
+      const letterWidth = 34; // 24px width + 5px margin on each side
+      const wordSpacing = 40;
+      const totalWidth = words.reduce((sum, word) => sum + (word.length * letterWidth), 0) + 
+                        ((words.length - 1) * wordSpacing);
+      
+      // If total width is less than 600px, display in single row
+      if (totalWidth < 600) {
+        const singleRow = document.createElement('div');
+        singleRow.style.cssText = `
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: nowrap;
+        `;
+        
+        words.forEach((word, wordIndex) => {
+          // Add each letter of the word
+          for (let i = 0; i < word.length; i++) {
+            const letterSpan = document.createElement('span');
+            letterSpan.style.cssText = `
+              display: inline-block;
+              width: 24px;
+              height: 50px;
+              margin: 5px;
+              background-color: #ffffff;
+              border: 2px solid #315f85;
+              border-radius: 6px;
+              font-size: 1.4rem;
+              font-weight: bold;
+              line-height: 50px;
+              text-align: center;
+              vertical-align: middle;
+              color: #315f85;
+            `;
+            
+            const letter = revealedLetters[wordIndex === 0 ? i : i + words[0].length + 1];
+            letterSpan.textContent = letter === '_' ? '' : letter;
+            
+            singleRow.appendChild(letterSpan);
+          }
+          
+          // Add space between words (except after last word)
+          if (wordIndex < words.length - 1) {
+            const spaceSpan = document.createElement('span');
+            spaceSpan.style.cssText = `
+              display: inline-block;
+              width: 40px;
+              height: 50px;
+            `;
+            singleRow.appendChild(spaceSpan);
+          }
+        });
+        
+        blanksDiv.appendChild(singleRow);
+      } else {
+        // Display in multiple rows, one word per row
+        words.forEach((word, wordIndex) => {
+          const wordRow = document.createElement('div');
+          wordRow.style.cssText = `
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+          `;
+          
+          // Add each letter of the word
+          for (let i = 0; i < word.length; i++) {
+            const letterSpan = document.createElement('span');
+            letterSpan.style.cssText = `
+              display: inline-block;
+              width: 24px;
+              height: 50px;
+              margin: 5px;
+              background-color: #ffffff;
+              border: 2px solid #315f85;
+              border-radius: 6px;
+              font-size: 1.4rem;
+              font-weight: bold;
+              line-height: 50px;
+              text-align: center;
+              vertical-align: middle;
+              color: #315f85;
+            `;
+            
+            const letter = revealedLetters[wordIndex === 0 ? i : i + words[0].length + 1];
+            letterSpan.textContent = letter === '_' ? '' : letter;
+            
+            wordRow.appendChild(letterSpan);
+          }
+          
+          blanksDiv.appendChild(wordRow);
+        });
+      }
     }
 
     function submitGuess() {
@@ -466,72 +705,119 @@
       }
     }
     async function endGame(won) {
-  clearInterval(timerInterval);
-  clearInterval(revealInterval);
+      clearInterval(timerInterval);
+      clearInterval(revealInterval);
 
-  const score = won ? timeLeft : 0;
-  const messageEl = document.getElementById('message');
-  messageEl.textContent = won 
-    ? `🎉 You win! Score: ${score}` 
-    : '⏰ Time is up!';
+      const score = won ? timeLeft : 0;
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = won 
+        ? `🎉 You win! Score: ${score}` 
+        : '⏰ Time is up!';
 
-  if (score > highScore) {
-    localStorage.setItem('spellSingerHighScore', score);
-    document.getElementById('highscore').textContent = score;
-  }
-
-  document.getElementById('play-again').style.display = 'inline-block';
-  document.querySelector('button[onclick="submitGuess()"]').style.display = 'inline-block';
-
-  const coinsEarned = score > 50 ? 10 : 5;
-
-  try {
-    const user = auth.currentUser;
-    if (user) {
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await window.getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const currentCoins = userSnap.data().coins || 0;
-        const newCoinAmount = currentCoins + coinsEarned;
-
-        await window.updateDoc(userRef, { coins: newCoinAmount });
-
-        // Animate coin gain
-        const gainEl = document.getElementById("coinGain");
-        const countEl = document.getElementById("coinCount");
-        gainEl.textContent = `+${coinsEarned}`;
-        gainEl.classList.add("animate");
-        if (countEl) countEl.textContent = newCoinAmount;
-        setTimeout(() => {
-          gainEl.classList.remove("animate");
-        }, 1500);
+      if (score > highScore) {
+        localStorage.setItem('spellSingerHighScore', score);
+        document.getElementById('highscore').textContent = score;
       }
 
-      // Leaderboard entry
-      const scoreEntry = {
-        uid: user.uid,
-        score: score,
-        timestamp: new Date(),
-        username: user.displayName || "Anonymous",
-        city: "", // optionally replace with user.city
-      };
+      // Hide submit button and show play again
+      document.querySelector('button[onclick="submitGuess()"]').style.display = 'none';
+      document.getElementById('play-again').style.display = 'inline-block';
 
-      await addDoc(collection(db, "spellingScores"), scoreEntry);
+      // Award coins based on score
+      const coinsEarned = score >= 50 ? 10 : (score > 0 ? 5 : 0);
 
-const bestRef = doc(db, "spellingBests", user.uid);
-const bestSnap = await getDoc(bestRef);
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await window.getDoc(userRef);
 
-   
-      if (!bestSnap.exists() || bestSnap.data().score < score) {
-        await window.setDoc(bestRef, scoreEntry);
+          if (userSnap.exists()) {
+            const currentCoins = userSnap.data().coins || 0;
+            const newCoinAmount = currentCoins + coinsEarned;
+
+            await window.updateDoc(userRef, { coins: newCoinAmount });
+
+            // Animate coin gain
+            const gainEl = document.getElementById("coinGain");
+            const countEl = document.getElementById("coinCount");
+            if (coinsEarned > 0) {
+              gainEl.textContent = `+${coinsEarned}`;
+              gainEl.classList.add("animate");
+              if (countEl) countEl.textContent = newCoinAmount;
+              setTimeout(() => {
+                gainEl.classList.remove("animate");
+              }, 1500);
+            }
+          }
+
+          // Leaderboard entry
+          const scoreEntry = {
+            uid: user.uid,
+            score: score,
+            timestamp: new Date(),
+            username: user.displayName || "Anonymous",
+            email: user.email,
+            city: "", // optionally replace with user.city
+          };
+
+          await addDoc(collection(db, "spellingScores"), scoreEntry);
+
+          const bestRef = doc(db, "spellingBests", user.uid);
+          const bestSnap = await getDoc(bestRef);
+
+          if (!bestSnap.exists() || bestSnap.data().score < score) {
+            await window.setDoc(bestRef, scoreEntry);
+          }
+        }
+      } catch (error) {
+        console.error("Error awarding coins or updating leaderboard:", error);
+      }
     }
-    }
-  } catch (error) {
-    console.error("Error awarding coins or updating leaderboard:", error);
-  }
-}
 
+    function updateStats() {
+      const scoreElement = document.getElementById('score');
+      const livesElement = document.getElementById('lives');
+      const coinsElement = document.getElementById('coins');
+      
+      if (scoreElement) scoreElement.textContent = `Score: ${score}`;
+      if (livesElement) livesElement.textContent = `Lives: ${lives}`;
+      if (coinsElement) coinsElement.textContent = `Coins: ${coins}`;
+    }
+
+    function showMessage(text, type) {
+      const message = document.getElementById('message');
+      message.textContent = text;
+      message.className = `message ${type}`;
+      setTimeout(() => {
+        message.textContent = '';
+        message.className = 'message';
+      }, 2000);
+    }
+
+    function checkGuess() {
+      const guess = document.getElementById('guessInput').value.trim();
+      if (guess.toLowerCase() === currentSinger.toLowerCase()) {
+        score += 10;
+        coins += 5;
+        showMessage('Correct! +10 points, +5 coins', 'success');
+      } else {
+        lives--;
+        showMessage('Wrong! Try again', 'error');
+      }
+      
+      if (lives <= 0) {
+        endGame();
+      } else {
+        document.getElementById('guessInput').value = '';
+        loadNextSinger();
+      }
+      updateStats();
+    }
+
+    function skipWord() {
+      loadNextSinger();
+    }
 
     window.onload = startGame;
   </script>
