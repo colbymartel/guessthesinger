@@ -863,11 +863,12 @@ const userLink = data.userId
     window.deleteEntry = async function (id) {
       if (!confirm("Are you sure you want to delete this entry?")) return;
     
-      
       try {
         await deleteDoc(doc(db, "matchScores", id));
-        alert("Entry deleted.");
-        switchTab(currentTab); // Refresh table
+        // Remove the entry from leaderboardData array
+        leaderboardData = leaderboardData.filter(entry => entry.id !== id);
+        // Re-render the current page
+        renderTablePage();
       } catch (err) {
         console.error("Error deleting entry:", err);
         alert("Failed to delete entry.");
@@ -885,7 +886,6 @@ const userLink = data.userId
           currentUserCity = doc.data().city || null;
         });
         switchTab("daily");
-        checkUnreadMessages(); 
       });
       
   } else {
@@ -927,18 +927,7 @@ setTimeout(() => btn.textContent = "Send", 1500);
     alert("Failed to send message.");
   }
 };
-async function checkUnreadMessages() {
-  if (!currentUser) return;
 
-  const messagesRef = collection(db, "messages");
-  const q = query(messagesRef, where("recipientId", "==", currentUser.uid), where("read", "==", false));
-
-  const snapshot = await getDocs(q);
-  if (!snapshot.empty) {
-    const link = document.getElementById("messagesLink");
-    link.innerHTML += " ⚪";
-  }
-}
 function showUserProfile(userId) {
   const modal = document.getElementById("profileModal");
   const content = document.getElementById("profileContent");

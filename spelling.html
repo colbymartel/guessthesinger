@@ -145,7 +145,24 @@
       border: 1px solid #ccc;
     }
     .btn-row {
-      margin-top: 10px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #ffd84d;
     }
     .play-button {
       background: linear-gradient(135deg, #315f85, #3ba4f1);
@@ -323,6 +340,8 @@
   border-radius: 10px;
   z-index: 1000;
   width: max-content;
+  margin-top: 40px;
+
 }
 .mobile-menu a {
   color: white;
@@ -464,20 +483,11 @@
       Time Left: <span id="timer">100</span> | High Score: <span id="highscore">0</span> | Correct: <span id="correctCount">0</span>/5
     </div>
     <div id="blanks"></div>
-    <input type="text" id="guessInput" class="guess-input" placeholder="Guess the singer...">
-    <div class="button-container">
-      <button onclick="startGame()" class="play-button">
-        <i class="fas fa-play"></i>
-        Start Game
-      </button>
-      <button onclick="submitGuess()" class="play-button" style="display: none;">
-        <i class="fas fa-check"></i>
-        Submit Guess
-      </button>
-      <button id="play-again" onclick="startGame()" class="play-button">
-        <i class="fas fa-redo"></i>
-        Play Again
-      </button>
+    <input type="text" id="guessInput" class="guess-input" placeholder="Guess the singer..." style="display: none;">
+    <div class="btn-row">
+      <button id="start-game" onclick="startGame()">Start Game</button>
+      <button id="submit-guess" onclick="submitGuess()" style="display: none;">Submit Guess</button>
+      <button id="play-again" onclick="startGame()" style="display: none;">Play Again</button>
     </div>
     <div id="message" class="message"></div>
   </div>
@@ -543,9 +553,14 @@
       timeLeft = 100;
       document.getElementById('correctCount').textContent = correctCount;
       document.getElementById('timer').textContent = timeLeft;
+      
+      // Show/hide appropriate buttons
+      document.getElementById('start-game').style.display = 'none';
+      document.getElementById('submit-guess').style.display = 'inline-block';
       document.getElementById('play-again').style.display = 'none';
+      document.getElementById('guessInput').style.display = 'inline-block';
+      
       document.getElementById('message').textContent = '';
-      document.querySelector('button[onclick="submitGuess()"]').style.display = 'inline-block';
       clearInterval(timerInterval);
       clearInterval(revealInterval);
       timerInterval = setInterval(() => {
@@ -688,10 +703,19 @@
       }
     }
 
+    function normalizeText(text) {
+      return text.normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-zA-Z0-9\s]/g, '') // Remove any remaining special characters
+        .toUpperCase();
+    }
+
     function submitGuess() {
-      const guess = document.getElementById('guessInput').value.trim().toUpperCase();
+      const guess = normalizeText(document.getElementById('guessInput').value.trim());
+      const normalizedSinger = normalizeText(currentSinger);
       document.getElementById('guessInput').value = '';
-      if (guess === currentSinger) {
+      
+      if (guess === normalizedSinger) {
         correctCount++;
         document.getElementById('correctCount').textContent = correctCount;
         if (correctCount >= 5) {
@@ -720,8 +744,9 @@
       }
 
       // Hide submit button and show play again
-      document.querySelector('button[onclick="submitGuess()"]').style.display = 'none';
+      document.getElementById('submit-guess').style.display = 'none';
       document.getElementById('play-again').style.display = 'inline-block';
+      document.getElementById('guessInput').style.display = 'none';
 
       // Award coins based on score
       const coinsEarned = score >= 50 ? 10 : (score > 0 ? 5 : 0);
@@ -819,7 +844,17 @@
       loadNextSinger();
     }
 
-    window.onload = startGame;
+    window.onload = function() {
+      // Initialize high score display
+      document.getElementById('highscore').textContent = highScore;
+      
+      // Show only start game button initially
+      document.getElementById('start-game').style.display = 'inline-block';
+      document.getElementById('submit-guess').style.display = 'none';
+      document.getElementById('play-again').style.display = 'none';
+      document.getElementById('guessInput').style.display = 'none';
+      document.getElementById('blanks').innerHTML = '';
+    };
   </script>
   <script type="module">
    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
