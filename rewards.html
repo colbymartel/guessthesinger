@@ -14,13 +14,13 @@
       padding-bottom: 90px;
     }
 
-    .header {
+    
+.header {
   background: linear-gradient(135deg, #3b7bbf, #234d7d);
   padding: 40px 20px;
   text-align: center;
   color: white;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  animation: fadeDown 1s ease-out;
 }
 .header .logo img {
   width: 200px;
@@ -28,22 +28,23 @@
   margin: 0 auto;
   display: block;
 }
+    /* Responsive Logo */
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+        padding: 0px;
+      }
+      .header{
+        height: 35px;
+      }
+    }
 
-/* Responsive Logo */
-@media (max-width: 768px) {
-  .header .logo img {
-    width: 60%;
-    padding: 0px;
-  }
-  .header{
-    height: 35px;
-  }
-}
     .points-banner {
       background-color: #1e2b38;
       color: white;
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 15px 25px;
       font-size: 16px;
       margin-bottom: 20px;
@@ -58,69 +59,69 @@
     .reward-section {
       padding: 20px;
     }
+
     .shop-style {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 12px;
-  width: 160px;
-  border: 2px solid #ccc;
-  border-radius: 15px;
-  background: #fdfdfd;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
-}
-.shop-style:hover {
-  transform: scale(1.03);
-}
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 12px;
+      width: 160px;
+      border: 2px solid #ccc;
+      border-radius: 15px;
+      background: #fdfdfd;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
 
-.reward-image-top {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 12px;
-}
+    .shop-style:hover {
+      transform: scale(1.03);
+    }
 
-.center-text {
-  font-size: 14px;
-  margin-bottom: 6px;
-  color: #333;
-}
+    .reward-image-top {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
 
-.price-tag {
-  background: linear-gradient(to right, #f1c40f, #f39c12);
-  color: #1e2b38;
-  font-weight: bold;
-  border-radius: 12px;
-  padding: 6px 14px;
-  font-size: 16px;
-  margin-top: 8px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  cursor: pointer;
-}
+    .center-text {
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #333;
+    }
 
-.coin-icon {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
-  box-shadow:
-    0 1px 0 #cfa300,
-    0 2px 0 #b8860b;
-}
+    .price-tag {
+      background: linear-gradient(to right, #f1c40f, #f39c12);
+      color: #1e2b38;
+      font-weight: bold;
+      border-radius: 12px;
+      padding: 6px 14px;
+      font-size: 16px;
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
 
+    .coin-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+    }
 
-.reward-image {
-  width: 70px;
-  height: 70px;
-  border-radius: 10px;
-  object-fit: cover;
-  background: #eee;
-}
-
+    .reward-image {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #eee;
+    }
 
     .reward-info {
       max-width: 75%;
@@ -137,43 +138,43 @@
       color: #555;
       font-size: 14px;
     }
+
     .coin-tag {
-  background-color: #ffcb05;
-  color: #1e2b38;
-  border-radius: 40px;
-  padding: 6px 12px;
-  font-weight: bold;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 16px;
-}
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border-radius: 40px;
+      padding: 6px 12px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+    }
 
-.coin-emoji {
-  width: 15px;
-  height: 15px;
-  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
-  border-radius: 50%;
-  margin-bottom: 3px;
-  box-shadow:
-    0 1px 0 #cfa300,
-    0 2px 0 #b8860b,
-    0 3px 0 #8c6e00;
-  position: relative;
-}
+    .coin-emoji {
+      width: 15px;
+      height: 15px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      margin-bottom: 3px;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b,
+        0 3px 0 #8c6e00;
+      position: relative;
+    }
 
-.coin-emoji::after {
-  content: "";
-  position: absolute;
-  top: 1px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
-  border-radius: 50%;
-  z-index: 1;
-}
-
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
 
     .bottom-nav {
       position: fixed;
@@ -204,167 +205,235 @@
     .bottom-nav .nav-item:hover {
       color: #ffcb05;
     }
-  
+
     .modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-body, html {
-  scroll-padding-bottom: 120px;
-}
-input, textarea, select {
-  font-size: 16px;
-}
-.modal-content {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 30px 25px;
-  text-align: center;
-  max-width: 320px;
-  width: 90%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  animation: popIn 0.3s ease-out;
-}
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
 
-.modal-content h2 {
-  margin-top: 0;
-  color: #1e2b38;
-  font-size: 22px;
-}
+    body, html {
+      scroll-padding-bottom: 120px;
+    }
 
-#redeemText {
-  font-size: 16px;
-  color: #444;
-  margin: 15px 0 25px;
-  line-height: 1.5;
-}
+    input, textarea, select {
+      font-size: 16px;
+    }
 
-.modal-content button {
-  font-family: 'Fredoka', sans-serif;
-  font-weight: bold;
-  padding: 10px 18px;
-  border-radius: 50px;
-  border: none;
+    .modal-content {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 30px 25px;
+      text-align: center;
+      max-width: 320px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.3s ease-out;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      color: #1e2b38;
+      font-size: 22px;
+    }
+
+    #redeemText {
+      font-size: 16px;
+      color: #444;
+      margin: 15px 0 25px;
+      line-height: 1.5;
+    }
+
+    .modal-content button {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: bold;
+      padding: 10px 18px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #confirmRedeem {
+      background-color: #28a745;
+      color: white;
+      margin-right: 10px;
+    }
+
+    #confirmRedeem:hover {
+      background-color: #218838;
+    }
+
+    #cancelRedeem {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #cancelRedeem:hover {
+      background-color: #c0392b;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .disabled-reward {
+      opacity: 0.6;
+      pointer-events: none;
+      filter: grayscale(70%);
+      cursor: not-allowed;
+    }
+
+    .highlight {
+      color: #ffcb05; /* yellow */
+    }
+
+    .highlight i {
+      color: #ffcb05; /* yellow */
+    }
+
+    .reward-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* default: 2 per row */
+      gap: 20px;
+      justify-items: center;
+      padding: 0 16px;
+    }
+
+    @media (min-width: 769px) {
+      .reward-grid {
+        grid-template-columns: repeat(6, 1fr); /* 4 per row on desktop */
+      }
+    }
+
+    .shop-style {
+      width: 100%;
+      max-width: 160px;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #f9fbfd, #d6eaf8);
+    }
+
+    .alert-bar {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #1e2b38;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      font-weight: bold;
+      z-index: 2000;
+      font-size: 14px;
+      animation: fadeSlideUp 0.3s ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translate(-50%, 20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    /* Desktop only by default */
+    .desktop-only {
+      display: flex;
+    }
+
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      color: white;
+      margin: 0;
+    }
+
+    .hamburger {
+  display: block;
+  font-size: 24px;
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-#confirmRedeem {
-  background-color: #28a745;
   color: white;
-  margin-right: 10px;
+  z-index: 1001; 
+  position: relative;
 }
 
-#confirmRedeem:hover {
-  background-color: #218838;
-}
 
-#cancelRedeem {
-  background-color: #f44336;
-  color: white;
-}
-
-#cancelRedeem:hover {
-  background-color: #c0392b;
-}
-
-@keyframes popIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.hidden {
+    .mobile-menu {
   display: none;
-}
-
-.disabled-reward {
-  opacity: 0.6;
-  pointer-events: none;
-  filter: grayscale(70%);
-  cursor: not-allowed;
-}
-.highlight {
-  color: #ffcb05; /* yellow */
-}
-
-.highlight i {
-  color: #ffcb05; /* yellow */
-}
-.reward-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* default: 2 per row */
-  gap: 20px;
-  justify-items: center;
-  padding: 0 16px;
-}
-
-@media (min-width: 769px) {
-  .reward-grid {
-    grid-template-columns: repeat(6, 1fr); /* 4 per row on desktop */
-  }
-}
-
-.shop-style {
-  width: 100%;
-  max-width: 160px;
-}
-body {
-  background: linear-gradient(to bottom, #f9fbfd, #d6eaf8);
-}
-
-.alert-bar {
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
+  flex-direction: column;
+  position: absolute;
+  right: 15px;
+  top: 120px;
   background-color: #1e2b38;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 50px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  font-weight: bold;
-  z-index: 2000;
-  font-size: 14px;
-  animation: fadeSlideUp 0.3s ease;
-}
-.hidden {
-  display: none;
-}
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translate(-50%, 20px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 1002; /* higher than hamburger */
+  width: max-content;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      font-weight: bold;
+    }
+
+    .mobile-menu a:hover {
+      color: #ffcb05;
+    }
+
+    .mobile-menu.show {
+      display: flex;
+    }
   </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">
-          <a href="/index.html">
-            <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
-          </a>
-        </div>
-      </header>
-  <div class="points-banner">
-    <div style="display: flex; align-items: center; gap: 6px;">
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+    <div class="points-banner">
+      <div style="display: flex; align-items: center; gap: 6px;">
         <div>Total Coins: <span id="coinTotal">0</span></div>
         <div class="coin-emoji"></div>
       </div>
-  </div>
+      <div class="hamburger" onclick="toggleMenu(event)">
+        <i class="fas fa-bars"></i>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#" onclick="showUserProfile()">My Profile</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
   <div class="reward-grid">
 
 
@@ -632,5 +701,30 @@ function showAlert(message, color = "#1e2b38") {
 
     </script>
     
+  <script>
+    function toggleMenu(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('show');
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.querySelector('.hamburger');
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove('show');
+      }
+    });
+
+    function showUserProfile() {
+      const username = localStorage.getItem('username');
+      if (username) {
+        window.location.href = `profile.html?username=${encodeURIComponent(username)}`;
+      } else {
+        alert('Please log in to view your profile');
+      }
+    }
+  </script>
 </body>
 </html>

@@ -502,13 +502,54 @@ body {
     const auth = getAuth();
     
     let currentUser = null;
-let currentUserEmail = null;
-let currentUserCity = null;
+    let currentUserEmail = null;
+    let currentUserCity = null;
     let allScores = [];
     let currentPage = 1;
     const entriesPerPage = 10;
     const maxPages = 5;
     const verifiedEmails = ["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"];
+
+    // Make showUserProfile globally available
+    window.showUserProfile = async function(uid) {
+        try {
+            const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
+            if (userSnap.empty) {
+                alert('User profile not found');
+                return;
+            }
+
+            const userData = userSnap.docs[0].data();
+            const profileContent = document.getElementById('profileContent');
+            const modal = document.getElementById('profileModal');
+            
+            // Get user's vibe tags
+            const vibeTags = userData.vibeTags || [];
+            const vibeTagsHtml = vibeTags.map(tag => 
+                `<div class="vibe-tag">${tag}</div>`
+            ).join('');
+
+            profileContent.innerHTML = `
+                <div class="profile-modal">
+                    <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" alt="Profile" class="profile-avatar">
+                    <div class="profile-name">${userData.username || 'Anonymous'}</div>
+                    <div class="profile-city">
+                        <i class="fas fa-map-marker-alt"></i>
+                        ${userData.city || 'No city set'}
+                    </div>
+                    <div class="vibe-header">Vibe Tags</div>
+                    <div class="vibe-tags">
+                        ${vibeTagsHtml || '<div class="vibe-tag">No vibe tags set</div>'}
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        } catch (error) {
+            console.error('Error showing user profile:', error);
+            alert('Error loading user profile');
+        }
+    };
 
     async function fetchSpellingLeaderboard(timeframe = 'daily') {
         try {
@@ -674,17 +715,17 @@ let currentUserCity = null;
 
         pageScores.forEach((entry, index) => {
             const isVerified = verifiedEmails.includes(entry.email);
-const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
+            const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
             const avatarUrl = entry.avatar || "images/avatars/popstarpenguin.jpg";
             const userLink = entry.uid
-                ? `<a href="#" onclick="showUserProfile('${entry.uid}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
-      <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+                ? `<a href="javascript:void(0)" onclick="window.showUserProfile('${entry.uid}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
+                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
                     <span style="text-decoration:underline;">${entry.username}${verifiedBadge}</span>
-    </a>`
-  : `<div style="display:flex; align-items:center; gap:10px;">
-      <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+                  </a>`
+                : `<div style="display:flex; align-items:center; gap:10px;">
+                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
                     <span>${entry.username}${verifiedBadge}</span>
-    </div>`;
+                  </div>`;
 
             const deleteButton = isAdmin ? 
                 `<button onclick="deleteScore('${entry.id}')" style="background:none; border:none; color:#e74c3c; cursor:pointer; padding:5px;">
@@ -694,7 +735,7 @@ const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${startIdx + index + 1}</td>
-            <td>${userLink}</td>
+                <td>${userLink}</td>
                 <td>${entry.score}</td>
                 <td>${entry.city} ${deleteButton}</td>
             `;
@@ -735,6 +776,24 @@ const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color
             });
         });
 
+        // Set up modal close handlers
+        const profileModal = document.getElementById('profileModal');
+        const closeButtons = profileModal.getElementsByClassName('close');
+        
+        // Close when clicking the X button
+        Array.from(closeButtons).forEach(button => {
+            button.addEventListener('click', () => {
+                profileModal.classList.add('hidden');
+            });
+        });
+
+        // Close when clicking outside the modal
+        profileModal.addEventListener('click', (event) => {
+            if (event.target === profileModal) {
+                profileModal.classList.add('hidden');
+            }
+        });
+
         // Set up auth state listener
         onAuthStateChanged(auth, user => {
   if (user) {
@@ -768,43 +827,6 @@ const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color
         } catch (error) {
             console.error('Error deleting score:', error);
             alert('Error deleting score. Please try again.');
-        }
-    };
-
-    // Add showUserProfile function
-    window.showUserProfile = async function(uid) {
-        const modal = document.getElementById('profileModal');
-        const content = document.getElementById('profileContent');
-        modal.classList.remove('hidden');
-        content.innerHTML = 'Loading...';
-
-        try {
-            const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
-            if (!userSnap.empty) {
-                const userData = userSnap.docs[0].data();
-                const isVerified = verifiedEmails.includes(userData.email);
-                const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
-                
-                content.innerHTML = `
-                    <div style="text-align:center; padding:20px;">
-                        <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" 
-                             alt="Profile" 
-                             style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:15px;">
-                        <h2 style="color:#315f85; margin-bottom:10px;">${userData.username}${verifiedBadge}</h2>
-                        <p style="color:#666; margin:5px 0;">${userData.city || 'No city set'}</p>
-                        ${currentUser && currentUser.uid !== uid ? 
-                            `<button onclick="showDMModal('${uid}')" 
-                                     style="margin-top:15px; padding:8px 16px; background:#315f85; color:white; border:none; border-radius:6px; cursor:pointer;">
-                                Send Message
-                            </button>` : ''}
-                    </div>
-                `;
-            } else {
-                content.innerHTML = '<p>User not found</p>';
-            }
-        } catch (error) {
-            console.error('Error loading profile:', error);
-            content.innerHTML = '<p>Error loading profile</p>';
         }
     };
 
