@@ -397,7 +397,7 @@ body {
     <div class="reward-desc center-text">2'' die-cut sticker</div>
     <div class="price-tag">
       <span class="coin-icon"></span>
-      100
+      150
     </div>
   </div>
 
@@ -408,7 +408,7 @@ body {
     <div class="reward-desc center-text">2'' die-cut sticker</div>
     <div class="price-tag">
       <span class="coin-icon"></span>
-      100
+      150
     </div>
   </div>
 
@@ -418,7 +418,7 @@ body {
     <div class="reward-desc center-text">2'' die-cut sticker</div>
     <div class="price-tag">
       <span class="coin-icon"></span>
-      100
+      150
     </div>
   </div>
 
@@ -428,7 +428,7 @@ body {
     <div class="reward-desc center-text">2'' die-cut sticker</div>
     <div class="price-tag">
       <span class="coin-icon"></span>
-      125
+      150
     </div>
   </div>
 
@@ -443,12 +443,22 @@ body {
   </div>
 
   <div class="reward-card shop-style" data-title="10 Raffle Entries" data-cost="400">
-    <img src="images/premium.jpg" alt="Raffle Entries" class="reward-image-top">
+    <img src="images/premium.jpg" alt="10 Raffle Entries" class="reward-image-top">
     <div class="reward-title center-text">10 Raffle Entries</div>
     <div class="reward-desc center-text">10 entries into raffle for a 1-Year Spotify Premium Subscription!</div>
     <div class="price-tag">
       <span class="coin-icon"></span>
       400
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="Charitable Donation" data-cost="200">
+    <img src="images/donatingdove.png" alt="Charitable Donation" class="reward-image-top">
+    <div class="reward-title center-text">Charitable Donation</div>
+    <div class="reward-desc center-text">Donate $1 to St. Jude or Make-A-Wish!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      200
     </div>
   </div>
 
@@ -468,6 +478,10 @@ body {
     <div class="modal-content">
       <h2>Confirm Redemption</h2>
       <p id="redeemText">Are you sure you want to redeem this reward?</p>
+      <select id="charitySelect" class="hidden" style="margin-bottom: 20px; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+        <option value="St. Jude">St. Jude</option>
+        <option value="Make-A-Wish">Make-A-Wish</option>
+      </select>      
       <div style="margin-top: 20px;">
         <button id="confirmRedeem" style="margin-right: 10px;">Redeem</button>
         <button id="cancelRedeem">Cancel</button>
@@ -539,57 +553,72 @@ body {
 let selectedReward = null;
 
   document.querySelectorAll('.reward-card:not(.disabled-reward)').forEach(card => {
-  card.addEventListener('click', () => {
-    const title = card.dataset.title;
-    const coinCost = parseInt(card.dataset.cost);
-    selectedReward = { title, coinCost };
+    card.addEventListener('click', () => {
+      const title = card.dataset.title;
+      const coinCost = parseInt(card.dataset.cost);
+      selectedReward = { title, coinCost };
 
-    document.getElementById('redeemText').textContent = `Redeem "${title}" for ${coinCost} coins?`;
-    document.getElementById('redeemModal').classList.remove('hidden');
+      // Show/hide charity selection based on reward type
+      const charitySelect = document.getElementById('charitySelect');
+      if (title === 'Charitable Donation') {
+        charitySelect.classList.remove('hidden');
+      } else {
+        charitySelect.classList.add('hidden');
+      }
+
+      document.getElementById('redeemText').textContent = `Redeem "${title}" for ${coinCost} coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
   });
-});
 
-
-document.getElementById('cancelRedeem').addEventListener('click', () => {
-  document.getElementById('redeemModal').classList.add('hidden');
-});
-
-document.getElementById('confirmRedeem').addEventListener('click', async () => {
-  if (!auth.currentUser || !selectedReward) {
-  showAlert("⚠️ Please log in to redeem.", "#f39c12");
-  return;
-}
-
-  const userRef = doc(db, "users", auth.currentUser.uid);
-  const userSnap = await getDoc(userRef);
-  const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
-
-  if (currentCoins < selectedReward.coinCost) {
-    showAlert("⚠️ Not enough coins to redeem.", "#c0392b");
+  document.getElementById('cancelRedeem').addEventListener('click', () => {
     document.getElementById('redeemModal').classList.add('hidden');
-    return;
-  }
-
-  // Deduct coins
-  await updateDoc(userRef, {
-    coins: increment(-selectedReward.coinCost)
+    document.getElementById('charitySelect').classList.add('hidden');
   });
 
-  // Save redemption request
-  await addDoc(collection(db, "redemptions"), {
-  uid: auth.currentUser.uid,
-  reward: selectedReward.title,
-  cost: selectedReward.coinCost,
-  timestamp: serverTimestamp(),
-  email: auth.currentUser.email || "N/A", 
-});
+  document.getElementById('confirmRedeem').addEventListener('click', async () => {
+    if (!auth.currentUser || !selectedReward) {
+      showAlert("⚠️ Please log in to redeem.", "#f39c12");
+      return;
+    }
 
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
 
-  // Update UI
-  document.getElementById('coinTotal').textContent = currentCoins - selectedReward.coinCost;
-  showAlert(`🎉 Redeemed: ${selectedReward.title}!`, "#28a745");
-  document.getElementById('redeemModal').classList.add('hidden');
-});
+    if (currentCoins < selectedReward.coinCost) {
+      showAlert("⚠️ Not enough coins to redeem.", "#c0392b");
+      document.getElementById('redeemModal').classList.add('hidden');
+      return;
+    }
+
+    // Get selected charity if it's a charitable donation
+    let charity = null;
+    if (selectedReward.title === 'Charitable Donation') {
+      charity = document.getElementById('charitySelect').value;
+    }
+
+    // Deduct coins
+    await updateDoc(userRef, {
+      coins: increment(-selectedReward.coinCost)
+    });
+
+    // Save redemption request
+    await addDoc(collection(db, "redemptions"), {
+      uid: auth.currentUser.uid,
+      reward: selectedReward.title,
+      cost: selectedReward.coinCost,
+      timestamp: serverTimestamp(),
+      email: auth.currentUser.email || "N/A",
+      charity: charity // Add charity to the redemption record
+    });
+
+    // Update UI
+    document.getElementById('coinTotal').textContent = currentCoins - selectedReward.coinCost;
+    showAlert(`🎉 Redeemed: ${selectedReward.title}${charity ? ` to ${charity}` : ''}!`, "#28a745");
+    document.getElementById('redeemModal').classList.add('hidden');
+    document.getElementById('charitySelect').classList.add('hidden');
+  });
 function showAlert(message, color = "#1e2b38") {
   const alertBar = document.getElementById("alertBar");
   alertBar.textContent = message;
