@@ -673,7 +673,11 @@
       document.getElementById('share-score').style.display = 'none';
       document.getElementById('guessInput').style.display = 'inline-block';
       
-      document.getElementById('message').textContent = '';
+      // Clear any existing message and reset the message element
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = '';
+      messageEl.className = 'message';
+      
       clearInterval(timerInterval);
       clearInterval(revealInterval);
       timerInterval = setInterval(() => {
@@ -838,12 +842,16 @@
       document.getElementById('guessInput').value = '';
       
       if (guess === normalizedSinger) {
+        document.getElementById('message').textContent = '✅ Correct!';
         correctCount++;
         document.getElementById('correctCount').textContent = correctCount;
         if (correctCount >= 5) {
           endGame(true);
         } else {
-          loadNextSinger();
+          setTimeout(() => {
+            document.getElementById('message').textContent = '';
+            loadNextSinger();
+          }, 1000);
         }
       } else {
         document.getElementById('message').textContent = '❌ Incorrect. Try again!';
