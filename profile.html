@@ -742,7 +742,7 @@ body {
     // Fix here: safely get selectedArtists as array
     selectedArtists = Array.isArray(data.favoriteArtist)
       ? data.favoriteArtist
-      : (data.favoriteArtist || "").split(",").map(a => a.trim());
+      : (data.favoriteArtist || "").split(",").map(a => a.trim()).filter(a => a.length > 0);
 
     // Update profile UI
     profileName.innerText = data.username || "";
@@ -839,7 +839,9 @@ if ((username.includes(query) || artists.includes(query)) && doc.id !== auth.cur
       const tagHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
       document.getElementById("vibingTags").innerHTML = tagHTML;
       document.getElementById("vibeSearch").value = "";
-      await setDoc(doc(firestore, "users", auth.currentUser.uid), { favoriteArtist: selectedArtists.join(",") }, { merge: true });
+      await setDoc(doc(firestore, "users", auth.currentUser.uid), {
+  favoriteArtist: selectedArtists
+}, { merge: true });
       document.getElementById("vibesModal").style.display = "none";
     };
   
@@ -848,12 +850,12 @@ if ((username.includes(query) || artists.includes(query)) && doc.id !== auth.cur
       const username = document.getElementById("editUsername").value.trim();
       const city = document.getElementById("city").value;
       await setDoc(doc(firestore, "users", user.uid), {
-  uid: user.uid,
+        uid: user.uid,
   email: user.email,
   username,
   city,
   avatar: selectedAvatar,
-  favoriteArtist: selectedArtists.join(",")
+  favoriteArtist: selectedArtists
 }, { merge: true });
 
       await updateProfile(user, { displayName: username });
@@ -942,6 +944,12 @@ document.addEventListener("click", function (e) {
 if (userData.favoriteArtist && Array.isArray(userData.favoriteArtist)) {
   const favContainer = document.getElementById("favoriteArtists");
   favContainer.innerHTML = userData.favoriteArtist.map(artist => `
+    <div class="status-tag">${artist}</div>
+  `).join('');
+} else if (userData.favoriteArtist && typeof userData.favoriteArtist === 'string') {
+  const favContainer = document.getElementById("favoriteArtists");
+  const artists = userData.favoriteArtist.split(",").map(a => a.trim()).filter(a => a.length > 0);
+  favContainer.innerHTML = artists.map(artist => `
     <div class="status-tag">${artist}</div>
   `).join('');
 }

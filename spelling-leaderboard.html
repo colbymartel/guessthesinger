@@ -551,6 +551,51 @@ body {
         }
     };
 
+    function renderLeaderboardPage() {
+        const tbody = document.querySelector('tbody');
+        tbody.innerHTML = '';
+        if (!allScores.length) {
+            tbody.innerHTML = '<tr><td colspan="4">No scores yet for this time period.</td></tr>';
+            document.getElementById('pageIndicator').textContent = `Page 1 of ${maxPages}`;
+            return;
+        }
+        const startIdx = (currentPage - 1) * entriesPerPage;
+        const endIdx = startIdx + entriesPerPage;
+        const pageScores = allScores.slice(startIdx, endIdx);
+        
+        const isAdmin = currentUserEmail === "colbyma23@gmail.com";
+
+        pageScores.forEach((entry, index) => {
+            const isVerified = verifiedEmails.includes(entry.email);
+            const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
+            const avatarUrl = entry.avatar || "images/avatars/popstarpenguin.jpg";
+            const userLink = entry.uid
+                ? `<a href="javascript:void(0)" onclick="window.showUserProfile('${entry.uid}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
+                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+                    <span style="text-decoration:underline;">${entry.username}${verifiedBadge}</span>
+                  </a>`
+                : `<div style="display:flex; align-items:center; gap:10px;">
+                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+                    <span>${entry.username}${verifiedBadge}</span>
+                  </div>`;
+
+            const deleteButton = isAdmin ? 
+                `<button onclick="deleteScore('${entry.id}')" style="background:none; border:none; color:#e74c3c; cursor:pointer; padding:5px;">
+                    <i class="fas fa-trash"></i>
+                </button>` : '';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${startIdx + index + 1}</td>
+                <td>${userLink}</td>
+                <td>${entry.score}</td>
+                <td>${entry.city} ${deleteButton}</td>
+            `;
+            tbody.appendChild(row);
+        });
+        document.getElementById('pageIndicator').textContent = `Page ${currentPage} of ${maxPages}`;
+    }
+
     async function fetchSpellingLeaderboard(timeframe = 'daily') {
         try {
             const tbody = document.querySelector('tbody');
@@ -600,85 +645,69 @@ body {
                             return null;
                         }
 
-                        let userData = null;
-                        if (uid) {
-                            const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
-                            if (!userSnap.empty) {
-                                userData = userSnap.docs[0].data();
-                            }
-                        }
-
+                        const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
+                        if (userSnap.empty) return null;
+                        
+                        const userData = userSnap.docs[0].data();
                         return {
                             id: doc.id,
-                            username: data.username || "Anonymous",
-                            score: data.score || 0,
-                            city: userData?.city || data.city || "-",
                             uid: uid,
-                            email: data.email || null,
-                            avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
+                            username: userData.username || 'Anonymous',
+                            score: data.score,
+                            city: userData.city || 'Unknown',
+                            email: userData.email,
+                            avatar: userData.avatar || "images/avatars/popstarpenguin.jpg",
+                            timestamp: data.timestamp
                         };
                     })
                 );
-    
-                // Filter out null entries and sort
-                allScores = allScores.filter(entry => entry !== null);
-                allScores.sort((a, b) => b.score - a.score);
-                allScores = allScores.slice(0, entriesPerPage * maxPages);
-                currentPage = 1;
-                renderLeaderboardPage();
-                return;
-            }
-
-            // Build query for daily and all-time
-            let q = query(collection(db, "spellingScores"), 
-                where("timestamp", ">=", startDate), 
-                orderBy("timestamp", "desc"));
-
-            const snapshot = await getDocs(q);
-            if (snapshot.empty) {
-                tbody.innerHTML = '<tr><td colspan="4">No scores yet for this time period.</td></tr>';
-                allScores = [];
-                renderLeaderboardPage();
-                return;
-            }
-
-            // Process data in parallel
-            allScores = await Promise.all(
-                snapshot.docs.map(async (doc) => {
-                    const data = doc.data();
-                    const uid = data.uid;
-                    let userData = null;
-                    
-                    if (uid) {
-                        const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
-                        if (!userSnap.empty) {
-                            userData = userSnap.docs[0].data();
+            } else {
+                // Get all spelling scores
+                const scoresSnapshot = await getDocs(collection(db, "spellingScores"));
+                
+                // Process data in parallel
+                allScores = await Promise.all(
+                    scoresSnapshot.docs.map(async (doc) => {
+                        const data = doc.data();
+                        const uid = data.uid;
+                        
+                        // Filter by date if needed
+                        if (timeframe === 'daily' && data.timestamp.toDate() < startDate) {
+                            return null;
                         }
-                    }
 
-                    return {
-                        id: doc.id,
-                        username: data.username || "Anonymous",
-                        score: data.score || 0,
-                        city: userData?.city || data.city || "-",
-                        uid: uid,
-                        email: data.email || null,
-                        avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
-                    };
-                })
-            );
+                        const userSnap = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
+                        if (userSnap.empty) return null;
+                        
+                        const userData = userSnap.docs[0].data();
+                        return {
+                            id: doc.id,
+                            uid: uid,
+                            username: userData.username || 'Anonymous',
+                            score: data.score,
+                            city: userData.city || 'Unknown',
+                            email: userData.email,
+                            avatar: userData.avatar || "images/avatars/popstarpenguin.jpg",
+                            timestamp: data.timestamp
+                        };
+                    })
+                );
+            }
 
-            // Sort and limit data
-            allScores.sort((a, b) => b.score - a.score);
-            allScores = allScores.slice(0, entriesPerPage * maxPages);
-            currentPage = 1;
+            // Filter out null entries and sort by score
+            allScores = allScores.filter(score => score !== null)
+                               .sort((a, b) => b.score - a.score);
+
+            // Update pagination
+            const totalPages = Math.ceil(allScores.length / entriesPerPage);
+            document.getElementById('pageIndicator').textContent = `Page ${currentPage} of ${totalPages}`;
+
+            // Render the current page
             renderLeaderboardPage();
+
         } catch (error) {
             console.error('Error fetching leaderboard:', error);
-            const tbody = document.querySelector('tbody');
-            if (tbody) {
-                tbody.innerHTML = '<tr><td colspan="4">Error loading leaderboard. Please try again later.</td></tr>';
-            }
+            tbody.innerHTML = '<tr><td colspan="4">Error loading leaderboard</td></tr>';
         }
     }
 
@@ -699,51 +728,6 @@ body {
         }
     }
     
-    function renderLeaderboardPage() {
-        const tbody = document.querySelector('tbody');
-        tbody.innerHTML = '';
-        if (!allScores.length) {
-            tbody.innerHTML = '<tr><td colspan="4">No scores yet for this time period.</td></tr>';
-            document.getElementById('pageIndicator').textContent = `Page 1 of ${maxPages}`;
-            return;
-        }
-        const startIdx = (currentPage - 1) * entriesPerPage;
-        const endIdx = startIdx + entriesPerPage;
-        const pageScores = allScores.slice(startIdx, endIdx);
-        
-        const isAdmin = currentUserEmail === "colbyma23@gmail.com";
-
-        pageScores.forEach((entry, index) => {
-            const isVerified = verifiedEmails.includes(entry.email);
-            const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
-            const avatarUrl = entry.avatar || "images/avatars/popstarpenguin.jpg";
-            const userLink = entry.uid
-                ? `<a href="javascript:void(0)" onclick="window.showUserProfile('${entry.uid}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
-                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
-                    <span style="text-decoration:underline;">${entry.username}${verifiedBadge}</span>
-                  </a>`
-                : `<div style="display:flex; align-items:center; gap:10px;">
-                    <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
-                    <span>${entry.username}${verifiedBadge}</span>
-                  </div>`;
-
-            const deleteButton = isAdmin ? 
-                `<button onclick="deleteScore('${entry.id}')" style="background:none; border:none; color:#e74c3c; cursor:pointer; padding:5px;">
-                    <i class="fas fa-trash"></i>
-                </button>` : '';
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${startIdx + index + 1}</td>
-                <td>${userLink}</td>
-                <td>${entry.score}</td>
-                <td>${entry.city} ${deleteButton}</td>
-            `;
-            tbody.appendChild(row);
-        });
-        document.getElementById('pageIndicator').textContent = `Page ${currentPage} of ${maxPages}`;
-    }
-
     function changePage(delta) {
         const totalPages = Math.min(maxPages, Math.ceil(allScores.length / entriesPerPage) || 1);
         let newPage = currentPage + delta;

@@ -666,6 +666,8 @@
       singerQueue = shuffle([...singers]);
       correctCount = 0;
       timeLeft = 100;
+      currentSinger = ''; // Reset current singer
+      revealedLetters = []; // Reset revealed letters
       document.getElementById('correctCount').textContent = correctCount;
       document.getElementById('timer').textContent = timeLeft;
       
@@ -699,7 +701,9 @@
     }
 
     function loadNextSinger() {
-      if (singerQueue.length === 0) singerQueue = shuffle([...singers]);
+      if (singerQueue.length === 0) {
+        singerQueue = shuffle([...singers]);
+      }
       currentSinger = singerQueue.shift().toUpperCase();
       revealedLetters = currentSinger.split('').map(char => char === ' ' ? ' ' : '_');
       updateBlanks();

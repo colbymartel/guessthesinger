@@ -63,6 +63,7 @@
         <th>Username</th>
         <th>Email</th>
         <th>Favorite Artist</th>
+        <th>Coins</th>
       </tr>
     </thead>    
     <tbody id="userTableBody"></tbody>
@@ -120,23 +121,35 @@
 
   const snapshot = await getDocs(collection(db, "users"));
 
-  let count = 1;
-snapshot.forEach(doc => {
+  // Convert snapshot to array and sort by coins (highest to lowest)
+  const users = [];
+  snapshot.forEach(doc => {
     const data = doc.data();
     if (!data.email) return; // Skip if no email
 
-    const userId = doc.id;
-    const username = data.username || "Anonymous";
-    const email = data.email;
-    const artist = data.favoriteArtist || "—";
-    const city = data.city || "—";
+    users.push({
+      id: doc.id,
+      username: data.username || "Anonymous",
+      email: data.email,
+      artist: data.favoriteArtist || "—",
+      city: data.city || "—",
+      coins: data.coins || 0
+    });
+  });
 
+  // Sort by coins (highest to lowest)
+  users.sort((a, b) => b.coins - a.coins);
+
+  // Display sorted users
+  let count = 1;
+  users.forEach(user => {
     content.innerHTML += `
   <tr>
     <td>${count++}</td>
-    <td><a href="#" onclick="showProfile('${userId}')" style="color:#315f85; text-decoration:underline;">${username}</a></td>
-    <td>${email}</td>
-    <td>${artist}</td>
+    <td><a href="#" onclick="showProfile('${user.id}')" style="color:#315f85; text-decoration:underline;">${user.username}</a></td>
+    <td>${user.email}</td>
+    <td>${user.artist}</td>
+    <td>${user.coins}</td>
   </tr>
 `;
   });
@@ -174,6 +187,7 @@ snapshot.forEach(doc => {
       <p><strong>Email:</strong> ${email}</p>
       <p><strong>City:</strong> ${userData.city || "—"}</p>
       <p><strong>Favorite Artist:</strong> ${userData.favoriteArtist || "—"}</p>
+      <p><strong>Coins:</strong> ${userData.coins || 0}</p>
       <div style="margin-top:12px; display:flex; gap:20px; align-items:center;">
         ${insta ? `<a href="https://instagram.com/${insta}" target="_blank" title="Instagram">
           <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="24" height="24">
