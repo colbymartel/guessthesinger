@@ -891,7 +891,7 @@
       document.getElementById('guessInput').style.display = 'none';
 
       // Award coins based on score
-      const coinsEarned = score >= 50 ? 10 : (score > 0 ? 5 : 0);
+      let coinsEarned = score >= 50 ? 10 : (score > 0 ? 5 : 0);
 
       try {
         const user = auth.currentUser;
@@ -900,7 +900,12 @@
           const userSnap = await getDoc(userRef);
 
           if (userSnap.exists()) {
-            const currentCoins = userSnap.data().coins || 0;
+            // Double coins if boost is active
+            const data = userSnap.data();
+            if (data.doubleCoinsUntil && Date.now() < data.doubleCoinsUntil) {
+              coinsEarned *= 2;
+            }
+            const currentCoins = data.coins || 0;
             const newCoinAmount = currentCoins + coinsEarned;
 
             await updateDoc(userRef, { coins: newCoinAmount });
@@ -916,6 +921,8 @@
                 gainEl.classList.remove("animate");
               }, 1500);
             }
+            // Immediately update coin display
+            if (countEl) countEl.textContent = newCoinAmount;
           }
 
           // Leaderboard entry

@@ -65,7 +65,7 @@
     @media (max-width: 768px) {
       .grid {
         grid-template-columns: repeat(4, 80px);
-        grid-template-rows: repeat(6, 80px);
+        grid-template-rows: repeat(8, 80px);
         gap: 8px;
       }
       .card {
@@ -439,7 +439,7 @@
   </footer>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getFirestore, collection, setDoc, doc, getDocs, getDoc, query, where, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getFirestore, collection, setDoc, doc, getDocs, getDoc, query, where, serverTimestamp, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
     import { addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
     import { updateProfile } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
@@ -842,33 +842,37 @@ async function updateBestScoreToFirestore(score) {
     console.log("⛔️ Not a new personal best.");
   }
 }
-import { updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 async function awardCoinsIfEligible(score) {
   if (!currentUser || score < 800) return;
 
-let coinsToAward = 0;
-if (score >= 900) {
-  coinsToAward = 10;
-} else if (score >= 800) {
-  coinsToAward = 5;
-}
+  let coinsToAward = 0;
+  if (score >= 900) {
+    coinsToAward = 10;
+  } else if (score >= 800) {
+    coinsToAward = 5;
+  }
 
   const userDocRef = doc(db, "users", currentUser.uid);
   try {
-    await updateDoc(userDocRef, {
-  coins: increment(coinsToAward)
-});
-console.log(`🎉 ${coinsToAward} coins awarded!`);
-
-animateCoinGain(coinsToAward);
-
+    // Check for double coins
     const userSnap = await getDoc(userDocRef);
+    let newTotal = 0;
     if (userSnap.exists()) {
-      const newTotal = userSnap.data().coins || 0;
-      document.getElementById("coinCount").textContent = newTotal;
+      const data = userSnap.data();
+      if (data.doubleCoinsUntil && Date.now() < data.doubleCoinsUntil) {
+        coinsToAward *= 2;
+      }
+      newTotal = (data.coins || 0) + coinsToAward;
     }
-
+    await updateDoc(userDocRef, {
+      coins: increment(coinsToAward)
+    });
+    console.log(`🎉 ${coinsToAward} coins awarded!`);
+    animateCoinGain(coinsToAward);
+    // Immediately update coin display
+    const coinDisplayEl = document.getElementById("coinCount");
+    if (coinDisplayEl) coinDisplayEl.textContent = newTotal;
   } catch (error) {
     console.error("Error awarding coins:", error);
   }

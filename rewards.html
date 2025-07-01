@@ -411,6 +411,43 @@
     .mobile-menu.show {
       display: flex;
     }
+
+    .reward-card.locked {
+      filter: grayscale(1) brightness(0.85);
+      opacity: 0.7;
+      position: relative;
+      pointer-events: none;
+    }
+    .locked-overlay {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      top: auto;
+      transform: none;
+      background: rgba(255,255,255,0.92);
+      border-radius: 0 0 12px 12px;
+      padding: 8px 0 8px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #1e2b38;
+      z-index: 2;
+      font-size: 1.05rem;
+      box-shadow: 0 -2px 8px rgba(30,47,90,0.08);
+      width: 100%;
+      gap: 8px;
+    }
+    .locked-overlay i {
+      font-size: 1.2rem;
+      margin-bottom: 0;
+      color: #b8860b;
+    }
+
+    .price-tag.locked {
+      filter: grayscale(1) brightness(0.85);
+      opacity: 0.7;
+    }
   </style>
 </head>
 <body>
@@ -520,6 +557,15 @@
       400
     </div>
   </div>
+  <div class="reward-card shop-style" data-title="Double Coins" data-cost="300" id="double-coins-reward">
+    <img src="images/doublecoins.png" alt="Double Coins" class="reward-image-top">
+    <div class="reward-title center-text">Double Coins</div>
+    <div class="reward-desc center-text">Earn double coins on all games for the next 24 hours!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      300
+    </div>
+  </div>
 
   <div class="reward-card shop-style" data-title="Charitable Donation" data-cost="200">
     <img src="images/donatingdove.png" alt="Charitable Donation" class="reward-image-top">
@@ -540,6 +586,7 @@
       2500
     </div>
   </div>
+
 
 
       </div>    
@@ -610,11 +657,14 @@
             const data = userSnap.data();
             const coins = data.coins || 0;
             coinEl.textContent = coins;
+            updateLockedRewards(coins);
           } else {
             coinEl.textContent = "0";
+            updateLockedRewards(0);
           }
         } else if (coinEl) {
           coinEl.textContent = "0";
+          updateLockedRewards(0);
         }
       });
     };
@@ -651,44 +701,78 @@ let selectedReward = null;
       showAlert("⚠️ Please log in to redeem.", "#f39c12");
       return;
     }
-
     const userRef = doc(db, "users", auth.currentUser.uid);
     const userSnap = await getDoc(userRef);
     const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
-
     if (currentCoins < selectedReward.coinCost) {
       showAlert("⚠️ Not enough coins to redeem.", "#c0392b");
       document.getElementById('redeemModal').classList.add('hidden');
       return;
     }
-
-    // Get selected charity if it's a charitable donation
     let charity = null;
     if (selectedReward.title === 'Charitable Donation') {
       charity = document.getElementById('charitySelect').value;
     }
-
-    // Deduct coins
+    if (selectedReward.title === 'Double Coins (24 Hours)') {
+      // Check if user already has an active double coins boost
+      const userData = userSnap.data();
+      if (userData.doubleCoinsUntil && Date.now() < userData.doubleCoinsUntil) {
+        const remainingTime = Math.ceil((userData.doubleCoinsUntil - Date.now()) / (1000 * 60 * 60));
+        showAlert(`⚠️ Double Coins already active! ${remainingTime} hours remaining.`, "#f39c12");
+        document.getElementById('redeemModal').classList.add('hidden');
+        document.getElementById('charitySelect').classList.add('hidden');
+        return;
+      }
+      
+      // Set doubleCoinsUntil to 24 hours from now
+      const now = Date.now();
+      const doubleUntil = now + 24 * 60 * 60 * 1000;
+      await updateDoc(userRef, {
+        coins: increment(-300),
+        doubleCoinsUntil: doubleUntil
+      });
+      await addDoc(collection(db, "redemptions"), {
+        uid: auth.currentUser.uid,
+        reward: "Double Coins (24 Hours)",
+        cost: 300,
+        timestamp: serverTimestamp(),
+        email: auth.currentUser.email || "N/A"
+      });
+      document.getElementById('coinTotal').textContent = currentCoins - 300;
+      showAlert("⚡ Double Coins activated for 24 hours!", "#28a745");
+      document.getElementById('redeemModal').classList.add('hidden');
+      document.getElementById('charitySelect').classList.add('hidden');
+      return;
+    }
+    // Default: normal reward logic
     await updateDoc(userRef, {
       coins: increment(-selectedReward.coinCost)
     });
-
-    // Save redemption request
     await addDoc(collection(db, "redemptions"), {
       uid: auth.currentUser.uid,
       reward: selectedReward.title,
       cost: selectedReward.coinCost,
       timestamp: serverTimestamp(),
       email: auth.currentUser.email || "N/A",
-      charity: charity // Add charity to the redemption record
+      charity: charity
     });
-
-    // Update UI
     document.getElementById('coinTotal').textContent = currentCoins - selectedReward.coinCost;
     showAlert(`🎉 Redeemed: ${selectedReward.title}${charity ? ` to ${charity}` : ''}!`, "#28a745");
     document.getElementById('redeemModal').classList.add('hidden');
     document.getElementById('charitySelect').classList.add('hidden');
   });
+
+  // Add logic to handle Double Coins reward
+  const doubleCoinsReward = document.getElementById('double-coins-reward');
+  if (doubleCoinsReward) {
+    doubleCoinsReward.addEventListener('click', () => {
+      selectedReward = { title: 'Double Coins (24 Hours)', coinCost: 300 };
+      document.getElementById('charitySelect').classList.add('hidden');
+      document.getElementById('redeemText').textContent = `Redeem "Double Coins (24 Hours)" for 300 coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
+  }
+
 function showAlert(message, color = "#1e2b38") {
   const alertBar = document.getElementById("alertBar");
   alertBar.textContent = message;
@@ -719,12 +803,51 @@ function showAlert(message, color = "#1e2b38") {
     });
 
     function showUserProfile() {
-      const username = localStorage.getItem('username');
-      if (username) {
-        window.location.href = `profile.html?username=${encodeURIComponent(username)}`;
+      if (window.firebaseAuth && window.firebaseAuth.currentUser) {
+        window.location.href = '/profile.html';
+      } else if (window.auth && window.auth.currentUser) {
+        window.location.href = '/profile.html';
       } else {
-        alert('Please log in to view your profile');
+        window.location.href = '/login.html';
       }
+    }
+
+    // Make sure firebaseAuth is set for compatibility
+    window.firebaseAuth = window.firebaseAuth || window.auth;
+
+    // After coins are loaded, lock cards if needed
+    function updateLockedRewards(userCoins) {
+      document.querySelectorAll('.reward-card').forEach(card => {
+        const price = parseInt(card.dataset.cost);
+        let overlay = card.querySelector('.locked-overlay');
+        const priceTag = card.querySelector('.price-tag');
+        if (userCoins < price) {
+          card.classList.add('locked');
+          if (priceTag) {
+            priceTag.classList.add('locked');
+            const icon = priceTag.querySelector('.coin-icon, .fa-lock');
+            if (!icon || !icon.classList.contains('fa-lock')) {
+              if (icon) icon.outerHTML = "<i class='fas fa-lock'></i>";
+            }
+          }
+          if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'locked-overlay';
+            overlay.innerHTML = `<span style='font-size:0.98em;'></span>`;
+            card.appendChild(overlay);
+          }
+          overlay.querySelector('span').textContent = `Need ${price - userCoins} more coins`;
+          overlay.style.display = 'flex';
+        } else {
+          card.classList.remove('locked');
+          if (priceTag) {
+            priceTag.classList.remove('locked');
+            const icon = priceTag.querySelector('.fa-lock');
+            if (icon) icon.outerHTML = "<span class='coin-icon'></span>";
+          }
+          if (overlay) overlay.style.display = 'none';
+        }
+      });
     }
   </script>
 </body>
