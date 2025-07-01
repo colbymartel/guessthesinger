@@ -658,6 +658,13 @@
     function shuffle(array) {
       return array.sort(() => 0.5 - Math.random());
     }
+    // Named function for Enter key handler so we can remove it
+    function handleEnterKey(event) {
+      if (event.key === 'Enter') {
+        submitGuess();
+      }
+    }
+
     function startGame() {
       score = 0;
       lives = 3;
@@ -692,12 +699,10 @@
       }, 1000);
       loadNextSinger();
 
-      // Add event listener for Enter key
-      document.getElementById('guessInput').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-          submitGuess();
-        }
-      });
+      // Remove any existing event listener and add new one
+      const guessInput = document.getElementById('guessInput');
+      guessInput.removeEventListener('keypress', handleEnterKey);
+      guessInput.addEventListener('keypress', handleEnterKey);
     }
 
     function loadNextSinger() {
