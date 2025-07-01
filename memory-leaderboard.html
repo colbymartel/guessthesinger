@@ -726,7 +726,6 @@ let currentUserCity = null;
                 return;
             }
 
-            // Build query for daily and all-time
             let q = query(collection(db, "spellingScores"), 
                 where("timestamp", ">=", startDate), 
                 orderBy("timestamp", "desc"));
@@ -739,27 +738,27 @@ let currentUserCity = null;
                 return;
             }
 
-            // Process data in parallel
             leaderboardData = await Promise.all(
-                snapshot.docs.map(async (doc) => {
-                    const data = doc.data();
-                    const uid = data.uid;
-                    let userData = null;
-                    
-                    if (uid) {
-                        userData = await getUserData(uid);
-                    }
+  snapshot.docs.map(async (docSnap) => {
+    const data = docSnap.data();
+    const uid = data.uid;
+    let userData = null;
 
-                    return {
-                        username: data.username || "Anonymous",
-                        score: data.score || 0,
-                        city: userData?.city || data.city || "-",
-                        uid: uid,
-                        email: data.email || null,
-                        avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
-                    };
-                })
-            );
+    if (uid) {
+      userData = await getUserData(uid);
+    }
+
+    return {
+      id: docSnap.id, 
+      username: data.username || "Anonymous",
+      score: data.score || 0,
+      city: userData?.city || data.city || "-",
+      uid: uid,
+      email: data.email || null,
+      avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
+    };
+  })
+);
 
             // Sort and limit data
             leaderboardData.sort((a, b) => b.score - a.score);
@@ -822,9 +821,9 @@ let currentUserCity = null;
 const isVerified = verifiedEmails.includes(data.email);
 const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
 const avatarUrl = data.avatar || "images/avatars/popstarpenguin.jpg";
-
-const userLink = data.userId 
-  ? `<a href="#" onclick="showUserProfile('${data.userId}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
+const userId = data.userId || data.uid;
+const userLink = userId 
+  ? `<a href="#" onclick="showUserProfile('${userId}')" style="color:#315f85; text-decoration:none; display:flex; align-items:center; gap:10px;">
       <img src="${avatarUrl}" alt="avatar" style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
       <span style="text-decoration:underline;">${data.username || "Anonymous"}${verifiedBadge}</span>
     </a>`
@@ -838,8 +837,10 @@ const userLink = data.userId
         const score = typeof data.score === "number" ? data.score : "—";
         const city = data.city || "-";
         const isColby = currentUserEmail === "colbyma23@gmail.com";
-        const deleteBtn = isColby ? `<button onclick="deleteEntry('${data.id}')">❌</button>` : "";
-    
+const deleteBtn = (isColby && data.id)
+  ? `<button onclick="deleteEntry('${data.id}')">❌</button>`
+  : "";
+
         tbody.innerHTML += `
           <tr>
             <td>${start + index + 1}</td>
@@ -859,22 +860,28 @@ const userLink = data.userId
       currentPage = Math.max(0, Math.min(currentPage + offset, totalPages - 1));
       renderTablePage();
     };
-    
     window.deleteEntry = async function (id) {
-      if (!confirm("Are you sure you want to delete this entry?")) return;
-      
-      try {
-        await deleteDoc(doc(db, "matchScores", id));
-        // Remove the entry from leaderboardData array
-        leaderboardData = leaderboardData.filter(entry => entry.id !== id);
-        // Re-render the current page
-        renderTablePage();
-      } catch (err) {
-        console.error("Error deleting entry:", err);
-        alert("Failed to delete entry.");
-      }
-    };
-    
+  if (currentUserEmail !== "colbyma23@gmail.com") {
+    alert("You don't have permission to delete this entry.");
+    return;
+  }
+
+  if (!confirm("Are you sure you want to delete this entry?")) return;
+
+  const leaderboardType = document.getElementById('leaderboardType').value;
+  const collectionName = leaderboardType === "spelling" ? "spellingScores" : "matchScores";
+
+  try {
+    await deleteDoc(doc(db, collectionName, id));
+    leaderboardData = leaderboardData.filter(entry => entry.id !== id);
+    renderTablePage();
+  } catch (err) {
+    console.error("Error deleting entry:", err);
+    alert("Failed to delete entry.");
+  }
+};
+
+
     onAuthStateChanged(auth, user => {
   if (user) {
     currentUser = user; // ✅ This was missing
