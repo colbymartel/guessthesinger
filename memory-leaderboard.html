@@ -817,7 +817,7 @@ let currentUserCity = null;
     
       pageData.forEach((data, index) => {
 
-        const verifiedEmails = ["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"];
+        const verifiedEmails = ["colbyma23@gmail.com", "souptimmy@greenlightgroup.co", "jackmama4@gmail.com"];
 const isVerified = verifiedEmails.includes(data.email);
 const verifiedBadge = isVerified ? ' <i class="fas fa-check-circle" style="color:#3ba4f1;" title="Verified"></i>' : '';
 const avatarUrl = data.avatar || "images/avatars/popstarpenguin.jpg";
@@ -861,7 +861,7 @@ const deleteBtn = (isColby && data.id)
       renderTablePage();
     };
     window.deleteEntry = async function (id) {
-  if (currentUserEmail !== "colbyma23@gmail.com") {
+          if (currentUserEmail !== "colbyma23@gmail.com") {
     alert("You don't have permission to delete this entry.");
     return;
   }
@@ -966,7 +966,7 @@ const artistTags = artists
       <div>
         <div class="profile-name">
           ${userData.username || "Anonymous"}
-          ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co"].includes(userData.email)
+          ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co", "jackmama4@gmail.com"].includes(userData.email)
             ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
             : ''}
         </div>
