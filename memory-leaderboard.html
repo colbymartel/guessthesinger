@@ -477,6 +477,7 @@ h1 select:focus {
         <select id="leaderboardType" onchange="switchLeaderboardType()">
             <option value="memory">Memory Leaderboard</option>
             <option value="spelling">Spelling Leaderboard</option>
+            <option value="bangerbattle">Banger Battle Leaderboard</option>
         </select>
     </h1>
     
@@ -587,6 +588,8 @@ let currentUserCity = null;
             switchTab('daily');
         } else if (leaderboardType === 'spelling') {
             fetchSpellingLeaderboard('daily');
+        } else if (leaderboardType === 'bangerbattle') {
+            fetchBangerBattleLeaderboard('daily');
         }
     };
 
@@ -647,6 +650,12 @@ let currentUserCity = null;
             else if (type === 'alltime') timeframe = 'all-time';
             else if (type === 'city') timeframe = 'by-city';
             fetchSpellingLeaderboard(timeframe);
+        } else if (leaderboardType === 'bangerbattle') {
+            let timeframe;
+            if (type === 'daily') timeframe = 'daily';
+            else if (type === 'alltime') timeframe = 'all-time';
+            else if (type === 'city') timeframe = 'by-city';
+            fetchBangerBattleLeaderboard(timeframe);
         }
     };
 
@@ -761,6 +770,100 @@ let currentUserCity = null;
 );
 
             // Sort and limit data
+            leaderboardData.sort((a, b) => b.score - a.score);
+            leaderboardData = leaderboardData.slice(0, rowsPerPage * 5);
+            currentPage = 0;
+            renderTablePage();
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
+            const tbody = document.getElementById('leaderboardBody');
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="4">Error loading leaderboard. Please try again later.</td></tr>';
+            }
+        }
+    }
+
+    async function fetchBangerBattleLeaderboard(timeframe = 'daily') {
+        try {
+            const tbody = document.getElementById('leaderboardBody');
+            if (!tbody) {
+                console.error('Table body element not found');
+                return;
+            }
+            tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+            const now = new Date();
+            let startDate;
+            if (timeframe === 'daily') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            } else if (timeframe === 'all-time') {
+                startDate = new Date(0);
+            } else if (timeframe === 'by-city') {
+                if (!currentUser) {
+                    tbody.innerHTML = '<tr><td colspan="4">Please log in to view city-specific scores.</td></tr>';
+                    return;
+                }
+                if (!currentUserCity) {
+                    tbody.innerHTML = '<tr><td colspan="4">City not set in profile.</td></tr>';
+                    return;
+                }
+                const usersSnapshot = await getDocs(query(collection(db, "users"), where("city", "==", currentUserCity)));
+                if (usersSnapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="4">No users found in your city.</td></tr>';
+                    return;
+                }
+                const userIds = usersSnapshot.docs.map(doc => doc.data().uid);
+                const scoresSnapshot = await getDocs(collection(db, "bangerBattleScores"));
+                leaderboardData = await Promise.all(
+                    scoresSnapshot.docs.map(async (doc) => {
+                        const data = doc.data();
+                        const uid = data.uid;
+                        if (!userIds.includes(uid)) return null;
+                        let userData = null;
+                        if (uid) userData = await getUserData(uid);
+                        return {
+                            username: data.username || "Anonymous",
+                            score: data.score || 0,
+                            city: userData?.city || data.city || "-",
+                            uid: uid,
+                            email: data.email || null,
+                            avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
+                        };
+                    })
+                );
+                leaderboardData = leaderboardData.filter(entry => entry !== null);
+                leaderboardData.sort((a, b) => b.score - a.score);
+                leaderboardData = leaderboardData.slice(0, rowsPerPage * 5);
+                currentPage = 0;
+                renderTablePage();
+                return;
+            }
+            let q = query(collection(db, "bangerBattleScores"), 
+                where("timestamp", ">=", startDate), 
+                orderBy("timestamp", "desc"));
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="4">No scores yet for this time period.</td></tr>';
+                leaderboardData = [];
+                renderTablePage();
+                return;
+            }
+            leaderboardData = await Promise.all(
+                snapshot.docs.map(async (docSnap) => {
+                    const data = docSnap.data();
+                    const uid = data.uid;
+                    let userData = null;
+                    if (uid) userData = await getUserData(uid);
+                    return {
+                        id: docSnap.id, 
+                        username: data.username || "Anonymous",
+                        score: data.score || 0,
+                        city: userData?.city || data.city || "-",
+                        uid: uid,
+                        email: data.email || null,
+                        avatar: userData?.avatar || data.avatar || "images/avatars/popstarpenguin.jpg"
+                    };
+                })
+            );
             leaderboardData.sort((a, b) => b.score - a.score);
             leaderboardData = leaderboardData.slice(0, rowsPerPage * 5);
             currentPage = 0;

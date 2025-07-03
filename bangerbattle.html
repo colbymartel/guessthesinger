@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banger Battle: Spotify Streams Edition</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
+    }
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      position: relative;
+    }
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 15px;
+        top: 60px;
+        background-color: #1e2b38;
+        padding: 10px 20px;
+        border-radius: 10px;
+        z-index: 1000;
+        width: max-content;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .mobile-menu a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 0;
+        font-weight: bold;
+      }
+      .mobile-menu a:hover {
+        color: #ffcb05;
+      }
+      .mobile-menu.show { display: flex; }
+    }
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px 20px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    @media (max-width: 700px) {
+      .header .logo img { width: 60%; }
+      .header { padding: 20px 5px 10px 5px; }
+    }
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      padding: 32px 18px 24px 18px;
+      text-align: center;
+    }
+    h1 {
+      color: #234d7d;
+      margin-bottom: 18px;
+      font-size: 2.1rem;
+    }
+    .scoreboard {
+      background: #315f85;
+      color: #fff;
+      display: inline-block;
+      padding: 8px 22px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+    .lives {
+      font-size: 1.7rem;
+      margin-bottom: 10px;
+      color: #e74c3c;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+    .battle-row {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin: 32px 0 18px 0;
+      flex-wrap: wrap;
+    }
+    .song-card {
+      background: #f7fafc;
+      border: 2px solid #e7f1f9;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(30,47,90,0.07);
+      padding: 28px 18px 18px 18px;
+      min-width: 220px;
+      max-width: 260px;
+      flex: 1 1 220px;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .song-card.selected {
+      border-color: #28a7ae;
+      background: #e7f1f9;
+      box-shadow: 0 4px 16px rgba(40,167,174,0.13);
+    }
+    .song-card.correct {
+      border-color: #27ae60;
+      background: #d5f4e6;
+      box-shadow: 0 4px 16px rgba(39,174,96,0.2);
+    }
+    .song-card.incorrect {
+      border-color: #e74c3c;
+      background: #fdf2f2;
+      box-shadow: 0 4px 16px rgba(231,76,60,0.2);
+    }
+    .song-card:hover {
+      transform: scale(1.05);
+      background: #e7f1f9;
+      box-shadow: 0 6px 18px rgba(40,167,174,0.13);
+    }
+    .song-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #234d7d;
+      margin-bottom: 8px;
+    }
+    .song-artist {
+      font-size: 1rem;
+      color: #315f85;
+      margin-bottom: 10px;
+    }
+    .streams {
+      font-size: 0.98rem;
+      color: #888;
+      margin-bottom: 6px;
+      display: none;
+    }
+    .song-card.reveal .streams {
+      display: block;
+      font-weight: bold;
+      color: #28a7ae;
+    }
+    .result {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 18px 0 0 0;
+      color: #234d7d;
+      min-height: 32px;
+    }
+    .next-btn {
+      margin-top: 18px;
+      padding: 10px 28px;
+      background: #28a7ae;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: none;
+    }
+    .next-btn:hover {
+      background: #234d7d;
+    }
+    .gameover-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      display: none;
+    }
+    .gameover-content {
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(30,47,90,0.18);
+      max-width: 350px;
+      width: 90vw;
+    }
+    .gameover-content h2 {
+      color: #234d7d;
+      margin-bottom: 10px;
+    }
+    .gameover-content .score {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #28a7ae;
+      margin-bottom: 15px;
+    }
+    .gameover-content .coins {
+      font-size: 1.4rem;
+      color: #ffcb05;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .gameover-content .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+      display: inline-block;
+      margin-right: 4px;
+      position: relative;
+    }
+    .gameover-content .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .gameover-content button {
+      margin-top: 18px;
+      padding: 10px 28px;
+      background: #28a7ae;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .gameover-content button:hover {
+      background: #234d7d;
+    }
+    @media (max-width: 600px) {
+      .battle-row { gap: 12px; }
+      .song-card { min-width: 140px; padding: 18px 6px 12px 6px; }
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    .bottom-nav .coin-emoji {
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+      display: inline-block;
+      margin-right: 4px;
+      position: relative;
+    }
+    .bottom-nav .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .bottom-nav .coin-total {
+      color: #ffcb05;
+      font-weight: bold;
+      font-size: 15px;
+      margin-left: 2px;
+    }
+    .coin-emoji {
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+      display: inline-block;
+      margin-right: 4px;
+      position: relative;
+    }
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .coin-gain {
+      color: #ffcb05;
+      font-weight: bold;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .coin-gain.animate {
+      opacity: 1;
+    }
+    .coin-gain.hidden {
+      display: none;
+    }
+    .bottom-spacer {
+      height: 80px;
+      background: linear-gradient(to bottom, #e7f1f9, #d4e6f1);
+      margin-top: 40px;
+    }
+    .welcome-nav {
+      position: relative;
+    }
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #1e2b38;
+      border-radius: 8px;
+      padding: 8px 0;
+      min-width: 150px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: none;
+    }
+    .dropdown.show {
+      display: block;
+    }
+    .dropdown a {
+      display: block;
+      padding: 8px 16px;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .dropdown a:hover {
+      background: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  <nav style="display: flex; align-items: center; justify-content: space-between; background: #1e2b38; min-height: 48px;">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer; font-weight:bold; color:#ffcb05;" onclick="toggleDropdown()">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+      <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight: bold; color: #fff;">0</span>
+        <span id="coinGain" class="coin-gain hidden">+1</span>
+      </div>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Banger Battle</h1>
+    <div class="scoreboard" id="scoreboard">Score: 0</div>
+    <div class="lives" id="lives"></div>
+    <h2 style="font-size: 1.1rem; font-weight: 400; color: #315f85; margin-bottom: 20px;">Which song has more Spotify streams?</h2>
+    <div class="battle-row">
+      <div class="song-card" id="songA"></div>
+      <div class="song-card" id="songB"></div>
+    </div>
+    <div class="result" id="result"></div>
+    <button class="next-btn" id="nextBtn">Next</button>
+  </div>
+  <div class="bottom-spacer"></div>
+  <div class="gameover-modal" id="gameoverModal">
+    <div class="gameover-content">
+      <h2>Game Over</h2>
+      <div class="score" id="finalScore"></div>
+      <div class="coins" id="coinsAwarded"></div>
+      <button onclick="window.location.reload()">Play Again</button>
+    </div>
+  </div>
+  <div class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item highlight">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { getFirestore, doc, getDoc, updateDoc, increment, addDoc, collection } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let currentUser = null;
+    let userCoins = 0;
+    onAuthStateChanged(auth, async user => {
+      currentUser = user;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          const username = data.username || user.displayName || "User";
+          userCoins = data.coins || 0;
+          document.getElementById("welcomeMessage").textContent = `Welcome, ${username}`;
+          document.getElementById("coinCount").textContent = userCoins;
+          
+          // Populate dropdown menu for logged in user
+          document.getElementById("dropdownMenu").innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="#" id="logoutBtn">Log Out</a>
+          `;
+          
+          // Add logout functionality
+          setTimeout(() => {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                try {
+                  await signOut(auth);
+                  window.location.reload();
+                } catch (err) {
+                  console.error("Logout failed:", err);
+                }
+              });
+            }
+          }, 0);
+        }
+      } else {
+        document.getElementById("welcomeMessage").textContent = "Welcome, Anonymous";
+        document.getElementById("coinCount").textContent = "0";
+        
+        // Populate dropdown menu for guest user
+        document.getElementById("dropdownMenu").innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+      }
+    });
+
+    function formatStreams(n) {
+      if (n >= 1_000_000_000) {
+        return (n / 1_000_000_000).toFixed(2) + ' billion';
+      } else {
+        return (n / 1_000_000).toFixed(2) + ' million';
+      }
+    }
+
+    const songs = [
+      { title: "Blinding Lights", artist: "The Weeknd", streams: 4907388050 },
+      { title: "Shape of You", artist: "Ed Sheeran", streams: 4432988344 },
+      { title: "Starboy", artist: "The Weeknd", streams: 3967502991 },
+      { title: "Someone You Loved", artist: "Lewis Capaldi", streams: 3956091614 },
+      { title: "As It Was", artist: "Harry Styles", streams: 3947172949 },
+      { title: "Sunflower", artist: "Post Malone", streams: 3867725975 },
+      { title: "Sweater Weather", artist: "The Neighbourhood", streams: 3865254483 },
+      { title: "One Dance", artist: "Drake", streams: 3689708149 },
+      { title: "STAY", artist: "The Kid LAROI", streams: 3589377786 },
+      { title: "Perfect", artist: "Ed Sheeran", streams: 3503206112 },
+      { title: "Believer", artist: "Imagine Dragons", streams: 3486780456 },
+      { title: "Heat Waves", artist: "Glass Animals", streams: 3442128349 },
+      { title: "lovely", artist: "Billie Eilish", streams: 3369287538 },
+      { title: "Closer", artist: "The Chainsmokers", streams: 3320057409 },
+      { title: "Say You Won't Let Go", artist: "James Arthur", streams: 3308577744 },
+      { title: "Dance Monkey", artist: "Tones And I", streams: 3282840982 },
+      { title: "Something Just Like This", artist: "The Chainsmokers", streams: 3221917252 },
+      { title: "rockstar", artist: "Post Malone", streams: 3202193163 },
+      { title: "Riptide", artist: "Vance Joy", streams: 3169105911 },
+      { title: "I Wanna Be Yours", artist: "Arctic Monkeys", streams: 3136166406 },
+      { title: "Yellow", artist: "Coldplay", streams: 3111214596 },
+      { title: "Another Love", artist: "Tom Odell", streams: 3094095726 },
+      { title: "The Night We Met", artist: "Lord Huron", streams: 3090567428 },
+      { title: "Take Me to Church", artist: "Hozier", streams: 3088840386 },
+      { title: "Señorita", artist: "Shawn Mendes", streams: 3044156193 },
+      { title: "Watermelon Sugar", artist: "Harry Styles", streams: 3042984501 },
+      { title: "Counting Stars", artist: "OneRepublic", streams: 3029992970 },
+      { title: "Photograph", artist: "Ed Sheeran", streams: 2995606717 },
+      { title: "Don't Start Now", artist: "Dua Lipa", streams: 2967397826 },
+      { title: "Cruel Summer", artist: "Taylor Swift", streams: 2958191664 },
+      { title: "Can't Hold Us", artist: "Macklemore", streams: 2941496658 },
+      { title: "Lucid Dreams", artist: "Juice WRLD", streams: 2915999849 },
+      { title: "goosebumps", artist: "Travis Scott", streams: 2868647722 },
+      { title: "Circles", artist: "Post Malone", streams: 2867220191 },
+      { title: "Die For You", artist: "The Weeknd", streams: 2845443297 },
+      { title: "Bohemian Rhapsody", artist: "Queen", streams: 2838734283 },
+      { title: "Viva La Vida", artist: "Coldplay", streams: 2832397368 },
+      { title: "Thinking out Loud", artist: "Ed Sheeran", streams: 2817231590 },
+      { title: "Love Yourself", artist: "Justin Bieber", streams: 2812345916 },
+      { title: "Shallow", artist: "Lady Gaga", streams: 2810452998 },
+      { title: "God's Plan", artist: "Drake", streams: 2806475996 },
+      { title: "Just the Way You Are", artist: "Bruno Mars", streams: 2804177872 },
+      { title: "All Of Me", artist: "John Legend", streams: 2771817121 },
+      { title: "Wake Me Up", artist: "Avicii", streams: 2768458756 },
+      { title: "Thunder", artist: "Imagine Dragons", streams: 2754848461 },
+      { title: "bad guy", artist: "Billie Eilish", streams: 2753011617 },
+      { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", streams: 2751137111 },
+      { title: "Every Breath You Take", artist: "The Police", streams: 2743246235 },
+      { title: "Demons", artist: "Imagine Dragons", streams: 2720500900 },
+      { title: "Locked Out of Heaven", artist: "Bruno Mars", streams: 2707792266 },
+      { title: "Stressed Out", artist: "Twenty One Pilots", streams: 2701326849 },
+      { title: "The Hills", artist: "The Weeknd", streams: 2701237737 },
+      { title: "When I Was Your Man", artist: "Bruno Mars", streams: 2690569671 },
+      { title: "Die With A Smile", artist: "Lady Gaga", streams: 2685043827 },
+      { title: "Without Me", artist: "Eminem", streams: 2684686219 },
+      { title: "Mr. Brightside", artist: "The Killers", streams: 2682713600 },
+      { title: "That's What I Like", artist: "Bruno Mars", streams: 2681344302 },
+      { title: "HUMBLE.", artist: "Kendrick Lamar", streams: 2676517225 },
+      { title: "In the End", artist: "Linkin Park", streams: 2644169593 },
+      { title: "Do I Wanna Know?", artist: "Arctic Monkeys", streams: 2630300556 },
+      { title: "No Role Modelz", artist: "J. Cole", streams: 2622430709 },
+      { title: "Lose Yourself", artist: "Eminem", streams: 2598571095 },
+      { title: "Let Her Go", artist: "Passenger", streams: 2593665073 },
+      { title: "Flowers", artist: "Miley Cyrus", streams: 2581111667 },
+      { title: "Unforgettable", artist: "French Montana", streams: 2560915154 },
+      { title: "7 rings", artist: "Ariana Grande", streams: 2559089327 },
+      { title: "Let Me Love You", artist: "DJ Snake", streams: 2558751674 },
+      { title: "drivers license", artist: "Olivia Rodrigo", streams: 2537986519 },
+      { title: "Treat You Better", artist: "Shawn Mendes", streams: 2534434565 },
+      { title: "Kill Bill", artist: "SZA", streams: 2530259885 },
+      { title: "Iris", artist: "The Goo Goo Dolls", streams: 2488326596 },
+      { title: "One Kiss", artist: "Calvin Harris", streams: 2483333393 },
+      { title: "Sorry", artist: "Justin Bieber", streams: 2478186768 },
+      { title: "Don't Stop Believin'", artist: "Journey", streams: 2475797646 },
+      { title: "Smells Like Teen Spirit", artist: "Nirvana", streams: 2467554506 },
+      { title: "There's Nothing Holdin' Me Back", artist: "Shawn Mendes", streams: 2459047866 },
+      { title: "See You Again", artist: "Tyler, The Creator", streams: 2455845324 },
+      { title: "good 4 u", artist: "Olivia Rodrigo", streams: 2455570196 },
+      { title: "All The Stars", artist: "Kendrick Lamar", streams: 2438898635 },
+      { title: "Happier", artist: "Marshmello", streams: 2427523529 },
+      { title: "Seven", artist: "Jung Kook", streams: 2427295969 },
+      { title: "Cold Heart", artist: "Elton John", streams: 2420957875 },
+      { title: "The Scientist", artist: "Coldplay", streams: 2413798761 },
+      { title: "SAD!", artist: "XXXTENTACION", streams: 2401004648 },
+      { title: "SICKO MODE", artist: "Travis Scott", streams: 2399087974 },
+      { title: "Save Your Tears", artist: "The Weeknd", streams: 2394651928 },
+      { title: "Lean On", artist: "Major Lazer", streams: 2393299291 },
+      { title: "Jocelyn Flores", artist: "XXXTENTACION", streams: 2386590233 },
+      { title: "Wonderwall", artist: "Oasis", streams: 2386038056 },
+      { title: "Take on Me", artist: "a-ha", streams: 2381774526 },
+      { title: "Uptown Funk", artist: "Mark Ronson", streams: 2365039222 },
+      { title: "Don't Stop Me Now", artist: "Queen", streams: 2363131394 },
+      { title: "XO Tour Llif3", artist: "Lil Uzi Vert", streams: 2363075603 },
+      { title: "Espresso", artist: "Sabrina Carpenter", streams: 2359311059 },
+      { title: "Levitating", artist: "Dua Lipa", streams: 2356681719 },
+      { title: "New Rules", artist: "Dua Lipa", streams: 2350287184 },
+      { title: "Someone Like You", artist: "Adele", streams: 2334288098 },
+      { title: "Too Good At Goodbyes", artist: "Sam Smith", streams: 2329639591 },
+      { title: "Stay With Me", artist: "Sam Smith", streams: 2320559051 },
+      { title: "Havana", artist: "Camila Cabello", streams: 2310517006 },
+      { title: "Sweet Child O' Mine", artist: "Guns N' Roses", streams: 2309726448 },
+      { title: "Numb", artist: "Linkin Park", streams: 2308701141 },
+      { title: "505", artist: "Arctic Monkeys", streams: 2304288121 },
+      { title: "Memories", artist: "Maroon 5", streams: 2291643375 },
+      { title: "Without Me", artist: "Halsey", streams: 2284537148 },
+      { title: "Payphone", artist: "Maroon 5", streams: 2272756286 },
+      { title: "Beautiful Things", artist: "Benson Boone", streams: 2261528667 },
+      { title: "Till I Collapse", artist: "Eminem", streams: 2261093194 },
+      { title: "DÁKITI", artist: "Bad Bunny", streams: 2242678084 },
+      { title: "We Don't Talk Anymore", artist: "Charlie Puth", streams: 2237225700 },
+      { title: "Creep", artist: "Radiohead", streams: 2234242712 },
+      { title: "Clean Baby Sleep White Noise (Loopable)", artist: "Dream Supplier", streams: 2233121135 },
+      { title: "7 Years", artist: "Lukas Graham", streams: 2227392421 },
+      { title: "Before You Go", artist: "Lewis Capaldi", streams: 2222865736 },
+      { title: "when the party's over", artist: "Billie Eilish", streams: 2219471970 },
+      { title: "Stitches", artist: "Shawn Mendes", streams: 2218613727 },
+      { title: "Africa", artist: "TOTO", streams: 2210029738 },
+      { title: "I'm Not The Only One", artist: "Sam Smith", streams: 2209692731 },
+      { title: "Night Changes", artist: "One Direction", streams: 2207510756 },
+      { title: "Pumped Up Kicks", artist: "Foster The People", streams: 2205962077 },
+      { title: "Billie Jean", artist: "Michael Jackson", streams: 2201380913 },
+      { title: "The Real Slim Shady", artist: "Eminem", streams: 2200909776 },
+      { title: "Another One Bites The Dust", artist: "Queen", streams: 2196858818 },
+      { title: "Faded", artist: "Alan Walker", streams: 2196081204 },
+      { title: "I Took A Pill In Ibiza", artist: "Mike Posner", streams: 2193498075 },
+      { title: "Easy On Me", artist: "Adele", streams: 2185852503 },
+      { title: "The Box", artist: "Roddy Ricch", streams: 2184572698 },
+      { title: "INDUSTRY BABY", artist: "Lil Nas X", streams: 2184369329 },
+      { title: "All I Want for Christmas Is You", artist: "Mariah Carey", streams: 2178460300 },
+      { title: "Congratulations", artist: "Post Malone", streams: 2178190745 },
+      { title: "La Bachata", artist: "Manuel Turizo", streams: 2177318263 },
+      { title: "I'm Yours", artist: "Jason Mraz", streams: 2171064229 },
+      { title: "See You Again", artist: "Wiz Khalifa", streams: 2158934709 },
+      { title: "Dreams", artist: "Fleetwood Mac", streams: 2158659343 },
+      { title: "Rolling in the Deep", artist: "Adele", streams: 2154805055 },
+      { title: "Moonlight", artist: "XXXTENTACION", streams: 2148496783 },
+      { title: "Mockingbird", artist: "Eminem", streams: 2145577076 },
+      { title: "Kiss Me More", artist: "Doja Cat", streams: 2142962440 },
+      { title: "Don't Let Me Down", artist: "The Chainsmokers", streams: 2140878628 },
+      { title: "Gangsta's Paradise", artist: "Coolio", streams: 2139172096 },
+      { title: "Somebody That I Used To Know", artist: "Gotye", streams: 2136973235 },
+      { title: "The Nights", artist: "Avicii", streams: 2134761055 },
+      { title: "Call Out My Name", artist: "The Weeknd", streams: 2133231404 },
+      { title: "I'm Good (Blue)", artist: "David Guetta", streams: 2127109906 },
+      { title: "Everybody Wants To Rule The World", artist: "Tears For Fears", streams: 2127106697 },
+      { title: "Blank Space", artist: "Taylor Swift", streams: 2124938043 },
+      { title: "LA CANCIÓN", artist: "J Balvin", streams: 2120937003 },
+      { title: "Better Now", artist: "Post Malone", streams: 2117881479 },
+      { title: "Radioactive", artist: "Imagine Dragons", streams: 2117731053 },
+      { title: "We Found Love", artist: "Calvin Harris", streams: 2114435670 },
+      { title: "Shut Up and Dance", artist: "WALK THE MOON", streams: 2105571560 },
+      { title: "Danza Kuduro", artist: "Don Omar", streams: 2104899103 },
+      { title: "Hips Don't Lie", artist: "Shakira", streams: 2098350021 },
+      { title: "Sugar", artist: "Maroon 5", streams: 2097304402 },
+      { title: "Maps", artist: "Maroon 5", streams: 2090891841 },
+      { title: "Dynamite", artist: "BTS", streams: 2085502311 },
+      { title: "Attention", artist: "Charlie Puth", streams: 2084033909 },
+      { title: "Why'd You Only Call Me When You're High?", artist: "Arctic Monkeys", streams: 2082712124 },
+      { title: "Me Porto Bonito", artist: "Bad Bunny", streams: 2079130597 },
+      { title: "Roses (Imanbek Remix)", artist: "SAINt JHN", streams: 2077848345 },
+      { title: "Me Rehúso", artist: "Danny Ocean", streams: 2074341051 },
+      { title: "I Like Me Better", artist: "Lauv", streams: 2073450716 },
+      { title: "Somewhere Only We Know", artist: "Keane", streams: 2071653136 },
+      { title: "MONTERO (Call Me By Your Name)", artist: "Lil Nas X", streams: 2071230116 },
+      { title: "Heather", artist: "Conan Gray", streams: 2064968374 },
+      { title: "Mood", artist: "24kGoldn", streams: 2064237899 },
+      { title: "thank u, next", artist: "Ariana Grande", streams: 2057238679 },
+      { title: "HIGHEST IN THE ROOM", artist: "Travis Scott", streams: 2048567113 },
+      { title: "Have You Ever Seen The Rain", artist: "Creedence Clearwater Revival", streams: 2045265365 },
+      { title: "Dandelions", artist: "Ruth B.", streams: 2034549675 },
+      { title: "This Is What You Came For", artist: "Calvin Harris", streams: 2032998595 },
+      { title: "Set Fire to the Rain", artist: "Adele", streams: 2032384261 },
+      { title: "I Ain't Worried", artist: "OneRepublic", streams: 2032376999 },
+      { title: "Heathens", artist: "Twenty One Pilots", streams: 2030114340 },
+      { title: "Chandelier", artist: "Sia", streams: 2028755097 },
+      { title: "September", artist: "Earth, Wind & Fire", streams: 2026092210 },
+      { title: "The Less I Know The Better", artist: "Tame Impala", streams: 2021533640 },
+      { title: "Ride", artist: "Twenty One Pilots", streams: 2020092280 },
+      { title: "A Sky Full of Stars", artist: "Coldplay", streams: 2015012144 },
+      { title: "I Don't Care", artist: "Ed Sheeran", streams: 2012039982 },
+      { title: "Let Me Down Slowly", artist: "Alec Benjamin", streams: 2011822781 },
+      { title: "Dusk Till Dawn", artist: "ZAYN", streams: 2003692278 },
+      { title: "Youngblood", artist: "5 Seconds of Summer", streams: 1998689697 },
+      { title: "Be Alright", artist: "Dean Lewis", streams: 1994298673 },
+      { title: "I Feel It Coming", artist: "The Weeknd", streams: 1992451319 },
+      { title: "a thousand years", artist: "Christina Perri", streams: 1985058668 },
+      { title: "Cheap Thrills", artist: "Sia", streams: 1982920033 },
+      { title: "I Love You So", artist: "The Walters", streams: 1981825329 },
+      { title: "Highway to Hell", artist: "AC/DC", streams: 1977407108 },
+      { title: "traitor", artist: "Olivia Rodrigo", streams: 1974826978 },
+      { title: "Can't Feel My Face", artist: "The Weeknd", streams: 1974179273 },
+      { title: "Titanium", artist: "David Guetta", streams: 1972378875 },
+      { title: "deja vu", artist: "Olivia Rodrigo", streams: 1971465424 },
+      { title: "Ghost", artist: "Justin Bieber", streams: 1971280114 },
+      { title: "Cheerleader (Felix Jaehn Remix)", artist: "OMI", streams: 1966998245 },
+      { title: "Seven Nation Army", artist: "The White Stripes", streams: 1966391039 },
+      { title: "Fuck Love", artist: "XXXTENTACION", streams: 1964367137 },
+      { title: "Bad Habits", artist: "Ed Sheeran", streams: 1964331304 },
+      { title: "Eastside", artist: "benny blanco", streams: 1964212771 },
+      { title: "Livin' On A Prayer", artist: "Bon Jovi", streams: 1959710903 },
+      { title: "One Of The Girls", artist: "The Weeknd", streams: 1958324682 },
+      { title: "Despacito", artist: "Luis Fonsi", streams: 1954583962 },
+      { title: "All Girls Are The Same", artist: "Juice WRLD", streams: 1951227921 },
+      { title: "Summertime Sadness", artist: "Lana Del Rey", streams: 1935422624 },
+      { title: "Money Trees", artist: "Kendrick Lamar", streams: 1929332996 },
+      { title: "Beggin'", artist: "Måneskin", streams: 1928869310 },
+      { title: "Quevedo: Bzrp Music Sessions, Vol. 52", artist: "Bizarrap", streams: 1927376505 },
+      { title: "CAN'T STOP THE FEELING! (from DreamWorks Animation's \"TROLLS\")", artist: "Justin Timberlake", streams: 1924835197 },
+      { title: "Apocalypse", artist: "Cigarettes After Sex", streams: 1924140727 },
+      { title: "Earned It (Fifty Shades Of Grey)", artist: "The Weeknd", streams: 1924043850 },
+      { title: "Hotel California", artist: "Eagles", streams: 1920488192 },
+      { title: "I Don't Wanna Live Forever (Fifty Shades Darker)", artist: "ZAYN", streams: 1919964497 },
+      { title: "Under Pressure", artist: "Queen", streams: 1917439498 },
+      { title: "Party In The U.S.A.", artist: "Miley Cyrus", streams: 1917320969 },
+      { title: "Woman", artist: "Doja Cat", streams: 1916910124 },
+      { title: "everything i wanted", artist: "Billie Eilish", streams: 1903411547 },
+      { title: "Umbrella", artist: "Rihanna", streams: 1902935414 },
+      { title: "Passionfruit", artist: "Drake", streams: 1902509086 },
+      { title: "Mask Off", artist: "Future", streams: 1892973507 },
+      { title: "Back In Black", artist: "AC/DC", streams: 1892169856 },
+      { title: "Adore You", artist: "Harry Styles", streams: 1887504891 },
+      { title: "Save Your Tears (Remix)", artist: "The Weeknd", streams: 1885979910 },
+      { title: "Love The Way You Lie", artist: "Eminem", streams: 1883758444 },
+      { title: "Thunderstruck", artist: "AC/DC", streams: 1883146786 },
+      { title: "Last Christmas", artist: "Wham!", streams: 1882474195 },
+      { title: "Lose Control", artist: "Teddy Swims", streams: 1879346037 },
+      { title: "Sweet but Psycho", artist: "Ava Max", streams: 1879017546 },
+      { title: "Hey, Soul Sister", artist: "Train", streams: 1876797451 },
+      { title: "Clean Baby Sleep White Noise (Loopable)", artist: "Dream Supplier", streams: 1873931846 },
+      { title: "Timber", artist: "Pitbull", streams: 1866339295 },
+      { title: "Shivers", artist: "Ed Sheeran", streams: 1865932891 },
+      { title: "death bed (coffee for your head)", artist: "Powfu", streams: 1864986938 },
+      { title: "Feel Good Inc.", artist: "Gorillaz", streams: 1863623900 },
+      { title: "greedy", artist: "Tate McRae", streams: 1858123695 },
+      { title: "Anti-Hero", artist: "Taylor Swift", streams: 1857629826 },
+      { title: "Pink + White", artist: "Frank Ocean", streams: 1854393202 },
+      { title: "What Do You Mean?", artist: "Justin Bieber", streams: 1851607125 },
+      { title: "In Da Club", artist: "50 Cent", streams: 1843073186 },
+      { title: "Cake By The Ocean", artist: "DNCE", streams: 1842870905 },
+      { title: "Love On The Brain", artist: "Rihanna", streams: 1841732548 },
+      { title: "Daddy Issues", artist: "The Neighbourhood", streams: 1841560262 },
+      { title: "Summer", artist: "Calvin Harris", streams: 1840701927 },
+      { title: "Rude", artist: "MAGIC!", streams: 1839758571 },
+      { title: "Moves Like Jagger", artist: "Maroon 5", streams: 1836333897 },
+      { title: "Pompeii", artist: "Bastille", streams: 1835056407 },
+      { title: "Sex on Fire", artist: "Kings of Leon", streams: 1830201592 },
+      { title: "ocean eyes", artist: "Billie Eilish", streams: 1829780788 },
+      { title: "Redbone", artist: "Childish Gambino", streams: 1828505688 },
+      { title: "Sign of the Times", artist: "Harry Styles", streams: 1827840807 },
+      { title: "Fix You", artist: "Coldplay", streams: 1822909448 },
+      { title: "Wow.", artist: "Post Malone", streams: 1822790493 },
+      { title: "Everybody Dies In Their Nightmares", artist: "XXXTENTACION", streams: 1818953126 },
+      { title: "Despacito", artist: "Luis Fonsi", streams: 1811837225 },
+      { title: "Ric Flair Drip", artist: "Offset", streams: 1810042194 },
+      { title: "Enemy", artist: "Imagine Dragons", streams: 1807796183 },
+      { title: "Silence", artist: "Marshmello", streams: 1804530665 },
+      { title: "Best Part", artist: "Daniel Caesar", streams: 1803689916 },
+      { title: "I Want It That Way", artist: "Backstreet Boys", streams: 1799269563 },
+      { title: "Who", artist: "Jimin", streams: 1798127722 },
+      { title: "One Last Time", artist: "Ariana Grande", streams: 1795714410 },
+      { title: "APT.", artist: "ROSÉ", streams: 1792801489 },
+      { title: "Lover", artist: "Taylor Swift", streams: 1792589897 },
+      { title: "Halo", artist: "Beyoncé", streams: 1792268325 },
+      { title: "Unholy", artist: "Sam Smith", streams: 1791261157 },
+      { title: "Sure Thing", artist: "Miguel", streams: 1790274304 },
+      { title: "Peaches", artist: "Justin Bieber", streams: 1788204647 },
+      { title: "Cake By The Ocean", artist: "MUSIC LAB JPN", streams: 1786988123 },
+      { title: "I Gotta Feeling", artist: "Black Eyed Peas", streams: 1786572863 },
+      { title: "High Hopes", artist: "Panic! At The Disco", streams: 1784242636 },
+      { title: "Talking to the Moon", artist: "Bruno Mars", streams: 1780905290 },
+      { title: "Falling", artist: "Trevor Daniel", streams: 1776840985 },
+      { title: "Hall of Fame", artist: "The Script", streams: 1773154550 },
+      { title: "you broke me first", artist: "Tate McRae", streams: 1766359834 },
+      { title: "Ransom", artist: "Lil Tecca", streams: 1765474268 },
+      { title: "Poker Face", artist: "Lady Gaga", streams: 1760255208 }
+    ];
+
+    let score = 0;
+    let lives = 3;
+    let currentA = null;
+    let currentB = null;
+    let canGuess = true;
+    let highScore = localStorage.getItem('bangerBattleHighScore') || 0;
+    updateLives();
+    updateScoreboard();
+
+    function updateScoreboard() {
+      document.getElementById('scoreboard').textContent = `Score: ${score} | High Score: ${highScore}`;
+    }
+
+    function pickTwoSongs() {
+      let idxA = Math.floor(Math.random() * songs.length);
+      let idxB;
+      do {
+        idxB = Math.floor(Math.random() * songs.length);
+      } while (idxB === idxA);
+      return [songs[idxA], songs[idxB]];
+    }
+
+    function renderBattle() {
+      canGuess = true;
+      document.getElementById('result').textContent = '';
+      document.getElementById('nextBtn').style.display = 'none';
+      [currentA, currentB] = pickTwoSongs();
+      renderSong('songA', currentA);
+      renderSong('songB', currentB);
+      document.getElementById('songA').className = 'song-card';
+      document.getElementById('songB').className = 'song-card';
+    }
+
+    function renderSong(id, song) {
+      const el = document.getElementById(id);
+      el.innerHTML = `
+        <div class="song-title">${song.title}</div>
+        <div class="song-artist">${song.artist}</div>
+        <div class="streams">${formatStreams(song.streams)} streams</div>
+      `;
+      el.onclick = () => guess(id);
+    }
+
+    function updateLives() {
+      const livesEl = document.getElementById('lives');
+      livesEl.textContent = '❤️'.repeat(lives) + '🖤'.repeat(3 - lives);
+    }
+
+    function guess(selectedId) {
+      if (!canGuess || lives === 0) return;
+      canGuess = false;
+      const otherId = selectedId === 'songA' ? 'songB' : 'songA';
+      const selectedSong = selectedId === 'songA' ? currentA : currentB;
+      const otherSong = selectedId === 'songA' ? currentB : currentA;
+      
+      // Remove previous classes and add reveal
+      document.getElementById(selectedId).classList.remove('selected', 'correct', 'incorrect');
+      document.getElementById(otherId).classList.remove('selected', 'correct', 'incorrect');
+      document.getElementById(selectedId).classList.add('reveal');
+      document.getElementById(otherId).classList.add('reveal');
+      
+      // Reveal streams
+      document.querySelectorAll('.streams').forEach(e => e.style.display = 'block');
+      
+      let resultText = '';
+      if (selectedSong.streams > otherSong.streams) {
+        score++;
+        resultText = '✅ Correct!';
+        document.getElementById(selectedId).classList.add('correct');
+      } else if (selectedSong.streams === otherSong.streams) {
+        resultText = '🤷‍♂️ Tie!';
+        document.getElementById(selectedId).classList.add('selected');
+      } else {
+        lives--;
+        updateLives();
+        resultText = '❌ Nope!';
+        document.getElementById(selectedId).classList.add('incorrect');
+      }
+      
+      updateScoreboard();
+      document.getElementById('result').textContent = resultText;
+      if (lives > 0) {
+        document.getElementById('nextBtn').style.display = 'inline-block';
+      } else {
+        setTimeout(gameOver, 800);
+      }
+    }
+
+    async function gameOver() {
+      document.getElementById('gameoverModal').style.display = 'flex';
+      document.getElementById('finalScore').textContent = `Final Score: ${score}`;
+      document.getElementById('coinsAwarded').innerHTML = `<div class="coin-emoji"></div><span>+${score} coins</span>`;
+      // Update high score if current score is higher
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('bangerBattleHighScore', highScore);
+      }
+      // Award coins if logged in
+      if (currentUser && score > 0) {
+        const userRef = doc(db, "users", currentUser.uid);
+        
+        // Check for double coins boost
+        const userSnap = await getDoc(userRef);
+        let coinsToAward = score;
+        let newTotal = 0;
+        
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          if (userData.doubleCoinsUntil && Date.now() < userData.doubleCoinsUntil) {
+            coinsToAward *= 2;
+          }
+          newTotal = (userData.coins || 0) + coinsToAward;
+        }
+        
+        await updateDoc(userRef, { coins: increment(coinsToAward) });
+        userCoins += coinsToAward; // Update user's coin count in the UI
+        document.getElementById("coinCount").textContent = userCoins;
+        animateCoinGain(coinsToAward);
+        
+        // Save score to leaderboard
+        try {
+          const userData = userSnap.data();
+          await addDoc(collection(db, "bangerBattleScores"), {
+            uid: currentUser.uid,
+            username: userData?.username || currentUser.displayName || "Anonymous",
+            email: currentUser.email,
+            score: score,
+            city: userData?.city || null,
+            avatar: userData?.avatar || null,
+            timestamp: new Date()
+          });
+        } catch (err) {
+          console.error("Failed to save score:", err);
+        }
+      }
+      updateScoreboard(); // Update scoreboard to show new high score
+    }
+
+    document.getElementById('nextBtn').onclick = renderBattle;
+    
+    function animateCoinGain(amount) {
+      const coinGain = document.getElementById("coinGain");
+      if (!coinGain) return;
+
+      coinGain.textContent = `+${amount}`;
+      coinGain.classList.remove("hidden");
+      coinGain.classList.add("animate");
+
+      setTimeout(() => {
+        coinGain.classList.remove("animate");
+        coinGain.classList.add("hidden");
+      }, 1000);
+    }
+    
+    // Hamburger menu logic
+    window.toggleMenu = function(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('show');
+    };
+    
+    // Dropdown menu functionality
+    window.toggleDropdown = function() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.classList.toggle('show');
+    };
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('dropdownMenu');
+      const welcomeMsg = document.getElementById('welcomeMessage');
+      if (dropdown && !dropdown.contains(event.target) && !welcomeMsg.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+    
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.querySelector('.hamburger');
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove('show');
+      }
+    });
+    renderBattle();
+  </script>
+</body>
+</html>
