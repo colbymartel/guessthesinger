@@ -954,47 +954,42 @@ function showUserProfile(userId) {
 
       const avatar = userData.avatar || "/avatars/avatar1.png";
       const artists = userData.favoriteArtist || "";
-const artistTags = artists
-  .split(",")
-  .map(tag => `<div class="vibe-tag">${tag.trim()}</div>`)
-  .join("");
+      const artistList = artists.split(",").map(tag => tag.trim()).filter(tag => tag.length > 0);
+      const artistTags = artistList
+        .map(tag => `<div class="vibe-tag">${tag}</div>`)
+        .join("");
 
-  content.innerHTML = `
-  <div class="profile-modal" style="text-align:left;">
-    <div class="profile-top" style="display:flex; align-items:center; gap:16px;">
-      <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" alt="Avatar" class="profile-avatar" style="width:64px; height:64px;" />
-      <div>
-        <div class="profile-name">
-          ${userData.username || "Anonymous"}
-          ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co", "jackmama4@gmail.com"].includes(userData.email)
-            ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
-            : ''}
+      content.innerHTML = `
+      <div class="profile-modal" style="text-align:left;">
+        <div class="profile-top" style="display:flex; align-items:center; gap:16px;">
+          <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" alt="Avatar" class="profile-avatar" style="width:64px; height:64px;" />
+          <div>
+            <div class="profile-name">
+              ${userData.username || "Anonymous"}
+              ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co", "jackmama4@gmail.com"].includes(userData.email)
+                ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
+                : ''}
+            </div>
+            <div class="profile-city">
+              <i class="fas fa-map-marker-alt"></i> ${userData.city || "—"}
+            </div>
+          </div>
         </div>
-        <div class="profile-city">
-          <i class="fas fa-map-marker-alt"></i> ${userData.city || "—"}
+
+        <div class="vibe-header">Currently Vibing To…</div>
+        <div class="vibe-tags">
+          ${artistTags || '<div style="color:#888;">—</div>'}
         </div>
+
+        <div class="vibe-header" style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
+          <span>DM Me!</span>
+          <a href="/inbox.html?recipientId=${userId}" title="Send Message">
+            <i class="fas fa-envelope" style="color:#28a7ae; font-size:20px;"></i>
+          </a>
+        </div>
+        <p style="font-size:13px; color:#555;">Ask me a question, challenge me to guess your favorite artist, or just say hey.</p>
       </div>
-    </div>
-
-    <div class="vibe-header">Currently Vibing To…</div>
-    <div class="vibe-tags">
-      ${
-        (userData.favoriteArtist || "")
-          .split(",")
-          .map(artist => `<div class="vibe-tag">${artist.trim()}</div>`)
-          .join("") || '<div style="color:#888;">—</div>'
-      }
-    </div>
-
-    <div class="vibe-header" style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
-      <span>DM Me!</span>
-      <a href="/inbox.html?recipientId=${userId}" title="Send Message">
-        <i class="fas fa-envelope" style="color:#28a7ae; font-size:20px;"></i>
-      </a>
-    </div>
-    <p style="font-size:13px; color:#555;">Ask me a question, challenge me to guess your favorite artist, or just say hey.</p>
-  </div>
-`;
+    `;
 
     });
 
