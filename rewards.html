@@ -10,7 +10,7 @@
     body {
       margin: 0;
       font-family: 'Fredoka', sans-serif;
-      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      background: #19202a;
       padding-bottom: 90px;
     }
 
@@ -448,6 +448,39 @@
       filter: grayscale(1) brightness(0.85);
       opacity: 0.7;
     }
+    /* Sticker dropdown fit */
+    #stickerSelect {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 10px 0 10px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #f7fafc;
+      border: 1.5px solid #cfd8dc;
+      outline: none;
+      display: block;
+    }
+    
+    /* Raffle dropdown fit */
+    #raffleSelect {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 10px 0 10px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #f7fafc;
+      border: 1.5px solid #cfd8dc;
+      outline: none;
+      display: block;
+    }
+    /* Add highlight for selected card */
+    .selected-reward-card {
+      outline: 3px solid #4682b4;
+      box-shadow: 0 0 0 4px #b3d1ee;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -474,87 +507,38 @@
   <div class="reward-grid">
 
 
-    <div class="reward-card shop-style" data-title="Pop-Star Penguin Sticker" data-cost="100">
-      <img src="images/avatars/penguindecal.png" alt="Penguin Sticker" class="reward-image-top">
-    <div class="reward-title center-text">Pop-Star Penguin Sticker</div>
-    <div class="reward-desc center-text">2'' die-cut sticker</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      100
+    <!-- Condensed Sticker Reward Card -->
+    <div class="reward-card shop-style" data-title="Sticker" data-cost="100" id="sticker-reward">
+      <img id="stickerImage" src="images/avatars/penguindecal.png" alt="Sticker" class="reward-image-top">
+      <div class="reward-title center-text" id="stickerTitle">Pop-Star Penguin Sticker</div>
+      <div class="reward-desc center-text">2'' die-cut sticker</div>
+      <select id="stickerSelect" style="margin: 10px auto 10px auto; display: block; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+        <option value="penguindecal.png" data-title="Pop-Star Penguin Sticker" data-cost="100">Pop-Star Penguin</option>
+        <option value="discodecal.png" data-title="Disco Dolphin Sticker" data-cost="100">Disco Dolphin</option>
+        <option value="dumpling.png" data-title="Dancing Dumpling Sticker" data-cost="100">Dancing Dumpling</option>
+        <option value="MusicalMatcha.png" data-title="Musical Matcha Sticker" data-cost="100">Musical Matcha</option>
+        <option value="jazzyjaguar.png" data-title="Jazzy Jaguar Sticker" data-cost="100">Jazzy Jaguar</option>
+        <option value="timmysticker.png" data-title="SoupTimmy Sticker" data-cost="125">SoupTimmy</option>
+      </select>
+      <div class="price-tag" id="stickerPrice">
+        <span class='coin-icon'></span> 100
+      </div>
     </div>
-  </div>
-  
 
-  <div class="reward-card shop-style" data-title="Disco Dolphin Sticker" data-cost="100">
-    <img src="images/avatars/discodecal.png" alt="Dolphin Sticker" class="reward-image-top">
-    <div class="reward-title center-text">Disco Dolphin Sticker</div>
-    <div class="reward-desc center-text">2'' die-cut sticker</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      100
-    </div>
-  </div>
-
-
-
-  <div class="reward-card shop-style" data-title="Dancing Dumpling Sticker" data-cost="100">
-    <img src="images/avatars/dumpling.png" alt="Dumpling Sticker" class="reward-image-top">
-    <div class="reward-title center-text">Dancing Dumpling Sticker</div>
-    <div class="reward-desc center-text">2'' die-cut sticker</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      150
-    </div>
-  </div>
-
-
-  <div class="reward-card shop-style" data-title="Musical Matcha Sticker" data-cost="100">
-    <img src="images/avatars/MusicalMatcha.png" alt="Matcha Sticker" class="reward-image-top">
-    <div class="reward-title center-text">Musical Matcha Sticker</div>
-    <div class="reward-desc center-text">2'' die-cut sticker</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      150
-    </div>
-  </div>
-
-  <div class="reward-card shop-style" data-title="Jazzy Jaguar Sticker" data-cost="100">
-    <img src="images/avatars/jazzyjaguar.png" alt="Jaguar Sticker" class="reward-image-top">
-    <div class="reward-title center-text">Jazzy Jaguar Sticker</div>
-    <div class="reward-desc center-text">2'' die-cut sticker</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      150
-    </div>
-  </div>
-
-  <div class="reward-card shop-style" data-title="SoupTimmy Sticker" data-cost="125">
-    <img src="images/avatars/timmysticker.png" alt="SoupTimmy Sticker" class="reward-image-top">
-    <div class="reward-title center-text">SoupTimmy Sticker</div>
-    <div class="reward-desc center-text">2'' die-cut sticker</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      150
-    </div>
-  </div>
-
-  <div class="reward-card shop-style" data-title="Raffle Entry" data-cost="50">
+  <!-- Condensed Raffle Entry Reward Card -->
+  <div class="reward-card shop-style" data-title="Raffle Entry" data-cost="100" id="raffle-reward">
     <img src="images/premium.jpg" alt="Raffle Entry" class="reward-image-top">
-    <div class="reward-title center-text">1 Raffle Entry</div>
-    <div class="reward-desc center-text">One entry into raffle for a 1-Year Spotify Premium Subscription!</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      50
-    </div>
-  </div>
-
-  <div class="reward-card shop-style" data-title="10 Raffle Entries" data-cost="400">
-    <img src="images/premium.jpg" alt="10 Raffle Entries" class="reward-image-top">
-    <div class="reward-title center-text">10 Raffle Entries</div>
-    <div class="reward-desc center-text">10 entries into raffle for a 1-Year Spotify Premium Subscription!</div>
-    <div class="price-tag">
-      <span class="coin-icon"></span>
-      400
+    <div class="reward-title center-text" id="raffleTitle">1 Raffle Entry</div>
+    <div class="reward-desc center-text">Entry into raffle for a 1-Year Spotify Premium Subscription!</div>
+    <select id="raffleSelect" style="margin: 10px auto 10px auto; display: block; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+      <option value="1" data-title="1 Raffle Entry" data-cost="100">1 Entry (100 coins)</option>
+      <option value="5" data-title="5 Raffle Entries" data-cost="400">5 Entries (400 coins)</option>
+      <option value="10" data-title="10 Raffle Entries" data-cost="700">10 Entries (700 coins)</option>
+      <option value="20" data-title="20 Raffle Entries" data-cost="1200">20 Entries (1200 coins)</option>
+      <option value="50" data-title="50 Raffle Entries" data-cost="2500">50 Entries (2500 coins)</option>
+    </select>
+    <div class="price-tag" id="rafflePrice">
+      <span class="coin-icon"></span> 100
     </div>
   </div>
   <div class="reward-card shop-style" data-title="Double Coins" data-cost="300" id="double-coins-reward">
@@ -672,21 +656,36 @@
 
 let selectedReward = null;
 
-  document.querySelectorAll('.reward-card:not(.disabled-reward)').forEach(card => {
-    card.addEventListener('click', () => {
-      const title = card.dataset.title;
-      const coinCost = parseInt(card.dataset.cost);
-      selectedReward = { title, coinCost };
-
-      // Show/hide charity selection based on reward type
-      const charitySelect = document.getElementById('charitySelect');
-      if (title === 'Charitable Donation') {
-        charitySelect.classList.remove('hidden');
-      } else {
-        charitySelect.classList.add('hidden');
+  document.querySelectorAll('.price-tag').forEach(priceTag => {
+    priceTag.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const card = priceTag.closest('.reward-card');
+      if (!card || card.classList.contains('disabled-reward') || card.classList.contains('locked')) return;
+      // For sticker reward, use the selected sticker info
+      if (card.id === 'sticker-reward') {
+        const stickerSelect = document.getElementById('stickerSelect');
+        const selected = stickerSelect.options[stickerSelect.selectedIndex];
+        selectedReward = {
+          title: selected.getAttribute('data-title'),
+          coinCost: parseInt(selected.getAttribute('data-cost')),
+          image: selected.value
+        };
+        document.getElementById('charitySelect').classList.add('hidden');
+        document.getElementById('redeemText').textContent = `Redeem \"${selectedReward.title}\" for ${selectedReward.coinCost} coins?`;
+        document.getElementById('redeemModal').classList.remove('hidden');
+        return;
       }
-
-      document.getElementById('redeemText').textContent = `Redeem "${title}" for ${coinCost} coins?`;
+      // For donation, show charity select
+      if (card.dataset.title === 'Charitable Donation') {
+        document.getElementById('charitySelect').classList.remove('hidden');
+      } else {
+        document.getElementById('charitySelect').classList.add('hidden');
+      }
+      selectedReward = {
+        title: card.dataset.title,
+        coinCost: parseInt(card.dataset.cost)
+      };
+      document.getElementById('redeemText').textContent = `Redeem \"${selectedReward.title}\" for ${selectedReward.coinCost} coins?`;
       document.getElementById('redeemModal').classList.remove('hidden');
     });
   });
@@ -769,6 +768,68 @@ let selectedReward = null;
       selectedReward = { title: 'Double Coins (24 Hours)', coinCost: 300 };
       document.getElementById('charitySelect').classList.add('hidden');
       document.getElementById('redeemText').textContent = `Redeem "Double Coins (24 Hours)" for 300 coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
+  }
+
+  // Sticker dropdown logic
+  const stickerSelect = document.getElementById('stickerSelect');
+  if (stickerSelect) {
+    const stickerImage = document.getElementById('stickerImage');
+    const stickerTitle = document.getElementById('stickerTitle');
+    const stickerPrice = document.getElementById('stickerPrice');
+    let currentSticker = {
+      title: stickerSelect.options[stickerSelect.selectedIndex].getAttribute('data-title'),
+      cost: parseInt(stickerSelect.options[stickerSelect.selectedIndex].getAttribute('data-cost')),
+      image: stickerSelect.value
+    };
+    stickerSelect.addEventListener('change', function() {
+      const selected = stickerSelect.options[stickerSelect.selectedIndex];
+      stickerImage.src = 'images/avatars/' + selected.value;
+      stickerTitle.textContent = selected.getAttribute('data-title');
+      stickerPrice.innerHTML = `<span class='coin-icon'></span> ${selected.getAttribute('data-cost')}`;
+      currentSticker = {
+        title: selected.getAttribute('data-title'),
+        cost: parseInt(selected.getAttribute('data-cost')),
+        image: selected.value
+      };
+    });
+    // Only open redeem modal if price tag is clicked
+    stickerPrice.addEventListener('click', function(e) {
+      e.stopPropagation();
+      selectedReward = { title: currentSticker.title, coinCost: currentSticker.cost, image: currentSticker.image };
+      document.getElementById('charitySelect').classList.add('hidden');
+      document.getElementById('redeemText').textContent = `Redeem \"${currentSticker.title}\" for ${currentSticker.cost} coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
+  }
+
+  // Raffle dropdown logic
+  const raffleSelect = document.getElementById('raffleSelect');
+  if (raffleSelect) {
+    const raffleTitle = document.getElementById('raffleTitle');
+    const rafflePrice = document.getElementById('rafflePrice');
+    let currentRaffle = {
+      title: raffleSelect.options[raffleSelect.selectedIndex].getAttribute('data-title'),
+      cost: parseInt(raffleSelect.options[raffleSelect.selectedIndex].getAttribute('data-cost')),
+      entries: parseInt(raffleSelect.value)
+    };
+    raffleSelect.addEventListener('change', function() {
+      const selected = raffleSelect.options[raffleSelect.selectedIndex];
+      raffleTitle.textContent = selected.getAttribute('data-title');
+      rafflePrice.innerHTML = `<span class='coin-icon'></span> ${selected.getAttribute('data-cost')}`;
+      currentRaffle = {
+        title: selected.getAttribute('data-title'),
+        cost: parseInt(selected.getAttribute('data-cost')),
+        entries: parseInt(selected.value)
+      };
+    });
+    // Only open redeem modal if price tag is clicked
+    rafflePrice.addEventListener('click', function(e) {
+      e.stopPropagation();
+      selectedReward = { title: currentRaffle.title, coinCost: currentRaffle.cost, entries: currentRaffle.entries };
+      document.getElementById('charitySelect').classList.add('hidden');
+      document.getElementById('redeemText').textContent = `Redeem \"${currentRaffle.title}\" for ${currentRaffle.cost} coins?`;
       document.getElementById('redeemModal').classList.remove('hidden');
     });
   }
