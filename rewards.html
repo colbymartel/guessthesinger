@@ -712,7 +712,7 @@ let selectedReward = null;
     if (selectedReward.title === 'Charitable Donation') {
       charity = document.getElementById('charitySelect').value;
     }
-    if (selectedReward.title === 'Double Coins (24 Hours)') {
+    if (selectedReward.title && selectedReward.title.includes('Double Coins')) {
       // Check if user already has an active double coins boost
       const userData = userSnap.data();
       if (userData.doubleCoinsUntil && Date.now() < userData.doubleCoinsUntil) {
@@ -722,7 +722,6 @@ let selectedReward = null;
         document.getElementById('charitySelect').classList.add('hidden');
         return;
       }
-      
       // Set doubleCoinsUntil to 24 hours from now
       const now = Date.now();
       const doubleUntil = now + 24 * 60 * 60 * 1000;
@@ -732,7 +731,7 @@ let selectedReward = null;
       });
       await addDoc(collection(db, "redemptions"), {
         uid: auth.currentUser.uid,
-        reward: "Double Coins (24 Hours)",
+        reward: selectedReward.title,
         cost: 300,
         timestamp: serverTimestamp(),
         email: auth.currentUser.email || "N/A"
