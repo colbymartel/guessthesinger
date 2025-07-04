@@ -848,9 +848,9 @@ async function awardCoinsIfEligible(score) {
 
   let coinsToAward = 0;
   if (score >= 900) {
-    coinsToAward = 10;
+    coinsToAward = 20;
   } else if (score >= 800) {
-    coinsToAward = 5;
+    coinsToAward = 10;
   }
 
   const userDocRef = doc(db, "users", currentUser.uid);
