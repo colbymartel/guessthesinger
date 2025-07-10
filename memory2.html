@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Game - Singer Match</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #315f85;
+      margin: 30px 0 10px;
+    }
+    
+    #score {
+      font-size: 1.2rem;
+      color: #315f85;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 100px);
+      grid-template-rows: repeat(4, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 0 auto 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(4, 80px);
+        grid-template-rows: repeat(6, 80px);
+        gap: 8px;
+      }
+      .card {
+        font-size: 11px;
+      }
+      .singer-name {
+        font-size: 11px;
+        padding: 2px;
+        line-height: 1.1;
+      }
+      .singer-name span {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .singer-name span:nth-child(2) {
+        margin-top: 1px;
+      }
+    }
+    
+    .card {
+      background-color: #315f85;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0;
+      transition: background-color 0.3s;
+      border: 3px solid transparent;
+      transition: background-color 0.3s, border-color 0.3s;
+      overflow: hidden;
+    }
+    
+    .card.revealed {
+      border-color: #ffcb05; /* Yellow when revealed */
+    }
+    
+    .card.match {
+      border-color: #4caf50 !important; /* Green on match */
+    }
+    
+    .card.mismatch {
+      border-color: #e74c3c !important; /* Red on mismatch */
+    }
+    
+    img.singer-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+    
+    .singer-name {
+      font-size: 14px;
+      padding: 4px;
+      text-align: center;
+      word-wrap: break-word;
+      white-space: normal;
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      width: 100%;
+    }
+    
+    #message {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #e74c3c;
+      margin-bottom: 10px;
+    }
+    
+    #startBtn {
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      display: block;
+    }
+    
+    #startBtn:hover {
+      background-color: #e6b800;
+    }
+    
+    #startBtn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    #restartBtn {
+      display: none;
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    #giveUpBtn {
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
+    
+    #giveUpBtn:hover {
+      background-color: #c0392b;
+    }
+    
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: fadeDown 1s ease-out;
+    }
+    
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+        padding: 0px;
+      }
+      .header{
+        height: 35px;
+      }
+    }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+    
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    
+    body {
+      padding-bottom: 70px;
+    }
+    
+    .game-over {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .game-over.show {
+      display: flex;
+    }
+    
+    .game-over-content {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      color: #333;
+    }
+    
+    .game-over h2 {
+      color: #315f85;
+      margin-bottom: 20px;
+    }
+    
+    .game-over p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    
+    .restart-button {
+      background: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .restart-button:hover {
+      background: #e6b800;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  
+  <h1>Singer Memory Match</h1>
+  <div id="score">Score: 1000 | Time: <span id="timer">0:00</span></div>
+  <div id="message">Click Start to begin studying the cards!</div>
+  
+  <div class="button-container">
+    <button id="startBtn">Start Study Phase</button>
+    <button id="giveUpBtn">Give Up</button>
+  </div>
+  
+  <div class="grid" id="gameGrid"></div>
+  
+  <button id="restartBtn" onclick="location.reload()">Play Again</button>
+  
+  <div class="game-over" id="gameOver">
+    <div class="game-over-content">
+      <h2>Congratulations!</h2>
+      <p>You matched all the singers!</p>
+      <p>Final Score: <span id="finalScore">0</span></p>
+      <p>Time: <span id="finalTime">0:00</span></p>
+      <button class="restart-button" onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+  
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <script>
+    const singers = [
+      { name: "Drake", image: "images/drake.jpg" },
+      { name: "Taylor Swift", image: "images/taylorswift.jpg" },
+      { name: "Ed Sheeran", image: "images/edsheeran.jpg" },
+      { name: "Ariana Grande", image: "images/arianagrande.jpg" },
+      { name: "Post Malone", image: "images/postmalone.jpg" },
+      { name: "Billie Eilish", image: "images/billieeilish.jpg" },
+      { name: "The Weeknd", image: "images/theweeknd.jpg" },
+      { name: "Dua Lipa", image: "images/dualipa.jpg" },
+      { name: "Justin Bieber", image: "images/justinbieber.jpg" },
+      { name: "Bad Bunny", image: "images/badbunny.jpg" },
+      { name: "Kendrick Lamar", image: "images/kendricklamar.jpg" },
+      { name: "SZA", image: "images/sza.jpg" }
+    ];
+
+    let score = 1000;
+    let revealed = [];
+    let lock = false;
+    let matchesFound = 0;
+    let gameStarted = false;
+    let studyPhase = false;
+    let timer = null;
+    let seconds = 0;
+    
+    const grid = document.getElementById('gameGrid');
+    const scoreEl = document.getElementById('score');
+    const messageEl = document.getElementById('message');
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const giveUpBtn = document.getElementById('giveUpBtn');
+    const timerEl = document.getElementById('timer');
+
+    // Create cards
+    const selected = singers.sort(() => 0.5 - Math.random()).slice(0, 12);
+    let cards = [];
+    selected.forEach(s => {
+      cards.push({ type: 'name', value: s.name, matchId: s.name });
+      cards.push({ type: 'image', value: s.image, matchId: s.name });
+    });
+    cards = cards.sort(() => 0.5 - Math.random());
+
+    cards.forEach(data => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.type = data.type;
+      card.dataset.value = data.value;
+      card.dataset.matchId = data.matchId;
+      
+      card.addEventListener('click', () => {
+        if (!gameStarted || studyPhase || lock || revealed.includes(card) || card.classList.contains('match') || revealed.length === 2) return;
+        revealCard(card);
+        revealed.push(card);
+        if (revealed.length === 2) {
+          lock = true;
+          setTimeout(() => handleCardMatch(), 500);
+        }
+      });
+      grid.appendChild(card);
+    });
+
+    function revealCard(card) {
+      if (card.dataset.type === 'image') {
+        const img = document.createElement('img');
+        img.src = card.dataset.value;
+        img.alt = card.dataset.matchId;
+        img.className = 'singer-img';
+        img.onerror = function() {
+          card.innerHTML = `<div class="singer-name">${card.dataset.matchId}</div>`;
+        };
+        card.innerHTML = '';
+        card.appendChild(img);
+      } else {
+        card.innerHTML = `<div class="singer-name">${card.dataset.value}</div>`;
+      }
+      card.classList.add('revealed');
+    }
+
+    function hideCard(card) {
+      card.innerHTML = '';
+      card.classList.remove('revealed', 'match', 'mismatch');
+    }
+
+    function handleCardMatch() {
+      const [first, second] = revealed;
+      const isMatch = first.dataset.matchId === second.dataset.matchId && first.dataset.type !== second.dataset.type;
+      
+             if (isMatch) {
+         first.classList.remove('revealed');
+         first.classList.add('match');
+         second.classList.remove('revealed');
+         second.classList.add('match');
+         matchesFound++;
+         messageEl.textContent = 'Match found!';
+         messageEl.style.color = '#4caf50';
+         
+         if (matchesFound === 12) {
+           endGame();
+         }
+       } else {
+        first.classList.remove('revealed');
+        first.classList.add('mismatch');
+        second.classList.remove('revealed');
+        second.classList.add('mismatch');
+        score -= 10;
+        messageEl.textContent = 'No match! -10 points';
+        messageEl.style.color = '#e74c3c';
+        
+        setTimeout(() => {
+          hideCard(first);
+          hideCard(second);
+        }, 1000);
+      }
+      
+      revealed = [];
+      lock = false;
+      scoreEl.textContent = `Score: ${score} | Time: ${timerEl.textContent}`;
+      
+      setTimeout(() => {
+        messageEl.textContent = '';
+      }, 1500);
+    }
+
+    function startStudyPhase() {
+      studyPhase = true;
+      startBtn.textContent = 'Start Matching Game';
+      messageEl.textContent = 'Study the cards! Click Start again to begin matching.';
+      messageEl.style.color = '#315f85';
+      
+      // Show all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        revealCard(card);
+      });
+      
+      // Start timer
+      timer = setInterval(() => {
+        seconds++;
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        timerEl.textContent = `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        scoreEl.textContent = `Score: ${score} | Time: ${timerEl.textContent}`;
+      }, 1000);
+    }
+
+    function startMatchingGame() {
+      gameStarted = true;
+      studyPhase = false;
+      startBtn.disabled = true;
+      startBtn.textContent = 'Game Started!';
+      messageEl.textContent = 'Find all the matching pairs!';
+      messageEl.style.color = '#315f85';
+      
+      // Show give up button
+      giveUpBtn.style.display = 'block';
+      
+      // Hide all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        hideCard(card);
+      });
+    }
+
+    function endGame() {
+      clearInterval(timer);
+      giveUpBtn.style.display = 'none';
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('finalTime').textContent = timerEl.textContent;
+      document.getElementById('gameOver').classList.add('show');
+    }
+    
+    function giveUp() {
+      // End the game immediately
+      messageEl.textContent = 'Game ended by player.';
+      messageEl.style.color = '#e74c3c';
+      endGame();
+    }
+
+    function restartGame() {
+      location.reload();
+    }
+
+    startBtn.addEventListener('click', () => {
+      if (!studyPhase) {
+        startStudyPhase();
+      } else {
+        startMatchingGame();
+      }
+    });
+    
+    giveUpBtn.addEventListener('click', giveUp);
+  </script>
+</body>
+</html>

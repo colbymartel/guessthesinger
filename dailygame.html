@@ -167,11 +167,135 @@
   color: white;
 }
 
-.option.incorrect {
+    .option.incorrect {
   background-color: #dc3545 !important;
   border-color: #dc3545;
   color: white;
 }
+
+    /* Dropdown styles from memory.html */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+    .dropdown.show {
+      display: flex;
+    }
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+    .coin-gain {
+      color: #27ae60;
+      font-weight: bold;
+      margin-left: 4px;
+      font-size: 16px;
+      opacity: 0;
+      transform: translateY(0px);
+      transition: all 0.6s ease-out;
+    }
+    .coin-gain.animate {
+      opacity: 1;
+      transform: translateY(-10px);
+    }
+    .hidden {
+      display: none;
+    }
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    body {
+      padding-bottom: 70px; /* ensures content doesn't get hidden behind bottom nav */
+    }
+    .guess-counter {
+      max-width: 500px;
+      width: 90%;
+      margin: 8px auto;
+      margin-top: -20px;
+      background: white;
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .counter-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .counter-label {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
+    }
+    .counter-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #315f85;
+    }
 
   </style>
 </head>
@@ -183,173 +307,1202 @@
       </a>
     </div>
   </header>
-  <nav>
-    <div class="welcome-nav">
-      <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+  <nav style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+      <!-- Coin Display aligned next to Welcome -->
+      <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight: bold;">0</span>
+        <span id="coinGain" class="coin-gain hidden">+10</span>
+      </div>
     </div>
-    <div class="nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/memory.html">Play</a>
-      <a href="/memory-leaderboard.html">Leaderboard</a>
-      <a href="/about.html">About</a>
-    </div>
+    <!-- Hamburger menu on far right -->
     <div class="hamburger" id="hamburger">
       <i class="fas fa-bars"></i>
     </div>
   </nav>
-  <div id="mobileMenu" class="mobile-menu">
-    <a href="/index.html">Home</a>
-    <a href="/memory.html">Play</a>
-    <a href="/memory-leaderboard.html">Leaderboard</a>
+  <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="#" id="infoIcon">Game Rules</a>
     <a href="/about.html">About</a>
   </div>
 
   <div class="progress-bar"><div class="progress" id="progress"></div></div>
-  <div class="container" id="quizContainer">
-    <div class="buttons">
-      <button onclick="goBack()" title="Go Back">←</button>
-      <button onclick="submitAnswer()" title="Guess">✔</button>
-      <button onclick="skipCategory()" title="Skip">→</button>
+  <div class="container" id="quizContainer"></div>
+  <div class="guess-counter">
+    <div class="counter-item">
+      <span class="counter-label">Total Guesses:</span>
+      <span class="counter-value" id="totalGuessesDisplay">0</span>
+    </div>
+    <div class="counter-item">
+      <span class="counter-label">Hints Used:</span>
+      <span class="counter-value" id="hintsUsedDisplay">0</span>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmationModal" class="confirmation-modal">
+    <div class="confirmation-content">
+      <div class="confirmation-title">Unlock Hint</div>
+      <div class="confirmation-message" id="confirmationMessage"></div>
+      <div class="confirmation-buttons">
+        <button class="confirm-btn" id="confirmUnlockBtn">Unlock</button>
+        <button class="cancel-btn" onclick="closeConfirmationModal()">Cancel</button>
+      </div>
     </div>
   </div>
 
   <script>
     const hamburger = document.getElementById("hamburger");
     const mobileMenu = document.getElementById("mobileMenu");
-
     hamburger.addEventListener("click", () => {
       mobileMenu.classList.toggle("show");
     });
 
+    // Option icons (FontAwesome or emoji as placeholders)
+    const optionIcons = {
+      "Male": "<img src='/images/avatars/jazzyjaguar.png' alt='Female' style='width:80px; height:80px;'>",
+      "Female": "<img src='/images/MusicalMatcha.png' alt='Female' style='width:80px; height:80px;'>",
+      "Pop": "<img src='/images/poppenguin.png' alt='Pop' style='width:80px; height:80px;'>",
+      "Rap": "<img src='/images/rhinorapper.png' alt='Rap' style='width:80px; height:80px;'>",
+      "Country": "<img src='/images/horsecountry.png' alt='Country' style='width:80px; height:80px;'>",
+      "R&B": "<img src='/images/rbbird.png' alt='R&B' style='width:80px; height:80px;'>",
+      "Rock": "<img src='/images/rockstarrabbit.png' alt='Rock' style='width:80px; height:80px;'>",
+      "R&B": "<img src='/images/rbbird.png' alt='R&B' style='width:80px; height:80px;'>",
+      "Indie": "<img src='/images/indieiguana.png' alt='Indie' style='width:80px; height:80px;'>",
+      "Under 30": "<img src='/images/age25.png' alt='Under 30' style='width:80px; height:80px;'>",
+      "30-39": "<img src='/images/age30.png' alt='Age 30-39' style='width:80px; height:80px;'>",
+      "40-49": "<img src='/images/age40.png' alt='Age 40-49' style='width:80px; height:80px;'>",
+      "50-59": "<img src='/images/age50.png' alt='Age 50-59' style='width:80px; height:80px;'>",
+      "Over 60": "<img src='/images/age60.png' alt='Over 60' style='width:80px; height:80px;'>",
+      "Passed Away": "<img src='/images/dove.png' alt='Passed Away' style='width:80px; height:80px;'>",
+      "USA": "<img src='/images/usaflag.png' alt='USA' style='width:80px; height:80px;'>",
+      "Canada": "<i class='fas fa-flag fa-2x' style='color:#e75480'></i>",
+      "Australia": "<i class='fas fa-flag fa-2x' style='color:#ffcb05'></i>",
+      "United Kingdom": "<i class='fas fa-flag fa-2x' style='color:#1e2b38'></i>",
+      "Less Than 1 Million": "<i class='fas fa-user-minus fa-2x' style='color:#b8860b'></i>",
+      "1-10 Million": "<i class='fas fa-user-friends fa-2x' style='color:#4a90e2'></i>",
+      "10-50 Million": "<i class='fas fa-users fa-2x' style='color:#e75480'></i>",
+      "50+ Million": "<i class='fas fa-user-plus fa-2x' style='color:#28a745'></i>"
+    };
+
     const questions = [
       {
-        question: "Guess the Gender",
-        options: ["Male", "Female", "Non-Binary"],
+        question: "Guess the Appearance",
+        options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
         correct: "Female"
       },
       {
         question: "Guess the Genre",
-        options: ["Pop", "Rap", "Country", "R&B", "Rock"],
+        options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
         correct: "Pop"
       },
       {
         question: "Guess the Age",
-        options: ["Under 25", "25-29", "30-39", "40-49","50-59", "Over 60"],
-        correct: "Under 25"
+        options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
+        correct: "30-39"
       },
       {
-        question: "Guess the Country",
-        options: ["USA", "Canada", "Australia", "United Kingdom"],
+        question: "Guess the Birthplace",
+        options: ["USA", "Canada", "Europe", "Australia", "Asia", "South America"],
         correct: "USA"
       },
       {
         question: "Guess the Instagram Following",
-        options: ["Less Than 1 Million", "1-10 Million", "10-50 Million", "50+ Million"],
+        options: ["Less Than 1 Million", "1-3 Million", "4-10 Million", "10-20 Million", "20-60 Million", "60+ Million"],
         correct: "1-10 Million"
       },
       {
-        question: "Guess the Monthly Listeners",
-        options: ["Less Than 1 Million", "1-10 Million", "10-50 Million", "50+ Million"],
+        question: "Guess the Career",
+        options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
+        correct: "Grammy Winner"
+      },
+      {
+        question: "Guess the Name",
+        options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
         correct: "50+ Million"
       }
     ];
 
     let current = 0;
     const userAnswers = [];
+    // Add a variable to track if the quiz has started
+    let quizStarted = false;
+    // Track total guesses made throughout the quiz
+    let totalGuesses = 0;
+    let hintsUsed = 0;
+
+    function renderStartPage() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = `
+        <div class="start-page">
+          <div class="start-title">Can you guess his favorite singer?</div>
+          <div class="start-subtitle">July 8, 2025 - Game #1</div>
+          <img src="images/colbypfp.jpg" alt="Person" class="start-img" />
+          <button class="start-btn" onclick="startQuiz()">Go</button>
+        </div>
+      `;
+    }
+
+    window.startQuiz = function() {
+      quizStarted = true;
+      renderQuestion();
+    }
+
+    window.goToStartPage = function() {
+      quizStarted = false;
+      renderQuestion();
+    }
 
     function renderQuestion() {
-  const q = questions[current];
-  const container = document.getElementById('quizContainer');
-  const userAnswer = userAnswers[current];
-  const selected = userAnswer?.selected;
-  const isCorrect = userAnswer?.isCorrect;
+      if (!quizStarted) {
+        renderStartPage();
+        return;
+      }
+      if (current === questions.length) {
+        renderHintPage();
+        return;
+      }
+      const q = questions[current];
+      const container = document.getElementById('quizContainer');
+      const userAnswer = userAnswers[current] || { guesses: [] };
+      const selected = userAnswer.selected;
+      const guesses = userAnswer.guesses || [];
 
-  const optionsHTML = q.options.map(opt => {
-    let className = "option";
-    if (selected === opt) {
-      className += isCorrect ? " correct" : " incorrect";
-    } else if (selected && opt === q.correct && !isCorrect) {
-      className += " correct"; // show correct answer even if they picked wrong
-    }
-    return `<div class="${className}" onclick="selectOption(this)">${opt}</div>`;
-  }).join('');
-
-  container.innerHTML = `
-    <div class="question">${q.question}</div>
-    ${optionsHTML}
-    <div class="buttons">
-      <button onclick="goBack()" title="Go Back">←</button>
-      <button onclick="submitAnswer()" title="Guess">✔</button>
-      <button onclick="skipCategory()" title="Skip">→</button>
-    </div>
-  `;
-
-  document.getElementById('progress').style.width = `${((current + 1) / questions.length) * 100}%`;
-
-  // Disable click if already answered
-  if (userAnswer) {
-    document.querySelectorAll('.option').forEach(opt => {
-      opt.style.pointerEvents = "none";
-    });
-  }
-}
-
-    function selectOption(el) {
-      document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-      el.classList.add('selected');
-    }
-
-    function submitAnswer() {
-  const selected = document.querySelector('.option.selected');
-  if (!selected) return;
-
-  const answer = selected.innerText;
-  const correct = questions[current].correct;
-
-  if (answer === correct) {
-    selected.classList.add("correct");
-  } else {
-    selected.classList.add("incorrect");
-  }
-
-  // Disable further clicks
-  document.querySelectorAll('.option').forEach(opt => {
-    opt.style.pointerEvents = "none";
-  });
-
-  userAnswers[current] = {
-    selected: answer,
-    isCorrect: answer === correct
-  };
-
-      setTimeout(() => {
-        current++;
-        if (current < questions.length) {
-          renderQuestion();
-        } else {
-          alert('End of quiz!');
+      // Options as cards with icons/images
+      const optionsHTML = `<div class="options-grid">` + q.options.map(opt => {
+        let className = "option-card";
+        // Highlight if this option was guessed and correct/incorrect
+        const guessObj = guesses.find(g => g.option === opt);
+        if (guessObj) {
+          className += guessObj.isCorrect ? " correct" : " incorrect";
         }
-      }, 1000);
+        if (selected === opt) {
+          className += " selected";
+        }
+        return `<div class="${className}" onclick="selectOption(this)">
+          <div class="option-icon">${optionIcons[opt] || "<i class='fas fa-question fa-2x'></i>"}</div>
+          <div class="option-label">${opt}</div>
+        </div>`;
+      }).join('') + `</div>`;
+
+      // Guess, Next, Back buttons
+      const guessDisabled = selected ? '' : 'disabled';
+      const nextDisabled = (current < questions.length) ? '' : 'disabled';
+      let backBtnHtml = '';
+      if (current === 0) {
+        backBtnHtml = `<button id="backBtn" class="nav-btn" onclick="goToStartPage()">Back</button>`;
+      } else {
+        backBtnHtml = `<button id="backBtn" class="nav-btn" onclick="goBack()">Back</button>`;
+      }
+      const buttons = `
+        <div class="button-row">
+          ${backBtnHtml}
+          <button id="guessBtn" class="guess-btn" ${guessDisabled} onclick="guessAnswer()">Guess</button>
+          <button id="nextBtn" class="nav-btn" ${nextDisabled} onclick="goNext()">Next</button>
+        </div>
+      `;
+
+      container.innerHTML = `
+        <div class="question-prompt">${q.question}</div>
+        ${optionsHTML}
+        ${buttons}
+      `;
+
+      document.getElementById('progress').style.width = `${((current + 1) / (questions.length + 1)) * 100}%`;
     }
 
-    function skipCategory() {
-      userAnswers[current] = null;
-      current++;
+    function renderFinalGuessPage() {
+      const container = document.getElementById('quizContainer');
+      const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
+      container.innerHTML = `
+        <div class="question-prompt">Guess the Singer</div>
+        <input id="finalGuessInput" class="final-guess-input" type="text" placeholder="Type your guess..." autocomplete="off" />
+        <div class="final-buttons">
+          ${backBtnHtml}
+          <button id="finalGuessBtn" class="guess-btn" onclick="submitFinalGuess()">Guess</button>
+        </div>
+        <div id="finalGuessMessage" class="final-guess-message"></div>
+      `;
+      document.getElementById('progress').style.width = `100%`;
+    }
+
+    window.finalBack = function() {
+      renderHintPage();
+    }
+
+    window.selectOption = function(el) {
+      const label = el.querySelector('.option-label').innerText;
+      let userAnswer = userAnswers[current] || { guesses: [] };
+      userAnswer.selected = label;
+      userAnswers[current] = userAnswer;
+      renderQuestion();
+      // Enable guess button
+      document.getElementById('guessBtn').disabled = false;
+    }
+
+    window.guessAnswer = function() {
+      const selectedEl = document.querySelector('.option-card.selected');
+      if (!selectedEl) return;
+      const answer = selectedEl.querySelector('.option-label').innerText;
+      const correct = questions[current].correct;
+      let userAnswer = userAnswers[current] || { guesses: [] };
+      // Only add guess if not already guessed
+      if (!userAnswer.guesses.some(g => g.option === answer)) {
+        userAnswer.guesses.push({ option: answer, isCorrect: answer === correct });
+        totalGuesses++; // Increment total guesses
+        updateGuessCounter(); // Update the display
+      }
+      userAnswer.selected = answer;
+      userAnswers[current] = userAnswer;
+      renderQuestion();
+    }
+
+    function updateGuessCounter() {
+      const totalGuessesEl = document.getElementById('totalGuessesDisplay');
+      const hintsUsedEl = document.getElementById('hintsUsedDisplay');
+      if (totalGuessesEl) totalGuessesEl.textContent = totalGuesses;
+      if (hintsUsedEl) hintsUsedEl.textContent = hintsUsed;
+    }
+
+    window.goNext = function() {
       if (current < questions.length) {
+        current++;
         renderQuestion();
-      } else {
-        alert('End of quiz!');
+      } else if (current === questions.length) {
+        current++;
+        renderFinalGuessPage();
       }
     }
 
-    function goBack() {
+    window.goBack = function() {
       if (current > 0) {
         current--;
         renderQuestion();
       }
     }
 
+    window.submitFinalGuess = function() {
+      const input = document.getElementById('finalGuessInput');
+      const message = document.getElementById('finalGuessMessage');
+      if (!input.value.trim()) {
+        message.textContent = 'Please enter a guess.';
+        message.style.color = '#e74c3c';
+        return;
+      }
+      const finalSingerAnswer = "Taylor Swift"; // You can change this to any singer
+      if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
+        renderCelebrationPage();
+      } else {
+        message.textContent = 'Incorrect! Try again.';
+        message.style.color = '#e74c3c';
+      }
+    }
+
+    function renderHintPage() {
+      const container = document.getElementById('quizContainer');
+      const backBtnHtml = `<button id="hintBackBtn" class="nav-btn" onclick="hintBack()">Back</button>`;
+      
+      // Get current coin count from the display
+      const coinCountEl = document.getElementById('coinCount');
+      const currentCoins = coinCountEl ? parseInt(coinCountEl.textContent) || 0 : 0;
+      
+      // Track which hints have been unlocked (stored in session)
+      const unlockedHints = JSON.parse(sessionStorage.getItem('unlockedHints') || '[]');
+      
+      container.innerHTML = `
+        <div class="question-prompt">Need a hint?</div>
+        <div class="hint-info">You have ${currentCoins} coins. Click on a hint to unlock it!</div>
+        <div class="hint-boxes">
+          <div class="hint-box ${unlockedHints.includes(1) ? 'unlocked' : 'locked'}" onclick="attemptUnlockHint(1, 5)">
+            <div class="hint-box-content">
+              <div class="hint-icon">${unlockedHints.includes(1) ? '🔓' : '🔒'}</div>
+              <div class="hint-label">Hint 1</div>
+              <div class="hint-requirement">${unlockedHints.includes(1) ? 'Unlocked!' : '5 coins needed'}</div>
+            </div>
+          </div>
+          <div class="hint-box ${unlockedHints.includes(2) ? 'unlocked' : 'locked'}" onclick="attemptUnlockHint(2, 10)">
+            <div class="hint-box-content">
+              <div class="hint-icon">${unlockedHints.includes(2) ? '🔓' : '🔒'}</div>
+              <div class="hint-label">Hint 2</div>
+              <div class="hint-requirement">${unlockedHints.includes(2) ? 'Unlocked!' : '10 coins needed'}</div>
+            </div>
+          </div>
+          <div class="hint-box ${unlockedHints.includes(3) ? 'unlocked' : 'locked'}" onclick="attemptUnlockHint(3, 15)">
+            <div class="hint-box-content">
+              <div class="hint-icon">${unlockedHints.includes(3) ? '🔓' : '🔒'}</div>
+              <div class="hint-label">Hint 3</div>
+              <div class="hint-requirement">${unlockedHints.includes(3) ? 'Unlocked!' : '15 coins needed'}</div>
+            </div>
+          </div>
+          <div class="hint-box ${unlockedHints.includes(4) ? 'unlocked' : 'locked'}" onclick="attemptUnlockHint(4, 20)">
+            <div class="hint-box-content">
+              <div class="hint-icon">${unlockedHints.includes(4) ? '🔓' : '🔒'}</div>
+              <div class="hint-label">Hint 4</div>
+              <div class="hint-requirement">${unlockedHints.includes(4) ? 'Unlocked!' : '20 coins needed'}</div>
+            </div>
+          </div>
+        </div>
+        <div class="hint-buttons">
+          ${backBtnHtml}
+          <button id="proceedToFinalBtn" class="guess-btn" onclick="proceedToFinal()">Proceed to Final Guess</button>
+        </div>
+        <div id="hintDisplay" class="hint-display"></div>
+      `;
+      document.getElementById('progress').style.width = `100%`;
+    }
+
+    window.hintBack = function() {
+      current = questions.length - 1;
+      renderQuestion();
+    }
+
+    window.proceedToFinal = function() {
+      renderFinalGuessPage();
+    }
+
+    function attemptUnlockHint(hintNumber, cost) {
+      console.log('Attempting to unlock hint', hintNumber, 'for', cost, 'coins');
+      
+      const coinCountEl = document.getElementById('coinCount');
+      const currentCoins = parseInt(coinCountEl.textContent) || 0;
+      const unlockedHints = JSON.parse(sessionStorage.getItem('unlockedHints') || '[]');
+      
+      console.log('Current coins:', currentCoins, 'Unlocked hints:', unlockedHints);
+      
+      // Check if already unlocked
+      if (unlockedHints.includes(hintNumber)) {
+        console.log('Hint already unlocked, showing hint');
+        showHint(hintNumber);
+        return;
+      }
+      
+      // Check if user has enough coins
+      if (currentCoins < cost) {
+        console.log('Not enough coins');
+        showInsufficientCoinsModal(cost, currentCoins);
+        return;
+      }
+      
+      // Show confirmation modal
+      console.log('Showing confirmation modal');
+      showConfirmationModal(hintNumber, cost);
+    }
+    
+    // Make it globally accessible
+    window.attemptUnlockHint = attemptUnlockHint;
+
+    function showConfirmationModal(hintNumber, cost) {
+      console.log('Showing confirmation modal for hint', hintNumber);
+      
+      const modal = document.getElementById('confirmationModal');
+      const message = document.getElementById('confirmationMessage');
+      const confirmBtn = document.getElementById('confirmUnlockBtn');
+      
+      if (!modal || !message || !confirmBtn) {
+        console.error('Modal elements not found');
+        return;
+      }
+      
+      message.textContent = `Do you want to unlock Hint ${hintNumber} for ${cost} coins?`;
+      confirmBtn.textContent = 'Unlock';
+      
+      // Set up confirm button
+      confirmBtn.onclick = function() {
+        console.log('Confirm button clicked');
+        unlockHint(hintNumber, cost);
+        closeConfirmationModal();
+      };
+      
+      modal.style.display = 'block';
+      console.log('Modal displayed');
+    }
+
+    function showInsufficientCoinsModal(required, current) {
+      const modal = document.getElementById('confirmationModal');
+      const message = document.getElementById('confirmationMessage');
+      const confirmBtn = document.getElementById('confirmUnlockBtn');
+      
+      message.textContent = `You need ${required} coins to unlock this hint. You currently have ${current} coins.`;
+      confirmBtn.textContent = 'OK';
+      confirmBtn.onclick = closeConfirmationModal;
+      
+      modal.style.display = 'block';
+    }
+
+    function closeConfirmationModal() {
+      const modal = document.getElementById('confirmationModal');
+      modal.style.display = 'none';
+    }
+    
+    // Make it globally accessible
+    window.closeConfirmationModal = closeConfirmationModal;
+
+    function unlockHint(hintNumber, cost) {
+      console.log('Unlocking hint', hintNumber, 'for', cost, 'coins');
+      
+      const coinCountEl = document.getElementById('coinCount');
+      const currentCoins = parseInt(coinCountEl.textContent) || 0;
+      
+      // Deduct coins
+      const newCoins = currentCoins - cost;
+      coinCountEl.textContent = newCoins;
+      console.log('Coins deducted:', currentCoins, '->', newCoins);
+      
+      // Update Firebase if user is logged in
+      if (window.currentUser) {
+        updateUserCoins(newCoins);
+      }
+      
+      // Mark hint as unlocked in session storage
+      const unlockedHints = JSON.parse(sessionStorage.getItem('unlockedHints') || '[]');
+      if (!unlockedHints.includes(hintNumber)) {
+        unlockedHints.push(hintNumber);
+        sessionStorage.setItem('unlockedHints', JSON.stringify(unlockedHints));
+        console.log('Hint marked as unlocked in session storage');
+      }
+      
+      // Update counters
+      hintsUsed++;
+      updateGuessCounter();
+      console.log('Hints used updated:', hintsUsed);
+      
+      // Show the hint after a short delay to ensure modal closes
+      setTimeout(() => {
+        showHint(hintNumber);
+      }, 100);
+      
+      // Update the hint box to show as unlocked without re-rendering the whole page
+      const hintBox = document.querySelector(`[onclick="attemptUnlockHint(${hintNumber}, ${cost})"]`);
+      if (hintBox) {
+        hintBox.className = 'hint-box unlocked';
+        hintBox.onclick = () => showHint(hintNumber);
+        const hintIcon = hintBox.querySelector('.hint-icon');
+        const hintRequirement = hintBox.querySelector('.hint-requirement');
+        if (hintIcon) hintIcon.textContent = '🔓';
+        if (hintRequirement) hintRequirement.textContent = 'Unlocked!';
+        console.log('Hint box updated to unlocked state');
+      }
+      
+      // Clear any previous hint display
+      const hintDisplay = document.getElementById('hintDisplay');
+      if (hintDisplay) {
+        hintDisplay.innerHTML = '';
+      }
+    }
+
+    function showHint(hintNumber) {
+      console.log('Showing hint', hintNumber);
+      
+      const hintDisplay = document.getElementById('hintDisplay');
+      const hints = {
+        1: "💡 The singer's name starts with T.",
+        2: "💡 This artist is known for writing songs about her personal life and relationships, often referencing her ex-boyfriends.",
+        3: "💡 This artist has won multiple Grammy Awards for Album of the Year and is one of the best-selling music artists of all time.",
+        4: "💡 She is famous for her \"eras\" concept and has re-recorded her early albums to own her masters."
+      };
+      
+      if (hintDisplay) {
+        const hintText = hints[hintNumber];
+        hintDisplay.innerHTML = `<div class="hint-text">${hintText}</div>`;
+        console.log('Hint displayed:', hintText);
+        // Scroll to hint display if it's not visible
+        hintDisplay.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        console.error('Hint display element not found');
+      }
+    }
+    
+    // Make it globally accessible
+    window.showHint = showHint;
+
+
+
+    async function updateUserCoins(newCoinCount) {
+      // Check if user is logged in
+      if (!window.currentUser) {
+        console.log("No user logged in, skipping Firebase update");
+        return;
+      }
+      
+      console.log("Attempting to update coins in Firebase:", newCoinCount);
+      
+      // Call the global update function that will be set by the module script
+      if (window.updateCoinsInFirebase) {
+        await window.updateCoinsInFirebase(newCoinCount);
+      } else {
+        console.error("Firebase update function not available");
+      }
+    }
+
+
+
+    function renderCelebrationPage() {
+      const container = document.getElementById('quizContainer');
+      const score = Math.max(0, 100 - (totalGuesses * 5) - (hintsUsed * 10)); // Base 100, -5 per guess, -10 per hint
+      container.innerHTML = `
+        <div class="celebration">
+          <div class="celebration-emoji">🎉</div>
+          <div class="celebration-title">Congratulations!</div>
+          <div class="celebration-msg">You guessed the singer correctly!</div>
+          <div class="score-details">
+            <div class="score-item">Total Guesses: ${totalGuesses}</div>
+            <div class="score-item">Hints Used: ${hintsUsed}</div>
+            <div class="final-score">Final Score: ${score}/100</div>
+          </div>
+          <button class="share-btn" onclick="shareScore()">Share Score</button>
+          <a class="more-games-btn" href="/games.html">More Games</a>
+        </div>
+      `;
+    }
+
+    window.shareScore = function() {
+      const score = Math.max(0, 100 - (totalGuesses * 5) - (hintsUsed * 10));
+      const shareText = `I just completed the Guess the Singer daily game with a score of ${score}/100! (${totalGuesses} guesses, ${hintsUsed} hints used) Can you beat my score? Play now at https://guessthesinger.com`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText).then(() => {
+          alert('Score copied to clipboard!');
+        });
+      } else {
+        // fallback
+        prompt('Copy this text:', shareText);
+      }
+    }
+
+    // On load, show the start page
     renderQuestion();
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('confirmationModal');
+      if (event.target === modal) {
+        closeConfirmationModal();
+      }
+    });
+    
+    // Test function to verify modal works
+    window.testModal = function() {
+      console.log('Testing modal...');
+      const modal = document.getElementById('confirmationModal');
+      const message = document.getElementById('confirmationMessage');
+      const confirmBtn = document.getElementById('confirmUnlockBtn');
+      
+      if (modal && message && confirmBtn) {
+        message.textContent = 'Test modal is working!';
+        confirmBtn.textContent = 'OK';
+        confirmBtn.onclick = closeConfirmationModal;
+        modal.style.display = 'block';
+        console.log('Test modal displayed successfully');
+      } else {
+        console.error('Modal elements not found for test');
+      }
+    };
   </script>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, getDocs, getDoc, query, where, doc, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+    let currentUser = null;
+
+    const welcomeEl = document.getElementById('welcomeMessage');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    onAuthStateChanged(auth, async user => {
+      currentUser = user;
+      // Make currentUser globally accessible
+      window.currentUser = user;
+      
+      if (user) {
+        let displayName = currentUser.displayName || "Anonymous";
+        let coinCount = 0;
+        const userRef = collection(db, "users");
+        const q = query(userRef, where("uid", "==", currentUser.uid));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.username) displayName = data.username;
+          if (data.coins) coinCount = data.coins;
+        });
+        welcomeEl.textContent = `Welcome, ${displayName}`;
+        dropdownMenu.innerHTML = `
+          <a href="/profile.html">Edit Profile</a>
+          <a href="#" id="logoutBtn">Log Out</a>
+        `;
+        // Update the coin count display
+        const coinDisplayEl = document.getElementById("coinCount");
+        if (coinDisplayEl) {
+          coinDisplayEl.textContent = coinCount;
+        }
+        // Attach logout listener after DOM updates
+        setTimeout(() => {
+          const logoutBtn = document.getElementById("logoutBtn");
+          if (logoutBtn) {
+            logoutBtn.addEventListener("click", async (e) => {
+              e.preventDefault();
+              try {
+                await signOut(auth);
+                window.location.reload();
+              } catch (err) {
+                console.error("Logout failed:", err);
+              }
+            });
+          }
+        }, 0);
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+        // Set coin display to 0 for guests
+        const coinDisplayEl = document.getElementById("coinCount");
+        if (coinDisplayEl) {
+          coinDisplayEl.textContent = "0";
+        }
+      }
+    });
+
+    // Dropdown show/hide logic
+    welcomeEl.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeEl) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+
+    // Coin gain animation function (only called when coins are actually awarded)
+    function animateCoinGain(amount = 10) {
+      const coinGain = document.getElementById("coinGain");
+      if (!coinGain) return;
+
+      coinGain.textContent = `+${amount}`;
+      coinGain.classList.remove("hidden");
+      coinGain.classList.add("animate");
+
+      setTimeout(() => {
+        coinGain.classList.remove("animate");
+        coinGain.classList.add("hidden");
+      }, 1000);
+    }
+
+    // Global function to update coins in Firebase (accessible from regular script)
+    window.updateCoinsInFirebase = async function(newCoinCount) {
+      if (!currentUser) {
+        console.log("No user logged in, cannot update coins");
+        return;
+      }
+
+      try {
+        const userRef = collection(db, "users");
+        const q = query(userRef, where("uid", "==", currentUser.uid));
+        const snapshot = await getDocs(q);
+        
+        if (!snapshot.empty) {
+          const userDoc = snapshot.docs[0];
+          await updateDoc(userDoc.ref, {
+            coins: newCoinCount
+          });
+          console.log("✅ Coins updated in Firebase:", newCoinCount);
+          
+          // Update the display immediately
+          const coinDisplayEl = document.getElementById("coinCount");
+          if (coinDisplayEl) {
+            coinDisplayEl.textContent = newCoinCount;
+          }
+        } else {
+          console.error("User document not found in Firebase");
+        }
+      } catch (error) {
+        console.error("Error updating coins in Firebase:", error);
+      }
+    };
+  </script>
+  <style>
+    .context-label {
+      color: #a259f7;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.5px;
+    }
+    .context-dot {
+      width: 12px;
+      height: 12px;
+      background: #a259f7;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .question-prompt {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .option-card {
+      background: #f7faff;
+      border: 2px solid #e0e0e0;
+      border-radius: 18px;
+      padding: 24px 10px 16px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 500;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+      min-height: 120px;
+      position: relative;
+    }
+    .option-card.selected, .option-card:hover {
+      border-color: #4a90e2;
+      background: #e6f0ff;
+      box-shadow: 0 4px 16px rgba(74,144,226,0.08);
+    }
+    .option-card.correct {
+      border-color: #28a745 !important;
+      background: #eafaf1 !important;
+      color: #28a745;
+    }
+    .option-card.incorrect {
+      border-color: #dc3545 !important;
+      background: #f8d7da !important;
+      color: #dc3545;
+    }
+    .option-icon {
+      margin-bottom: 10px;
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+    .option-label {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #222;
+      text-align: center;
+    }
+    .button-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 18px;
+      justify-content: center;
+    }
+    .guess-btn {
+      background: linear-gradient(to bottom, #ffcb05, #ffd700);
+      color: #1e2b38;
+      font-weight: bold;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .guess-btn:disabled {
+      background: #e5e5e5;
+      color: #bdbdbd;
+      cursor: not-allowed;
+    }
+    .nav-btn {
+      background: #e5e5e5;
+      color: #1e2b38;
+      font-weight: bold;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 22px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-btn:disabled {
+      background: #f3f3f3;
+      color: #bdbdbd;
+      cursor: not-allowed;
+    }
+    .end-message {
+      font-size: 2rem;
+      color: #28a745;
+      text-align: center;
+      margin: 60px 0;
+      font-weight: bold;
+    }
+    .final-guess-input {
+      width: 100%;
+      padding: 16px 10px;
+      font-size: 1.2rem;
+      border-radius: 12px;
+      border: 2px solid #e0e0e0;
+      margin: 18px 0 10px 0;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .final-guess-input:focus {
+      border-color: #4a90e2;
+    }
+    .final-guess-message {
+      font-size: 1.1rem;
+      margin-top: 8px;
+      color: #e74c3c;
+      min-height: 24px;
+    }
+    .final-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+    .hint-btn {
+      background: linear-gradient(to bottom, #28a745, #20c997);
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .hint-btn:hover {
+      background: #20c997;
+    }
+    .hint-message {
+      font-size: 1rem;
+      margin-top: 12px;
+      color: #28a745;
+      min-height: 24px;
+      font-style: italic;
+      text-align: center;
+    }
+    .hint-info {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .hint-boxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .hint-box {
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+    .hint-box.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #f1f3f4;
+    }
+    .hint-box.unlocked {
+      border-color: #28a745;
+      background: #e8f5e8;
+      cursor: pointer;
+    }
+    .hint-box.unlocked:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+    }
+    .hint-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .hint-label {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      color: #333;
+    }
+    .hint-requirement {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .hint-box.unlocked .hint-requirement {
+      color: #28a745;
+      font-weight: bold;
+    }
+    .hint-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .hint-display {
+      min-height: 60px;
+      margin-top: 16px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #4a90e2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hint-text {
+      background: #e8f5e8;
+      border: 1px solid #28a745;
+      border-radius: 8px;
+      padding: 12px;
+      color: #155724;
+      font-style: italic;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 500;
+      line-height: 1.4;
+      width: 100%;
+    }
+    .confirmation-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(2px);
+    }
+    .confirmation-content {
+      background-color: white;
+      margin: 15% auto;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      animation: modalSlideIn 0.3s ease;
+    }
+    @keyframes modalSlideIn {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .confirmation-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 16px;
+    }
+    .confirmation-message {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .confirmation-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .confirm-btn {
+      background: linear-gradient(to bottom, #28a745, #20c997);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .confirm-btn:hover {
+      background: #20c997;
+    }
+    .cancel-btn {
+      background: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .cancel-btn:hover {
+      background: #5a6268;
+    }
+    .celebration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    .celebration-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 18px;
+    }
+    .celebration-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+    .celebration-msg {
+      font-size: 1.2rem;
+      color: #315f85;
+      margin-bottom: 20px;
+    }
+    .score-details {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .score-item {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    .final-score {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #28a745;
+      margin-top: 12px;
+    }
+    .share-btn {
+      background: linear-gradient(to bottom, #4a90e2, #357ab8);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .more-games-btn {
+      background: #ffcb05;
+      color: #1e2b38;
+      font-weight: bold;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, color 0.2s;
+    }
+    .more-games-btn:hover {
+      background: #e6b800;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 12px 2vw;
+      }
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      .option-card {
+        padding: 18px 4px 12px 4px;
+      }
+    }
+    .start-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0 30px 0;
+    }
+    .start-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #315f85;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    
+    .start-subtitle {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 24px;
+      text-align: center;
+      font-weight: 500;
+    }
+    .start-img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+      border: 4px solid #ffcb05;
+    }
+    .start-btn {
+      background: linear-gradient(to bottom, #4a90e2, #357ab8);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 18px;
+      padding: 18px 48px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      margin-top: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .start-btn:hover {
+      background: #357ab8;
+    }
+  </style>
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
 </body>
 </html>

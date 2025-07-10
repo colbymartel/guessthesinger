@@ -7,15 +7,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <style>
-html, body {
-      margin: 0;
-      padding: 0;
+    body {
       font-family: 'Fredoka', sans-serif;
       background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
+
+    header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+
     nav {
       background-color: #1e2b38;
       padding: 15px 30px;
@@ -23,114 +39,217 @@ html, body {
       justify-content: space-between;
       align-items: center;
       color: white;
+      width: 100%;
     }
+
     .nav-links a {
       color: white;
       margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
     }
+
     .nav-links a:hover {
       color: #ffcb05;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      right: 15px;
+      top: 70px;
+      background-color: #1e2b38;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: max-content;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      font-weight: bold;
+    }
+
+    .mobile-menu a:hover {
+      color: #ffcb05;
+    }
+
+    .mobile-menu.show {
+      display: flex;
     }
 
     main {
       display: flex;
       flex-direction: column;
       height: calc(100vh - 80px);
+      flex: 1;
     }
 
     .sidebar {
-      background-color: #1e2b38;
-      color: white;
+      background: white;
+      color: #1e2b38;
       padding: 20px;
       overflow-y: auto;
+      border-radius: 16px;
+      margin: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .chat-container {
       flex: 1;
-      padding: 20px;
       display: flex;
       flex-direction: column;
       display: none;
+      background: white;
+      border-radius: 16px;
+      margin: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      height: calc(100vh - 200px); /* Account for header, nav, and bottom nav */
+      position: relative;
     }
 
     .chat-header {
       font-size: 1.4em;
-      margin-bottom: 10px;
+      color: #1e2b38;
+      font-weight: bold;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: white;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+      flex-shrink: 0;
     }
 
     .message {
-      background: #e0f0ff;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      background: #f7faff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 2px solid #e1f0ff;
+      transition: all 0.2s ease;
     }
 
     .message.sent {
-      background-color: #d3d3d3;
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: white;
       align-self: flex-end;
+      border-color: #4a90e2;
     }
 
     .message.received {
-      background-color: #e0f0ff;
+      background: #f7faff;
+      color: #1e2b38;
       align-self: flex-start;
+      border-color: #e1f0ff;
+    }
+
+    .message-text {
+      margin-bottom: 4px;
+      word-wrap: break-word;
+    }
+
+    .message-time {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    .message.sent .message-time {
+      text-align: right;
+    }
+
+    .message.received .message-time {
+      text-align: left;
     }
 
     .chat-input {
       display: flex;
-      gap: 10px;
+      gap: 12px;
+      padding: 15px 20px;
+      background: #f8f9fa;
+      border-radius: 0 0 12px 12px;
+      flex-shrink: 0;
+      border-top: 1px solid #e1f0ff;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
     }
 
     .chat-input input {
       flex: 1;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 2px solid #e1f0ff;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .chat-input input:focus {
+      outline: none;
+      border-color: #4a90e2;
     }
 
     .chat-input button {
-      padding: 10px 20px;
-      background-color: #315f85;
-      color: white;
+      padding: 12px 24px;
       border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      padding: 30px 0;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      background: linear-gradient(to bottom, #4a90e2, #357ab8);
       color: white;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.2), 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    .header .logo img {
-      width: 160px;
+    .chat-input button:hover {
+      background: #357ab8;
+      transform: translateY(-1px);
     }
-   
 
     .user-block {
-      padding: 10px;
+      padding: 15px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #2f3e4f;
+      border: 2px solid #e1f0ff;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: #f7faff;
+      transition: all 0.2s ease;
     }
 
     .user-block:hover {
-      background-color: #2f3e4f;
+      background: #e1f0ff;
+      border-color: #4a90e2;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2);
     }
 
     .user-avatar {
-      width: 32px;
-      height: 32px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      margin-right: 10px;
+      margin-right: 15px;
+      border: 3px solid #4a90e2;
+      object-fit: cover;
     }
 
     .user-name {
       font-weight: bold;
+      color: #1e2b38;
+      font-size: 1.1rem;
     }
 
     .unread-icon {
@@ -139,65 +258,299 @@ html, body {
       margin-left: 8px;
     }
 
+    .dm-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .dm-tabs .tab {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background: #e1f0ff;
+      color: #1e2b38;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .dm-tabs .tab:hover {
+      background: #4a90e2;
+      color: white;
+    }
+
+    .dm-tabs .tab.active {
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      margin-bottom: 20px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 2px solid #e1f0ff;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      border-color: #4a90e2;
+    }
+
+    .search-bar .filter-btn {
+      margin-left: 10px;
+      padding: 12px 20px;
+      border: none;
+      background: linear-gradient(to bottom, #4a90e2, #357ab8);
+      color: white;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .search-bar .filter-btn:hover {
+      background: #357ab8;
+      transform: translateY(-1px);
+    }
+
+    .back-btn {
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 12px 20px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .back-btn:hover {
+      background: #357ab8;
+      transform: translateY(-1px);
+    }
+
+    /* Coin display styles from dailygame.html */
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+      cursor: pointer;
+    }
+
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    body {
+      padding-bottom: 70px; /* ensures content doesn't get hidden behind bottom nav */
+    }
+
     @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
       .sidebar {
-        padding: 10px;
+        padding: 15px;
         font-size: 0.9em;
+        margin: 10px;
       }
 
       .chat-container {
-        padding: 10px;
+        margin: 10px;
+        height: calc(100vh - 180px); /* Adjust for mobile */
+      }
+
+      .chat-input {
+        padding: 12px 15px;
+        /* Ensure input stays above keyboard */
+        position: fixed;
+        bottom: 70px; /* Above bottom nav */
+        left: 10px;
+        right: 10px;
+        border-radius: 12px;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
       }
 
       .chat-input input,
       .chat-input button {
-        padding: 8px;
+        padding: 12px;
       }
 
       .header .logo img {
-        width: 140px;
+        width: 160px;
+      }
+
+      .user-block {
+        padding: 12px;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+      }
+
+      /* Adjust messages container for fixed input */
+      #messages {
+        padding-bottom: 80px; /* Space for fixed input */
       }
     }
-    .dm-tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
 
-.dm-tabs .tab {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 20px;
-  background: #ddd;
-  cursor: pointer;
-  font-weight: bold;
-}
+    /* Handle keyboard appearance on mobile */
+    @media (max-width: 768px) and (max-height: 600px) {
+      .chat-container {
+        height: calc(100vh - 120px);
+      }
+      
+      .chat-input {
+        bottom: 60px;
+      }
+    }
 
-.dm-tabs .tab.active {
-  background: #ffcb05;
-}
+    /* Use CSS custom property for dynamic keyboard height */
+    :root {
+      --keyboard-height: 0px;
+    }
 
-.search-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;}
+    @media (max-width: 768px) {
+      .chat-input {
+        bottom: calc(70px + var(--keyboard-height));
+      }
+      
+      #messages {
+        padding-bottom: calc(80px + var(--keyboard-height));
+      }
+    }
 
+    /* Ensure input stays focused and visible */
+    .chat-input input:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    }
 
-.search-bar input {
-  flex: 1;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
+    /* Smooth scrolling for messages */
+    #messages {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+    }
 
-.search-bar .filter-btn {
-  margin-left: 10px;
-  padding: 6px 12px;
-  border: none;
-  background: #315f85;
-  color: white;
-  border-radius: 8px;
-}
+    /* Touch-friendly input on mobile */
+    @media (max-width: 768px) {
+      .chat-input input {
+        font-size: 16px; /* Prevents zoom on iOS */
+        min-height: 44px; /* Touch target size */
+      }
+      
+      .chat-input button {
+        min-height: 44px;
+        min-width: 44px;
+      }
+    }
 
 .avatar-strip {
   display: flex;
@@ -224,11 +577,11 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 15px;
+  padding: 15px 20px;
   overflow-y: auto;
-  height: 100%;
+  flex: 1;
   background-color: #f8f9fc;
-  border-radius: 8px;
+  min-height: 0; /* Important for flex child */
 }
 
 .message {
@@ -351,24 +704,29 @@ body {
 }.user-search-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 90%;
-  max-width: 500px;
-  margin: 10px auto;
-  padding: 0 10px;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 0;
 }
 
 .user-search-wrapper i {
-  color: #ccc;
+  color: #4a90e2;
   font-size: 18px;
 }
 
 .user-search-input {
   flex: 1;
-  padding: 8px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
+  padding: 12px 16px;
+  border: 2px solid #e1f0ff;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.user-search-input:focus {
+  outline: none;
+  border-color: #4a90e2;
 }
 
   </style>
@@ -377,20 +735,45 @@ body {
 </head>
 <body>
   <header class="header">
-    <div class="header-inner" style="display: flex; justify-content: center; align-items: center;">
+    <div class="logo">
       <a href="/index.html">
-        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy" style="height: 50px;">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
       </a>
     </div>
   </header>
   
+  <nav style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+      <!-- Coin Display aligned next to Welcome -->
+      <div id="coinDisplay" style="display: flex; align-items: center; gap: 6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight: bold;">0</span>
+      </div>
+    </div>
+    <!-- Hamburger menu on far right -->
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+  
+  <div id="mobileMenu" class="mobile-menu">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="/games.html">Games</a>
+    <a href="/about.html">About</a>
+  </div>
 
-</div>
   <main style="width: 100%; height: calc(100vh - 100px);">
     <div id="messageListView" style="width: 100%; height: 100%;">
      
       <div class="sidebar">
-        <div class="user-search-wrapper">
+        <div class="user-search-wrapper" id="userSearchWrapper" style="display: none;">
           <i class="fas fa-search"></i>
           <input
             type="text"
@@ -413,11 +796,10 @@ body {
   
     <!-- Full-screen conversation -->
     <div class="chat-container" id="chatContainer" style="display: none;">
-      <button class="back-btn" onclick="goBackToUserList()">← Back to Messages</button>
-      <div class="chat-header" id="chatHeader">Select a conversation</div>
+      <div class="chat-header" id="chatHeader">Chat with Colby</div>
       <div id="messages"></div>
       <div class="chat-input" style="display:none;" id="chatInputContainer">
-        <input type="text" id="messageInput" placeholder="Type your reply...">
+        <input type="text" id="messageInput" placeholder="Can you guess my favorite music artist?">
         <button id="sendBtn">Send</button>
       </div>
     </div>
@@ -427,9 +809,9 @@ body {
       <i class="fas fa-home"></i>
       <span>Home</span>
     </a>
-    <a href="/inbox.html" class="nav-item highlight">
-      <i class="fas fa-users"></i>
-      <span>Social</span>
+    <a href="/games.html" class="nav-item highlight">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
     </a>
     <a href="/memory-leaderboard.html" class="nav-item">
       <i class="fas fa-trophy"></i>
@@ -455,7 +837,8 @@ import {
   getDoc,
   getDocs,
   setDoc,
-  updateDoc
+  updateDoc,
+  limit
 } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
   import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
@@ -498,6 +881,23 @@ import {
       }
     });
   });
+
+  // Hide tabs and search bar for regular users (non-admin)
+  function updateTabVisibility() {
+    if (currentUser) {
+      const isAdmin = currentUser.email === 'colbyma23@gmail.com';
+      const dmTabs = document.querySelector('.dm-tabs');
+      const userSearchWrapper = document.getElementById('userSearchWrapper');
+      
+      if (dmTabs) {
+        dmTabs.style.display = isAdmin ? 'flex' : 'none';
+      }
+      
+      if (userSearchWrapper) {
+        userSearchWrapper.style.display = isAdmin ? 'flex' : 'none';
+      }
+    }
+  }
   
   // Utility: Render a user block with an optional action button to move conversation
   function renderUserBlock(userData, isUnread, moveActionLabel, onMoveClick, onClick) {
@@ -539,54 +939,159 @@ import {
   
   // Load conversations, split by tab
   async function loadConversationsByTab(tab) {
-
     if (!currentUser) return;
-  
+
     userListEl.innerHTML = `<p style="padding: 10px; color: #666;">Loading...</p>`;
-  
-    // Step 1: Get all conversations user has a conversation doc for (i.e., categorized)
-    const convsRef = collection(db, "users", currentUser.uid, "conversations");
-    const convsSnapshot = await getDocs(convsRef);
-    const categorizedConversations = {};
-    convsSnapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      categorizedConversations[docSnap.id] = data.tab || "friends";
-    });
-  
-    // Step 2: Get all messages involving current user
-    const messagesRef = collection(db, "messages");
 
-const messagesQuery = query(
-  messagesRef,
-  where("participants", "array-contains", currentUser.uid),
-  orderBy("timestamp", "desc")
-);
+    // Check if current user is admin (colbyma23@gmail.com)
+    const isAdmin = currentUser.email === 'colbyma23@gmail.com';
 
-const messagesSnapshot = await getDocs(messagesQuery);
+    if (!isAdmin) {
+      // For regular users, show only "Challenge Colby" option
+      userListEl.innerHTML = `
+        <div style="padding: 15px; background: linear-gradient(135deg, #ffcb05, #ffd700); border-radius: 8px; margin-bottom: 15px; text-align: center; color: #1e2b38; font-weight: bold;">
+          <i class="fas fa-trophy" style="margin-right: 8px;"></i>
+          Challenge Colby to Guess YOUR Mystery Singer!
+        </div>
+      `;
+      
+      // Create Colby user data
+      const colbyUserData = {
+        username: "Colby",
+        avatar: "/images/avatars/popstarpenguin.jpg",
+        isVerified: true
+      };
+
+      try {
+        // Check if there are any unread messages from Colby
+        const messagesRef = collection(db, "messages");
+        const colbyMessagesQuery = query(
+          messagesRef,
+          where("participants", "array-contains", currentUser.uid),
+          orderBy("timestamp", "desc")
+        );
+        
+        const colbyMessagesSnapshot = await getDocs(colbyMessagesQuery);
+        let isUnread = false;
+        let latestMessageTime = 0;
+        
+        // Find Colby's user ID by searching for the admin email
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        let colbyUserId = null;
+        
+        usersSnapshot.forEach(docSnap => {
+          const userData = docSnap.data();
+          if (userData.email === 'colbyma23@gmail.com') {
+            colbyUserId = docSnap.id;
+          }
+        });
+
+        if (colbyUserId) {
+          // Check for unread messages from Colby
+          colbyMessagesSnapshot.forEach(docSnap => {
+            const msg = docSnap.data();
+            if ((msg.senderId === colbyUserId && msg.recipientId === currentUser.uid) ||
+                (msg.senderId === currentUser.uid && msg.recipientId === colbyUserId)) {
+              if (!latestMessageTime || msg.timestamp?.toMillis() > latestMessageTime) {
+                latestMessageTime = msg.timestamp?.toMillis() || 0;
+              }
+            }
+          });
+
+          // Check unread status
+          const chatStatusSnap = await getDoc(doc(db, "users", currentUser.uid, "chatStatus", colbyUserId));
+          const lastOpened = chatStatusSnap.exists() ? chatStatusSnap.data().lastOpened?.toMillis() || 0 : 0;
+          isUnread = !lastOpened || latestMessageTime > lastOpened;
+        }
+
+        const userEl = renderUserBlock(
+          colbyUserData,
+          isUnread,
+          null, // no move button
+          null,
+          () => openChatWithUser(colbyUserId, "Colby")
+        );
+
+        userListEl.appendChild(userEl);
+        return;
+      } catch (error) {
+        console.error("Error loading chat data:", error);
+        
+        // If there's a permissions error, show a simplified version
+        if (error.code === 'permission-denied') {
+          userListEl.innerHTML = `
+            <div style="padding: 15px; background: linear-gradient(135deg, #ffcb05, #ffd700); border-radius: 8px; margin-bottom: 15px; text-align: center; color: #1e2b38; font-weight: bold;">
+              <i class="fas fa-trophy" style="margin-right: 8px;"></i>
+              Challenge Colby to Guess YOUR Mystery Singer!
+            </div>
+            <div style="padding: 10px; background: #f8d7da; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #721c24; font-size: 0.9rem;">
+              <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+              Chat features are being set up. You can still challenge Colby!
+            </div>
+          `;
+          
+          // Create a simple challenge button that doesn't require chat permissions
+          const challengeBtn = document.createElement("div");
+          challengeBtn.className = "user-block";
+          challengeBtn.style.cursor = "pointer";
+          challengeBtn.innerHTML = `
+            <img class="user-avatar" src="/images/avatars/popstarpenguin.jpg" alt="Colby" />
+            <div class="user-name">Challenge Colby</div>
+          `;
+          challengeBtn.onclick = () => {
+            alert("🎵 Challenge Colby! Chat features coming soon!");
+          };
+          userListEl.appendChild(challengeBtn);
+          return;
+        }
+      }
+    }
+
+    // For admin, show all active chats (original logic)
+    try {
+      // Step 1: Get all conversations user has a conversation doc for (i.e., categorized)
+      const convsRef = collection(db, "users", currentUser.uid, "conversations");
+      const convsSnapshot = await getDocs(convsRef);
+      const categorizedConversations = {};
+      convsSnapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        categorizedConversations[docSnap.id] = data.tab || "friends";
+      });
+
+      // Step 2: Get all messages involving current user
+      const messagesRef = collection(db, "messages");
+
+      const messagesQuery = query(
+        messagesRef,
+        where("participants", "array-contains", currentUser.uid),
+        orderBy("timestamp", "desc")
+      );
+
+      const messagesSnapshot = await getDocs(messagesQuery);
 
     // Track users who messaged or received messages by current user
     const messagedUserIds = new Set();
     const incomingNewUsers = new Set(); // For requests tab
-  
+
     // Track latest message per user for unread check
     const latestMessages = {};
-  
+
     messagesSnapshot.forEach(docSnap => {
       const msg = docSnap.data();
       if (msg.senderId !== currentUser.uid && msg.recipientId !== currentUser.uid) return;
-  
+
       const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
       messagedUserIds.add(otherUserId);
-  
+
       // Save latest timestamp for each conversation
       if (!latestMessages[otherUserId] || msg.timestamp?.toMillis() > latestMessages[otherUserId]) {
         latestMessages[otherUserId] = msg.timestamp?.toMillis() || 0;
       }
     });
-  
+
     // Step 3: Determine users per tab
     let userIdsToShow = [];
-  
+
     if (tab === "friends" || tab === "general") {
       userIdsToShow = Object.entries(categorizedConversations)
         .filter(([uid, tabName]) => tabName === tab)
@@ -595,29 +1100,29 @@ const messagesSnapshot = await getDocs(messagesQuery);
       // Users messaged current user but NOT categorized in conversations subcollection
       userIdsToShow = [...messagedUserIds].filter(uid => !(uid in categorizedConversations));
     }
-  
+
     if (userIdsToShow.length === 0) {
       userListEl.innerHTML = `<p style="padding: 10px; color: #666;">No conversations in ${tab} tab.</p>`;
       return;
     }
-  
+
     // Step 4: Fetch user data & chat status for each userId
     userListEl.innerHTML = "";
-  
+
     for (const otherUserId of userIdsToShow) {
       const userDocSnap = await getDoc(doc(db, "users", otherUserId));
       if (!userDocSnap.exists()) continue;
       const userData = userDocSnap.data();
-  
+
       // Check unread status
       const chatStatusSnap = await getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId));
       const lastOpened = chatStatusSnap.exists() ? chatStatusSnap.data().lastOpened?.toMillis() || 0 : 0;
       const isUnread = !lastOpened || (latestMessages[otherUserId] || 0) > lastOpened;
-  
+
       // Determine move button label and handler
       let moveBtnLabel = null;
       let moveBtnHandler = null;
-  
+
       if (tab === "friends") {
         moveBtnLabel = "Move to General";
         moveBtnHandler = async () => {
@@ -631,9 +1136,9 @@ const messagesSnapshot = await getDocs(messagesQuery);
           await loadConversationsByTab(activeTab);
         };
       }
-  
+
       // Requests tab has no move button
-  
+
       const userEl = renderUserBlock(
         userData,
         isUnread,
@@ -641,34 +1146,46 @@ const messagesSnapshot = await getDocs(messagesQuery);
         moveBtnHandler,
         () => openChatWithUser(otherUserId, userData.username)
       );
-  
+
       userListEl.appendChild(userEl);
     }
+  } catch (error) {
+    console.error("Error loading admin conversations:", error);
+    
+    if (error.code === 'permission-denied') {
+      userListEl.innerHTML = `
+        <div style="padding: 15px; background: #f8d7da; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #721c24; font-size: 0.9rem;">
+          <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+          Chat permissions need to be updated. Please deploy the new Firestore security rules.
+        </div>
+      `;
+    } else {
+      userListEl.innerHTML = `<p style="padding: 10px; color: #666;">Error loading conversations. Please try again.</p>`;
+    }
   }
+}
   
-  async function openChatWithUser(userId, usernameFallback) {
+    async function openChatWithUser(userId, usernameFallback) {
     if (!currentUser) return;
-  
+
     activeChatUserId = userId;
-    chatInputContainer.style.display = "flex";
     document.getElementById("chatContainer").style.display = "flex";
     document.getElementById("messageListView").style.display = "none";
-  
+    chatInputContainer.style.display = "flex";
+
     // Mark chat as opened (for unread tracking)
     await setDoc(doc(db, "users", currentUser.uid, "chatStatus", userId), {
       lastOpened: serverTimestamp()
     });
-  
+
     // Also automatically categorize the conversation into "friends" tab if it was a request before
     const convDocRef = doc(db, "users", currentUser.uid, "conversations", userId);
     const convSnap = await getDoc(convDocRef);
     if (!convSnap.exists()) {
       // Assign to friends by default when opening from requests
       await setDoc(convDocRef, { tab: "friends" });
-      // Reload current tab user list since it might affect requests
-      loadConversationsByTab(activeTab);
     }
-  
+
     // Fetch user info for header
     let displayName = usernameFallback || "Unknown User";
     let isVerified = false;
@@ -680,19 +1197,91 @@ const messagesSnapshot = await getDocs(messagesQuery);
         isVerified = userData.isVerified === true;
       }
     } catch {}
-  
+
     chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
-  
+
     loadMessagesRealtime(userId);
+    focusChatInput();
+  }
+
+  // Function to open chat with user ID (for direct access)
+  async function openChatWithUserId(userId) {
+    if (!currentUser) return;
+
+    try {
+      // Fetch user info first
+      const userDocSnap = await getDoc(doc(db, "users", userId));
+      let displayName = "Unknown User";
+      let isVerified = false;
+      
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        displayName = userData.username || displayName;
+        isVerified = userData.isVerified === true;
+      }
+
+      // Open the chat directly
+      activeChatUserId = userId;
+      document.getElementById("chatContainer").style.display = "flex";
+      document.getElementById("messageListView").style.display = "none";
+      chatInputContainer.style.display = "flex";
+
+      // Mark chat as opened (for unread tracking)
+      await setDoc(doc(db, "users", currentUser.uid, "chatStatus", userId), {
+        lastOpened: serverTimestamp()
+      });
+
+      // Categorize the conversation
+      const convDocRef = doc(db, "users", currentUser.uid, "conversations", userId);
+      const convSnap = await getDoc(convDocRef);
+      if (!convSnap.exists()) {
+        await setDoc(convDocRef, { tab: "friends" });
+      }
+
+      chatHeader.textContent = `Chat with ${displayName}${isVerified ? " ✅" : ""}`;
+      
+      // Add a welcome message if this is a new conversation
+      const messagesQuery = query(
+        collection(db, "messages"),
+        where("participants", "array-contains", currentUser.uid),
+        orderBy("timestamp", "desc"),
+        limit(1)
+      );
+      
+      const messagesSnapshot = await getDocs(messagesQuery);
+      if (messagesSnapshot.empty) {
+        // This is a new conversation, add a welcome message
+        messagesEl.innerHTML = `
+          <div class="message received">
+            <div class="sender">Colby</div>
+            <div class="message-text">Hey there! 👋 I'm Colby. Feel free to chat with me about music, challenge me to a game, or just say hi!</div>
+            <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+          </div>
+        `;
+      }
+      
+      loadMessagesRealtime(userId);
+      focusChatInput();
+      
+    } catch (error) {
+      console.error("Error opening chat:", error);
+      
+      // Check if it's a permissions error
+      if (error.code === 'permission-denied') {
+        alert("Chat functionality requires updated permissions. Please contact the administrator to enable chat features.");
+      } else {
+        alert("Error opening chat. Please try again.");
+      }
+    }
   }
   
   function loadMessagesRealtime(otherUserId) {
     const messagesRef = collection(db, "messages");
     const q = query(
-  messagesRef,
-  where("participants", "array-contains", currentUser.uid),
-  orderBy("timestamp")
-);
+      messagesRef,
+      where("participants", "array-contains", currentUser.uid),
+      orderBy("timestamp")
+    );
 
     if (window.unsubscribeMessages) {
       window.unsubscribeMessages();
@@ -709,15 +1298,38 @@ const messagesSnapshot = await getDocs(messagesQuery);
         ) {
           const msgEl = document.createElement("div");
           msgEl.classList.add("message", msg.senderId === currentUser.uid ? "sent" : "received");
+          
+          // Format timestamp
+          const timestamp = msg.timestamp ? new Date(msg.timestamp.toMillis()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+          
           msgEl.innerHTML = `
             <div class="sender">${msg.senderName || "Anonymous"}</div>
-            <div>${msg.text}</div>
+            <div class="message-text">${msg.text}</div>
+            <div class="message-time">${timestamp}</div>
           `;
           messagesEl.appendChild(msgEl);
         }
       });
   
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+      // Scroll to bottom to show latest messages
+      scrollToBottom();
+    }, (error) => {
+      console.error("Error loading messages:", error);
+      if (error.code === 'permission-denied') {
+        messagesEl.innerHTML = `
+          <div style="padding: 20px; text-align: center; color: #666;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+            <p>Chat permissions need to be updated. Please contact the administrator.</p>
+          </div>
+        `;
+      } else {
+        messagesEl.innerHTML = `
+          <div style="padding: 20px; text-align: center; color: #666;">
+            <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+            <p>Error loading messages. Please try refreshing the page.</p>
+          </div>
+        `;
+      }
     });
   }
   
@@ -726,69 +1338,91 @@ const messagesSnapshot = await getDocs(messagesQuery);
   
     const text = messageInput.value.trim();
     if (!text) return;
-  
-    await addDoc(collection(db, "messages"), {
-  senderId: currentUser.uid,
-  senderName: currentUser.displayName || "Anonymous",
-  recipientId: activeChatUserId,
-  text,
-  timestamp: serverTimestamp(),
-  participants: [currentUser.uid, activeChatUserId]
-});
 
-  
-    messageInput.value = "";
+    try {
+      // Clear input immediately for better UX
+      messageInput.value = "";
+      
+      // Add message to Firestore
+      await addDoc(collection(db, "messages"), {
+        senderId: currentUser.uid,
+        senderName: currentUser.displayName || currentUser.email || "Anonymous",
+        recipientId: activeChatUserId,
+        text,
+        timestamp: serverTimestamp(),
+        participants: [currentUser.uid, activeChatUserId]
+      });
+
+      console.log("Message sent successfully");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      // Restore the message text if sending failed
+      messageInput.value = text;
+      alert("Failed to send message. Please try again.");
+    }
+  });
+
+  // Also allow sending message with Enter key
+  messageInput.addEventListener("keypress", async (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendBtn.click();
+    }
   });
   
-  function goBackToUserList() {
-    activeChatUserId = null;
-    document.getElementById("chatContainer").style.display = "none";
-    document.getElementById("messageListView").style.display = "block";
-    chatInputContainer.style.display = "none";
-    loadConversationsByTab(activeTab);
-  }
+
   
-  function setupUserSearch() {
+    function setupUserSearch() {
     const userSearchInput = document.getElementById("userSearchInput");
-  
+
     userSearchInput.addEventListener("input", async () => {
       const queryText = userSearchInput.value.toLowerCase().trim();
       userListEl.innerHTML = "";
-  
+
       if (!currentUser) return;
-  
+
+      // Check if current user is admin
+      const isAdmin = currentUser.email === 'colbyma23@gmail.com';
+
+      if (!isAdmin) {
+        // For regular users, disable search and show message
+        userSearchInput.value = "";
+        userListEl.innerHTML = `<p style="padding:10px; color:#666;">You can only chat with Colby. Use the "Challenge Colby" option above.</p>`;
+        return;
+      }
+
       if (queryText.length < 3) {
         userListEl.innerHTML = `<p style="padding:10px; color:#666;">Type at least 3 characters to search.</p>`;
         return;
       }
-  
+
       const usersSnapshot = await getDocs(collection(db, "users"));
       const matches = [];
-  
+
       usersSnapshot.forEach(docSnap => {
         const data = docSnap.data();
         const username = (data.username || "").toLowerCase();
         const favoriteArtists = Array.isArray(data.favoriteArtist)
           ? data.favoriteArtist.join(", ").toLowerCase()
           : (data.favoriteArtist || "").toLowerCase();
-  
+
         if ((username.includes(queryText) || favoriteArtists.includes(queryText)) && docSnap.id !== currentUser.uid) {
           matches.push({ uid: docSnap.id, ...data });
         }
       });
-  
+
       if (matches.length === 0) {
         userListEl.innerHTML = "<p style='padding:10px; color:#666;'>No matches found.</p>";
         return;
       }
-  
+
       userListEl.innerHTML = matches.slice(0, 10).map(user => `
         <div class="user-block" style="cursor:pointer;">
           <img class="user-avatar" src="${user.avatar || '/images/avatars/popstarpenguin.jpg'}" alt="Avatar" />
           <div class="user-name">${user.username || "Anonymous"}</div>
         </div>
       `).join("");
-  
+
       Array.from(userListEl.children).forEach((el, i) => {
         el.addEventListener("click", () => openChatWithUser(matches[i].uid, matches[i].username));
       });
@@ -802,32 +1436,89 @@ const messagesSnapshot = await getDocs(messagesQuery);
 
   currentUser = user;
 
-  setupUserSearch();
-  loadConversationsByTab(activeTab);
+  // Check if we should automatically open a chat
+  const urlParams = new URLSearchParams(window.location.search);
+  const openChatUserId = urlParams.get('openChat');
+  
+  if (openChatUserId) {
+    // Clear the URL parameter
+    window.history.replaceState({}, document.title, window.location.pathname);
+    
+    // Find the user data and open the chat directly
+    openChatWithUserId(openChatUserId);
+  } else {
+    // For regular users, show only "Challenge Colby" option
+    updateTabVisibility();
+    setupUserSearch();
+    loadConversationsByTab(activeTab);
+  }
+  
   backfillParticipants(); // 👈 Call here
 });
 
   
-  // Expose goBackToUserList for inline onclick usage
-  window.goBackToUserList = goBackToUserList;
 
-async function backfillParticipants() {
 
-  const snapshot = await getDocs(
-    query(messagesRef, where("participants", "array-contains", currentUser.uid))
-  );
+  async function backfillParticipants() {
 
-  snapshot.forEach(async (docSnap) => {
-    const data = docSnap.data();
-    if (!data.participants && data.senderId && data.recipientId) {
-      await updateDoc(docSnap.ref, {
-        participants: [data.senderId, data.recipientId]
-      });
+    const snapshot = await getDocs(
+      query(messagesRef, where("participants", "array-contains", currentUser.uid))
+    );
+
+    snapshot.forEach(async (docSnap) => {
+      const data = docSnap.data();
+      if (!data.participants && data.senderId && data.recipientId) {
+        await updateDoc(docSnap.ref, {
+          participants: [data.senderId, data.recipientId]
+        });
+      }
+    });
+  }
+
+  // Hamburger menu functionality
+  const hamburger = document.getElementById("hamburger");
+  const mobileMenu = document.getElementById("mobileMenu");
+  
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("show");
+    });
+  }
+
+  // Handle viewport changes for mobile keyboard
+  let initialViewportHeight = window.innerHeight;
+  
+  window.addEventListener('resize', () => {
+    const currentHeight = window.innerHeight;
+    const heightDifference = initialViewportHeight - currentHeight;
+    
+    // If height decreased significantly, keyboard is likely open
+    if (heightDifference > 150) {
+      document.body.style.setProperty('--keyboard-height', `${heightDifference}px`);
+    } else {
+      document.body.style.setProperty('--keyboard-height', '0px');
     }
   });
-}
 
+  // Auto-scroll to bottom when new messages arrive
+  function scrollToBottom() {
+    const messagesEl = document.getElementById('messages');
+    if (messagesEl) {
+      setTimeout(() => {
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }, 100);
+    }
+  }
 
+  // Focus input when chat is opened
+  function focusChatInput() {
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+      setTimeout(() => {
+        messageInput.focus();
+      }, 200);
+    }
+  }
 
 </script>
 

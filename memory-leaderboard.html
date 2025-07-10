@@ -510,14 +510,7 @@ h1 select:focus {
       <div id="profileContent">Loading...</div>
     </div>
   </div>
-  <div id="dmModal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close" id="dmClose">&times;</span>
-      <h3 style="color:#315f85;">Send a Message</h3>
-      <textarea id="dmText" placeholder="Type your message..." rows="4" style="width:100%; padding:10px; border-radius:8px;"></textarea>
-      <button id="sendDM" style="margin-top:10px; padding:8px 16px; background:#315f85; color:white; border:none; border-radius:6px; cursor:pointer;">Send</button>
-    </div>
-  </div>
+
   <footer class="bottom-nav">
     <a href="/index.html" class="nav-item">
       <i class="fas fa-home"></i>
@@ -1003,40 +996,7 @@ const deleteBtn = (isColby && data.id)
   }
 });
 
-    let recipientId = "";
 
-document.getElementById("dmClose").onclick = () => {
-  document.getElementById("dmModal").classList.add("hidden");
-};
-
-document.getElementById("sendDM").onclick = async () => {
-  const message = document.getElementById("dmText").value.trim();
-  if (!message || !recipientId || !currentUser) return;
-  console.log("Sending DM", { message, recipientId, currentUser });
-
-try {
-  await addDoc(collection(db, "messages"), {
-
-      senderId: currentUser.uid,
-      senderName: currentUser.displayName || "Anonymous",
-      recipientId: recipientId,
-      text: message,
-      timestamp: new Date()
-    });
-// After message is sent
-document.getElementById("dmModal").classList.add("hidden");
-document.getElementById("dmText").value = "";
-
-// Temporary feedback
-const btn = document.getElementById("sendDM");
-btn.textContent = "Sent!";
-setTimeout(() => btn.textContent = "Send", 1500);
-    document.getElementById("dmModal").classList.add("hidden");
-    document.getElementById("dmText").value = "";
-  } catch (e) {
-    alert("Failed to send message.");
-  }
-};
 
 function showUserProfile(userId) {
   const modal = document.getElementById("profileModal");
@@ -1084,13 +1044,7 @@ function showUserProfile(userId) {
           ${artistTags || '<div style="color:#888;">—</div>'}
         </div>
 
-        <div class="vibe-header" style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
-          <span>DM Me!</span>
-          <a href="/inbox.html?recipientId=${userId}" title="Send Message">
-            <i class="fas fa-envelope" style="color:#28a7ae; font-size:20px;"></i>
-          </a>
-        </div>
-        <p style="font-size:13px; color:#555;">Ask me a question, challenge me to guess your favorite artist, or just say hey.</p>
+
       </div>
     `;
 
@@ -1104,9 +1058,7 @@ function showUserProfile(userId) {
 
 window.showUserProfile = showUserProfile;
 
-window.openDMModal = function(recipientId, recipientEmail) {
-  window.location.href = `/inbox.html?recipientId=${encodeURIComponent(recipientId)}&recipientEmail=${encodeURIComponent(recipientEmail)}`;
-};
+
 
     </script>
     

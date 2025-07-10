@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Game - Type to Reveal</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+    
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+    }
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+    
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+    .dropdown.show {
+      display: flex;
+    }
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+    
+    .coin-gain {
+      color: #27ae60;
+      font-weight: bold;
+      margin-left: 4px;
+      font-size: 16px;
+      opacity: 0;
+      transform: translateY(0px);
+      transition: all 0.6s ease-out;
+    }
+    .coin-gain.animate {
+      opacity: 1;
+      transform: translateY(-10px);
+    }
+    .hidden {
+      display: none;
+    }
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    
+    /* Mobile nav styles */
+    .hamburger {
+      display: block;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      right: 15px;
+      top: 120px; /* adjust if needed to push below hamburger */
+      background-color: #1e2b38;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: max-content;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      font-weight: bold;
+      width: 100%;
+    }
+    .mobile-menu a:hover {
+      color: #ffcb05;
+    }
+    .mobile-menu.show {
+      display: flex;
+    }
+    /* Nav adjustments */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+        color: white;
+      }
+      nav {
+        justify-content: space-between;
+      }
+      .welcome-nav {
+        display: block;
+      }
+    }
+    
+    h1 {
+      text-align: center;
+      color: #315f85;
+      margin: 30px 0 10px;
+    }
+    
+    #score {
+      font-size: 1.2rem;
+      color: #315f85;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, 100px);
+      grid-template-rows: repeat(10, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 0 auto 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(5, 80px);
+        grid-template-rows: repeat(20, 80px);
+        gap: 8px;
+      }
+      .card {
+        font-size: 11px;
+      }
+      .singer-name {
+        font-size: 11px;
+        padding: 2px;
+        line-height: 1.1;
+      }
+      .singer-name span {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .singer-name span:nth-child(2) {
+        margin-top: 1px;
+      }
+    }
+    
+    .card {
+      background-color: #315f85;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0;
+      transition: background-color 0.3s;
+      border: 3px solid transparent;
+      transition: background-color 0.3s, border-color 0.3s;
+      overflow: hidden;
+      position: relative;
+      padding: 5px;
+    }
+    
+    .card.revealed {
+      border-color: #ffcb05; /* Yellow when revealed */
+    }
+    
+    .card.completed {
+      border-color: #4caf50 !important; /* Green when completed */
+    }
+    
+    .card.current {
+      border-color: #ff6b6b !important; /* Red for current target */
+      animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    img.singer-img {
+      width: 80%;
+      height: 60%;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 5px;
+    }
+    
+    .singer-name {
+      font-size: 12px;
+      padding: 2px;
+      text-align: center;
+      word-wrap: break-word;
+      white-space: normal;
+      line-height: 1.1;
+      font-weight: bold;
+      width: 100%;
+    }
+    
+    #message {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #e74c3c;
+      margin-bottom: 10px;
+    }
+    
+    #startBtn {
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      display: block;
+    }
+    
+    #startBtn:hover {
+      background-color: #e6b800;
+    }
+    
+    #startBtn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    #restartBtn {
+      display: none;
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .typing-section {
+      text-align: center;
+      margin: 20px 0;
+      display: none;
+    }
+    
+    .typing-section.show {
+      display: block;
+    }
+    
+    #currentTarget {
+      font-size: 1.2rem;
+      color: #315f85;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    
+    #nameInput {
+      padding: 10px 15px;
+      font-size: 1rem;
+      border: 2px solid #315f85;
+      border-radius: 10px;
+      width: 250px;
+      text-align: center;
+      font-family: 'Fredoka', sans-serif;
+    }
+    
+    #nameInput:focus {
+      outline: none;
+      border-color: #ffcb05;
+    }
+    
+    #submitBtn {
+      margin-left: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #315f85;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    #submitBtn:hover {
+      background-color: #234d7d;
+    }
+    
+    #skipBtn {
+      margin-left: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #f39c12;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    #skipBtn:hover {
+      background-color: #e67e22;
+    }
+    
+    #giveUpBtn {
+      margin-left: 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    #giveUpBtn:hover {
+      background-color: #c0392b;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: fadeDown 1s ease-out;
+    }
+    
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+        padding: 0px;
+      }
+      .header{
+        height: 35px;
+      }
+    }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+    
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    
+    body {
+      padding-bottom: 70px;
+    }
+    
+    .game-over {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .game-over.show {
+      display: flex;
+    }
+    
+    .game-over-content {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      color: #333;
+    }
+    
+    .game-over h2 {
+      color: #315f85;
+      margin-bottom: 20px;
+    }
+    
+    .game-over p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    
+    .restart-button {
+      background: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .restart-button:hover {
+      background: #e6b800;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  
+  <nav style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+      <!-- Coin Display aligned next to Welcome -->
+      <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight: bold;">0</span>
+        <span id="coinGain" class="coin-gain hidden">+10</span>
+      </div>
+    </div>
+    <!-- Hamburger menu on far right -->
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+  <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="#" id="infoIcon">Game Rules</a>
+    <a href="/about.html">About</a>
+  </div>
+  
+  <h1>Type to Reveal Memory Game</h1>
+  <div id="score">Score: 0 | Time: <span id="timer">0:00</span></div>
+  <div id="message">Click Start to begin studying the cards!</div>
+  
+  <button id="startBtn">Start Study Phase</button>
+  
+  <div class="typing-section" id="typingSection">
+    <div id="currentTarget">Type the name of the highlighted singer:</div>
+    <input type="text" id="nameInput" placeholder="Enter singer name..." autocomplete="off">
+    <button id="submitBtn">Submit</button>
+    <button id="skipBtn">Skip</button>
+    <button id="giveUpBtn">Give Up</button>
+  </div>
+  
+  <div class="grid" id="gameGrid"></div>
+  
+  <button id="restartBtn" onclick="restartGame()">Play Again</button>
+  
+  <div class="game-over" id="gameOver">
+    <div class="game-over-content">
+      <h2>Congratulations!</h2>
+      <p>You revealed all the singers!</p>
+      <p>Final Score: <span id="finalScore">0</span></p>
+      <p>Coins Earned: <span id="finalCoins">0</span></p>
+      <p>Time: <span id="finalTime">0:00</span></p>
+      <button class="restart-button" onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+  
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, setDoc, doc, getDocs, getDoc, query, where, serverTimestamp, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { updateProfile } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+    let currentUser = null;
+    let userCity = null;
+
+    const allSingers = [
+      { name: '21 Savage', image: '21savage.jpg' },
+      { name: '24kGoldn', image: '24kgoldn.jpg' },
+      { name: '2 Chainz', image: '2chainz.jpg' },
+      { name: '50 Cent', image: '50cent.jpg' },
+      { name: '6LACK', image: '6lack.jpg' },
+      { name: 'A Boogie', image: 'aboogie.jpg' },
+      { name: 'Adam Levine', image: 'adamlevine.jpg' },
+      { name: 'Addison Rae', image: 'addisonrae.jpg' },
+      { name: 'Adele', image: 'adele.jpg' },
+      { name: 'Alec Benjamin', image: 'alecbenjamin1.jpg' },
+      { name: 'Alessia Cara', image: 'alessiacara.jpg' },
+      { name: 'Alexander Stewart', image: 'alexanderstewart.jpg' },
+      { name: 'Alex Warren', image: 'alexwarren.jpg' },
+      { name: 'Alicia Keys', image: 'aliciakeys.jpg' },
+      { name: 'Amy Winehouse', image: 'amywinehouse.jpg' },
+      { name: 'Anitta', image: 'anitta.jpg' },
+      { name: 'Ariana Grande', image: 'arianagrande.jpg' },
+      { name: 'Arijit Singh', image: 'arijitsingh.jpg' },
+      { name: 'Artemas', image: 'artemas.png' },
+      { name: 'A$AP Ferg', image: 'asapferg.jpg' },
+      { name: 'A$AP Rocky', image: 'asaprocky.jpg' },
+      { name: 'Ash Nikko', image: 'ashnikko.jpg' },
+      { name: 'Aurora', image: 'aurora.jpg' },
+      { name: 'Ava Max', image: 'avamax.jpg' },
+      { name: 'Avril Lavigne', image: 'avril.jpg' },
+      { name: 'Baby Keem', image: 'babykeem.jpg' },
+      { name: 'Bad Bunny', image: 'badbunny.jpg' },
+      { name: 'Bailey Zimmerman', image: 'baileyzimmerman.jpg' },
+      { name: 'Barry Manilow', image: 'barrymanilow.jpg' },
+      { name: 'beabadoobee', image: 'beabadoobee.jpg' },
+      { name: 'Bebe Rexha', image: 'beberexha.jpg' },
+      { name: 'Becky G', image: 'beckyg.jpg' },
+      { name: 'Bella Poarch', image: 'bellapoarch.jpg' },
+      { name: 'Benson Boone', image: 'bensonboone.jpg' },
+      { name: 'Beyoncé', image: 'beyonce.jpg' },
+      { name: 'Big Sean', image: 'bigsean.jpg' },
+      { name: 'Billie Eilish', image: 'billieeilish.jpg' },
+      { name: 'Billy Joel', image: 'billyjoel.jpg' },
+      { name: 'Blackbear', image: 'blackbear.png' },
+      { name: 'Blake Shelton', image: 'blakeshelton.jpg' },
+      { name: 'Bob Marley', image: 'bobmarley.jpg' },
+      { name: 'BoyWithUke', image: 'boywithuke.jpg' },
+      { name: 'Brent Faiyaz', image: 'brentfaiyaz.jpg' },
+      { name: 'Britney Spears', image: 'britneyspears.jpg' },
+      { name: 'Bruce Springsteen', image: 'brucespringsteen.jpg' },
+      { name: 'Bruno Mars', image: 'brunomars.jpg' },
+      { name: 'Burna Boy', image: 'burnaboy.jpg' },
+      { name: 'Busta Rhymes', image: 'bustarhymes.jpg' },
+      { name: 'Calum Scott', image: 'calumscott.jpg' },
+      { name: 'Calvin Harris', image: 'calvinharris.jpg' },
+      { name: 'Camila Cabello', image: 'camilacabello.jpg' },
+      { name: 'Cardi B', image: 'cardib.jpg' },
+      { name: 'Carly Rae Jepsen', image: 'carlyraejepsen.jpg' },
+      { name: 'Celine Dion', image: 'celinedion.jpg' },
+      { name: 'Chance Pena', image: 'chancepena.jpg' },
+      { name: 'Chappell Roan', image: 'chappellroan.png' },
+      { name: 'Charlie Puth', image: 'charlieputh.jpg' },
+      { name: 'Charli XCX', image: 'charlixcx.jpg' },
+      { name: 'Chelsea Cutler', image: 'chelseacutler.jpg' },
+      { name: 'Cher', image: 'cher.jpg' },
+      { name: 'Chief Keef', image: 'chiefkeef.jpg' },
+      { name: 'Childish Gambino', image: 'childishgambino.png' },
+      { name: 'Chord Overstreet', image: 'chordoverstreet.jpg' },
+      { name: 'Chris Brown', image: 'chrisbrown.jpg' },
+      { name: 'Chris Stapleton', image: 'chrisstapleton.jpg' },
+      { name: 'Christina Aguilera', image: 'christinaaguilera.jpg' },
+      { name: 'Christina Perri', image: 'christinaperri.jpg' },
+      { name: 'Clairo', image: 'clairo.jpg' },
+      { name: 'Conan Gray', image: 'conangray.jpg' },
+      { name: 'Cordae', image: 'cordae.jpg' },
+      { name: 'Corey Freedman', image: 'coreyfreedman.jpg' },
+      { name: 'Cuco', image: 'cuco.jpg' },
+      { name: 'D4VD', image: 'd4vd.jpg' },
+      { name: 'DaBaby', image: 'dababy.jpg' },
+      { name: 'Daddy Yankee', image: 'daddyyankee.jpg' },
+      { name: 'Daniel Caesar', image: 'danielcaesar.png' },
+      { name: 'Dave', image: 'dave.jpg' },
+      { name: 'David Bowie', image: 'davidbowie.jpg' },
+      { name: 'David Guetta', image: 'davidguetta.jpg' },
+      { name: 'David Kushner', image: 'davidkushner.jpg' },
+      { name: 'Dean Lewis', image: 'deanlewis.jpg' },
+      { name: 'Dean Martin', image: 'deanmartin.jpg' },
+      { name: 'Demi Lovato', image: 'demilovato.jpg' },
+      { name: 'Dhruv', image: 'dhruv.jpg' },
+      { name: 'Doechii', image: 'doechii.jpg' },
+      { name: 'Doja Cat', image: 'dojacat.jpg' },
+      { name: 'Dolly Parton', image: 'dollyparton.jpg' },
+      { name: 'Dominic Fike', image: 'dominicfike.jpg' },
+      { name: 'Don Toliver', image: 'dontoliver.jpg' },
+      { name: 'Drake', image: 'drake.jpg' },
+      { name: 'Dr. Dre', image: 'drdre.jpg' },
+      { name: 'Dua Lipa', image: 'dualipa.jpg' },
+      { name: 'Duncan Laurence', image: 'duncanlaurence.jpg' },
+      { name: 'Eddie Vedder', image: 'eddievedder.jpg' },
+      { name: 'Ella Fitzgerald', image: 'ellafitzgerald.jpg' },
+      { name: 'Ellie Goulding', image: 'elliegoulding.jpg' },
+      { name: 'Elton John', image: 'eltonjohn.jpg' },
+      { name: 'Elvis Presley', image: 'elvispresley.jpg' },
+      { name: 'Eminem', image: 'eminem.jpg' },
+      { name: 'Enrique Iglesias', image: 'enrique.jpg' },
+      { name: 'Faye Webster', image: 'fayewebster.jpg' },
+      { name: 'Fergie', image: 'fergie.jpg' },
+      { name: 'Flo Milli', image: 'flomilli.jpg' },
+      { name: 'Florence Welch', image: 'florencewelch.jpg' },
+      { name: 'Forrest Frank', image: 'forrestfrank.jpg' },
+      { name: 'Frank Ocean', image: 'frankocean.jpg' },
+      { name: 'Frank Sinatra', image: 'franksinatra.jpg' },
+      { name: 'Freddie Mercury', image: 'freddiemercury.png' },
+      { name: 'French Montana', image: 'frenchmontana.jpg' },
+      { name: 'Future', image: 'future.jpg' },
+      { name: 'G-Dragon', image: 'gdragon.jpg' },
+      { name: 'G-Eazy', image: 'geazy.jpg' },
+      { name: 'George Michael', image: 'georgemichael.jpg' },
+      { name: 'Giveon', image: 'giveon.jpg' },
+      { name: 'Glorilla', image: 'glorilla.jpg' },
+      { name: 'Gracie Abrams', image: 'gracieabrams.jpg' },
+      { name: 'Grimes', image: 'grimes.jpg' },
+      { name: 'Gucci Mane', image: 'guccimane.jpg' },
+      { name: 'Gunna', image: 'gunna.jpg' },
+      { name: 'Gwen Stefani', image: 'gwenstefani.jpg' },
+      { name: 'Halsey', image: 'halsey.jpg' },
+      { name: 'Harry Styles', image: 'harrystyles.jpg' },
+      { name: 'HER', image: 'her.jpg' },
+      { name: 'Hozier', image: 'hozier.jpg' },
+      { name: 'Iann Dior', image: 'ianndior.jpg' },
+      { name: 'Ice Cube', image: 'icecube.jpg' },
+      { name: 'Ice Spice', image: 'icespice.jpg' },
+      { name: 'Iggy Azalea', image: 'iggy.jpg' },
+      { name: 'Isabella Rosa', image: 'isabellarosa.jpg' },
+      { name: 'Jack Harlow', image: 'jackharlow.jpg' },
+      { name: 'Jack Johnson', image: 'jackjohnson.jpg' },
+      { name: 'James Arthur', image: 'jamesarthur.jpg' },
+      { name: 'James Bay', image: 'jamesbay.jpg' },
+      { name: 'James Blunt', image: 'jamesblunt.jpg' },
+      { name: 'Janet Jackson', image: 'janetjackson.png' },
+      { name: 'Jason Derulo', image: 'jasonderulo.jpg' },
+      { name: 'Jason Mraz', image: 'jasonmraz.jpg' },
+      { name: 'Jay-Z', image: 'jayz.jpg' },
+      { name: 'J Balvin', image: 'jbalvin.jpg' },
+      { name: 'J. Cole', image: 'jcole.jpg' },
+      { name: 'Jelly Roll', image: 'jellyroll.jpg' },
+      { name: 'Jennie', image: 'jennie.jpg' },
+      { name: 'Jennifer Lopez', image: 'jenniferlopez.jpg' },
+      { name: 'Jeremih', image: 'jeremih.jpg' },
+      { name: 'Jeremy Zucker', image: 'jeremyzucker.jpg' },
+      { name: 'Jessie J', image: 'jessiej.jpg' },
+      { name: 'Jhené Aiko', image: 'jheneaiko.jpg' },
+      { name: 'JID', image: 'jid.jpg' },
+      { name: 'Jimin', image: 'jimin.png' },
+      { name: 'Joe Jonas', image: 'joejonas.jpg' },
+      { name: 'John Denver', image: 'johndenver.jpg' },
+      { name: 'John Legend', image: 'johnlegend.jpg' },
+      { name: 'John Lennon', image: 'johnlennon.jpg' },
+      { name: 'John Mayer', image: 'johnmayer.jpg' },
+      { name: 'Johnny Cash', image: 'johnnycash.jpg' },
+      { name: 'Joji', image: 'joji.jpg' },
+      { name: 'Juice WRLD', image: 'juicewrld.jpg' },
+      { name: 'Julia Michaels', image: 'juliamichaels.jpg' },
+      { name: 'Jungkook', image: 'jungkook.jpg' },
+      { name: 'Justin Bieber', image: 'justinbieber.jpg' },
+      { name: 'Justin Timberlake', image: 'justintimberlake.jpg' },
+      { name: 'JVKE', image: 'jvke.jpg' },
+      { name: 'Kali Uchis', image: 'kaliuchis.jpg' },
+      { name: 'Kane Brown', image: 'kanebrown.jpg' },
+      { name: 'Kanye West', image: 'kanyewest.jpg' },
+      { name: 'Karol G', image: 'karolg.jpg' },
+      { name: 'Katy Perry', image: 'katyperry.jpg' },
+      { name: 'Kehlani', image: 'kehlani.jpg' },
+      { name: 'Kelly Clarkson', image: 'kellyclarkson.jpg' },
+      { name: 'Kendrick Lamar', image: 'kendricklamar.jpg' },
+      { name: 'Kenia Os', image: 'keniaos.jpg' },
+      { name: 'Kesha', image: 'kesha.jpg' },
+      { name: 'Keshi', image: 'keshi.jpg' },
+      { name: 'Khalid', image: 'khalid.jpg' },
+      { name: 'Kid Cudi', image: 'kidcudi.jpg' },
+      { name: 'Kid LAROI', image: 'kidlaroi.jpg' },
+      { name: 'Kodak Black', image: 'kodakblack.jpg' },
+      { name: 'KSI', image: 'ksi.jpg' },
+      { name: 'Lady Gaga', image: 'ladygaga.jpg' },
+      { name: 'Lana Del Rey', image: 'lanadelrey.jpg' },
+      { name: 'Latto', image: 'latto.jpg' },
+      { name: 'Laufey', image: 'laufey.jpg' },
+      { name: 'Lauren Spencer Smith', image: 'laurenspencersmith.png' },
+      { name: 'Lauryn Hill', image: 'laurynhill.jpg' },
+      { name: 'Lauv', image: 'lauv.png' },
+      { name: 'Lenny Kravitz', image: 'lennykravitz.jpg' },
+      { name: 'Lewis Capaldi', image: 'lewiscapaldi.jpg' },
+      { name: 'LiAngelo Ball', image: 'liangeloball.jpg' },
+      { name: 'Lil Baby', image: 'lilbaby.jpg' },
+      { name: 'Lil Durk', image: 'lildurk.jpg' },
+      { name: 'Lil Mosey', image: 'lilmosey.jpg' },
+      { name: 'Lil Nas X', image: 'lilnasx.jpg' },
+      { name: 'Lil Peep', image: 'lilpeep.jpg' },
+      { name: 'Lil Tecca', image: 'liltecca.jpg' },
+      { name: 'Lil Tjay', image: 'liltjay.jpg' },
+      { name: 'Lil Uzi Vert', image: 'liluzivert.jpg' },
+      { name: 'Lil Wayne', image: 'lilwayne.jpg' },
+      { name: 'Lil Yachty', image: 'lilyachty.jpg' },
+      { name: 'Lin-Manuel Miranda', image: 'linmanuel.jpg' },
+      { name: 'Lionel Richie', image: 'lionelrichie.jpg' },
+      { name: 'Lisa', image: 'lisa.jpg' },
+      { name: 'Lizzo', image: 'lizzo.jpg' },
+      { name: 'Lizzy McAlpine', image: 'lizzymcalpine.jpg' },
+      { name: 'Lorde', image: 'lorde.png' },
+      { name: 'Luis Fonsi', image: 'luisfonsi.jpg' },
+      { name: 'Lukas Graham', image: 'lukasgraham.jpg' },
+      { name: 'Luke Bryan', image: 'lukebryan.jpg' },
+      { name: 'Mac Demarco', image: 'macemarco.jpg' },
+      { name: 'Macklemore', image: 'macklemore.jpg' },
+      { name: 'Mac Miller', image: 'macmiller.jpg' },
+      { name: 'Madison Beer', image: 'madisonbeer.jpg' },
+      { name: 'Madonna', image: 'madonna.jpg' },
+      { name: 'Mandy Moore', image: 'mandymoore.jpg' },
+      { name: 'Mariah Carey', image: 'mariahcarey.jpg' },
+      { name: 'Marvin Gaye', image: 'marvingaye.jpg' },
+      { name: 'Mary J. Blige', image: 'maryjblige.jpg' },
+      { name: 'Meek Mill', image: 'meekmill.jpg' },
+      { name: 'Megan Thee Stallion', image: 'megantheestallion.jpg' },
+      { name: 'Meghan Trainor', image: 'meghantrainor.jpg' },
+      { name: 'Melanie Martinez', image: 'melaniemartinez.png' },
+      { name: 'MF DOOM', image: 'mfdoom.jpg' },
+      { name: 'Machine Gun Kelly', image: 'mgk.jpg' },
+      { name: 'Michael Bublé', image: 'michaelbuble.jpg' },
+      { name: 'Michael Jackson', image: 'michaeljackson.jpg' },
+      { name: 'Mike Posner', image: 'mikeposner.jpg' },
+      { name: 'Miley Cyrus', image: 'mileycyrus.jpg' },
+      { name: 'Mitski', image: 'mitski.jpg' },
+      { name: 'Moneybagg Yo', image: 'moneybaggyo.jpg' },
+      { name: 'Montell Fish', image: 'montellfish.jpg' },
+      { name: 'Morgan Wallen', image: 'morganwallen.jpg' },
+      { name: 'Myles Smith', image: 'mylessmith.jpg' },
+      { name: 'Nelly', image: 'nelly.jpg' },
+      { name: 'Ne-Yo', image: 'neyo.jpg' },
+      { name: 'Niall Horan', image: 'niallhoran.jpg' },
+      { name: 'Nicki Minaj', image: 'nickiminaj.jpg' },
+      { name: 'Nick Jonas', image: 'nickjonas.jpg' },
+      { name: 'Nicky Youre', image: 'nickyyoure.jpg' },
+      { name: 'NLE Choppa', image: 'nlechoppa.jpg' },
+      { name: 'Noah Cyrus', image: 'noahcyrus.jpg' },
+      { name: 'Noah Kahan', image: 'noahkahan.jpg' },
+      { name: 'Odetari', image: 'odetari.jpg' },
+      { name: 'Offset', image: 'offset.jpg' },
+      { name: 'Oliver Tree', image: 'olivertree.jpg' },
+      { name: 'Olivia Rodrigo', image: 'orodrigo.jpg' },
+      { name: 'Omar Courtz', image: 'omarcourtz.jpg' },
+      { name: 'Paul McCartney', image: 'paulmccartney.jpg' },
+      { name: 'Peso Pluma', image: 'pesopluma.jpg' },
+      { name: 'Pharrell Williams', image: 'pharrellwilliams.jpg' },
+      { name: 'Phil Collins', image: 'philcollins.jpg' },
+      { name: 'Phoebe Bridgers', image: 'phoebe.png' },
+      { name: 'Pink', image: 'pink.jpg' },
+      { name: 'PinkPantheress', image: 'pinkpantheress.jpg' },
+      { name: 'Pitbull', image: 'pitbull.jpg' },
+      { name: 'Playboi Carti', image: 'playboicarti.jpg' },
+      { name: 'Pop Smoke', image: 'popsmoke.jpg' },
+      { name: 'Post Malone', image: 'postmalone.jpg' },
+      { name: 'Prince', image: 'prince.png' },
+      { name: 'Pritam', image: 'pritam.jpg' },
+      { name: 'Quavo', image: 'quavo.jpg' },
+      { name: 'RagnBone Man', image: 'ragnboneman.jpg' },
+      { name: 'Rauw Alejandro', image: 'rauwalejandro.jpg' },
+      { name: 'Ray Charles', image: 'raycharles.jpg' },
+      { name: 'Rema', image: 'rema.jpg' },
+      { name: 'Remi Wolf', image: 'remiwolf.jpg' },
+      { name: 'Renée Rapp', image: 'reneerapp.jpg' },
+      { name: 'Rex Orange County', image: 'rexorange.png' },
+      { name: 'Ricky Martin', image: 'rickymartin.jpg' },
+      { name: 'Rihanna', image: 'rihanna.jpg' },
+      { name: 'Robin', image: 'robin.jpg' },
+      { name: 'Roddy Ricch', image: 'roddyricch.jpg' },
+      { name: 'Rod Wave', image: 'rodwave.jpg' },
+      { name: 'Romeo Santos', image: 'romeosantos.jpg' },
+      { name: 'Rosalía', image: 'rosalia.jpg' },
+      { name: 'Rosé', image: 'rose.jpg' },
+      { name: 'Russ', image: 'russ.jpg' },
+      { name: 'Ruth B', image: 'ruthb.jpg' },
+      { name: 'Sabrina Carpenter', image: 'sabrina.jpg' },
+      { name: 'Sade', image: 'sade.jpg' },
+      { name: 'Sam Barber', image: 'sambarber.jpg' },
+      { name: 'Sam Smith', image: 'samsmith.jpg' },
+      { name: 'Sean Kingston', image: 'seankingston.jpg' },
+      { name: 'Sean Paul', image: 'seanpaul.jpg' },
+      { name: 'Selena', image: 'selena.jpg' },
+      { name: 'Selena Gomez', image: 'selenagomez.jpg' },
+      { name: 'Sexyy Red', image: 'sexxyred.jpg' },
+      { name: 'Shaboozey', image: 'shaboozey.jpg' },
+      { name: 'Shakira', image: 'shakira.jpg' },
+      { name: 'Shawn Mendes', image: 'shawnmendes.jpg' },
+      { name: 'Sia', image: 'sia.jpg' },
+      { name: '6ix9ine', image: 'sixnine.png' },
+      { name: 'Snoop Dogg', image: 'snoopdogg.jpg' },
+      { name: 'Soulja Boy', image: 'souljaboy.jpg' },
+      { name: 'Steve Aoki', image: 'steveaoki.jpg' },
+      { name: 'Steve Lacy', image: 'stevelacy.jpg' },
+      { name: 'Summer Walker', image: 'summerwalker.jpg' },
+      { name: 'Swae Lee', image: 'swaelee.jpg' },
+      { name: 'SZA', image: 'sza.jpg' },
+      { name: 'Tate McRae', image: 'tatemcrae.jpg' },
+      { name: 'Taylor Swift', image: 'taylorswift.jpg' },
+      { name: 'Teddy Swims', image: 'teddyswims.jpg' },
+      { name: 'The Weeknd', image: 'theweeknd.jpg' },
+      { name: 'Thomas Rhett', image: 'thomasrhett.jpg' },
+      { name: 'Timbaland', image: 'timbaland.jpg' },
+      { name: 'Tinashe', image: 'tinashe.jpg' },
+      { name: 'Tove Lo', image: 'tovelo.jpg' },
+      { name: 'T-Pain', image: 'tpain.jpg' },
+      { name: 'Travis Scott', image: 'travisscott.jpg' },
+      { name: 'Trippie Redd', image: 'trippieredd.jpg' },
+      { name: 'Troye Sivan', image: 'troyesivan.jpg' },
+      { name: 'Tupac', image: 'tupac.png' },
+      { name: 'Ty Dolla Sign', image: 'tydollasign.jpg' },
+      { name: 'Tyga', image: 'tyga.jpg' },
+      { name: 'Tyla', image: 'tyla.jpg' },
+      { name: 'Tyler Childers', image: 'tylerchilders.jpg' },
+      { name: 'Tyler, The Creator', image: 'tylerthecreator.jpg' },
+      { name: 'Usher', image: 'usher.jpg' },
+      { name: 'Vance Joy', image: 'vancejoy.jpg' },
+      { name: 'Whitney Houston', image: 'whitneyhouston.png' },
+      { name: 'Will Smith', image: 'willsmith.jpg' },
+      { name: 'Wiz Khalifa', image: 'wizkhalifa.jpg' },
+      { name: 'XXXTentacion', image: 'xxxtentacion.jpg' },
+      { name: 'Yeat', image: 'yeat.jpg' },
+      { name: 'Young Thug', image: 'younghug.jpg' },
+      { name: 'Zach Bryan', image: 'zachbryan.jpg' },
+      { name: 'Zara Larsson', image: 'zaralarsson.jpg' },
+      { name: 'ZAYN', image: 'zayn.png' },
+      { name: 'Zedd', image: 'zedd.jpg' },
+      { name: 'Zendaya', image: 'zendaya.jpg' }
+    ];
+
+    let score = 0;
+    let coins = 0;
+    let studyPhase = false;
+    let gameStarted = false;
+    let timer = null;
+    let seconds = 0;
+    let currentIndex = 0;
+    let completedCards = [];
+    
+    const grid = document.getElementById('gameGrid');
+    const scoreEl = document.getElementById('score');
+    const messageEl = document.getElementById('message');
+    const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const timerEl = document.getElementById('timer');
+    const typingSection = document.getElementById('typingSection');
+    const currentTarget = document.getElementById('currentTarget');
+    const nameInput = document.getElementById('nameInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const giveUpBtn = document.getElementById('giveUpBtn');
+    const coinCountEl = document.getElementById('coinCount');
+    const coinGainEl = document.getElementById('coinGain');
+    const welcomeEl = document.getElementById('welcomeMessage');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    let cards = [];
+
+    function initializeGame() {
+      // Clear existing cards
+      grid.innerHTML = '';
+      cards = [];
+      
+      // Create 100 cards with faces and names
+      const selected = allSingers.sort(() => 0.5 - Math.random()).slice(0, 100);
+      selected.forEach((singer, index) => {
+        cards.push({ 
+          name: singer.name, 
+          image: singer.image, 
+          index: index 
+        });
+      });
+
+      cards.forEach((singer, index) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.name = singer.name;
+        card.dataset.image = singer.image;
+        card.dataset.index = index;
+        
+        grid.appendChild(card);
+      });
+    }
+
+    // Initialize game on load
+    initializeGame();
+
+    function revealCard(card) {
+      const img = document.createElement('img');
+      img.src = `images/${card.dataset.image}`;
+      img.alt = card.dataset.name;
+      img.className = 'singer-img';
+      img.onerror = function() {
+        card.innerHTML = `<div class="singer-name">${card.dataset.name}</div>`;
+      };
+      
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'singer-name';
+      nameDiv.textContent = card.dataset.name;
+      
+      card.innerHTML = '';
+      card.appendChild(img);
+      card.appendChild(nameDiv);
+      card.classList.add('revealed');
+    }
+
+    function hideCard(card) {
+      card.innerHTML = '';
+      card.classList.remove('revealed', 'completed', 'current');
+    }
+
+    function highlightCurrentCard() {
+      // Remove current highlight from all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => card.classList.remove('current'));
+      
+      // Add current highlight to the target card
+      const targetCard = allCards[currentIndex];
+      if (targetCard && !targetCard.classList.contains('completed')) {
+        targetCard.classList.add('current');
+      }
+    }
+
+    async function checkAnswer() {
+      const userAnswer = nameInput.value.trim().toLowerCase();
+      const targetCard = document.querySelector(`[data-index="${currentIndex}"]`);
+      const correctName = targetCard.dataset.name.toLowerCase();
+      
+      // Remove accents for comparison
+      const normalizeString = (str) => {
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      };
+      
+      const normalizedUserAnswer = normalizeString(userAnswer);
+      const normalizedCorrectName = normalizeString(correctName);
+      
+      if (normalizedUserAnswer === normalizedCorrectName) {
+        // Correct answer
+        score += 1;
+        revealCard(targetCard);
+        targetCard.classList.remove('current');
+        targetCard.classList.add('completed');
+        completedCards.push(currentIndex);
+        
+        messageEl.textContent = 'Correct! +1 point, +1 coin';
+        messageEl.style.color = '#4caf50';
+        coins += 1;
+        coinCountEl.textContent = coins;
+        scoreEl.textContent = `Score: ${score} | Time: ${timerEl.textContent}`;
+        
+        // Animate coin gain
+        coinGainEl.textContent = '+1';
+        coinGainEl.classList.remove('hidden');
+        setTimeout(() => {
+          coinGainEl.classList.add('animate');
+        }, 10);
+        setTimeout(() => {
+          coinGainEl.classList.remove('animate');
+          setTimeout(() => {
+            coinGainEl.classList.add('hidden');
+          }, 600);
+        }, 600);
+        
+        // Update coins in Firestore if user is logged in
+        if (currentUser) {
+          try {
+            const userRef = collection(db, "users");
+            const q = query(userRef, where("uid", "==", currentUser.uid));
+            const snapshot = await getDocs(q);
+            
+            if (!snapshot.empty) {
+              const userDoc = snapshot.docs[0];
+              await updateDoc(userDoc.ref, {
+                coins: increment(1)
+              });
+              console.log("✅ Coins updated in Firestore");
+            }
+          } catch (error) {
+            console.error("❌ Error updating coins:", error);
+          }
+        }
+        
+        // Move to next card
+        currentIndex++;
+        
+        if (currentIndex >= cards.length) {
+          // Game completed
+          endGame();
+        } else {
+          // Highlight next card
+          highlightCurrentCard();
+          currentTarget.textContent = `Type the name of the highlighted singer:`;
+        }
+      } else {
+        // Wrong answer
+        messageEl.textContent = 'Wrong! Try again.';
+        messageEl.style.color = '#e74c3c';
+      }
+      
+      nameInput.value = '';
+      nameInput.focus();
+      
+      setTimeout(() => {
+        messageEl.textContent = '';
+      }, 2000);
+    }
+
+    function skip() {
+      const targetCard = document.querySelector(`[data-index="${currentIndex}"]`);
+      
+      // Reveal the card and show the correct answer
+      revealCard(targetCard);
+      targetCard.classList.remove('current');
+      targetCard.classList.add('completed');
+      completedCards.push(currentIndex);
+      
+      messageEl.textContent = `Skipped! The answer was "${targetCard.dataset.name}". No points awarded.`;
+      messageEl.style.color = '#f39c12';
+      
+      // Move to next card
+      currentIndex++;
+      
+      if (currentIndex >= cards.length) {
+        // Game completed
+        endGame();
+      } else {
+        // Highlight next card
+        highlightCurrentCard();
+        currentTarget.textContent = `Type the name of the highlighted singer:`;
+      }
+      
+      nameInput.value = '';
+      nameInput.focus();
+      
+      setTimeout(() => {
+        messageEl.textContent = '';
+      }, 3000);
+    }
+
+    function giveUp() {
+      // End the game immediately
+      messageEl.textContent = 'Game ended by player.';
+      messageEl.style.color = '#e74c3c';
+      endGame();
+    }
+
+    function startStudyPhase() {
+      studyPhase = true;
+      startBtn.textContent = 'Start Typing Game';
+      messageEl.textContent = 'Study the cards! Click Start again to begin typing.';
+      messageEl.style.color = '#315f85';
+      
+      // Show all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        revealCard(card);
+      });
+      
+      // Start timer
+      timer = setInterval(() => {
+        seconds++;
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        timerEl.textContent = `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        scoreEl.textContent = `Score: ${score} | Time: ${timerEl.textContent}`;
+      }, 1000);
+    }
+
+    function startTypingGame() {
+      gameStarted = true;
+      studyPhase = false;
+      startBtn.disabled = true;
+      startBtn.textContent = 'Game Started!';
+      messageEl.textContent = 'Type the names to reveal the cards in order!';
+      messageEl.style.color = '#315f85';
+      
+      // Hide all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        hideCard(card);
+      });
+      
+      // Show typing section
+      typingSection.classList.add('show');
+      
+      // Start with first card
+      currentIndex = 0;
+      highlightCurrentCard();
+      currentTarget.textContent = `Type the name of the highlighted singer:`;
+      
+      // Focus on input
+      nameInput.focus();
+    }
+
+    function endGame() {
+      clearInterval(timer);
+      typingSection.classList.remove('show');
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('finalCoins').textContent = coins;
+      document.getElementById('finalTime').textContent = timerEl.textContent;
+      document.getElementById('gameOver').classList.add('show');
+    }
+
+    function restartGame() {
+      // Reset game state
+      score = 0;
+      coins = 0;
+      studyPhase = false;
+      gameStarted = false;
+      seconds = 0;
+      currentIndex = 0;
+      completedCards = [];
+      
+      // Clear timer
+      clearInterval(timer);
+      timer = null;
+      
+      // Reset UI
+      startBtn.disabled = false;
+      startBtn.textContent = 'Start Study Phase';
+      messageEl.textContent = 'Click Start to begin studying the cards!';
+      messageEl.style.color = '#315f85';
+      scoreEl.textContent = 'Score: 0 | Time: 0:00';
+      timerEl.textContent = '0:00';
+      typingSection.classList.remove('show');
+      
+      // Hide game over modal
+      document.getElementById('gameOver').classList.remove('show');
+      
+      // Reset all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        hideCard(card);
+        card.classList.remove('current', 'completed', 'revealed');
+      });
+      
+      // Update coin display
+      coinCountEl.textContent = coins;
+      
+      // Reinitialize game with new random singers
+      initializeGame();
+    }
+
+    // Authentication state listener
+    onAuthStateChanged(auth, async user => {
+      currentUser = user;
+
+      if (user) {
+        console.log("✅ Logged in as:", user.uid);
+        let displayName = currentUser.displayName || "Anonymous";
+        let coinCount = 0;
+
+        const userRef = collection(db, "users");
+        const q = query(userRef, where("uid", "==", currentUser.uid));
+        const snapshot = await getDocs(q);
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.username) displayName = data.username;
+          if (data.coins) coinCount = data.coins;
+        });
+
+        welcomeEl.textContent = `Welcome, ${displayName}`;
+        coinCountEl.textContent = coinCount;
+        coins = coinCount; // Set initial coins from Firestore
+        
+        dropdownMenu.innerHTML = `
+          <a href="/profile.html">Edit Profile</a>
+          <a href="#" id="logoutBtn">Log Out</a>
+        `;
+
+        // Add logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+          try {
+            await signOut(auth);
+            console.log("✅ Logged out successfully");
+          } catch (error) {
+            console.error("❌ Logout error:", error);
+          }
+        });
+
+      } else {
+        console.log("❌ Not logged in");
+        welcomeEl.textContent = "Welcome, Anonymous";
+        coinCountEl.textContent = "0";
+        coins = 0;
+        dropdownMenu.innerHTML = '';
+      }
+    });
+
+    // Hamburger menu functionality
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('show');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileMenu.classList.remove('show');
+      }
+    });
+
+    startBtn.addEventListener('click', () => {
+      if (!studyPhase) {
+        startStudyPhase();
+      } else {
+        startTypingGame();
+      }
+    });
+
+    submitBtn.addEventListener('click', checkAnswer);
+    skipBtn.addEventListener('click', skip);
+    giveUpBtn.addEventListener('click', giveUp);
+
+    nameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+  </script>
+</body>
+</html> 
