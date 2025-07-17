@@ -476,7 +476,7 @@
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-number" id="totalVotes">0</div>
-            <div class="stat-label">Total Votes</div>
+            <div class="stat-label">Unique Voters</div>
           </div>
           <div class="stat-card">
             <div class="stat-number" id="uniqueArtists">0</div>
@@ -613,6 +613,15 @@
       }
 
       try {
+        // Check if user has already voted
+        const existingVoteQuery = query(collection(db, 'rushmoreVotes'), where('userId', '==', currentUser.uid));
+        const existingVoteSnapshot = await getDocs(existingVoteQuery);
+        
+        if (!existingVoteSnapshot.empty) {
+          showError('You have already submitted your Mount Rushmore of Music vote. Each account is limited to one vote.');
+          return;
+        }
+
         // Submit vote to Firestore
         await addDoc(collection(db, 'rushmoreVotes'), {
           userId: currentUser.uid,
@@ -653,8 +662,9 @@
         const votesSnapshot = await getDocs(collection(db, 'rushmoreVotes'));
         const votes = votesSnapshot.docs.map(doc => doc.data());
         
-        // Count total votes
-        document.getElementById('totalVotes').textContent = votes.length;
+        // Count unique users (since each user can only vote once)
+        const uniqueUsers = new Set(votes.map(vote => vote.userId));
+        document.getElementById('totalVotes').textContent = uniqueUsers.size;
 
         // Count unique artists
         const allArtists = votes.flatMap(vote => vote.artists);
