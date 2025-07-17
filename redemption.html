@@ -74,11 +74,12 @@
           <th>Email</th>
           <th>Username</th>
           <th>Prize</th>
+          <th>Coins Used</th>
           <th>Date</th>
         </tr>
       </thead>
       <tbody id="redemptionsBody">
-        <tr><td colspan="4" style="text-align:center; color:#888;">Loading...</td></tr>
+        <tr><td colspan="5" style="text-align:center; color:#888;">Loading...</td></tr>
       </tbody>
     </table>
   </div>
@@ -169,10 +170,25 @@
           }
         }
         
+        // Check for coins data in multiple possible field names
+        let coinsUsed = 0;
+        if (data.cost !== undefined && data.cost !== null) {
+          coinsUsed = data.cost;
+        } else if (data.coins !== undefined && data.coins !== null) {
+          coinsUsed = data.coins;
+        } else if (data.coinsUsed !== undefined && data.coinsUsed !== null) {
+          coinsUsed = data.coinsUsed;
+        } else if (data.price !== undefined && data.price !== null) {
+          coinsUsed = data.price;
+        } else if (data.amount !== undefined && data.amount !== null) {
+          coinsUsed = data.amount;
+        }
+        
         redemptions.push({
           email: data.email || "—",
           username: username || "—",
           prize: prizeDisplay,
+          coinsUsed: coinsUsed,
           date: dateStr,
           dateISO,
           timestampMs
@@ -186,7 +202,7 @@
     function renderTable(redemptions) {
       const body = document.getElementById("redemptionsBody");
       if (!redemptions.length) {
-        body.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">No redemptions found.</td></tr>';
+        body.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">No redemptions found.</td></tr>';
         return;
       }
       body.innerHTML = redemptions.map(r => `
@@ -194,6 +210,7 @@
           <td>${r.email}</td>
           <td>${r.username}</td>
           <td>${r.prize}</td>
+          <td>${r.coinsUsed > 0 ? r.coinsUsed : "—"}</td>
           <td>${r.date}</td>
         </tr>
       `).join("");
@@ -249,7 +266,7 @@
     document.getElementById("filterDate").addEventListener("change", applyFilters);
 
     (async function() {
-      document.getElementById("redemptionsBody").innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">Loading...</td></tr>';
+      document.getElementById("redemptionsBody").innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">Loading...</td></tr>';
       allRedemptions = await fetchRedemptions();
       renderTable(allRedemptions);
     })();

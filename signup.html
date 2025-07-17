@@ -261,6 +261,10 @@ html, body {
     };
   
   
+    // Get redirect URL from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get('redirect') || 'memory.html';
+
     document.getElementById('step2Form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const city = document.getElementById('city').value;
@@ -284,7 +288,7 @@ html, body {
         });
   
         alert("Signup complete! 🎉");
-        window.location.href = 'memory.html';
+        window.location.href = redirectUrl;
       } catch (err) {
         alert("Signup error: " + err.message);
       }
