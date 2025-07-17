@@ -1,4 +1,4 @@
-s<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -380,6 +380,82 @@ s<!DOCTYPE html>
       font-style: italic;
     }
 
+    .leaderboard-section {
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 2px solid #e1f0ff;
+    }
+
+    .leaderboard-section h2 {
+      color: #234d7d;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-top: 20px;
+    }
+
+    .leaderboard-table th {
+      background: linear-gradient(135deg, #ffcc00, #e6b800);
+      color: #1e2b38;
+      padding: 15px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .leaderboard-table td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #e1f0ff;
+      font-size: 0.95rem;
+    }
+
+    .leaderboard-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .leaderboard-table tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    .rank {
+      font-weight: 600;
+      color: #234d7d;
+      font-size: 1.1rem;
+    }
+
+    .rank-1 {
+      color: #ffd700;
+    }
+
+    .rank-2 {
+      color: #c0c0c0;
+    }
+
+    .rank-3 {
+      color: #cd7f32;
+    }
+
+    .artist-name {
+      font-weight: 500;
+      color: #1e2b38;
+    }
+
+    .mention-count {
+      font-weight: 600;
+      color: #4682b4;
+      text-align: center;
+    }
+
     @media (max-width: 768px) {
       .results-container {
         padding: 20px;
@@ -416,6 +492,19 @@ s<!DOCTYPE html>
       .artist-list {
         flex-direction: column;
         gap: 4px;
+      }
+
+      .leaderboard-section h2 {
+        font-size: 1.5rem;
+      }
+
+      .leaderboard-table {
+        font-size: 0.85rem;
+      }
+
+      .leaderboard-table th,
+      .leaderboard-table td {
+        padding: 10px 8px;
       }
     }
   </style>
@@ -484,6 +573,16 @@ s<!DOCTYPE html>
         <div id="submissionsTable" class="loading">
           <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 10px;"></i>
           <p>Loading submissions...</p>
+        </div>
+      </div>
+
+      <div class="leaderboard-section">
+        <h2>🏆 Most Mentioned Artists</h2>
+        <p class="subtitle">The artists getting the most votes for Mount Rushmore of Music</p>
+        
+        <div id="leaderboardTable" class="loading">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 10px;"></i>
+          <p>Loading leaderboard...</p>
         </div>
       </div>
     </div>
@@ -643,6 +742,66 @@ s<!DOCTYPE html>
       tableContainer.innerHTML = tableHTML;
     }
 
+    function renderLeaderboard(submissions) {
+      const leaderboardContainer = document.getElementById('leaderboardTable');
+      
+      if (submissions.length === 0) {
+        leaderboardContainer.innerHTML = `
+          <div class="no-data">
+            <i class="fas fa-trophy" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
+            <p>No votes yet. Be the first to vote!</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Count artist mentions
+      const artistCounts = {};
+      submissions.forEach(submission => {
+        submission.artists.forEach(artist => {
+          const normalizedArtist = artist.trim().toLowerCase();
+          artistCounts[normalizedArtist] = (artistCounts[normalizedArtist] || 0) + 1;
+        });
+      });
+
+      // Convert to array and sort by count (descending)
+      const sortedArtists = Object.entries(artistCounts)
+        .map(([artist, count]) => ({ artist, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 20); // Show top 20
+
+      const tableHTML = `
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Artist</th>
+              <th>Times Mentioned</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sortedArtists.map((item, index) => {
+              const rank = index + 1;
+              const rankClass = rank <= 3 ? `rank-${rank}` : '';
+              return `
+                <tr>
+                  <td>
+                    <span class="rank ${rankClass}">${rank}</span>
+                  </td>
+                  <td>
+                    <span class="artist-name">${item.artist.charAt(0).toUpperCase() + item.artist.slice(1)}</span>
+                  </td>
+                  <td class="mention-count">${item.count}</td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+      
+      leaderboardContainer.innerHTML = tableHTML;
+    }
+
     function filterSubmissions() {
       const userFilter = document.getElementById('searchUser').value.toLowerCase();
       const artistFilter = document.getElementById('searchArtist').value.toLowerCase();
@@ -756,6 +915,7 @@ s<!DOCTYPE html>
       // Load data regardless of auth state
       allSubmissions = await loadStats();
       renderSubmissionsTable(allSubmissions);
+      renderLeaderboard(allSubmissions);
     });
 
   </script>

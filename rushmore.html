@@ -723,11 +723,9 @@
         }
       } else {
         welcomeEl.textContent = "Welcome, Anonymous";
-        welcomeEl.onclick = () => {
-          dropdownMenu.classList.toggle('show');
-        };
         dropdownMenu.innerHTML = `
-          <a href="#" onclick="handleLogin()">Login</a>
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
         `;
         
         // Reset coin display for anonymous users
@@ -736,17 +734,24 @@
           coinDisplayEl.textContent = "0";
         }
         
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-          if (!welcomeEl.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownMenu.classList.remove('show');
-          }
-        });
-        
         showError('Please <a href="/login.html" style="color: #4a90e2; text-decoration: underline;">log in</a> to submit your Mount Rushmore of Music vote.');
       }
     });
 
+    // Welcome message dropdown functionality
+    const welcomeMessage = document.getElementById("welcomeMessage");
+
+    welcomeMessage.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeMessage) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
 
   </script>
 </body>

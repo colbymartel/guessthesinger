@@ -135,6 +135,29 @@
       color: #e74c3c;
       margin-bottom: 10px;
     }
+    #startBtn {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #startBtn:hover {
+      background-color: #45a049;
+    }
+    
+    #startBtn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    
     #restartBtn {
       display: none;
       margin: 0 auto 30px;
@@ -414,11 +437,14 @@
       <p>Your best score will be saved and submitted to the leaderboard.</p>
     </div>
   </div>
-  <h1>Match the Singer</h1>
-  <div id="score">Score: 1000 | High Score: <span id="highScore">0</span></div>
-  <div id="message"></div>
-  <div class="grid" id="gameGrid"></div>
-  <button id="restartBtn" onclick="location.reload()">Play Again</button>
+  <h1>Match the Singer - Time Trial</h1>
+  <div id="score" style="display: none;">Score: 1000 | High Score: <span id="highScore">0</span></div>
+  <div id="timer" style="display: none; text-align: center; font-size: 1.1rem; color: #315f85; margin-bottom: 10px;">Study Time: <span id="timerDisplay">00:00</span></div>
+  <div id="message">Click Start to begin studying the cards!</div>
+  
+  <button id="startBtn">Start Study Phase</button>
+  <div class="grid" id="gameGrid" style="display: none;"></div>
+  <button id="restartBtn" onclick="location.reload()" style="display: none;">Play Again</button>
   <footer class="bottom-nav">
     <a href="/profile.html" class="nav-item">
       <i class="fas fa-user"></i>
@@ -568,6 +594,19 @@
     const uid = currentUser?.uid || "guest";
 const username = currentUser?.displayName || "Anonymous";
 
+    // Game state variables
+    let studyPhase = false;
+    let gameStarted = false;
+    let studyStartTime = null;
+    let studyTimer = null;
+    let totalStudyTime = 0;
+    
+    // UI Elements
+    const startBtn = document.getElementById('startBtn');
+    const timerEl = document.getElementById('timer');
+    const timerDisplayEl = document.getElementById('timerDisplay');
+    
+    // Initialize game cards
     const selected = allSingers.sort(() => 0.5 - Math.random()).slice(0, 12);
     let cards = [];
     selected.forEach(s => {
@@ -576,15 +615,15 @@ const username = currentUser?.displayName || "Anonymous";
     });
     cards = cards.sort(() => 0.5 - Math.random());
 
+    // Create cards but don't show them yet
     cards.forEach(data => {
       const card = document.createElement('div');
       card.classList.add('card');
       card.dataset.type = data.type;
       card.dataset.value = data.value;
       card.dataset.matchId = data.matchId;
-      // Do NOT append image or name here. Cards start empty.
       card.addEventListener('click', () => {
-        if (lock || revealed.includes(card) || card.classList.contains('match') || revealed.length === 2) return;
+        if (!gameStarted || lock || revealed.includes(card) || card.classList.contains('match') || revealed.length === 2) return;
         revealCard(card);
         revealed.push(card);
         if (revealed.length === 2) {
@@ -593,6 +632,101 @@ const username = currentUser?.displayName || "Anonymous";
         }
       });
       grid.appendChild(card);
+    });
+    
+    // Timer Functions
+    function startStudyTimer() {
+      studyStartTime = Date.now();
+      timerEl.style.display = 'block';
+      studyTimer = setInterval(updateTimer, 1000);
+    }
+    
+    function stopStudyTimer() {
+      if (studyTimer) {
+        clearInterval(studyTimer);
+        studyTimer = null;
+      }
+      if (studyStartTime) {
+        totalStudyTime = Math.floor((Date.now() - studyStartTime) / 1000);
+        studyStartTime = null;
+      }
+    }
+    
+    function updateTimer() {
+      if (studyStartTime) {
+        const elapsed = Math.floor((Date.now() - studyStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        timerDisplayEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+    }
+    
+    // Study Phase Functions
+    function startStudyPhase() {
+      studyPhase = true;
+      startBtn.textContent = 'Start Matching Game';
+      messageEl.textContent = 'Study the cards! Click Start again to begin matching.';
+      messageEl.style.color = '#315f85';
+      
+      // Start the study timer
+      startStudyTimer();
+      
+      // Show all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        const type = card.dataset.type;
+        const value = card.dataset.value;
+        
+        if (type === 'image') {
+          const img = document.createElement('img');
+          img.src = `images/${value}`;
+          img.classList.add('singer-img');
+          card.appendChild(img);
+        } else {
+          const nameDiv = document.createElement('div');
+          nameDiv.classList.add('singer-name');
+          nameDiv.textContent = value;
+          card.appendChild(nameDiv);
+        }
+        card.style.fontSize = '14px';
+      });
+      
+      // Show game grid
+      grid.style.display = 'grid';
+    }
+    
+    function startMatchingGame() {
+      gameStarted = true;
+      studyPhase = false;
+      startBtn.disabled = true;
+      startBtn.textContent = 'Game Started!';
+      
+      // Stop the study timer and show total study time
+      stopStudyTimer();
+      const minutes = Math.floor(totalStudyTime / 60);
+      const seconds = totalStudyTime % 60;
+      timerDisplayEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      messageEl.textContent = `Study time: ${minutes}:${seconds.toString().padStart(2, '0')} - Now match the singers! Click cards to reveal them.`;
+      messageEl.style.color = '#315f85';
+      
+      // Hide all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        card.innerHTML = '';
+        card.style.fontSize = '0';
+      });
+      
+      // Show score
+      scoreEl.style.display = 'block';
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', () => {
+      if (!studyPhase) {
+        startStudyPhase();
+      } else {
+        startMatchingGame();
+      }
     });
 
     function handleCardMatch() {
@@ -605,7 +739,9 @@ const username = currentUser?.displayName || "Anonymous";
         revealed = [];
         lock = false;
         if (matchesFound === selected.length) {
-          messageEl.textContent = '🎉 You won!';
+          const minutes = Math.floor(totalStudyTime / 60);
+          const seconds = totalStudyTime % 60;
+          messageEl.textContent = `🎉 You won! Study time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
           messageEl.style.color = '#4caf50'; 
           restartBtn.style.display = 'block';
           submitScore(score);

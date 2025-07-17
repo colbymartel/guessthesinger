@@ -15,7 +15,7 @@
     }
     .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background: #254a6d;
   padding: 16px 40px;
@@ -29,31 +29,14 @@
   height: 50px;
 }
 
-.nav-right a {
-  margin-left: 25px;
-  font-weight: 500;
-  color: #fff;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-
-.book-btn {
-  background: #4682b4;
-  color: #000;
-  padding: 10px 18px;
-  border-radius: 24px;
-  font-weight: bold;
-  margin-left: 30px;
-}
-
-.book-btn:hover  {
-  color: white !important;
-  background: #ffcc00;
-}
-
-.nav-right a:hover {
-  color: #ffd700;
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 20px;
+  }
+  
+  .navbar .logo {
+    height: 40px;
+  }
 }
     .hero {
       margin-top: 60px;
@@ -98,7 +81,7 @@
     .video-section {
       text-align: center;
       margin-top: 48px;
-      margin-bottom: 30px;
+      margin-bottom: 60px;
     }
 
     .video-section iframe {
@@ -367,28 +350,45 @@
     .hero-arrow.left { left: -22px; }
     .hero-arrow.right { right: -22px; }
     .hero-arrow:hover { background: #4682b4; }
-    @media (max-width: 800px) {
-      .hero-slider-img { height: 180px; }
-      .hero-slider-container { max-width: 98vw; }
+    
+    @media (max-width: 768px) {
+      .hero-slider-img {
+        width: 100%;
+        max-width: 100%;
+        height: 200px;
+      }
+      .hero-slider {
+        gap: 0;
+      }
+      .hero-slider-container {
+        max-width: 90vw;
+      }
+      .hero-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.8rem;
+      }
+      .hero-arrow.left { left: -20px; }
+      .hero-arrow.right { right: -20px; }
     }
+    
     @media (max-width: 600px) {
-      .hero-slider-img { height: 120px; }
-      .hero-slider { gap: 8px; }
-      .hero-arrow { width: 36px; height: 36px; font-size: 1.5rem; }
-      .hero-arrow.left { left: -12px; }
-      .hero-arrow.right { right: -12px; }
+      .hero-slider-img {
+        height: 150px;
+      }
+      .hero-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1.5rem;
+      }
+      .hero-arrow.left { left: -18px; }
+      .hero-arrow.right { right: -18px; }
     }
   </style>
 </head>
 <body>
   <nav class="navbar">
-    <div class="nav-left">
-      <img src="images/SingerLogo.png" alt="Logo" class="logo" />
-    </div>
-    <div class="nav-right">
-      <a href="#">Home</a>
-              <a href="booking-form.html" class="book-btn" id="navbarBookBtn">Learn More</a>
-    </div>
+    <img src="images/SingerLogo.png" alt="Logo" class="logo" />
   </nav>
   
   <section class="hero">
@@ -412,7 +412,7 @@
           <li>💵 $500 in guaranteed prize money</li>
           <li>🏅 Up to $1,000 in bonus cash prizes</li>
         </ul>
-        <a href="booking-form.html?package=Basic" class="book-package-btn" style="text-decoration: none; display: inline-block;">Learn More</a>
+        <a href="booking-form.html?package=Basic" class="book-package-btn" style="text-decoration: none; display: inline-block;" target="_blank">Learn More</a>
       </div>
       <!-- Standard Package -->
       <div class="package-card featured">
@@ -424,7 +424,7 @@
           <li>💵 $1,000 in guaranteed prize money</li>
           <li>🏅 Up to $2,000 in bonus cash prizes</li>
         </ul>
-        <a href="booking-form.html?package=Standard" class="book-package-btn" style="text-decoration: none; display: inline-block;">Learn More</a>
+        <a href="booking-form.html?package=Standard" class="book-package-btn" style="text-decoration: none; display: inline-block;" target="_blank">Learn More</a>
       </div>
       <!-- Ultimate Package -->
       <div class="package-card">
@@ -438,7 +438,7 @@
           <li>🎥 Full Event Recap Video</li>
           <li>🔥 Free Merch Giveaways</li>
         </ul>
-        <a href="booking-form.html?package=Ultimate" class="book-package-btn" style="text-decoration: none; display: inline-block;">Learn More</a>
+        <a href="booking-form.html?package=Ultimate" class="book-package-btn" style="text-decoration: none; display: inline-block;" target="_blank">Learn More</a>
       </div>
     </div>
 
@@ -486,22 +486,22 @@
         </a>
         <div class="host-stats">
           <div class="stat">
-            <span class="stat-number">525,000</span>
+            <span class="stat-number" data-target="500000">0</span>
             <div class="stat-label-with-icon">
               <img src="images/youtubeicon.png" alt="YouTube" class="platform-icon">
               <span class="stat-label">YOUTUBE SUBSCRIBERS</span>
             </div>
           </div>
           <div class="stat">
-            <span class="stat-number">225,000</span>
+            <span class="stat-number" data-target="200000">0</span>
             <div class="stat-label-with-icon">
               <img src="images/tiktokicon.png" alt="TikTok" class="platform-icon">
               <span class="stat-label">TIKTOK FOLLOWERS</span>
             </div>
           </div>
           <div class="stat">
-            <span class="stat-number">600,000,000+</span>
-            <span class="stat-label">VIEWS</span>
+            <span class="stat-number" data-target="600000000">0</span>
+            <span class="stat-label">TOTAL VIEWS</span>
           </div>
         </div>
       </div>
@@ -875,6 +875,10 @@ let heroSliderIndex = -1; // -1 means show gameshowheading.jpg only
 function renderHeroSlider() {
   const slider = document.getElementById('heroSlider');
   slider.innerHTML = '';
+  
+  // Check if mobile
+  const isMobile = window.innerWidth <= 768;
+  
   if (heroSliderIndex === -1) {
     // Show only the heading image
     const img = document.createElement('img');
@@ -883,8 +887,9 @@ function renderHeroSlider() {
     img.className = 'hero-slider-img single';
     slider.appendChild(img);
   } else {
-    for (let i = 0; i < 2; i++) {
-      const imgIdx = (heroSliderIndex * 2 + i);
+    if (isMobile) {
+      // On mobile, show only one image at a time
+      const imgIdx = heroSliderIndex;
       if (imgIdx < heroGalleryImages.length) {
         const img = document.createElement('img');
         img.src = heroGalleryImages[imgIdx];
@@ -892,13 +897,28 @@ function renderHeroSlider() {
         img.className = 'hero-slider-img';
         slider.appendChild(img);
       }
+    } else {
+      // On desktop, show two images at a time
+      for (let i = 0; i < 2; i++) {
+        const imgIdx = (heroSliderIndex * 2 + i);
+        if (imgIdx < heroGalleryImages.length) {
+          const img = document.createElement('img');
+          img.src = heroGalleryImages[imgIdx];
+          img.alt = `Gallery Image ${imgIdx + 1}`;
+          img.className = 'hero-slider-img';
+          slider.appendChild(img);
+        }
+      }
     }
   }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   renderHeroSlider();
+  
   document.getElementById('heroPrev').onclick = function() {
+    const isMobile = window.innerWidth <= 768;
+    
     if (heroSliderIndex === -1) return; // Already at the start
     if (heroSliderIndex === 0) {
       heroSliderIndex = -1;
@@ -907,16 +927,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     renderHeroSlider();
   };
+  
   document.getElementById('heroNext').onclick = function() {
+    const isMobile = window.innerWidth <= 768;
+    
     if (heroSliderIndex === -1) {
       heroSliderIndex = 0;
-    } else if (heroSliderIndex === galleryPairs - 1) {
-      heroSliderIndex = -1;
+    } else if (isMobile) {
+      // On mobile, cycle through individual images
+      if (heroSliderIndex === heroGalleryImages.length - 1) {
+        heroSliderIndex = -1;
+      } else {
+        heroSliderIndex++;
+      }
     } else {
-      heroSliderIndex++;
+      // On desktop, cycle through pairs
+      if (heroSliderIndex === galleryPairs - 1) {
+        heroSliderIndex = -1;
+      } else {
+        heroSliderIndex++;
+      }
     }
     renderHeroSlider();
   };
+  
+  // Re-render on window resize to handle orientation changes
+  window.addEventListener('resize', function() {
+    renderHeroSlider();
+  });
 });
 </script>
 <style>
@@ -932,11 +970,16 @@ document.addEventListener('DOMContentLoaded', function() {
   object-fit: contain;
   background: #eee;
 }
-@media (max-width: 800px) {
-  .hero-slider-img.single { max-height: 220px; }
+@media (max-width: 768px) {
+  .hero-slider-img.single { 
+    max-height: 200px;
+    width: 100%;
+  }
 }
 @media (max-width: 600px) {
-  .hero-slider-img.single { max-height: 120px; }
+  .hero-slider-img.single { 
+    max-height: 150px;
+  }
 }
 .package-price {
   font-size: 1.5rem;
@@ -964,11 +1007,54 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
+  <script>
+    // Count-up animation for stats
+    function animateCounter(element, target, duration = 2000) {
+      const start = 0;
+      const increment = target / (duration / 16); // 60fps
+      let current = start;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        
+        // Format the number with commas
+        const formatted = Math.floor(current).toLocaleString();
+        element.textContent = formatted + (target >= 1000000 ? '+' : '+');
+      }, 16);
+    }
 
+    // Intersection Observer to trigger animation when stats come into view
+    const observerOptions = {
+      threshold: 0.5,
+      rootMargin: '0px 0px -100px 0px'
+    };
 
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const statNumber = entry.target;
+          const target = parseInt(statNumber.getAttribute('data-target'));
+          
+          if (!statNumber.classList.contains('animated')) {
+            statNumber.classList.add('animated');
+            animateCounter(statNumber, target);
+          }
+        }
+      });
+    }, observerOptions);
 
-
-
+    // Observe all stat numbers
+    document.addEventListener('DOMContentLoaded', () => {
+      const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+      statNumbers.forEach(stat => {
+        statsObserver.observe(stat);
+      });
+    });
+  </script>
 
 </body>
 </html>

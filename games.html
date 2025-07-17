@@ -1031,6 +1031,21 @@ nav {
         alert("Error connecting to chat. Please try again.");
       }
     };
+
+    // Welcome message dropdown functionality
+    const welcomeMessage = document.getElementById("welcomeMessage");
+
+    welcomeMessage.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeMessage) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
   </script>  
 </body>  
 </html>
