@@ -387,7 +387,7 @@
     </div>
     <div class="nav-right">
       <a href="#">Home</a>
-      <a href="book.html" class="book-btn" id="navbarBookBtn">Book Now</a>
+              <a href="booking-form.html" class="book-btn" id="navbarBookBtn">Learn More</a>
     </div>
   </nav>
   
@@ -412,7 +412,7 @@
           <li>💵 $500 in guaranteed prize money</li>
           <li>🏅 Up to $1,000 in bonus cash prizes</li>
         </ul>
-        <button class="book-package-btn">Book Basic</button>
+        <a href="booking-form.html?package=Basic" class="book-package-btn" style="text-decoration: none; display: inline-block;">Learn More</a>
       </div>
       <!-- Standard Package -->
       <div class="package-card featured">
@@ -424,7 +424,7 @@
           <li>💵 $1,000 in guaranteed prize money</li>
           <li>🏅 Up to $2,000 in bonus cash prizes</li>
         </ul>
-        <button class="book-package-btn">Book Standard</button>
+        <a href="booking-form.html?package=Standard" class="book-package-btn" style="text-decoration: none; display: inline-block;">Learn More</a>
       </div>
       <!-- Ultimate Package -->
       <div class="package-card">
@@ -438,7 +438,7 @@
           <li>🎥 Full Event Recap Video</li>
           <li>🔥 Free Merch Giveaways</li>
         </ul>
-        <button class="book-package-btn">Book Ultimate</button>
+        <a href="booking-form.html?package=Ultimate" class="book-package-btn" style="text-decoration: none; display: inline-block;">Learn More</a>
       </div>
     </div>
 
@@ -600,162 +600,11 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
-<!-- Booking Modal -->
-<div id="bookingModal" class="modal-overlay" style="display:none;">
-  <div class="modal-content">
-    <button class="modal-close" id="closeBookingModal" aria-label="Close">&times;</button>
-    <h2>Book an Event</h2>
-    <form id="bookingForm">
-      <label>Contact Name*<br><input type="text" name="contactName" required></label>
-      <label>E-Mail*<br><input type="email" name="email" required></label>
-      <label>Phone Number*<br><input type="tel" name="phone" required></label>
-      <label>School/Business Name*<br><input type="text" name="org" required></label>
-      <div class="package-choice">
-        <div style="margin-bottom: 4px; font-weight: 500;">Select Package <span style="font-weight:400; color:#888; font-size:0.95em;">(can be changed later)</span></div>
-        <label><input type="radio" name="package" value="Basic"> Basic Package</label>
-        <label><input type="radio" name="package" value="Standard"> Standard Package</label>
-        <label><input type="radio" name="package" value="Ultimate"> Ultimate Package</label>
-      </div>
-      <label>Message / Inquiry<br><textarea name="message" rows="3" placeholder="Let us know any details or questions!"></textarea></label>
-      <button type="submit" class="book-package-btn" style="width:100%;margin-top:10px;">Submit Booking Request</button>
-    </form>
-  </div>
-</div>
-<!-- Thank You Popup -->
-<div id="thankYouPopup" class="modal-overlay" style="display:none;">
-  <div class="modal-content" style="max-width:350px;">
-    <h2>Thank You!</h2>
-    <p>Your booking request has been received.<br>I will reach out over email or call this week.</p>
-    <button class="book-package-btn" id="closeThankYou">Close</button>
-  </div>
-</div>
 
-<style>
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(30,43,56,0.65);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.modal-content {
-  background: #fff;
-  border-radius: 18px;
-  padding: 32px 24px 24px 24px;
-  max-width: 400px;
-  width: 95vw;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  position: relative;
-  text-align: left;
-}
-.modal-content h2 {
-  color: #254a6d;
-  margin-top: 0;
-  margin-bottom: 18px;
-  font-size: 1.5rem;
-}
-.modal-content label {
-  display: block;
-  margin-bottom: 14px;
-  font-size: 1rem;
-  color: #254a6d;
-}
-.modal-content input[type="text"],
-.modal-content input[type="email"],
-.modal-content input[type="tel"],
-.modal-content textarea {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #b0c4de;
-  margin-top: 4px;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-.modal-content textarea {
-  resize: vertical;
-}
-.package-choice {
-  margin-bottom: 14px;
-}
-.package-choice label {
-  display: inline-block;
-  margin-right: 18px;
-  font-weight: 400;
-  color: #254a6d;
-}
-.modal-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #254a6d;
-  cursor: pointer;
-  z-index: 10;
-}
-@media (max-width: 600px) {
-  .modal-content { padding: 18px 6vw 18px 6vw; }
-}
-</style>
 
-<script>
-// Open modal with correct package selected
-function openBookingModal(selectedPackage) {
-  document.getElementById('bookingModal').style.display = 'flex';
-  // Set the correct radio
-  const radios = document.querySelectorAll('input[name="package"]');
-  radios.forEach(r => r.checked = (r.value === selectedPackage));
-}
-// Close modal
-function closeBookingModal() {
-  document.getElementById('bookingModal').style.display = 'none';
-}
-// Close thank you popup
-function closeThankYouPopup() {
-  document.getElementById('thankYouPopup').style.display = 'none';
-}
-// Handle form submit
-function handleBookingSubmit(e) {
-  e.preventDefault();
-  document.getElementById('bookingModal').style.display = 'none';
-  document.getElementById('thankYouPopup').style.display = 'flex';
-  document.getElementById('bookingForm').reset();
-}
-// Attach listeners
-setTimeout(() => {
-  // Book buttons in packages
-  document.querySelectorAll('.book-package-btn').forEach(btn => {
-    btn.addEventListener('click', function(ev) {
-      if (this.closest('.package-card')) {
-        ev.preventDefault();
-        if (this.textContent.includes('Basic')) openBookingModal('Basic');
-        else if (this.textContent.includes('Standard')) openBookingModal('Standard');
-        else if (this.textContent.includes('Ultimate')) openBookingModal('Ultimate');
-      }
-    });
-  });
-  // Book Now in navbar
-  const navBookBtn = document.getElementById('navbarBookBtn');
-  if (navBookBtn) {
-    navBookBtn.addEventListener('click', function(ev) {
-      ev.preventDefault();
-      openBookingModal(null);
-    });
-  }
-  // Close modal
-  document.getElementById('closeBookingModal').onclick = closeBookingModal;
-  document.getElementById('bookingModal').onclick = function(e) { if (e.target === this) closeBookingModal(); };
-  // Form submit
-  document.getElementById('bookingForm').onsubmit = handleBookingSubmit;
-  // Thank you popup
-  document.getElementById('closeThankYou').onclick = closeThankYouPopup;
-  document.getElementById('thankYouPopup').onclick = function(e) { if (e.target === this) closeThankYouPopup(); };
-}, 300);
-</script>
+
+
+
 
 </body>
 </html>

@@ -128,10 +128,51 @@
           timestampMs = d.getTime();
           dateISO = d.toISOString().slice(0, 10);
         }
+        // Extract raffle type and entry count
+        let raffleType = "";
+        let entryCount = 1;
+        let prizeDisplay = data.reward || data.prize || "—";
+        
+        if (prizeDisplay.toLowerCase().includes("raffle")) {
+          // Determine raffle type
+          if (data.raffleType) {
+            raffleType = data.raffleType;
+          } else if (data.prize && data.prize.toLowerCase().includes("spotify")) {
+            raffleType = "Spotify Premium";
+          } else if (data.prize && data.prize.toLowerCase().includes("airpods")) {
+            raffleType = "AirPods Max";
+          }
+          
+          // Get entry count (default to 1 if not specified)
+          if (data.entryCount) {
+            entryCount = data.entryCount;
+          } else if (data.quantity) {
+            entryCount = data.quantity;
+          } else if (data.coins && data.coins > 0) {
+            // Estimate entry count based on coins spent (assuming 100 coins per entry)
+            entryCount = Math.floor(data.coins / 100) || 1;
+          }
+          
+          // Check if this is a past raffle entry (older than 30 days)
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+          const isPastRaffle = timestampMs < thirtyDaysAgo.getTime();
+          
+          // Format prize display with raffle type and entry count
+          const entryText = entryCount > 1 ? ` (${entryCount} entries)` : "";
+          const pastText = isPastRaffle ? "Past " : "";
+          
+          if (raffleType) {
+            prizeDisplay = `${pastText}Raffle Entry - ${raffleType}${entryText}`;
+          } else {
+            prizeDisplay = `${pastText}Raffle Entry${entryText}`;
+          }
+        }
+        
         redemptions.push({
           email: data.email || "—",
           username: username || "—",
-          prize: data.reward || data.prize || "—",
+          prize: prizeDisplay,
           date: dateStr,
           dateISO,
           timestampMs

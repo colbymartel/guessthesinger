@@ -432,22 +432,22 @@
         <form id="rushmoreForm">
           <div class="form-group">
             <label for="artist1">1st Artist (Most Iconic)</label>
-            <input type="text" id="artist1" name="artist1" placeholder="e.g., The Beatles, Michael Jackson, Elvis Presley..." required>
+            <input type="text" id="artist1" name="artist1" placeholder="e.g., Michael Jackson, Elvis Presley..." required>
           </div>
 
           <div class="form-group">
             <label for="artist2">2nd Artist</label>
-            <input type="text" id="artist2" name="artist2" placeholder="e.g., Queen, Madonna, Bob Dylan..." required>
+            <input type="text" id="artist2" name="artist2" placeholder="e.g., Madonna, Bob Dylan..." required>
           </div>
 
           <div class="form-group">
             <label for="artist3">3rd Artist</label>
-            <input type="text" id="artist3" name="artist3" placeholder="e.g., Led Zeppelin, Prince, Whitney Houston..." required>
+            <input type="text" id="artist3" name="artist3" placeholder="e.g., Prince, Whitney Houston..." required>
           </div>
 
           <div class="form-group">
             <label for="artist4">4th Artist</label>
-            <input type="text" id="artist4" name="artist4" placeholder="e.g., Rolling Stones, Beyoncé, David Bowie..." required>
+            <input type="text" id="artist4" name="artist4" placeholder="e.g., Beyoncé, David Bowie..." required>
           </div>
 
           <button type="submit" class="submit-btn">
@@ -461,10 +461,6 @@
 
         <div id="errorMessage" class="error-message">
           <i class="fas fa-exclamation-triangle"></i> <span id="errorText">There was an error submitting your vote. Please try again.</span>
-        </div>
-
-        <div id="alreadyVotedMessage" class="success-message" style="display: none;">
-          <i class="fas fa-check-circle"></i> You have already submitted your Mount Rushmore of Music vote. Thank you for participating!
         </div>
       </div>
 
@@ -588,21 +584,6 @@
         return;
       }
 
-      // Check if user has already submitted a vote
-      try {
-        const existingVoteQuery = query(collection(db, 'rushmoreVotes'), where('userId', '==', currentUser.uid));
-        const existingVoteSnapshot = await getDocs(existingVoteQuery);
-        
-        if (!existingVoteSnapshot.empty) {
-          showError('You have already submitted your Mount Rushmore of Music vote. Each user can only submit once.');
-          return;
-        }
-      } catch (error) {
-        console.error('Error checking existing vote:', error);
-        showError('Error checking existing vote. Please try again.');
-        return;
-      }
-
       const formData = new FormData(e.target);
       const artists = [
         formData.get('artist1').trim(),
@@ -646,14 +627,6 @@
     function showSuccess() {
       document.getElementById('successMessage').style.display = 'block';
       document.getElementById('errorMessage').style.display = 'none';
-      
-      // Hide the form and show already voted message
-      const formContainer = document.getElementById('rushmoreForm');
-      const alreadyVotedMessage = document.getElementById('alreadyVotedMessage');
-      
-      if (formContainer) formContainer.style.display = 'none';
-      if (alreadyVotedMessage) alreadyVotedMessage.style.display = 'block';
-      
       setTimeout(() => {
         document.getElementById('successMessage').style.display = 'none';
       }, 5000);
@@ -682,30 +655,6 @@
         document.getElementById('uniqueArtists').textContent = uniqueArtists.size;
       } catch (error) {
         console.error('Error loading stats:', error);
-      }
-    }
-
-    async function checkUserVoteStatus() {
-      if (!currentUser) return;
-      
-      try {
-        const existingVoteQuery = query(collection(db, 'rushmoreVotes'), where('userId', '==', currentUser.uid));
-        const existingVoteSnapshot = await getDocs(existingVoteQuery);
-        
-        const formContainer = document.getElementById('rushmoreForm');
-        const alreadyVotedMessage = document.getElementById('alreadyVotedMessage');
-        
-        if (!existingVoteSnapshot.empty) {
-          // User has already voted
-          if (formContainer) formContainer.style.display = 'none';
-          if (alreadyVotedMessage) alreadyVotedMessage.style.display = 'block';
-        } else {
-          // User hasn't voted yet
-          if (formContainer) formContainer.style.display = 'block';
-          if (alreadyVotedMessage) alreadyVotedMessage.style.display = 'none';
-        }
-      } catch (error) {
-        console.error('Error checking user vote status:', error);
       }
     }
 
@@ -752,10 +701,6 @@
           // Set up dropdown menu
           dropdownMenu.innerHTML = `
             <a href="/profile.html">Edit Profile</a>
-            <a href="/games.html">Games</a>
-            <a href="/memory-leaderboard.html">Leaderboards</a>
-            <a href="/rewards.html">Rewards</a>
-            <a href="/inbox.html">Messages</a>
             <a href="#" onclick="handleLogout()">Logout</a>
           `;
 
@@ -771,7 +716,6 @@
           });
 
           loadStats();
-          checkUserVoteStatus();
         } catch (error) {
           console.error("Error loading user data:", error);
           // Still show the user even if Firestore fails
