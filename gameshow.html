@@ -8,10 +8,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #4682b4, #254a6d);
       color: #1b1b1b;
+      min-height: 100vh;
     }
     .navbar {
   display: flex;
@@ -250,9 +257,10 @@
       text-align: center;
       padding: 20px;
       font-size: 0.9rem;
-      margin-top: 60px;
+      margin: 0;
       border: none;
       box-shadow: none;
+      outline: none;
     }
 
     .event-packages-section {
