@@ -574,6 +574,7 @@
           <div class="filter-controls">
             <input type="text" id="searchUser" class="filter-input" placeholder="Search by user...">
             <input type="text" id="searchArtist" class="filter-input" placeholder="Search by artist...">
+            <input type="text" id="searchCity" class="filter-input" placeholder="Search by city...">
           </div>
         </div>
 
@@ -679,6 +680,20 @@
         const votesSnapshot = await getDocs(collection(db, 'rushmoreVotes'));
         const votes = votesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         
+        // Fetch user data to get city information
+        const usersSnapshot = await getDocs(collection(db, 'users'));
+        const users = {};
+        usersSnapshot.docs.forEach(doc => {
+          const userData = doc.data();
+          users[userData.uid] = userData;
+        });
+        
+        // Add city information to votes
+        const votesWithCity = votes.map(vote => ({
+          ...vote,
+          city: users[vote.userId]?.city || '—'
+        }));
+        
         // Count total votes
         document.getElementById('totalVotes').textContent = votes.length;
 
@@ -687,7 +702,7 @@
         const uniqueArtists = new Set(allArtists.map(artist => artist.toLowerCase()));
         document.getElementById('uniqueArtists').textContent = uniqueArtists.size;
 
-        return votes;
+        return votesWithCity;
       } catch (error) {
         console.error('Error loading stats:', error);
         return [];
@@ -719,6 +734,7 @@
             <tr>
               <th>User</th>
               <th>Mount Rushmore of Music</th>
+              <th>City</th>
               <th>Submitted</th>
             </tr>
           </thead>
@@ -739,6 +755,7 @@
                     `).join('')}
                   </div>
                 </td>
+                <td>${submission.city || '—'}</td>
                 <td class="timestamp">${formatTimestamp(submission.timestamp)}</td>
               </tr>
             `).join('')}
@@ -812,15 +829,18 @@
     function filterSubmissions() {
       const userFilter = document.getElementById('searchUser').value.toLowerCase();
       const artistFilter = document.getElementById('searchArtist').value.toLowerCase();
+      const cityFilter = document.getElementById('searchCity').value.toLowerCase();
       
       const filtered = allSubmissions.filter(submission => {
         const username = (submission.username || submission.userEmail || '').toLowerCase();
         const artists = submission.artists.join(' ').toLowerCase();
+        const city = (submission.city || '').toLowerCase();
         
         const matchesUser = !userFilter || username.includes(userFilter);
         const matchesArtist = !artistFilter || artists.includes(artistFilter);
+        const matchesCity = !cityFilter || city.includes(cityFilter);
         
-        return matchesUser && matchesArtist;
+        return matchesUser && matchesArtist && matchesCity;
       });
       
       renderSubmissionsTable(filtered);
@@ -829,6 +849,7 @@
     // Set up search filters
     document.getElementById('searchUser').addEventListener('input', filterSubmissions);
     document.getElementById('searchArtist').addEventListener('input', filterSubmissions);
+    document.getElementById('searchCity').addEventListener('input', filterSubmissions);
 
     // Auth state listener
     onAuthStateChanged(auth, async (user) => {
