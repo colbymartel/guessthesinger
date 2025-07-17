@@ -187,12 +187,19 @@
       text-align: center;
       text-decoration: none;
       font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
     }
 
-    .bottom-nav .nav-item i {
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
       display: block;
       font-size: 20px;
-      margin-bottom: 2px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
     }
 
     .bottom-nav .nav-item:hover {
@@ -432,22 +439,22 @@
         <form id="rushmoreForm">
           <div class="form-group">
             <label for="artist1">1st Artist (Most Iconic)</label>
-            <input type="text" id="artist1" name="artist1" placeholder="e.g., Michael Jackson, Elvis Presley..." required>
+            <input type="text" id="artist1" name="artist1" placeholder="Type artist name here" required>
           </div>
 
           <div class="form-group">
             <label for="artist2">2nd Artist</label>
-            <input type="text" id="artist2" name="artist2" placeholder="e.g., Madonna, Bob Dylan..." required>
+            <input type="text" id="artist2" name="artist2" placeholder="Type artist name here" required>
           </div>
 
           <div class="form-group">
             <label for="artist3">3rd Artist</label>
-            <input type="text" id="artist3" name="artist3" placeholder="e.g., Prince, Whitney Houston..." required>
+            <input type="text" id="artist3" name="artist3" placeholder="Type artist name here" required>
           </div>
 
           <div class="form-group">
             <label for="artist4">4th Artist</label>
-            <input type="text" id="artist4" name="artist4" placeholder="e.g., Beyoncé, David Bowie..." required>
+            <input type="text" id="artist4" name="artist4" placeholder="Type artist name here" required>
           </div>
 
           <button type="submit" class="submit-btn">
@@ -580,7 +587,7 @@
       e.preventDefault();
       
       if (!currentUser) {
-        showError('You must be logged in to submit your vote. <a href="/login.html" style="color: #4a90e2; text-decoration: underline;">Log in</a>');
+        showError('You must be logged in to submit your vote. <a href="/login.html?redirect=' + encodeURIComponent(window.location.pathname) + '" style="color: #4a90e2; text-decoration: underline;">Log in</a>');
         return;
       }
 
@@ -725,7 +732,7 @@
         welcomeEl.textContent = "Welcome, Anonymous";
         dropdownMenu.innerHTML = `
           <a href="/signup.html">Create Profile</a>
-          <a href="/login.html">Log In</a>
+          <a href="/login.html?redirect=${encodeURIComponent(window.location.pathname)}">Log In</a>
         `;
         
         // Reset coin display for anonymous users
@@ -734,7 +741,7 @@
           coinDisplayEl.textContent = "0";
         }
         
-        showError('Please <a href="/login.html" style="color: #4a90e2; text-decoration: underline;">log in</a> to submit your Mount Rushmore of Music vote.');
+        showError('Please <a href="/login.html?redirect=' + encodeURIComponent(window.location.pathname) + '" style="color: #4a90e2; text-decoration: underline;">log in</a> to submit your Mount Rushmore of Music vote.');
       }
     });
 

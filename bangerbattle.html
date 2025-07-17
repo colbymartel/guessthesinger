@@ -431,10 +431,13 @@
       align-items: center;
       gap: 2px;
     }
-    .bottom-nav .nav-item i {
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
       display: block;
       font-size: 20px;
-      margin-bottom: 2px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
     }
     .bottom-nav .nav-item:hover {
       color: #ffcb05;
@@ -606,8 +609,8 @@
       <i class="fas fa-user"></i>
       <span>Profile</span>
     </a>
-    <a href="/games.html" class="nav-item">
-      <i class="fas fa-gamepad"></i>
+    <a href="/games.html" class="nav-item highlight">
+      <img src="/images/gamesicon.png" alt="Games Icon" style="width: 24px; height: 24px;">
       <span>Games</span>
     </a>
     <a href="/memory-leaderboard.html" class="nav-item">
@@ -615,9 +618,10 @@
       <span>Leaderboards</span>
     </a>
     <a href="/rewards.html" class="nav-item highlight">
-      <i class="fas fa-gift"></i>
+      <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 24px; height: 24px;">
       <span>Rewards</span>
     </a>
+    
   </div>
   <div class="gameover-modal" id="gameoverModal">
     <div class="gameover-content">

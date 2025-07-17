@@ -380,11 +380,19 @@
       text-align: center;
       text-decoration: none;
       font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
     }
-    .bottom-nav .nav-item i {
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
       display: block;
       font-size: 20px;
-      margin-bottom: 2px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
     }
     .bottom-nav .nav-item:hover {
       color: #ffcb05;
@@ -521,7 +529,8 @@
     score: finalScore,
     city: userCity,
     email: currentUser.email, 
-    date: localDate
+    date: localDate,
+    gameType: "memory2"
   });
 
   console.log("✅ Score submitted:", { username, score: finalScore });

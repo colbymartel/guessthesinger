@@ -309,12 +309,19 @@
       text-align: center;
       text-decoration: none;
       font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
     }
 
-    .bottom-nav .nav-item i {
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
       display: block;
       font-size: 20px;
-      margin-bottom: 2px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
     }
 
     .bottom-nav .nav-item:hover {
@@ -803,25 +810,22 @@ nav {
     </div>
   </main>
 <footer class="bottom-nav">
-    <a href="/profile.html" class="nav-item">
-        <div style="display: block; margin-bottom: 2px;">
-            <i class="fas fa-user"></i>
-        </div>
-          <span>Profile</span>
-        </a>
-    
-    <a href="/games.html" class="nav-item">
-      <i class="fas fa-gamepad"></i>
-      <span>Games</span>
-    </a>      
-    <a href="/memory-leaderboard.html" class="nav-item">
-      <i class="fas fa-trophy"></i>
-      <span>Leaderboards</span>
-    </a>
-    <a href="/rewards.html" class="nav-item">
-      <i class="fas fa-gift"></i>
-      <span>Rewards</span>
-    </a>
+  <a href="/index.html" class="nav-item">
+    <i class="fas fa-user"></i>
+    <span>Profile</span>
+  </a>
+  <a href="/games.html" class="nav-item highlight">
+    <img src="/images/gamesicon.png" alt="Games Icon" style="width: 24px; height: 24px;">
+    <span>Games</span>
+  </a>
+  <a href="/memory-leaderboard.html" class="nav-item">
+    <i class="fas fa-trophy"></i>
+    <span>Leaderboards</span>
+  </a>
+  <a href="/rewards.html" class="nav-item highlight">
+    <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 24px; height: 24px;">
+    <span>Rewards</span>
+  </a>
   </footer>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';

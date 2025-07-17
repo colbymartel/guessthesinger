@@ -229,9 +229,17 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const snapshot = await get(userRef);
     const userData = snapshot.exists() ? snapshot.val() : null;
 
+    // Check for redirect parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectTo = urlParams.get('redirect');
+    
     if (!userData || !userData.newUsername) {
       window.location.href = "profile.html";
+    } else if (redirectTo) {
+      // Redirect to the page they came from
+      window.location.href = decodeURIComponent(redirectTo);
     } else {
+      // Default fallback
       window.location.href = "memory.html";
     }
   } catch (error) {
