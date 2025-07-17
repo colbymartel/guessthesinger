@@ -237,6 +237,35 @@
       box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2);
     }
 
+    .user-block.unread {
+      border-color: #ff6b6b;
+      background: #fff5f5;
+      box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
+    }
+
+    .user-block.unread:hover {
+      background: #ffe8e8;
+      border-color: #ff5252;
+      box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    }
+
+    .unread-badge {
+      background: #ff6b6b;
+      color: white;
+      border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      display: inline-block;
+      margin-left: 8px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
     .user-avatar {
       width: 48px;
       height: 48px;
@@ -806,8 +835,8 @@ body {
   </main>
   <footer class="bottom-nav">
     <a href="/index.html" class="nav-item">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
     </a>
     <a href="/games.html" class="nav-item highlight">
       <i class="fas fa-gamepad"></i>
@@ -903,13 +932,18 @@ import {
   function renderUserBlock(userData, isUnread, moveActionLabel, onMoveClick, onClick) {
     const userEl = document.createElement("div");
     userEl.classList.add("user-block");
-    if (isUnread) userEl.classList.add("unread");
+    if (isUnread) {
+      userEl.classList.add("unread");
+      userEl.style.borderColor = "#ff6b6b";
+      userEl.style.backgroundColor = "#fff5f5";
+      userEl.style.boxShadow = "0 2px 8px rgba(255, 107, 107, 0.2)";
+    }
   
     userEl.innerHTML = `
       <img class="user-avatar" src="${userData.avatar || '/images/avatars/popstarpenguin.jpg'}" alt="Avatar" />
-      <div class="user-name" style="font-weight:${isUnread ? 'bold' : 'normal'};">
+      <div class="user-name" style="font-weight:${isUnread ? 'bold' : 'normal'}; color:${isUnread ? '#d63031' : '#1e2b38'};">
         ${userData.username || "Unknown User"} ${userData.isVerified ? "✅" : ""}
-        ${isUnread ? '<span class="unread-icon">⚪️</span>' : ''}
+        ${isUnread ? '<span class="unread-badge" style="background:#ff6b6b; color:white; border-radius:50%; width:8px; height:8px; display:inline-block; margin-left:8px;"></span>' : ''}
       </div>
     `;
   
@@ -924,6 +958,7 @@ import {
       btn.style.border = "none";
       btn.style.borderRadius = "6px";
       btn.style.cursor = "pointer";
+      btn.style.fontSize = "0.8rem";
       btn.onclick = (e) => {
         e.stopPropagation();
         onMoveClick();
@@ -1047,7 +1082,7 @@ import {
       }
     }
 
-    // For admin, show all active chats (original logic)
+    // For admin, show all active chats (enhanced logic)
     try {
       // Step 1: Get all conversations user has a conversation doc for (i.e., categorized)
       const convsRef = collection(db, "users", currentUser.uid, "conversations");
@@ -1069,101 +1104,175 @@ import {
 
       const messagesSnapshot = await getDocs(messagesQuery);
 
-    // Track users who messaged or received messages by current user
-    const messagedUserIds = new Set();
-    const incomingNewUsers = new Set(); // For requests tab
+      // Track users who messaged or received messages by current user
+      const messagedUserIds = new Set();
+      const incomingNewUsers = new Set(); // For requests tab
 
-    // Track latest message per user for unread check
-    const latestMessages = {};
+      // Track latest message per user for unread check and sorting
+      const latestMessages = {};
+      const conversationData = {};
 
-    messagesSnapshot.forEach(docSnap => {
-      const msg = docSnap.data();
-      if (msg.senderId !== currentUser.uid && msg.recipientId !== currentUser.uid) return;
+      messagesSnapshot.forEach(docSnap => {
+        const msg = docSnap.data();
+        if (msg.senderId !== currentUser.uid && msg.recipientId !== currentUser.uid) return;
 
-      const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
-      messagedUserIds.add(otherUserId);
+        const otherUserId = msg.senderId === currentUser.uid ? msg.recipientId : msg.senderId;
+        messagedUserIds.add(otherUserId);
 
-      // Save latest timestamp for each conversation
-      if (!latestMessages[otherUserId] || msg.timestamp?.toMillis() > latestMessages[otherUserId]) {
-        latestMessages[otherUserId] = msg.timestamp?.toMillis() || 0;
+        // Save latest timestamp and message data for each conversation
+        if (!latestMessages[otherUserId] || msg.timestamp?.toMillis() > latestMessages[otherUserId]) {
+          latestMessages[otherUserId] = msg.timestamp?.toMillis() || 0;
+          conversationData[otherUserId] = {
+            lastMessageTime: msg.timestamp?.toMillis() || 0,
+            lastMessageText: msg.text || "",
+            lastMessageSender: msg.senderId === currentUser.uid ? "You" : "Them",
+            hasUnread: false
+          };
+        }
+      });
+
+      // Step 3: Check unread status and auto-categorize conversations
+      for (const otherUserId of messagedUserIds) {
+        const chatStatusSnap = await getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId));
+        const lastOpened = chatStatusSnap.exists() ? chatStatusSnap.data().lastOpened?.toMillis() || 0 : 0;
+        const isUnread = !lastOpened || (latestMessages[otherUserId] || 0) > lastOpened;
+        
+        if (conversationData[otherUserId]) {
+          conversationData[otherUserId].hasUnread = isUnread;
+        }
+
+        // Auto-categorize: If there's a conversation and it's not categorized, move to friends
+        if (!(otherUserId in categorizedConversations) && latestMessages[otherUserId]) {
+          // Check if the last message was from the other user (not from Colby)
+          // Use a single array-contains filter and filter the results in JavaScript
+          const lastMessageQuery = query(
+            messagesRef,
+            where("participants", "array-contains", currentUser.uid),
+            orderBy("timestamp", "desc")
+          );
+          
+          const lastMessageSnap = await getDocs(lastMessageQuery);
+          if (!lastMessageSnap.empty) {
+            // Filter for messages between current user and otherUserId
+            const conversationMessages = lastMessageSnap.docs.filter(docSnap => {
+              const msg = docSnap.data();
+              return msg.participants && msg.participants.includes(otherUserId);
+            });
+            
+            if (conversationMessages.length > 0) {
+              const lastMsg = conversationMessages[0].data();
+              // If the last message was from the other user (not from Colby), categorize as friends
+              if (lastMsg.senderId === otherUserId) {
+                await setDoc(doc(db, "users", currentUser.uid, "conversations", otherUserId), { 
+                  tab: "friends",
+                  lastActivity: serverTimestamp()
+                });
+                categorizedConversations[otherUserId] = "friends";
+              }
+            }
+          }
+        }
       }
-    });
 
-    // Step 3: Determine users per tab
-    let userIdsToShow = [];
+      // Step 4: Determine users per tab
+      let userIdsToShow = [];
 
-    if (tab === "friends" || tab === "general") {
-      userIdsToShow = Object.entries(categorizedConversations)
-        .filter(([uid, tabName]) => tabName === tab)
-        .map(([uid]) => uid);
-    } else if (tab === "requests") {
-      // Users messaged current user but NOT categorized in conversations subcollection
-      userIdsToShow = [...messagedUserIds].filter(uid => !(uid in categorizedConversations));
-    }
-
-    if (userIdsToShow.length === 0) {
-      userListEl.innerHTML = `<p style="padding: 10px; color: #666;">No conversations in ${tab} tab.</p>`;
-      return;
-    }
-
-    // Step 4: Fetch user data & chat status for each userId
-    userListEl.innerHTML = "";
-
-    for (const otherUserId of userIdsToShow) {
-      const userDocSnap = await getDoc(doc(db, "users", otherUserId));
-      if (!userDocSnap.exists()) continue;
-      const userData = userDocSnap.data();
-
-      // Check unread status
-      const chatStatusSnap = await getDoc(doc(db, "users", currentUser.uid, "chatStatus", otherUserId));
-      const lastOpened = chatStatusSnap.exists() ? chatStatusSnap.data().lastOpened?.toMillis() || 0 : 0;
-      const isUnread = !lastOpened || (latestMessages[otherUserId] || 0) > lastOpened;
-
-      // Determine move button label and handler
-      let moveBtnLabel = null;
-      let moveBtnHandler = null;
-
-      if (tab === "friends") {
-        moveBtnLabel = "Move to General";
-        moveBtnHandler = async () => {
-          await setDoc(doc(db, "users", currentUser.uid, "conversations", otherUserId), { tab: "general" });
-          await loadConversationsByTab(activeTab);
-        };
-      } else if (tab === "general") {
-        moveBtnLabel = "Move to Friends";
-        moveBtnHandler = async () => {
-          await setDoc(doc(db, "users", currentUser.uid, "conversations", otherUserId), { tab: "friends" });
-          await loadConversationsByTab(activeTab);
-        };
+      if (tab === "friends" || tab === "general") {
+        userIdsToShow = Object.entries(categorizedConversations)
+          .filter(([uid, tabName]) => tabName === tab)
+          .map(([uid]) => uid);
+      } else if (tab === "requests") {
+        // Users messaged current user but NOT categorized in conversations subcollection
+        userIdsToShow = [...messagedUserIds].filter(uid => !(uid in categorizedConversations));
       }
 
-      // Requests tab has no move button
+      if (userIdsToShow.length === 0) {
+        userListEl.innerHTML = `<p style="padding: 10px; color: #666;">No conversations in ${tab} tab.</p>`;
+        return;
+      }
 
-      const userEl = renderUserBlock(
-        userData,
-        isUnread,
-        moveBtnLabel,
-        moveBtnHandler,
-        () => openChatWithUser(otherUserId, userData.username)
-      );
+      // Step 5: Sort conversations by recent activity (most recent first)
+      userIdsToShow.sort((a, b) => {
+        const aTime = conversationData[a]?.lastMessageTime || 0;
+        const bTime = conversationData[b]?.lastMessageTime || 0;
+        return bTime - aTime; // Most recent first
+      });
 
-      userListEl.appendChild(userEl);
-    }
-  } catch (error) {
-    console.error("Error loading admin conversations:", error);
-    
-    if (error.code === 'permission-denied') {
-      userListEl.innerHTML = `
-        <div style="padding: 15px; background: #f8d7da; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #721c24; font-size: 0.9rem;">
-          <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
-          Chat permissions need to be updated. Please deploy the new Firestore security rules.
-        </div>
-      `;
-    } else {
-      userListEl.innerHTML = `<p style="padding: 10px; color: #666;">Error loading conversations. Please try again.</p>`;
+      // Step 6: Fetch user data & render
+      userListEl.innerHTML = "";
+
+      for (const otherUserId of userIdsToShow) {
+        const userDocSnap = await getDoc(doc(db, "users", otherUserId));
+        if (!userDocSnap.exists()) continue;
+        const userData = userDocSnap.data();
+
+        const isUnread = conversationData[otherUserId]?.hasUnread || false;
+
+        // Determine move button label and handler
+        let moveBtnLabel = null;
+        let moveBtnHandler = null;
+
+        if (tab === "friends") {
+          moveBtnLabel = "Move to General";
+          moveBtnHandler = async () => {
+            await setDoc(doc(db, "users", currentUser.uid, "conversations", otherUserId), { 
+              tab: "general",
+              lastActivity: serverTimestamp()
+            });
+            await loadConversationsByTab(activeTab);
+          };
+        } else if (tab === "general") {
+          moveBtnLabel = "Move to Friends";
+          moveBtnHandler = async () => {
+            await setDoc(doc(db, "users", currentUser.uid, "conversations", otherUserId), { 
+              tab: "friends",
+              lastActivity: serverTimestamp()
+            });
+            await loadConversationsByTab(activeTab);
+          };
+        }
+
+        // Add last message preview for better UX
+        const lastMessagePreview = conversationData[otherUserId]?.lastMessageText || "";
+        const lastMessageSender = conversationData[otherUserId]?.lastMessageSender || "";
+        const previewText = lastMessagePreview.length > 30 ? lastMessagePreview.substring(0, 30) + "..." : lastMessagePreview;
+
+        const userEl = renderUserBlock(
+          userData,
+          isUnread,
+          moveBtnLabel,
+          moveBtnHandler,
+          () => openChatWithUser(otherUserId, userData.username)
+        );
+
+        // Add message preview if available
+        if (previewText) {
+          const previewEl = document.createElement("div");
+          previewEl.style.fontSize = "0.85rem";
+          previewEl.style.color = "#666";
+          previewEl.style.marginTop = "4px";
+          previewEl.style.fontStyle = "italic";
+          previewEl.textContent = `${lastMessageSender}: ${previewText}`;
+          userEl.appendChild(previewEl);
+        }
+
+        userListEl.appendChild(userEl);
+      }
+    } catch (error) {
+      console.error("Error loading admin conversations:", error);
+      
+      if (error.code === 'permission-denied') {
+        userListEl.innerHTML = `
+          <div style="padding: 15px; background: #f8d7da; border-radius: 8px; margin-bottom: 15px; text-align: center; color: #721c24; font-size: 0.9rem;">
+            <i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i>
+            Chat permissions need to be updated. Please deploy the new Firestore security rules.
+          </div>
+        `;
+      } else {
+        userListEl.innerHTML = `<p style="padding: 10px; color: #666;">Error loading conversations. Please try again.</p>`;
+      }
     }
   }
-}
   
     async function openChatWithUser(userId, usernameFallback) {
     if (!currentUser) return;
@@ -1178,12 +1287,15 @@ import {
       lastOpened: serverTimestamp()
     });
 
-    // Also automatically categorize the conversation into "friends" tab if it was a request before
+    // Automatically categorize the conversation into "friends" tab if it was a request before
     const convDocRef = doc(db, "users", currentUser.uid, "conversations", userId);
     const convSnap = await getDoc(convDocRef);
     if (!convSnap.exists()) {
       // Assign to friends by default when opening from requests
-      await setDoc(convDocRef, { tab: "friends" });
+      await setDoc(convDocRef, { 
+        tab: "friends",
+        lastActivity: serverTimestamp()
+      });
     }
 
     // Fetch user info for header
@@ -1202,6 +1314,11 @@ import {
 
     loadMessagesRealtime(userId);
     focusChatInput();
+    
+    // Refresh the conversation list to show updated categorization
+    if (currentUser.email === 'colbyma23@gmail.com') {
+      loadConversationsByTab(activeTab);
+    }
   }
 
   // Function to open chat with user ID (for direct access)
@@ -1353,6 +1470,27 @@ import {
         participants: [currentUser.uid, activeChatUserId]
       });
 
+      // If this is Colby replying, automatically categorize the conversation as "friends"
+      if (currentUser.email === 'colbyma23@gmail.com') {
+        const convDocRef = doc(db, "users", currentUser.uid, "conversations", activeChatUserId);
+        const convSnap = await getDoc(convDocRef);
+        if (!convSnap.exists()) {
+          // This is a new conversation, categorize as friends
+          await setDoc(convDocRef, { 
+            tab: "friends",
+            lastActivity: serverTimestamp()
+          });
+        } else {
+          // Update last activity
+          await updateDoc(convDocRef, { 
+            lastActivity: serverTimestamp()
+          });
+        }
+        
+        // Refresh the conversation list to show updated categorization
+        loadConversationsByTab(activeTab);
+      }
+
       console.log("Message sent successfully");
     } catch (error) {
       console.error("Error sending message:", error);
@@ -1454,6 +1592,11 @@ import {
   }
   
   backfillParticipants(); // 👈 Call here
+  
+  // Set up real-time listener for conversation updates (admin only)
+  if (user.email === 'colbyma23@gmail.com') {
+    setupConversationListener();
+  }
 });
 
   
@@ -1499,6 +1642,39 @@ import {
       document.body.style.setProperty('--keyboard-height', '0px');
     }
   });
+
+  // Set up real-time listener for conversation updates
+  function setupConversationListener() {
+    if (!currentUser || currentUser.email !== 'colbyma23@gmail.com') return;
+    
+    const messagesRef = collection(db, "messages");
+    const q = query(
+      messagesRef,
+      where("participants", "array-contains", currentUser.uid),
+      orderBy("timestamp", "desc"),
+      limit(1)
+    );
+
+    if (window.unsubscribeConversations) {
+      window.unsubscribeConversations();
+    }
+
+    window.unsubscribeConversations = onSnapshot(q, (snapshot) => {
+      if (!snapshot.empty) {
+        const latestMessage = snapshot.docs[0].data();
+        
+        // If the latest message is from someone else (not from Colby), refresh the conversation list
+        if (latestMessage.senderId !== currentUser.uid) {
+          // Small delay to ensure the message is fully processed
+          setTimeout(() => {
+            loadConversationsByTab(activeTab);
+          }, 500);
+        }
+      }
+    }, (error) => {
+      console.error("Error in conversation listener:", error);
+    });
+  }
 
   // Auto-scroll to bottom when new messages arrive
   function scrollToBottom() {

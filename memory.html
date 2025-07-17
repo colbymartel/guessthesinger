@@ -398,12 +398,77 @@
     </div>
   </nav>
   <div id="mobileMenu" class="mobile-menu hidden">
-    <a href="/profile.html" class="nav-item">
-      <i class="fas fa-user"></i>
-      <span>My Profile</span>
-    </a>
-    <a href="#" id="infoIcon">Game Rules</a>
-    <a href="/about.html">About</a>
+    <div class="nav-option" onclick="window.location.href='/memory.html'">
+      <div class="nav-icon">🧠</div>
+      <div class="nav-content">
+        <div class="nav-title">Original</div>
+        <div class="nav-description">Classic memory matching game</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="window.location.href='/memory2.html'">
+      <div class="nav-icon">⏱️</div>
+      <div class="nav-content">
+        <div class="nav-title">Time Trial</div>
+        <div class="nav-description">Race against the clock</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="window.location.href='/spelling.html'">
+      <div class="nav-icon">🐝</div>
+      <div class="nav-content">
+        <div class="nav-title">Spell the Singer</div>
+        <div class="nav-description">Spell names as letters appear</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="window.location.href='/bangerbattle.html'">
+      <div class="nav-icon">🔥</div>
+      <div class="nav-content">
+        <div class="nav-title">Banger Battle</div>
+        <div class="nav-description">Guess which song has more streams</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="window.location.href='/rushmore.html'">
+      <div class="nav-icon">🏔️</div>
+      <div class="nav-content">
+        <div class="nav-title">Mount Rushmore</div>
+        <div class="nav-description">Vote for music legends</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="window.location.href='/memory-leaderboard.html'">
+      <div class="nav-icon">🏆</div>
+      <div class="nav-content">
+        <div class="nav-title">Leaderboards</div>
+        <div class="nav-description">See top scores and rankings</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="window.location.href='/rewards.html'">
+      <div class="nav-icon">🎁</div>
+      <div class="nav-content">
+        <div class="nav-title">Rewards</div>
+        <div class="nav-description">Redeem coins for prizes</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="window.location.href='/profile.html'">
+      <div class="nav-icon">👤</div>
+      <div class="nav-content">
+        <div class="nav-title">Profile</div>
+        <div class="nav-description">Manage your account</div>
+      </div>
+    </div>
+    
+    <div class="nav-option" onclick="document.getElementById('rulesModal').classList.remove('hidden')">
+      <div class="nav-icon">📖</div>
+      <div class="nav-content">
+        <div class="nav-title">Game Rules</div>
+        <div class="nav-description">How to play this game</div>
+      </div>
+    </div>
   </div>
   <div id="rulesModal" class="modal hidden">
     <div class="modal-content" style="position: relative;">

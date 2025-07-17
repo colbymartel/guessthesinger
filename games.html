@@ -17,103 +17,167 @@
 
     body {
       font-family: 'Fredoka', sans-serif;
-      background: #19202a;
-      color: #fff;
+      background: #ffffff;
+      color: #333;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
     /* Navbar */
-    /* Nav Links */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #315f85;
-  padding: 15px 30px;
-  color: white;
-}
-
-.nav-links a {
-  color: white;
-  margin-left: 20px;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 1rem;
-}
-.nav-links a:hover {
-  color: #ffcb05;
-}
-
-/* Section Titles */
-.category-row {
-  margin-top: 40px;
-}
-
-.category-row h2 {
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-/* Game Grid (Reuse Previous) */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 25px;
-}
-
-
-    /* Main Grid */
-    .main {
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 30px; /* tighter spacing between Music and More Games */
-}
-
-
-
-    .game-tile {
-      width: 180px;
-      height: 180px;
-      border-radius: 30px;
-      background: linear-gradient(135deg, #4682b4, #315f85);
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #315f85;
+      padding: 15px 30px;
       color: white;
-      font-size: 1.2rem;
+    }
+
+    .nav-links a {
+      color: white;
+      margin-left: 20px;
       font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-header h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .section-header .underline {
+      width: 60px;
+      height: 4px;
+      background: #315f85;
+      margin: 0 auto 15px auto;
+      border-radius: 2px;
+    }
+
+    .section-header p {
+      color: #666;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section-divider {
+      text-align: center;
+      margin: 40px 0 20px 0;
+    }
+
+    .section-divider h2 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .section-divider .underline {
+      width: 60px;
+      height: 3px;
+      background: #ff6b6b;
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    @media (min-width: 768px) {
+      .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .games-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Game Card */
+    .game-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .game-card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .game-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #f8f9fa;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.3s;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      margin-right: 16px;
+      font-size: 24px;
     }
 
-    .game-tile:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 18px rgba(70, 130, 180, 0.6);
+    .game-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 4px;
     }
 
-    .game-tile.character {
-      background: linear-gradient(135deg, #30b5bc, #117379);
-    }
-
-    .game-tile.locked {
-      background: #c1c1c1;
+    .game-category {
+      font-size: 0.875rem;
       color: #666;
-      cursor: not-allowed;
+      font-weight: 500;
     }
 
-    .game-tile img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 30px;
+    .game-description {
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 20px;
     }
 
+    /* Footer */
     .footer {
       background-color: #315f85;
       color: white;
@@ -122,7 +186,7 @@
       font-size: 1rem;
       margin-top: auto;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
+    }
 
     .footer a {
       color: white;
@@ -135,268 +199,147 @@
       color: #ff914d;
     }
 
-.category-header{
-  padding: 30px 20px 20px 30px; /* top, right, bottom, left */
-  margin-bottom: -40px;
+    /* Search and Navigation */
+    .search-suggestions {
+      position: absolute;
+      top: 45px;
+      left: 0;
+      width: 220px;
+      background: white;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 300px;
+      overflow-y: auto;
+    }
 
-}
-.category-header h2 {
-  font-size: 1.8rem;
-  color: #222;
-}
+    .search-input-container {
+      position: relative;
+      flex: 1;
+    }
 
-.category-header p {
-  color: #555;
-  margin-top: 6px;
-  margin-bottom: 20px;
+    .search-suggestion {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.2s ease;
+    }
 
-}
+    .search-suggestion:last-child {
+      border-bottom: none;
+    }
 
-.tabs {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 30px; /* Increase from 25px */
-}
+    .search-suggestion:hover {
+      background-color: #f0f4fa;
+    }
 
+    .search-suggestion-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      margin-right: 12px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
 
-.tab {
-  padding: 8px 16px;
-  border: none;
-  background-color: #e1ecf4;
-  color: #333;
-  border-radius: 20px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+    .search-suggestion-content {
+      flex: 1;
+    }
 
-.tab.active, .tab:hover {
-  background-color: #4682b4;
-  color: white;
-}
+    .search-suggestion-title {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #333;
+      margin-bottom: 2px;
+    }
 
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  justify-items: center;
-  padding: 0 16px;
-}
-@media (min-width: 769px) {
-  .game-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
+    .search-suggestion-category {
+      font-size: 0.8rem;
+      color: #666;
+    }
 
-.more-games .game-scroll-row{
-  margin-bottom: 40px;
-}
-.game-card {
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 12px;
-  width: 160px;
-  border: 2px solid #ccc;
-  border-radius: 15px;
-  background: #fdfdfd;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
-}
-.game-card:hover {
-  transform: scale(1.03);
-}
-.game-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 12px;
-  border-radius: 10px;
-}
+    .search-bar {
+      padding: 8px 16px 8px 36px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 0.95rem;
+      background-color: white;
+      color: #315f85;
+      width: 100%;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: 12px center;
+      font-family: 'Fredoka', sans-serif;
+    }
 
-.nav-links a:last-of-type {
-  margin-right: 20px;
-}
-
-@media (max-width: 768px) {
-  .main {
-    padding: 20px;
-  }
-
-  .nav-links a {
-    font-size: 0.9rem;
-    margin-left: 12px;
-  }
-
-  .game-card {
-    width: 160px;
-  }
-}
+    .search-bar::placeholder {
+      color: #888;
+    }
 
 
-.game-card h3 {
-  font-size: 1rem;
-  margin-bottom: 5px;
-}
 
-.game-card p {
-  font-size: 0.9rem;
-  color: #666;
-}
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
 
-.game-card.locked {
-  position: relative;
-  opacity: 0.6;
-  pointer-events: none;
-}
-.logo img {
-  height: 40px;
-  width: auto;
-}
-.search-suggestions {
-  position: absolute;
-  top: 50px;
-  right: 30px;
-  width: 300px;
-  background: white;
-  color: #333;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 999;
-  display: none;
-  flex-direction: column;
-  max-height: 300px;
-  overflow-y: auto;
-}
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
 
-.search-suggestion {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-}
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
 
-.search-suggestion:last-child {
-  border-bottom: none;
-}
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
 
-.search-suggestion:hover {
-  background-color: #f0f4fa;
-}
-.search-bar {
-  padding: 8px 16px 8px 36px;
-  height: 40px;
-  border-radius: 20px;
-  border: none;
-  outline: none;
-  font-size: 0.95rem;
-  background-color: white;
-  color: #315f85;
-  width: 220px;
-  background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
-  background-size: 16px;
-  background-repeat: no-repeat;
-  background-position: 12px center;
-  font-family: 'Fredoka', sans-serif;
-}
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px 16px;
+      }
 
-.search-bar::placeholder {
-  color: #888;
-}
-.login-btn {
-  background-color: #ffcb05;
-  border: none;
-  padding: 8px 16px;
-  height: 40px;
-  border-radius: 20px;
-  font-weight: bold;
-  color: #1e2b38;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  font-family: 'Fredoka', sans-serif;
-  font-size: 0.95rem;
-}
+      .section-header h1 {
+        font-size: 2rem;
+      }
 
-.login-btn:hover {
-  background-color: #e6b800;  /* slightly darker yellow */
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-.game-card.locked {
-  position: relative;
-  opacity: 0.6;
-  pointer-events: none;
-  filter: grayscale(100%);
-  overflow: hidden;
-}
+      .games-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
 
-.locked-text {
-  font-weight: 500;
-}
-.badge-trending {
-  background-color: #ffcb05;
-  color: #1e2b38;
-  font-weight: bold;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-.game-card {
-  position: relative;
-}
-
-@media (max-width: 480px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px 20px;
-  }
-
-  .nav-links {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .nav-links a {
-    margin: 10px 0;
-    font-size: 1rem;
-  }
-
-  .nav-actions {
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-top: 10px;
-  }
-
-  .search-bar {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .login-btn {
-    width: 100%;
-  }
-
-  .main {
-    padding: 10px;
-  }
-
-  .game-scroll-row {
-    gap: 10px;
-    padding: 10px;
-  }
-
-  .game-card {
-    width: 140px;
-  }
-
-  .game-card img {
-    height: 140px;
-  }
+      .game-card {
+        padding: 20px;
+      }
+    }
 
   .category-header h2 {
     font-size: 1.4rem;
@@ -429,94 +372,77 @@
     font-size: 1rem;
     margin: 0 5px;
   }
-}.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  margin-left: auto;
-}
 
-.bar {
-  height: 3px;
-  width: 25px;
-  background-color: white;
-  margin: 4px 0;
-  transition: 0.4s;
-}
+      /* Mobile Navigation */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      margin-left: auto;
+    }
 
-@media (max-width: 768px) {
-  .navbar {
-    flex-wrap: wrap;
-    padding: 15px 20px;
-  }
-
-  .hamburger {
-    display: flex;
-  }
-
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    background-color: #315f85;
-    padding: 10px 0;
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .nav-links a,
-  .nav-links .search-bar,
-  .nav-links .login-btn {
-    margin: 8px 20px;
-  }
-
-  .search-bar {
-    width: calc(100% - 40px);
-  }
-
-  .login-btn {
-    width: calc(100% - 40px);
-  }
-
-  .search-suggestions {
-    position: static;
-    width: calc(100% - 40px);
-    margin: 0 auto;
-  }
-}
+    .bar {
+      height: 3px;
+      width: 25px;
+      background-color: white;
+      margin: 4px 0;
+      transition: 0.4s;
+    }
 
 
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #1e2b38;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 8px 0;
-  z-index: 999;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-}
 
-.bottom-nav .nav-item {
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  font-size: 12px;
-}
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+        padding: 15px 20px;
+      }
 
-.bottom-nav .nav-item i {
-  display: block;
-  font-size: 20px;
-  margin-bottom: 2px;
-}
+      .hamburger {
+        display: flex;
+      }
 
-.bottom-nav .nav-item:hover {
-  color: #ffcb05;
-}
+          .nav-links {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: #f5f5f5;
+      padding: 10px 0;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .search-container {
+      position: relative;
+      width: 320px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-direction: row;
+    }
+
+    .search-input-container {
+      position: relative;
+      flex: 1;
+    }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links .search-bar {
+        margin: 8px 20px;
+      }
+
+      .search-bar {
+        width: calc(100% - 40px);
+      }
+
+      .search-suggestions {
+        position: static;
+        width: calc(100% - 40px);
+        margin: 0 auto;
+      }
+    }
 .header {
   background: linear-gradient(135deg, #3b7bbf, #234d7d);
   padding: 40px 20px;
@@ -776,66 +702,106 @@ nav {
     <!-- Collapsible nav menu -->
     <div class="nav-links" id="mobileMenu">
        
-      <!-- Search and login within dropdown -->
-      <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
-      <div class="search-suggestions" id="suggestions"></div>
-      <button class="login-btn">Login</button>
-    </div>
-  </nav>
-  
-<section class="category-block" style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 32px;">
-  <section class="games-section" style="background:transparent; border-radius: 0; max-width: 700px; margin: 0 auto; box-shadow: none; padding: 0 0 0 0; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 0; width: 100%;">
-    <div style="display: flex; align-items: center; justify-content: center; margin: 0 0 8px 0;">
-      <div style="background: #3176b1; color: #fff; font-weight: bold; font-size: 1.25rem; letter-spacing: 1px; border-radius: 12px; padding: 6px 22px 6px 18px;">NEW GAMES</div>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 16px; align-items: center; width: 100%; max-width: 420px;">
-      <a href="/memory.html" style="text-decoration: none; width: 100%;">
-        <div class="game-row-link" style="display: flex; align-items: center; gap: 18px; cursor: pointer; border-radius: 10px; transition: background 0.18s; padding: 4px 4px; width: 100%; background: #22304a;">
-          <img src="/images/brain.jpg" alt="Match the Singer" style="width: 50px; height: 50px; border-radius: 8px; border: 2px solid #3176b1; background: #fff; object-fit: cover;">
-          <div>
-            <div style="font-weight: bold; color: #2ec3ff; font-size: 1.1rem;">Match the Singer</div>
-            <div style="color: #fff; font-size: 0.95rem; margin-top: 2px;">Test your memory to match singers' faces with their names!</div>
-          </div>
-        </div>
-      </a>
-      <a href="/spelling.html" style="text-decoration: none; width: 100%;">
-        <div class="game-row-link" style="display: flex; align-items: center; gap: 18px; cursor: pointer; border-radius: 10px; transition: background 0.18s; padding: 4px 4px; width: 100%; background: #22304a;">
-          <img src="/images/bee.jpg" alt="Spell the Singer" style="width: 50px; height: 50px; border-radius: 8px; border: 2px solid #3176b1; background: #fff; object-fit: cover;">
-          <div>
-            <div style="font-weight: bold; color: #2ec3ff; font-size: 1.1rem;">Spell the Singer</div>
-            <div style="color: #fff; font-size: 0.95rem; margin-top: 2px;">Spell singers' names as letters are revealed!</div>
-          </div>
-        </div>
-      </a>
-      <a href="/bangerbattle.html" style="text-decoration: none; width: 100%;">
-        <div class="game-row-link" style="display: flex; align-items: center; gap: 18px; cursor: pointer; border-radius: 10px; transition: background 0.18s; padding: 4px 4px; width: 100%; background: #22304a;">
-          <img src="/images/battle.jpg" alt="Banger Battle" style="width: 50px; height: 50px; border-radius: 8px; border: 2px solid #3176b1; background: #fff; object-fit: cover;">
-          <div>
-            <div style="font-weight: bold; color: #2ec3ff; font-size: 1.1rem;">Banger Battle 🔥</div>
-            <div style="color: #fff; font-size: 0.95rem; margin-top: 2px;">Guess which song has more Spotify streams!</div>
-          </div>
-        </div>
-      </a>
-      <div onclick="challengeColby()" style="text-decoration: none; width: 100%;">
-        <div class="game-row-link" style="display: flex; align-items: center; gap: 18px; cursor: pointer; border-radius: 10px; transition: background 0.18s; padding: 4px 4px; width: 100%; background: #22304a;">
-          <img src="/images/avatars/popstarpenguin.jpg" alt="Challenge Colby" style="width: 50px; height: 50px; border-radius: 8px; border: 2px solid #3176b1; background: #fff; object-fit: cover;">
-          <div>
-            <div style="font-weight: bold; color: #2ec3ff; font-size: 1.1rem;">Challenge Colby 💬</div>
-            <div style="color: #fff; font-size: 0.95rem; margin-top: 2px;">Chat with Colby and challenge him to music battles!</div>
-          </div>
+      <!-- Search within dropdown -->
+      <div class="search-container">
+        <div class="search-input-container">
+          <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
+          <div class="search-suggestions" id="suggestions"></div>
         </div>
       </div>
     </div>
-    <style>
-      .game-row-link:hover {
-        background: #2ec3ff22;
-      }
-    </style>
-  </section>
+  </nav>
   
-    
-  </div>
-</section>
+  <main class="main-content">
+    <div class="section-header">
+      <h1>New Games</h1>
+      <div class="underline"></div>
+    </div>
+
+    <div class="games-grid">
+      <a href="/memory.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/brain.jpg" alt="Match the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Match the Singer</div>
+            <div class="game-category">Memory Game</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Test your memory to match singers' faces with their names! Challenge yourself with this engaging memory game featuring your favorite music artists.
+        </div>
+      </a>
+
+      <a href="/spelling.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/bee.jpg" alt="Spell the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Spell the Singer</div>
+            <div class="game-category">Spelling Game</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Spell singers' names as letters are revealed! Can you guess the artist before all the letters appear? Test your spelling skills and music knowledge.
+        </div>
+      </a>
+
+      <a href="/bangerbattle.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/battle.jpg" alt="Banger Battle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Banger Battle</div>
+            <div class="game-category">Music Quiz</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Guess which song has more Spotify streams! Battle it out with popular hits and discover which tracks are the biggest bangers.
+        </div>
+      </a>
+    </div>
+
+    <div class="section-divider">
+      <h2>Community</h2>
+      <div class="underline"></div>
+    </div>
+
+    <div class="games-grid">
+      <a href="/rushmore.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/rushmore.jpg" alt="Mount Rushmore of Music" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Mount Rushmore of Music</div>
+            <div class="game-category">Community Vote</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Who are the 4 most iconic music artists of all time? Cast your vote and help determine the ultimate Mount Rushmore of Music legends.
+        </div>
+      </a>
+
+      <div class="game-card" onclick="challengeColby()" style="cursor: pointer;">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/avatars/popstarpenguin.jpg" alt="Challenge Colby" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Challenge Colby</div>
+            <div class="game-category">Chat & Battle</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Chat with Colby and challenge him to music battles! Test your knowledge against the creator and see who knows more about music.
+        </div>
+      </div>
+    </div>
+  </main>
 <footer class="bottom-nav">
     <a href="/profile.html" class="nav-item">
         <div style="display: block; margin-bottom: 2px;">
@@ -929,6 +895,105 @@ nav {
         `;
         const coinDisplayEl = document.getElementById("coinCount");
         if (coinDisplayEl) coinDisplayEl.textContent = "0";
+      }
+    });
+
+
+
+    // Game data for search functionality
+    const gamesData = [
+      {
+        title: "Match the Singer",
+        category: "Memory Game",
+        url: "/memory.html",
+        icon: "🧠",
+        description: "Test your memory to match singers' faces with their names!"
+      },
+      {
+        title: "Spell the Singer",
+        category: "Spelling Game",
+        url: "/spelling.html",
+        icon: "🐝",
+        description: "Spell singers' names as letters are revealed!"
+      },
+      {
+        title: "Banger Battle",
+        category: "Music Quiz",
+        url: "/bangerbattle.html",
+        icon: "🔥",
+        description: "Guess which song has more Spotify streams!"
+      },
+      {
+        title: "Mount Rushmore of Music",
+        category: "Community Vote",
+        url: "/rushmore.html",
+        icon: "🏔️",
+        description: "Vote for the most iconic music artists!"
+      },
+      {
+        title: "Challenge Colby",
+        category: "Chat & Battle",
+        url: "#",
+        icon: "💬",
+        description: "Chat with Colby and challenge him to music battles!"
+      }
+    ];
+
+    // Search functionality
+    window.showSuggestions = function(query) {
+      const suggestionsContainer = document.getElementById('suggestions');
+      
+      if (!query || query.trim() === '') {
+        suggestionsContainer.style.display = 'none';
+        return;
+      }
+
+      const searchTerm = query.toLowerCase().trim();
+      const matches = gamesData.filter(game => 
+        game.title.toLowerCase().includes(searchTerm) ||
+        game.category.toLowerCase().includes(searchTerm) ||
+        game.description.toLowerCase().includes(searchTerm)
+      ).slice(0, 3); // Limit to 3 results
+
+      if (matches.length === 0) {
+        suggestionsContainer.style.display = 'none';
+        return;
+      }
+
+      suggestionsContainer.innerHTML = '';
+      matches.forEach(game => {
+        const suggestion = document.createElement('div');
+        suggestion.className = 'search-suggestion';
+        suggestion.onclick = () => {
+          if (game.title === "Challenge Colby") {
+            challengeColby();
+          } else {
+            window.location.href = game.url;
+          }
+          suggestionsContainer.style.display = 'none';
+        };
+        
+        suggestion.innerHTML = `
+          <div class="search-suggestion-icon">${game.icon}</div>
+          <div class="search-suggestion-content">
+            <div class="search-suggestion-title">${game.title}</div>
+            <div class="search-suggestion-category">${game.category}</div>
+          </div>
+        `;
+        
+        suggestionsContainer.appendChild(suggestion);
+      });
+
+      suggestionsContainer.style.display = 'flex';
+    };
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      const suggestions = document.getElementById('suggestions');
+      const searchBar = document.querySelector('.search-bar');
+      
+      if (!suggestions.contains(e.target) && !searchBar.contains(e.target)) {
+        suggestions.style.display = 'none';
       }
     });
 

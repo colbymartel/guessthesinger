@@ -12,6 +12,20 @@ service cloud.firestore {
       allow write: if request.auth != null && request.auth.uid == userId;
     }
 
+    // Redemptions collection
+    match /redemptions/{redemptionId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow delete: if isAdmin();
+    }
+
+    // Banger Battle scores collection
+    match /bangerBattleScores/{scoreId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow delete: if isAdmin();
+    }
+
     // Memory scores collection
     match /memoryScores/{scoreId} {
       allow read: if true;
@@ -53,6 +67,13 @@ service cloud.firestore {
     match /matchBests/{bestId} {
       allow read: if true;
       allow write: if request.auth != null;
+    }
+
+    // Rushmore votes collection
+    match /rushmoreVotes/{voteId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow delete: if isAdmin();
     }
 
     // Messages collection for chat functionality

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mount Rushmore Results | Guessing Games</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      padding-bottom: 90px;
+      margin: 0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+      cursor: pointer;
+    }
+
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+
+    #coinDisplay {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    #coinCount {
+      font-weight: bold;
+    }
+
+    .search-suggestions {
+      position: absolute;
+      top: 50px;
+      right: 30px;
+      width: 300px;
+      background: white;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .search-suggestion {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+
+    .search-suggestion:last-child {
+      border-bottom: none;
+    }
+
+    .search-suggestion:hover {
+      background-color: #f0f4fa;
+    }
+
+    .search-bar {
+      padding: 8px 16px 8px 36px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 0.95rem;
+      background-color: white;
+      color: #315f85;
+      width: 220px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: 12px center;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .search-bar::placeholder {
+      color: #888;
+    }
+
+    .login-btn {
+      background-color: #ffcb05;
+      border: none;
+      padding: 8px 16px;
+      height: 40px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #1e2b38;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .login-btn:hover {
+      background-color: #e6b800;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .bottom-nav .nav-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .results-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #234d7d;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+
+    .stats-section {
+      margin-bottom: 40px;
+      padding: 30px;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      border-radius: 12px;
+      border: 2px solid #e1f0ff;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 12px;
+      text-align: center;
+      border: 2px solid #e1f0ff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 600;
+      color: #234d7d;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .submissions-section {
+      margin-top: 40px;
+    }
+
+    .submissions-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-input {
+      padding: 8px 12px;
+      border: 2px solid #e1f0ff;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .filter-input:focus {
+      outline: none;
+      border-color: #4a90e2;
+    }
+
+    .submissions-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .submissions-table th {
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: white;
+      padding: 15px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .submissions-table td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #e1f0ff;
+      font-size: 0.95rem;
+    }
+
+    .submissions-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .submissions-table tr:hover {
+      background-color: #f8f9fa;
+    }
+
+    .artist-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .artist-tag {
+      background: #e1f0ff;
+      color: #234d7d;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .timestamp {
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .results-container {
+        padding: 20px;
+        margin: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .submissions-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-controls {
+        justify-content: center;
+      }
+
+      .submissions-table {
+        font-size: 0.85rem;
+      }
+
+      .submissions-table th,
+      .submissions-table td {
+        padding: 10px 8px;
+      }
+
+      .artist-list {
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  
+  <nav>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+  
+      <div id="coinDisplay">
+        <div class="coin-emoji"></div>
+        <span id="coinCount">0</span>
+      </div>
+    </div>
+  
+  
+  <!-- Collapsible nav menu -->
+  <div class="nav-links" id="mobileMenu">
+     
+    <!-- Search and login within dropdown -->
+    <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
+    <div class="search-suggestions" id="suggestions"></div>
+    <button class="login-btn">Login</button>
+  </div>
+</nav>
+
+  <main>
+    <div class="results-container">
+      <h1>🏔️ Mount Rushmore Results</h1>
+      <p class="subtitle">See all the iconic music artists that people voted for!</p>
+
+      <div class="stats-section">
+        <h2>📊 Overall Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="totalVotes">0</div>
+            <div class="stat-label">Total Votes</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="uniqueArtists">0</div>
+            <div class="stat-label">Unique Artists</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="submissions-section">
+        <div class="submissions-header">
+          <h2>📝 All Submissions</h2>
+          <div class="filter-controls">
+            <input type="text" id="searchUser" class="filter-input" placeholder="Search by user...">
+            <input type="text" id="searchArtist" class="filter-input" placeholder="Search by artist...">
+          </div>
+        </div>
+
+        <div id="submissionsTable" class="loading">
+          <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 10px;"></i>
+          <p>Loading submissions...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <div style="display: block; margin-bottom: 2px;">
+        <i class="fas fa-user"></i>
+      </div>
+      <span>Profile</span>
+    </a>
+    
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { 
+      getFirestore, 
+      collection, 
+      addDoc, 
+      getDocs, 
+      query, 
+      orderBy, 
+      limit,
+      serverTimestamp,
+      where
+    } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+
+    let currentUser = null;
+    let allSubmissions = [];
+
+    const welcomeEl = document.getElementById("welcomeMessage");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+
+    // Global login function
+    window.handleLogin = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        dropdownMenu.classList.remove('show');
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('Login failed. Please try again.');
+      }
+    };
+
+    // Global logout function
+    window.handleLogout = async () => {
+      try {
+        await signOut(auth);
+        dropdownMenu.classList.remove('show');
+      } catch (error) {
+        console.error('Logout error:', error);
+        alert('Logout failed. Please try again.');
+      }
+    };
+
+    async function loadStats() {
+      try {
+        const votesSnapshot = await getDocs(collection(db, 'rushmoreVotes'));
+        const votes = votesSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // Count total votes
+        document.getElementById('totalVotes').textContent = votes.length;
+
+        // Count unique artists
+        const allArtists = votes.flatMap(vote => vote.artists);
+        const uniqueArtists = new Set(allArtists.map(artist => artist.toLowerCase()));
+        document.getElementById('uniqueArtists').textContent = uniqueArtists.size;
+
+        return votes;
+      } catch (error) {
+        console.error('Error loading stats:', error);
+        return [];
+      }
+    }
+
+    function formatTimestamp(timestamp) {
+      if (!timestamp) return '—';
+      const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp.seconds * 1000);
+      return date.toLocaleString();
+    }
+
+    function renderSubmissionsTable(submissions) {
+      const tableContainer = document.getElementById('submissionsTable');
+      
+      if (submissions.length === 0) {
+        tableContainer.innerHTML = `
+          <div class="no-data">
+            <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
+            <p>No submissions yet. Be the first to vote!</p>
+          </div>
+        `;
+        return;
+      }
+
+      const tableHTML = `
+        <table class="submissions-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Mount Rushmore of Music</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${submissions.map(submission => `
+              <tr>
+                <td>
+                  <div class="user-info">
+                    <img src="${submission.avatar || '/images/avatars/popstarpenguin.jpg'}" 
+                         alt="Avatar" class="user-avatar">
+                    <span>${submission.username || submission.userEmail || 'Anonymous'}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="artist-list">
+                    ${submission.artists.map((artist, index) => `
+                      <span class="artist-tag">${index + 1}. ${artist}</span>
+                    `).join('')}
+                  </div>
+                </td>
+                <td class="timestamp">${formatTimestamp(submission.timestamp)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+      
+      tableContainer.innerHTML = tableHTML;
+    }
+
+    function filterSubmissions() {
+      const userFilter = document.getElementById('searchUser').value.toLowerCase();
+      const artistFilter = document.getElementById('searchArtist').value.toLowerCase();
+      
+      const filtered = allSubmissions.filter(submission => {
+        const username = (submission.username || submission.userEmail || '').toLowerCase();
+        const artists = submission.artists.join(' ').toLowerCase();
+        
+        const matchesUser = !userFilter || username.includes(userFilter);
+        const matchesArtist = !artistFilter || artists.includes(artistFilter);
+        
+        return matchesUser && matchesArtist;
+      });
+      
+      renderSubmissionsTable(filtered);
+    }
+
+    // Set up search filters
+    document.getElementById('searchUser').addEventListener('input', filterSubmissions);
+    document.getElementById('searchArtist').addEventListener('input', filterSubmissions);
+
+    // Auth state listener
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        let username = user.displayName || user.email?.split('@')[0] || "User";
+        let coins = 0;
+
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+
+          if (!snapshot.empty) {
+            snapshot.forEach(doc => {
+              const data = doc.data();
+              if (data.username) username = data.username;
+              if (data.coins !== undefined) coins = data.coins;
+            });
+          } else {
+            // User document doesn't exist, create it with default values
+            console.log("User document not found, creating new user document");
+            await addDoc(collection(db, "users"), {
+              uid: user.uid,
+              email: user.email,
+              username: username,
+              coins: 0,
+              timestamp: serverTimestamp()
+            });
+            coins = 0;
+          }
+
+          welcomeEl.textContent = `Welcome, ${username}`;
+          const coinDisplayEl = document.getElementById("coinCount");
+          if (coinDisplayEl) {
+            coinDisplayEl.textContent = coins;
+            console.log(`Coins displayed: ${coins}`);
+          } else {
+            console.error("Coin display element not found");
+          }
+
+          // Set up dropdown menu
+          dropdownMenu.innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="/games.html">Games</a>
+            <a href="/memory-leaderboard.html">Leaderboards</a>
+            <a href="/rewards.html">Rewards</a>
+            <a href="/inbox.html">Messages</a>
+            <a href="#" onclick="handleLogout()">Logout</a>
+          `;
+
+          welcomeEl.onclick = () => {
+            dropdownMenu.classList.toggle('show');
+          };
+
+          // Close dropdown when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!welcomeEl.contains(e.target) && !dropdownMenu.contains(e.target)) {
+              dropdownMenu.classList.remove('show');
+            }
+          });
+
+        } catch (error) {
+          console.error("Error loading user data:", error);
+          // Still show the user even if Firestore fails
+          welcomeEl.textContent = `Welcome, ${username}`;
+        }
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        welcomeEl.onclick = () => {
+          dropdownMenu.classList.toggle('show');
+        };
+        dropdownMenu.innerHTML = `
+          <a href="#" onclick="handleLogin()">Login</a>
+        `;
+        
+        // Reset coin display for anonymous users
+        const coinDisplayEl = document.getElementById("coinCount");
+        if (coinDisplayEl) {
+          coinDisplayEl.textContent = "0";
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!welcomeEl.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.remove('show');
+          }
+        });
+      }
+
+      // Load data regardless of auth state
+      allSubmissions = await loadStats();
+      renderSubmissionsTable(allSubmissions);
+    });
+
+  </script>
+</body>
+</html> 
