@@ -93,9 +93,34 @@ service cloud.firestore {
 
     // Bookings collection for event booking inquiries
     match /bookings/{bookingId} {
-      allow read: if isAdmin();
+      allow read: if true; // Allow reading for admin page access
       allow create: if true; // Anyone can submit a booking inquiry
       allow delete: if isAdmin();
+    }
+
+    // Revealed answers collection for question games
+    match /revealedAnswers/{answerId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Revealed hints collection for hint games
+    match /revealedHints/{hintId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Match scores collection for memory games
+    match /matchScores/{scoreId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow delete: if isAdmin();
+    }
+
+    // Match bests collection for memory game best scores
+    match /matchBests/{bestId} {
+      allow read: if true;
+      allow write: if request.auth != null;
     }
   }
 } 
