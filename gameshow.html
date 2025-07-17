@@ -173,6 +173,26 @@
     }
 
     @media (max-width: 768px) {
+      .comparison-table {
+        margin: 0 20px 40px 20px;
+        font-size: 0.9rem;
+      }
+      
+      .comparison-table th {
+        padding: 15px 10px;
+        font-size: 1rem;
+      }
+      
+      .comparison-table td {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+      }
+      
+      .learn-more-btn {
+        padding: 16px 28px;
+        font-size: 1rem;
+      }
+      
       .partners-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 30px;
@@ -213,6 +233,108 @@
       font-size: 2rem;
       margin-bottom: 40px;
       font-weight: 600;
+    }
+
+    .comparison-table {
+      max-width: 1000px;
+      margin: 0 auto 50px auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .comparison-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .comparison-table th {
+      background: linear-gradient(135deg, #4682b4, #254a6d);
+      color: white;
+      padding: 20px 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .comparison-table th:first-child {
+      text-align: left;
+      background: linear-gradient(135deg, #254a6d, #1e2b38);
+    }
+
+    .comparison-table th:nth-child(3) {
+      background: linear-gradient(135deg, #ffcc00, #e6b800);
+      color: #1e2b38;
+      position: relative;
+    }
+
+
+
+    .comparison-table td {
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid #e9ecef;
+      font-size: 1rem;
+    }
+
+    .comparison-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: #254a6d;
+      background: #f8f9fa;
+    }
+
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .comparison-table td:nth-child(3) {
+      background: #fffbf0;
+      border-left: 3px solid #ffcc00;
+      border-right: 3px solid #ffcc00;
+      font-weight: 600;
+    }
+
+    .learn-more-section {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .learn-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #4682b4, #254a6d);
+      color: white;
+      padding: 18px 32px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(70, 130, 180, 0.3);
+    }
+
+    .learn-more-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(70, 130, 180, 0.4);
+      background: linear-gradient(135deg, #ffcc00, #e6b800);
+      color: #1e2b38;
+    }
+
+    .learn-more-btn .arrow {
+      font-style: normal;
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .learn-more-btn:hover .arrow {
+      transform: translateX(4px);
     }
 
     .packages-grid {
@@ -422,43 +544,65 @@
 
   <section class="event-packages-section">
     <h2>Event Packages</h2>
-    <div class="packages-grid">
-      <!-- Basic Package -->
-      <div class="package-card">
-        <div class="package-header basic">Basic Package <span class="emoji">🎟</span></div>
-        <ul class="package-features">
-          <li>🎤 1-hour show (3 rounds)</li>
-          <li>💵 $500 in guaranteed prize money</li>
-          <li>🏅 Up to $1,000 in bonus cash prizes</li>
-        </ul>
-        <a href="booking-form.html?package=Basic" class="book-package-btn" style="text-decoration: none; display: inline-block;" target="_blank">Learn More</a>
-      </div>
-      <!-- Standard Package -->
-      <div class="package-card featured">
-        <div class="package-badge">Most Popular</div>
-        <div class="package-header standard">Standard Package <span class="emoji">🏆</span></div>
-        <ul class="package-features">
-          <li>🎤 1.5-hour show (3 rounds)</li>
-          <li>🎡 Physical 7-Foot Prize Wheel</li>
-          <li>💵 $1,000 in guaranteed prize money</li>
-          <li>🏅 Up to $2,000 in bonus cash prizes</li>
-        </ul>
-        <a href="booking-form.html?package=Standard" class="book-package-btn" style="text-decoration: none; display: inline-block;" target="_blank">Learn More</a>
-      </div>
-      <!-- Ultimate Package -->
-      <div class="package-card">
-        <div class="package-header ultimate">Ultimate Package <span class="emoji">🎶</span></div>
-      
-        <ul class="package-features">
-          <li>🎤 2-hour show (3 rounds)</li>
-          <li>🎡 Physical 7-Foot Prize Wheel</li>
-          <li>💵 $2,000 in guaranteed prize money</li>
-          <li>🏅 Up to $7,000 in bonus cash prizes</li>
-          <li>🎥 Full Event Recap Video</li>
-          <li>🔥 Free Merch Giveaways</li>
-        </ul>
-        <a href="booking-form.html?package=Ultimate" class="book-package-btn" style="text-decoration: none; display: inline-block;" target="_blank">Learn More</a>
-      </div>
+    
+    <!-- Quick Comparison Table -->
+    <div class="comparison-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Basic</th>
+            <th>Standard</th>
+            <th>Ultimate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Show Duration</td>
+            <td>1 hour</td>
+            <td>1.5 hours</td>
+            <td>2 hours</td>
+          </tr>
+          <tr>
+            <td>Physical Prize Wheel</td>
+            <td>❌</td>
+            <td>✅</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>Recap Video</td>
+            <td>❌</td>
+            <td>❌</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>Merch Giveaways</td>
+            <td>❌</td>
+            <td>❌</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>Guaranteed Prize Money</td>
+            <td>$500</td>
+            <td>$1,000</td>
+            <td>$2,000</td>
+          </tr>
+          <tr>
+            <td>Bonus Cash Prizes</td>
+            <td>Up to $1K</td>
+            <td>Up to $2K</td>
+            <td>Up to $7K</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Learn More Button -->
+    <div class="learn-more-section">
+      <a href="booking-form.html" class="learn-more-btn" target="_blank">
+        <span>Learn More About This Experience</span>
+        <i class="arrow">→</i>
+      </a>
     </div>
 
 
