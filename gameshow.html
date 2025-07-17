@@ -89,7 +89,7 @@
     .video-section {
       text-align: center;
       margin-top: 60px;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
     }
 
     .video-section iframe {
@@ -987,7 +987,20 @@ function renderHeroSlider() {
   }
 }
 
+// Preload all images for smooth transitions
+function preloadImages() {
+  const allImages = ['images/gameshowheading.jpg', ...heroGalleryImages];
+  allImages.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+  // Preload all images first
+  preloadImages();
+  
+  // Then render the slider
   renderHeroSlider();
   
   document.getElementById('heroPrev').onclick = function() {
