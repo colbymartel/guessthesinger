@@ -98,7 +98,7 @@
     .video-section {
       text-align: center;
       margin-top: 48px;
-      margin-bottom: 60px;
+      margin-bottom: 30px;
     }
 
     .video-section iframe {
@@ -449,13 +449,128 @@
   </section>
 
 <section class="about-section">
-  <h2>About</h2>
-  <p>
-    Guess The Singer is the ultimate music trivia showdown where pop culture meets high-energy gameplay... hosted by YouTube creator Colby Martel (500,000+ subscribers)! Each round students will be challenged to guess a mystery music artist by asking strategic questions, unlocking clues, and avoiding elimination from the iconic Wheel of Fate.
-  </p>
-  <p>
-    Students will begin by selecting from a pool of lanyards that feature various music artists which each correspond to a capsule inside a giant gumball machine, which is used to randomly select participants throughout the game. Initial participants of each round will be selected at random and by skill through brief trivia sessions. The first student to guess the singer each round will win a cash prize from $100 to $5,000 depending on the package selected.
-  </p>
+  <h2>How It Works</h2>
+  
+  <div class="game-process">
+    <div class="process-step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>🎤 Join the Game</h3>
+        <p>Students are called to compete based on randomness and merit from trivia challenges!</p>
+      </div>
+    </div>
+  
+    
+    <div class="process-step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>🎡 Spin the Wheel</h3>
+        <p>Unlock clues, win bonus prizes, or face elimination by spinning the 7-foot-tall Wheel of Fate!</p>
+      </div>
+    </div>
+    
+    <div class="process-step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>💰 Win Big</h3>
+        <p>First to guess the mystery singer of the round wins cash prizes up to $5,000!</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="host-highlight">
+    <div class="host-info">
+      <div class="host-profile">
+        <a href="https://colbymartel.com" target="_blank" rel="noopener noreferrer">
+          <img src="images/colbypfp.jpg" alt="Colby Martel" class="host-picture">
+        </a>
+        <div class="host-stats">
+          <div class="stat">
+            <span class="stat-number">525,000</span>
+            <div class="stat-label-with-icon">
+              <img src="images/youtubeicon.png" alt="YouTube" class="platform-icon">
+              <span class="stat-label">YOUTUBE SUBSCRIBERS</span>
+            </div>
+          </div>
+          <div class="stat">
+            <span class="stat-number">225,000</span>
+            <div class="stat-label-with-icon">
+              <img src="images/tiktokicon.png" alt="TikTok" class="platform-icon">
+              <span class="stat-label">TIKTOK FOLLOWERS</span>
+            </div>
+          </div>
+          <div class="stat">
+            <span class="stat-number">600,000,000+</span>
+            <span class="stat-label">VIEWS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-section">
+  <h2>What Students Are Saying</h2>
+  <div class="testimonials-grid">
+
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"Very entertaining and interactive. I loved the twists!"</p>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"The possibility of winning prizes was amazing! 😍"</p>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"The crowd work and audience participation was incredible!"</p>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"I liked playing, I liked the podiums with the tablets too!"</p>
+      </div>
+    </div>
+
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"Colby Martel is an amazing host!"</p>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"The spontaneity and surprises made it unforgettable!"</p>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"I like the concept and being here with my friends!"</p>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"Spinning the wheel was the highlight!"</p>
+      </div>
+    </div>
+    
+    <div class="testimonial-card">
+      <div class="testimonial-content">
+        <p>"The rounds and elimination kept us on the edge of our seats!"</p>
+      </div>
+    </div>
+    
+   
+  </div>
 </section>
 
 <style>
@@ -476,6 +591,255 @@
   max-width: 700px;
   margin: 0 auto 18px auto;
   line-height: 1.7;
+}
+
+.game-process {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1000px;
+  margin: 40px auto;
+}
+
+.process-step {
+  background: linear-gradient(135deg, #fff, #f8f9fa);
+  border-radius: 16px;
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.process-step:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  border-color: #4682b4;
+}
+
+.step-number {
+  background: linear-gradient(135deg, #4682b4, #254a6d);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 4px 12px rgba(70, 130, 180, 0.3);
+}
+
+.step-content h3 {
+  color: #254a6d;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.step-content p {
+  color: #1e2b38;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.host-highlight {
+  background: linear-gradient(135deg, #254a6d, #4682b4);
+  border-radius: 20px;
+  padding: 40px;
+  margin-top: 50px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.host-profile {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.host-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+}
+
+.host-picture:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.host-stats {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-icon {
+  margin-bottom: 8px;
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.platform-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  margin-right: 6px;
+}
+
+.stat-label-with-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.stat-number {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .game-process {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .process-step {
+    padding: 24px 20px;
+  }
+  
+  .host-highlight {
+    padding: 30px 20px;
+    margin-top: 40px;
+  }
+  
+  .host-profile {
+    gap: 30px;
+  }
+  
+  .host-picture {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .host-stats {
+    gap: 25px;
+  }
+  
+  .stat-icon {
+    margin-bottom: 6px;
+  }
+  
+  .platform-icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .stat-number {
+    font-size: 1.8rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+  }
+}
+
+.testimonials-section {
+  background: #fff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.testimonials-section h2 {
+  color: #254a6d;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #4682b4;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.testimonial-content p {
+  color: #1e2b38;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .testimonial-card {
+    padding: 20px;
+  }
+  
+  .testimonial-content p {
+    font-size: 1rem;
+  }
+  
+  .testimonials-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
 }
 </style>
 
