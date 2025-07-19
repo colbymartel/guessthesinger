@@ -236,7 +236,7 @@ header .logo img {
 
 #rulesBox {
   background: #ffffff;
-  color: #1e3a5f;
+  color: #fff;
   padding: 40px 50px;
   border-radius: 20px;
   max-width: 500px;
@@ -314,7 +314,44 @@ header .logo img {
   color: #ff4d4d;
 }
 
+  @media (max-width: 480px) {
+  #rulesBox {
+    padding: 20px 15px;
+    font-size: 0.95rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 
+  #rulesBox h2 {
+    font-size: 1.3rem;
+    line-height: 1.4;
+  }
+
+  #rulesBox img {
+    max-width: 200px;
+    margin: 10px 0;
+  }
+
+  #rulesBox ul {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+
+  #rulesBox button {
+    font-size: 1rem;
+    padding: 12px 20px;
+    width: 100%;
+    max-width: 250px;
+  }
+
+  }
+  .login-input:focus {
+  outline: none;
+  border-color: #00ffcc;
+  box-shadow: 0 0 10px #00ffcc;
+  transition: all 0.3s ease;
+}
 
   </style>
 </head>
@@ -328,17 +365,19 @@ header .logo img {
   <!-- Start/Login Screen -->
   <div class="start-container" id="startContainer">
     <div>
-      <input type="text" id="userName" class="login-input" placeholder="Enter your name">
-    </div>
+        <label for="userName" style="color: #fff; font-size: 1.2rem; margin-bottom: 10px; display: block;">
+            👤 What's your name?
+          </label>
+          <input type="text" id="userName" class="login-input" placeholder="e.g. Taylor">
+              </div>
     <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
 
   </div>
   
-  
   <!-- Quiz Container -->
   <div class="quiz-container" id="quizContainer">
-    <div class="progress" id="progressText">Question 1 of 50</div>
-    <div class="timer" id="timerText">02:00</div>
+    <div class="progress" id="progressText">Question 1 of 10</div>
+    <div class="timer" id="timerText">1:00</div>
     <!-- Singer image will be displayed here -->
     <img id="singerImage" class="singer-image" src="" alt="Singer Image">
     <!-- Question text -->
@@ -355,7 +394,6 @@ header .logo img {
     <button class="submit-btn" onclick="handlePass()">Pass</button>
         <div class="result" id="resultText"></div>
   </div>
-
   
   <div id="rulesOverlay" class="show">
     <div id="rulesBox">
@@ -416,12 +454,12 @@ const db = firebase.firestore();
     let correctCount = 0;
     let startTime = null;
     let timerInterval = null;
-    const totalTime = 120; // seconds
+    const totalTime = 60; // seconds
     let skippedArtists = [];
     let sessionId = null;
     let isSkippedRound = false;
 let skippedIndex = 0;
-
+let answeredIndexes = new Set(); // Add near top with other globals
     
     // DOM elements for quiz.
     const progressText = document.getElementById("progressText");
@@ -471,6 +509,8 @@ function startQuiz() {
     alert("Please enter your name to start.");
     return;
   }
+
+  alert(`🎤 Let's go, ${userName}!`); // ✅ Move it here
   // Log the user's name to the "users" collection.
   db.collection("users").add({
     name: userName,
@@ -587,6 +627,11 @@ function handleAnswer() {
         } else {
           endQuiz();
         }
+        if (isSkippedRound) {
+  answeredIndexes.add(skippedArtists[skippedIndex].image);
+} else {
+  answeredIndexes.add(triviaQuestions[currentQuestionIndex].image);
+}
       }
     }, 800);
   } else {
@@ -632,6 +677,17 @@ function endQuiz() {
   singerImage.style.display = "none";
   questionText.innerHTML = `<strong>You got ${correctCount} out of ${triviaQuestions.length} correct.</strong><br>Your time: ${formatTime(timeTaken)}`;
 
+  const leaderboardBtn = document.createElement("button");
+leaderboardBtn.textContent = "🏆 View Leaderboard";
+leaderboardBtn.className = "start-btn"; // reuse styled green button
+leaderboardBtn.style.marginTop = "20px";
+leaderboardBtn.onclick = () => {
+  window.location.href = "/leaderboard.html"; // adjust path if needed
+};
+questionText.appendChild(document.createElement("br"));
+questionText.appendChild(leaderboardBtn);
+resultText.textContent = "";
+
   answerInput.style.display = "none";
   document.querySelectorAll(".submit-btn").forEach(btn => btn.style.display = "none");
   timerText.style.display = "none";
@@ -655,6 +711,26 @@ function endQuiz() {
 
     quizContainer.appendChild(skippedSection);
   }
+  // Combine skipped + unanswered
+const missedArtists = triviaQuestions.filter((q, i) => !answeredIndexes.has(q.image));
+
+if (missedArtists.length > 0) {
+  const skippedSection = document.createElement("div");
+  skippedSection.classList.add("quiz-complete");
+  skippedSection.innerHTML = `<h3 style="margin-top: 30px;">Missed Artists</h3>`;
+
+  missedArtists.forEach(artist => {
+    const card = document.createElement("div");
+    card.style.marginTop = "15px";
+    card.innerHTML = `
+      <img src="${artist.image}" alt="${artist.correctAnswer}" style="max-width: 150px; border-radius: 10px; box-shadow: 0 0 12px rgba(255,255,255,0.1);"><br>
+      <span style="color: #00ffcc; font-weight: bold;">${artist.correctAnswer}</span>
+    `;
+    skippedSection.appendChild(card);
+  });
+
+  quizContainer.appendChild(skippedSection);
+}
 
   // Update Firestore session if needed
   if (sessionId) {
@@ -679,3 +755,4 @@ document.getElementById("closeRulesBtn").addEventListener("click", closeRules);
   </script>
 </body>
 </html>
+
