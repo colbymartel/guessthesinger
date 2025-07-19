@@ -4,249 +4,490 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About | Guess The Singer</title>
-  <!-- Font Awesome for social icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    integrity="sha512-dymI7u9x2o90iOQ9S6nj9R1hjlKKl0EdV5nfaXHwO9OYp+LuvfI4zbAOGiQxVBp+7F3hJm1f+Wug8DqfwO5YQw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
   <style>
-    /* Base Styles */
+    :root {
+      --primary: #3a77c2;
+      --secondary: #87cefa;
+      --dark-blue: #1e3a5f;
+      --white: #fff;
+      --gray: #f5f5f5;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: url(/images/bg-top.png) no-repeat;
-      color: #333;
-      line-height: 1.6;
+      font-family: 'Poppins', sans-serif;
+      background: var(--gray);
+      color: #222;
     }
-    
-    /* Header */
+
     header {
-      background: linear-gradient(90deg, #87cefa, #4682b4);
-      color: #fff;
-      padding: 15px 0;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  animation: fadeDown 1s ease-out;
+}
+
+@keyframes fadeDown {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
     header h1 {
-      font-size: 2rem;
-      font-weight: bold;
-      padding: 10px;
+      font-size: 2.8rem;
+      font-weight: 700;
     }
-    
-    /* Navbar */
+
     .navbar {
+      background-color: var(--dark-blue);
       display: flex;
       justify-content: center;
-      gap: 20px;
-      background-color: #315f85;
       padding: 15px 0;
-      font-weight: bold;
     }
-    .navbar ul {
-      list-style: none;
-      display: flex;
-      gap: 15px;
-      font-size: 16px;
-      margin: 0;
-      padding: 0;
-    }
-    .navbar ul li a {
-      text-decoration: none;
-      color: white;
-      font-size: 1rem;
-      padding: 5px 10px;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-    .navbar ul li a:hover {
-      background-color: #4682b4;
-    }
-    
-    /* About Section */
-    .about-section {
-      max-width: 900px;
+
+
+.navbar ul {
+list-style: none;
+display: flex;
+font-size: 16px;
+gap: 15px;
+margin: 0;
+padding: 0;
+}
+
+.navbar a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.navbar a:hover,
+.navbar a.active {
+  background-color: #4682b4;
+  border: 2px solid #fff;
+  box-shadow: 0 0 12px rgba(255,255,255,0.3);
+}
+
+
+    main {
+      max-width: 1000px;
       margin: 40px auto;
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      overflow: hidden;
-      padding: 20px 40px;
+      padding: 0 20px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 40px 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-4px);
+    }
+
+    .section h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 15px;
       text-align: center;
     }
-    .about-section h2 {
-      font-size: 2rem;
-      color: #3a77c2;
+
+    .section p {
+      font-size: 1.1rem;
+      line-height: 1.7;
       margin-bottom: 15px;
+      text-align: center;
     }
-    .about-section p {
-      font-size: 1.2rem;
-      margin: 10px 0;
-      text-align: justify;
-      padding: 0 10px;
-    }
-    .about-section img {
-      max-width: 300px;
+
+    .section img {
+      max-width: 280px;
       width: 100%;
-      height: auto;
       border-radius: 20px;
       display: block;
-      margin: 20px auto;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin: 25px auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
-    .rules-section {
-  background: var(--white);
-  border-left: 5px solid var(--primary-color);
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding-left: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  max-width: 600px;
-  margin: 30px auto;
-  text-align: left;
-}
-
-.rules-section h2 {
-  text-align: center;
-  font-size: 1.8rem;
-  color: var(--primary-color);
-  border-bottom: 2px solid var(--primary-color);
-  display: inline-block;
-}
-
-.rules-section p {
-  position: relative;
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 1.2rem;
-  padding-left: 30px;
-  color: var(--text-muted);
-}
-
-/* Custom bullet icon */
-.rules-section p::before {
-  content: "✔";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  line-height: 1.5;
-}
-
-/* Optional hover effect for each rule */
-.rules-section p:hover {
-  color: var(--primary-dark);
-  transform: translateX(5px);
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-    /* Trending Videos */
     .tiktok-videos {
       display: flex;
-      justify-content: center;
-      gap: 20px;
       flex-wrap: wrap;
-      margin: 30px 0;
+      gap: 25px;
+      justify-content: center;
+      margin-top: 20px;
     }
+
     .tiktok-videos iframe {
-      max-width: 315px;
       width: 100%;
+      max-width: 315px;
+      height: 560px;
       border: none;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
-    
-    /* Social Links */
+
     .social-links {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      padding: 35px;
+      gap: 20px;
+      padding: 25px;
     }
+
     .social-links a {
-      color: #4682b4;
-      text-decoration: none;
-      font-size: 1.3rem;
-      transition: color 0.3s ease;
+      font-size: 1.5rem;
+      color: var(--primary);
+      transition: color 0.3s;
     }
+
     .social-links a:hover {
-      color: #315f85;
+      color: var(--dark-blue);
     }
-    
-    /* Footer */
+
     .footer {
-      background: #315f85;
+      background-color: var(--dark-blue);
       color: white;
+      padding: 20px;
       text-align: center;
-      padding: 15px;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
+
     .footer a {
       color: white;
-      text-decoration: none;
-      margin: 0 6px;
-      font-size: 1rem;
-      transition: color 0.3s ease;
+      margin: 0 10px;
+      transition: color 0.3s;
     }
+
     .footer a:hover {
-      color: #ff914d;
+      color: var(--secondary);
     }
+    .creator-stats {
+  background: linear-gradient(135deg, #3a77c2, #316cb3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 25px;
+  padding: 30px 40px;
+  max-width: 1000px;
+  margin: 50px auto;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.creator-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.profile-img {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stat {
+  text-align: center;
+  flex: 1;
+  min-width: 100px;
+}
+
+.stat h2 {
+  font-size: 2rem;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.stat p {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+.stat a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.stat a i {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.stat a:hover {
+  color: #ff914d;
+  transform: scale(1.1);
+}
+
+.shorts-carousel {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 40px 0;
+  background: #000;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.carousel-track iframe {
+  width: 240px;
+  height: 430px;
+  border-radius: 16px;
+  border: none;
+  scroll-snap-align: start;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.carousel-track iframe:hover {
+  transform: scale(1.02);
+}
+.carousel-container {
+  background: linear-gradient(135deg, white, #dbe1e8);
+  border-radius: 25px;
+  padding: 40px 20px;
+  margin: 40px auto;
+  max-width: 1100px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.hero-intro {
+  background: #1e3a5f;
+  padding: 60px 40px;
+  border-radius: 25px;
+  margin: 60px auto;
+  max-width: 1100px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: white;
+}
+
+.hero-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.hero-image img {
+  border-radius: 20px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.hero-text {
+  flex: 1;
+  min-width: 280px;
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.hero-text h1 span {
+  color: #3a77c2;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.hero-button {
+  display: inline-block;
+  background-color: #3a77c2;
+  color: white;
+  font-weight: bold;
+  padding: 12px 22px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+  background-color: #3a77c2;
+}
+
   </style>
 </head>
 <body>
   <header>
     <h1>About</h1>
   </header>
+
   <nav class="navbar">
     <ul>
       <li><a href="/index.html">Home</a></li>
-      <li><a href="/calendar.html">History</a></li>
-      <li><a href="/about.html">About</a></li>
+      <li><a href="/memory-leaderboard.html">Leaderboard</a></li>
+      <li><a href="/about.html" class="active">About</a></li>
     </ul>
   </nav>
-  <main class="about-section">
-    <h2>About Me</h2>
-    <p>
-      Hi! I'm Colby! After guessing the favorite music artists of over 100 strangers, I noticed how many people enjoy playing along in the comments. I created this daily guessing game to celebrate the holiday season and give back to the community that makes my career possible! 🎁
-    </p>
-    <img src="/images/OliviaRodrigo.jpg" alt="Colby Martel" />
-    
-    <h2>How to Play</h2>
 
-    <!-- Game Rules Section -->
-    <section class="rules-section">
-      <p>Select yes/no questions to figure out the mystery artist!</p>
-      <p>Try to minimize the number of questions and hints you use!</p>
-      <p>Have fun and share your results with friends!</p>
-      <p>A new artist is featured every day!</p>
+  <main>
+    <section class="hero-intro">
+      <div class="hero-content">
+        <div class="hero-image">
+          <img src="/images/OliviaRodrigo.jpg" alt="Colby Martel and Team">
+        </div>
+        <div class="hero-text">
+          <h1>Can YOU Guess<br>the Singer?</h1>
+          <p>
+            I built Guess The Singer to make music more interactive, exciting, and shareable. Every day’s a new mystery, and anyone can play.
+          </p>
+          <p>
+            Whether you're crushing a perfect streak or competing with friends, your next favorite game is right here.
+          </p>
+          <a href="/index.html" class="hero-button">Play Now →</a>
+        </div>
+      </div>
     </section>
     
-      
-      <h2>Trending Videos 🔥</h2>
-      <div class="tiktok-videos">
-        <iframe width="315" height="560" src="https://www.youtube.com/embed/M5Vjngw9fUQ" title="Guessing his favorite music artist!😂🤦‍♂️" allowfullscreen></iframe>
-        <iframe width="315" height="560" src="https://www.youtube.com/embed/t9ElcxxFznY" title="Guessing Her Favorite Music Artist🤩" allowfullscreen></iframe>
+
+<!-- Font Awesome for icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+<section class="creator-stats">
+  <div class="creator-info">
+    <div class="profile-img">
+      <img src="/images/colbypfp.jpg" alt="Colby Martel" />
+    </div>
+    <div class="stat">
+      <h2>508,000
+      </h2>
+      <p>Subscribers</p>
+    </div>
+    <div class="stat">
+      <h2>328</h2>
+      <p>Videos</p>
+    </div>
+    <div class="stat">
+      <h2>415,000,000</h2>
+      <p>Views</p>
+    </div>
+  </div>
+</section>
+
+<section class="shorts-carousel carousel-container">
+  <div class="carousel-track">
+    <iframe src="https://www.youtube.com/embed/dEAFqGlIcOw" title="Guessing Her Favorite Music Artist!!☀️" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>    
+    <iframe src="https://www.youtube.com/embed/9UXQdGcfy8s" title="Guessing His Favorite Music Artist!🥚🐇" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>    
+    <iframe src="https://www.youtube.com/embed/UMcu3VyKQAQ" title="Guessing Their Favorite Music Artist!" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/dMywqQjJxqU" title="I need to educate myself😂😭" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/TbaPqq0dA7g" title="Guessing Emily&#39;s Favorite Music Artist!😂" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/FuzU9wCSsGI" title="Guess Her Favorite Singer in 1 Minute!⏰" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/kHnIRRYtCVc" title="Guess the Singer, WIN Mystery Gift🎁" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/fVbMlXaB7lM" title="Guessing His Favorite Music Artist!😭" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/y6S6Gu4mVKA" title="Guessing Her Favorite Singer!🙌🏼" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/CuHyfX7eyjw" title="Guessing Her Favorite Singer!🥲" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </section>
+
+  <section class="creator-stats">
+    <h2 style="text-align: center; margin-bottom: 30px; font-size: 2rem; color: white; border-bottom: 3px solid #fff;">Let’s Connect!</h2>
+
+    <div class="creator-info" style="justify-content: center;">
+      <div class="stat">
+        <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram">
+          <i class="fab fa-instagram"></i>
+          <p>Instagram</p>
+        </a>
       </div>
-      
-    </section>
-  </main>
+      <div class="stat">
+        <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube">
+          <i class="fab fa-youtube"></i>
+          <p>YouTube</p>
+        </a>
+      </div>
+      <div class="stat">
+        <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok">
+          <i class="fab fa-tiktok"></i>
+          <p>TikTok</p>
+        </a>
+      </div>
+      <div class="stat">
+        <a href="https://discord.gg/egQzdDSM" target="_blank" title="Discord">
+          <i class="fab fa-discord"></i>
+          <p>Discord</p>
+        </a>
+      </div>
+    </div>
+  </section>
   
+  </main>
+
   <footer class="footer">
-    &copy; 2024 Colby Martel | 
-    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    <a href="https://forms.gle/8UoyYgQNeD78Feq48" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+    &copy; 2024 Colby Martel
   </footer>
+
+<script>
+let isDown = false;
+let startX;
+let scrollLeft;
+let scrollSpeed = 1; // pixels per frame
+let track = document.querySelector('.carousel-track');
+
+function autoScroll() {
+  track.scrollLeft += scrollSpeed;
+  if (track.scrollLeft + track.clientWidth >= track.scrollWidth) {
+    track.scrollLeft = 0; // Reset to start
+  }
+  requestAnimationFrame(autoScroll);
+}
+autoScroll();
+
+
+track.addEventListener('mousedown', (e) => {
+  isDown = true;
+  track.classList.add('active');
+  startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.scrollLeft;
+});
+track.addEventListener('mouseleave', () => {
+  isDown = false;
+  track.classList.remove('active');
+});
+track.addEventListener('mouseup', () => {
+  isDown = false;
+  track.classList.remove('active');
+});
+track.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  const walk = (x - startX) * 2; //scroll speed
+  track.scrollLeft = scrollLeft - walk;
+});
+
+</script>
 </body>
 </html>

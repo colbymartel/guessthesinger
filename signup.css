@@ -1,5 +1,5 @@
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
 
 /* General Reset */
 * {
@@ -9,7 +9,7 @@
 }
 
 body {
-    font-family: 'Poppins', Arial, sans-serif;
+    font-family: 'Fredoka', Arial, sans-serif;
     background: url('../images/bg-top.png') no-repeat center center fixed;
     background-size: cover; /* Ensure the background covers the entire viewport */
     color: #333;

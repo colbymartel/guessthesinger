@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T42NG5C994"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T42NG5C994');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Match the Singer</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+    h1 {
+      text-align: center;
+      color: #315f85;
+      margin: 30px 0 10px;
+    }
+    #score {
+      font-size: 1.2rem;
+      color: #315f85;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 100px);
+      grid-template-rows: repeat(4, 100px);
+      gap: 10px;
+      justify-content: center;
+      margin: 0 auto 30px;
+    }
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(4, 80px);
+        grid-template-rows: repeat(8, 80px);
+        gap: 8px;
+      }
+      .card {
+        font-size: 11px;
+      }
+      .singer-name {
+        font-size: 11px;
+        padding: 2px;
+        line-height: 1.1;
+      }
+      .singer-name span {
+        display: block;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .singer-name span:nth-child(2) {
+        margin-top: 1px;
+      }
+    }
+    .card {
+      background-color: #315f85;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0;
+      transition: background-color 0.3s;
+      border: 3px solid transparent;
+      transition: background-color 0.3s, border-color 0.3s;
+      overflow: hidden;
+    }
+    .card.revealed {
+      border-color: #ffcb05; /* Yellow when revealed */
+    }
+    .card.match {
+      border-color: #4caf50 !important; /* Green on match */
+    }
+    .card.mismatch {
+      border-color: #e74c3c !important; /* Red on mismatch */
+    }
+    img.singer-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+    .singer-name {
+      font-size: 14px;
+      padding: 4px;
+      text-align: center;
+      word-wrap: break-word;
+      white-space: normal;
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      width: 100%;
+    }
+    #message {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #e74c3c;
+      margin-bottom: 10px;
+    }
+    #startBtn {
+      display: block;
+      margin: 0 auto 30px;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    #startBtn:hover {
+      background-color: #45a049;
+    }
+    
+    #startBtn:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    
+    #restartBtn {
+      display: none;
+      margin: 0 auto 30px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+    }
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: fadeDown 1s ease-out;
+    }
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    /* Responsive Logo */
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+        padding: 0px;
+      }
+      .header{
+        height: 35px;
+      }
+    }
+    /* Desktop only by default */
+    .desktop-only {
+      display: flex;
+    }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      right: 15px;
+      top: 120px; /* adjust if needed to push below hamburger */
+      background-color: #1e2b38;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: max-content;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .modal {
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+      animation: fadeIn 0.3s ease;
+      color: #333;
+      font-family: 'Fredoka', sans-serif;
+    }
+    .modal h2 {
+      color: #315f85;
+    }
+    .close {
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Mobile nav styles */
+    .hamburger {
+      display: block;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      font-weight: bold;
+      width: 100%;
+    }
+    .mobile-menu a:hover {
+      color: #ffcb05;
+    }
+    .mobile-menu.show {
+      display: flex;
+    }
+    /* Nav adjustments */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+        color: white;
+      }
+      nav {
+        justify-content: space-between;
+      }
+      .welcome-nav {
+        display: block;
+      }
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+    .dropdown.show {
+      display: flex;
+    }
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+    #coinDisplay {
+      margin-left: auto;
+      margin-right: 15px;
+    }
+    .coin-gain {
+      color: #27ae60;
+      font-weight: bold;
+      margin-left: 4px;
+      font-size: 16px;
+      opacity: 0;
+      transform: translateY(0px);
+      transition: all 0.6s ease-out;
+    }
+    .coin-gain.animate {
+      opacity: 1;
+      transform: translateY(-10px);
+    }
+    .hidden {
+      display: none;
+    }
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    body {
+      padding-bottom: 70px; /* ensures content doesn't get hidden behind bottom nav */
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  <nav style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+      <!-- Coin Display aligned next to Welcome -->
+      <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight: bold;">0</span>
+        <span id="coinGain" class="coin-gain hidden">+10</span>
+      </div>
+    </div>
+    <!-- Hamburger menu on far right -->
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+  <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>My Profile</span>
+    </a>
+    <a href="#" id="infoIcon">Game Rules</a>
+    <a href="/about.html">About</a>
+  </div>
+  <div id="rulesModal" class="modal hidden">
+    <div class="modal-content" style="position: relative;">
+      <span class="close" style="position:absolute; top:12px; right:16px; font-size:24px; color:#333; cursor:pointer;">&times;</span>
+      <h2>How to Play</h2>
+      <p>Flip two cards at a time. If they match a singer name with their photo, it stays revealed.</p>
+      <p>Every mismatch deducts 10 points. Get all matches with the highest score possible!</p>
+      <p>Your best score will be saved and submitted to the leaderboard.</p>
+    </div>
+  </div>
+  <h1>Match the Singer - Time Trial</h1>
+  <div id="score" style="display: none;">Score: 1000 | High Score: <span id="highScore">0</span></div>
+  <div id="timer" style="display: none; text-align: center; font-size: 1.1rem; color: #315f85; margin-bottom: 10px;">Study Time: <span id="timerDisplay">00:00</span></div>
+  <div id="message">Click Start to begin studying the cards!</div>
+  
+  <button id="startBtn">Start Study Phase</button>
+  <div class="grid" id="gameGrid" style="display: none;"></div>
+  <button id="restartBtn" onclick="location.reload()" style="display: none;">Play Again</button>
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, setDoc, doc, getDocs, getDoc, query, where, serverTimestamp, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { updateProfile } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+    let currentUser = null;
+    let userCity = null;
+
+    async function submitScore(finalScore) {
+      if (currentUser) {
+  await saveBestScore(currentUser, score);
+  const updatedBest = await fetchBestScore(currentUser.uid);
+  highScoreEl.textContent = updatedBest;
+}
+
+  let username = currentUser.displayName || "Anonymous";
+  const date = new Date().toISOString().slice(0, 10);
+
+  try {
+    const userRef = collection(db, "users");
+    const q = query(userRef, where("uid", "==", currentUser.uid));
+    const snapshot = await getDocs(q);
+    snapshot.forEach(doc => {
+  const data = doc.data();
+  if (data.username) username = data.username;
+  if (data.city) userCity = data.city;
+  console.log("Fetched username:", username);
+  console.log("Fetched city:", userCity);
+});
+
+  } catch (err) {
+    console.warn("Could not fetch user profile from Firestore:", err);
+  }
+
+  const now = new Date();
+  const localDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+  const docRef = doc(collection(db, "matchScores"));
+  await setDoc(docRef, {
+    userId: currentUser.uid,
+    username: username,
+    score: finalScore,
+    city: userCity,
+    email: currentUser.email, 
+    date: localDate,
+    gameType: "memory2"
+  });
+
+  console.log("✅ Score submitted:", { username, score: finalScore });
+}
+
+
+    const allSingers = [
+    { name: '21 Savage', image: '21savage.jpg' },
+    { name: '50 Cent', image: '50cent.jpg' },
+    { name: 'A Boogie', image: 'aboogie.jpg' },
+    { name: 'Adam Levine', image: 'adamlevine.jpg' },
+    { name: 'Addison', image: 'addisonrae.jpg' },
+    { name: 'Adele', image: 'adele.jpg' },
+    { name: 'Alec Benjamin', image: 'alecbenjamin1.jpg' },
+    { name: 'Anitta', image: 'anitta.jpg' },
+    { name: 'Ariana Grande', image: 'arianagrande.jpg' },
+    { name: 'A$AP Rocky', image: 'asaprocky.jpg' },
+    { name: 'Ava Max', image: 'avamax.jpg' },
+    { name: 'Baby Keem', image: 'babykeem.jpg' },
+    { name: 'Bad Bunny', image: 'badbunny.jpg' },
+    { name: 'beabadoobee', image: 'beabadoobee.png' },
+    { name: 'Becky G', image: 'beckyg.jpg' },
+    { name: 'Bella Poarch', image: 'bellapoarch.jpg' },
+    { name: 'Benson Boone', image: 'bensonboone.jpg' },
+    { name: 'Beyoncé', image: 'beyonce.jpg' },
+    { name: 'Billie Eilish', image: 'billieeilish.jpg' },
+    { name: 'Bruno Mars', image: 'brunomars.jpg' },
+    { name: 'Drake', image: 'drake.jpg' },
+    { name: 'Dolly Parton', image: 'dollyparton.jpg' },
+    { name: 'Ed Sheeran', image: 'EdSheeran.jpg' },
+    { name: 'Elvis Presley', image: 'elvispresley.jpg' },
+    { name: 'Harry Styles', image: 'harrystyles.jpg' },
+    { name: 'J. Cole', image: 'jcole.jpg' },
+    { name: 'Jennie', image: 'jennie.jpg' },
+    { name: 'Joe Jonas', image: 'joejonas.jpg' },
+    { name: 'Lady Gaga', image: 'ladygaga.jpg' },
+    { name: 'Lana Del Rey', image: 'lanadelrey.jpg' },
+    { name: 'Laufey', image: 'laufey.jpg' },
+    { name: 'Madison Beer', image: 'madisonbeer.jpg' },
+    { name: 'Miley Cyrus', image: 'mileycyrus.jpg' },
+    { name: 'Mitski', image: 'mitski.jpg' },
+    { name: 'Morgan Wallen', image: 'morganwallen.jpg' },
+    { name: 'Nicki Minaj', image: 'nickiminaj.jpg' },
+    { name: 'Noah Kahan', image: 'noahkahan.jpg' },
+    { name: 'Olivia Rodrigo', image: 'orodrigo.jpg' },
+    { name: 'Rosé', image: 'rose.jpg' },
+    { name: 'Selena Gomez', image: 'selenagomez.jpg' },
+    { name: 'Snoop Dogg', image: 'snoopdogg.jpg' },
+    { name: 'Tyla', image: 'tyla.jpg' },
+    { name: 'The Weeknd', image: 'weeknd.jpg' },
+    { name: 'Whitney Houston', image: 'whitneyhouston.png' },
+    { name: 'Usher', image: 'usher.jpg' },
+    { name: 'ZAYN', image: 'zayn.png' },
+    { name: 'Zendaya', image: 'zendaya.jpg' }
+    ];
+
+    let score = 1000;
+    if (auth.currentUser) {
+  const best = await fetchBestScore(auth.currentUser.uid);
+  highScoreEl.textContent = best;
+}
+    let revealed = [];
+    let lock = false;
+    let matchesFound = 0;
+    const highScoreEl = document.getElementById('highScore');
+    const grid = document.getElementById('gameGrid');
+    const scoreEl = document.getElementById('score');
+    const messageEl = document.getElementById('message');
+    const restartBtn = document.getElementById('restartBtn');
+    const uid = currentUser?.uid || "guest";
+const username = currentUser?.displayName || "Anonymous";
+
+    // Game state variables
+    let studyPhase = false;
+    let gameStarted = false;
+    let studyStartTime = null;
+    let studyTimer = null;
+    let totalStudyTime = 0;
+    
+    // UI Elements
+    const startBtn = document.getElementById('startBtn');
+    const timerEl = document.getElementById('timer');
+    const timerDisplayEl = document.getElementById('timerDisplay');
+    
+    // Initialize game cards
+    const selected = allSingers.sort(() => 0.5 - Math.random()).slice(0, 12);
+    let cards = [];
+    selected.forEach(s => {
+      cards.push({ type: 'name', value: s.name, matchId: s.name });
+      cards.push({ type: 'image', value: s.image, matchId: s.name });
+    });
+    cards = cards.sort(() => 0.5 - Math.random());
+
+    // Create cards but don't show them yet
+    cards.forEach(data => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.type = data.type;
+      card.dataset.value = data.value;
+      card.dataset.matchId = data.matchId;
+      card.addEventListener('click', () => {
+        if (!gameStarted || lock || revealed.includes(card) || card.classList.contains('match') || revealed.length === 2) return;
+        revealCard(card);
+        revealed.push(card);
+        if (revealed.length === 2) {
+          lock = true;
+          setTimeout(() => handleCardMatch(), 500);
+        }
+      });
+      grid.appendChild(card);
+    });
+    
+    // Timer Functions
+    function startStudyTimer() {
+      studyStartTime = Date.now();
+      timerEl.style.display = 'block';
+      studyTimer = setInterval(updateTimer, 1000);
+    }
+    
+    function stopStudyTimer() {
+      if (studyTimer) {
+        clearInterval(studyTimer);
+        studyTimer = null;
+      }
+      if (studyStartTime) {
+        totalStudyTime = Math.floor((Date.now() - studyStartTime) / 1000);
+        studyStartTime = null;
+      }
+    }
+    
+    function updateTimer() {
+      if (studyStartTime) {
+        const elapsed = Math.floor((Date.now() - studyStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        timerDisplayEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+    }
+    
+    // Study Phase Functions
+    function startStudyPhase() {
+      studyPhase = true;
+      startBtn.textContent = 'Start Matching Game';
+      messageEl.textContent = 'Study the cards! Click Start again to begin matching.';
+      messageEl.style.color = '#315f85';
+      
+      // Start the study timer
+      startStudyTimer();
+      
+      // Show all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        const type = card.dataset.type;
+        const value = card.dataset.value;
+        
+        if (type === 'image') {
+          const img = document.createElement('img');
+          img.src = `images/${value}`;
+          img.classList.add('singer-img');
+          card.appendChild(img);
+        } else {
+          const nameDiv = document.createElement('div');
+          nameDiv.classList.add('singer-name');
+          nameDiv.textContent = value;
+          card.appendChild(nameDiv);
+        }
+        card.style.fontSize = '14px';
+      });
+      
+      // Show game grid
+      grid.style.display = 'grid';
+    }
+    
+    function startMatchingGame() {
+      gameStarted = true;
+      studyPhase = false;
+      startBtn.disabled = true;
+      startBtn.textContent = 'Game Started!';
+      
+      // Stop the study timer and show total study time
+      stopStudyTimer();
+      const minutes = Math.floor(totalStudyTime / 60);
+      const seconds = totalStudyTime % 60;
+      timerDisplayEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      messageEl.textContent = `Study time: ${minutes}:${seconds.toString().padStart(2, '0')} - Now match the singers! Click cards to reveal them.`;
+      messageEl.style.color = '#315f85';
+      
+      // Hide all cards
+      const allCards = document.querySelectorAll('.card');
+      allCards.forEach(card => {
+        card.innerHTML = '';
+        card.style.fontSize = '0';
+      });
+      
+      // Show score
+      scoreEl.style.display = 'block';
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', () => {
+      if (!studyPhase) {
+        startStudyPhase();
+      } else {
+        startMatchingGame();
+      }
+    });
+
+    function handleCardMatch() {
+      const [first, second] = revealed;
+      const isMatch = first.dataset.matchId === second.dataset.matchId && first.dataset.type !== second.dataset.type;
+      if (isMatch) {
+        first.classList.add('match');
+        second.classList.add('match');
+        matchesFound++;
+        revealed = [];
+        lock = false;
+        if (matchesFound === selected.length) {
+          const minutes = Math.floor(totalStudyTime / 60);
+          const seconds = totalStudyTime % 60;
+          messageEl.textContent = `🎉 You won! Study time: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+          messageEl.style.color = '#4caf50'; 
+          restartBtn.style.display = 'block';
+          submitScore(score);
+          awardCoinsIfEligible(score);
+          if (currentUser) {
+            saveBestScore(currentUser, score);
+            fetchBestScore(currentUser.uid).then(updatedBest => {
+              highScoreEl.textContent = updatedBest;
+            });
+          }
+        }
+      } else {
+        score -= 10;
+        updateScore();
+        first.classList.add('mismatch');
+        second.classList.add('mismatch');
+        setTimeout(() => {
+          hideCard(first);
+          hideCard(second);
+          revealed = [];
+          lock = false;
+        }, 1200);
+      }
+    }
+
+    function revealCard(card) {
+      card.classList.add('revealed');
+      if (card.dataset.type === 'name') {
+        const nameDiv = document.createElement('div');
+        nameDiv.classList.add('singer-name');
+        // Split the name into words and wrap each in a span
+        const words = card.dataset.value.split(' ');
+        words.forEach((word, index) => {
+          const span = document.createElement('span');
+          span.textContent = word;
+          // Add a line break after each word on mobile
+          if (index < words.length - 1) {
+            span.style.display = 'block';
+          }
+          nameDiv.appendChild(span);
+        });
+        card.innerHTML = '';
+        card.appendChild(nameDiv);
+      } else {
+        const img = document.createElement('img');
+        img.src = `images/${card.dataset.value}`;
+        img.alt = card.dataset.matchId;
+        img.classList.add('singer-img');
+        card.innerHTML = '';
+        card.appendChild(img);
+      }
+    }
+
+    function hideCard(card) {
+      card.classList.remove('revealed', 'mismatch');
+      card.innerHTML = '';
+      card.textContent = '';
+    }
+
+    function updateScore() {
+      scoreEl.innerHTML = `Score: ${score} | High Score: ${highScoreEl.textContent}`;
+    }
+    const welcomeEl = document.getElementById('welcomeMessage');
+    onAuthStateChanged(auth, async user => {
+  currentUser = user;
+
+  if (user) {
+    const best = await fetchBestScore(currentUser.uid);
+    highScoreEl.textContent = best;
+
+    console.log("✅ Logged in as:", user.uid);
+    let displayName = currentUser.displayName || "Anonymous";
+    let coinCount = 0;
+
+    const userRef = collection(db, "users");
+    const q = query(userRef, where("uid", "==", currentUser.uid));
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.username) displayName = data.username;
+      if (data.coins) coinCount = data.coins;
+    });
+
+    welcomeEl.textContent = `Welcome, ${displayName}`;
+    dropdownMenu.innerHTML = `
+      <a href="/profile.html">Edit Profile</a>
+      <a href="#" id="logoutBtn">Log Out</a>
+    `;
+
+    // ✅ Update the coin count display
+    const coinDisplayEl = document.getElementById("coinCount");
+    if (coinDisplayEl) {
+      coinDisplayEl.textContent = coinCount;
+    }
+
+    // Attach logout listener after DOM updates
+    setTimeout(() => {
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          try {
+            await signOut(auth);
+            console.log("✅ User logged out");
+            window.location.reload();
+          } catch (err) {
+            console.error("Logout failed:", err);
+          }
+        });
+      } else {
+        console.warn("⚠️ logoutBtn not found in DOM");
+      }
+    }, 0);
+
+  } else {
+    console.log("🚫 User not logged in");
+    welcomeEl.textContent = "Welcome, Anonymous";
+    dropdownMenu.innerHTML = `
+      <a href="/signup.html">Create Profile</a>
+      <a href="/login.html">Log In</a>
+    `;
+
+    // Set coin display to 0 for guests
+    const coinDisplayEl = document.getElementById("coinCount");
+    if (coinDisplayEl) {
+      coinDisplayEl.textContent = "0";
+    }
+  }
+});
+
+
+const infoIcon = document.getElementById('infoIcon');
+const rulesModal = document.getElementById('rulesModal');
+
+infoIcon.addEventListener('click', (e) => {
+  e.preventDefault();
+  rulesModal.classList.remove('hidden');
+});
+
+const closeBtn = rulesModal.querySelector('.close');
+if (closeBtn) {
+  closeBtn.addEventListener('click', () => {
+    rulesModal.classList.add('hidden');
+  });
+}
+
+window.addEventListener('click', (e) => {
+  if (e.target === rulesModal) {
+    rulesModal.classList.add('hidden');
+  }
+});
+
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+const infoMobile = document.getElementById("infoIconMobile");
+
+if (hamburger) {
+  hamburger.addEventListener("click", () => {
+    mobileMenu.classList.toggle("show");
+  });
+}
+
+if (infoMobile) {
+  infoMobile.addEventListener("click", (e) => {
+    e.preventDefault();
+    mobileMenu.classList.remove("show");
+    rulesModal.classList.remove("hidden");
+  });
+}
+window.addEventListener("click", (e) => {
+  const isClickInsideMenu = mobileMenu.contains(e.target);
+  const isClickOnHamburger = hamburger.contains(e.target);
+
+  if (!isClickInsideMenu && !isClickOnHamburger) {
+    mobileMenu.classList.remove("show");
+  }
+});
+const welcomeMessage = document.getElementById("welcomeMessage");
+const dropdownMenu = document.getElementById("dropdownMenu");
+
+welcomeMessage.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdownMenu.classList.toggle("show");
+});
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (!dropdownMenu.contains(e.target) && e.target !== welcomeMessage) {
+    dropdownMenu.classList.remove("show");
+  }
+});
+async function saveBestScore(currentUser, newScore) {
+  const bestRef = doc(db, "matchBests", currentUser.uid);
+  const snap = await getDoc(bestRef);
+  const currentBest = snap.exists() ? snap.data().bestScore || 0 : 0;
+
+  if (newScore > currentBest) {
+    await setDoc(bestRef, {
+      uid: currentUser.uid,
+      username: currentUser.displayName || "Anonymous",
+      bestScore: newScore,
+      timestamp: serverTimestamp()
+    });
+    console.log("✅ Best score updated to:", newScore);
+  } else {
+    console.log("ℹ️ Not a new high score:", currentBest);
+  }
+}
+
+async function fetchBestScore(uid) {
+  const bestRef = doc(db, "matchBests", uid);
+  const snap = await getDoc(bestRef);
+  return snap.exists() ? snap.data().bestScore : 0;
+}
+
+async function updateBestScoreToFirestore(score) {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const bestRef = doc(db, "matchBests", user.uid);
+  const bestSnap = await getDoc(bestRef);
+  const currentBest = bestSnap.exists() ? bestSnap.data().bestScore : 0;
+
+  if (score > currentBest) {
+    await setDoc(bestRef, {
+      bestScore: score,
+      uid: user.uid,
+      username: user.displayName || "Anonymous",
+      timestamp: serverTimestamp()
+    });
+    console.log("✅ Best score updated to Firestore:", score);
+  } else {
+    console.log("⛔️ Not a new personal best.");
+  }
+}
+
+async function awardCoinsIfEligible(score) {
+  if (!currentUser || score < 800) return;
+
+  let coinsToAward = 0;
+  if (score >= 900) {
+    coinsToAward = 20;
+  } else if (score >= 800) {
+    coinsToAward = 10;
+  }
+
+  const userDocRef = doc(db, "users", currentUser.uid);
+  try {
+    // Check for double coins
+    const userSnap = await getDoc(userDocRef);
+    let newTotal = 0;
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      if (data.doubleCoinsUntil && Date.now() < data.doubleCoinsUntil) {
+        coinsToAward *= 2;
+      }
+      newTotal = (data.coins || 0) + coinsToAward;
+    }
+    await updateDoc(userDocRef, {
+      coins: increment(coinsToAward)
+    });
+    console.log(`🎉 ${coinsToAward} coins awarded!`);
+    animateCoinGain(coinsToAward);
+    // Immediately update coin display
+    const coinDisplayEl = document.getElementById("coinCount");
+    if (coinDisplayEl) coinDisplayEl.textContent = newTotal;
+  } catch (error) {
+    console.error("Error awarding coins:", error);
+  }
+}
+
+function animateCoinGain(amount = 10) {
+  const coinGain = document.getElementById("coinGain");
+  if (!coinGain) return;
+
+  coinGain.textContent = `+${amount}`;
+  coinGain.classList.remove("hidden");
+  coinGain.classList.add("animate");
+
+  setTimeout(() => {
+    coinGain.classList.remove("animate");
+    coinGain.classList.add("hidden");
+  }, 1000);
+}
+
+
+  </script>
+</body>
+</html>

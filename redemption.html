@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reward Redemptions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 32px 24px;
+    }
+    h1 {
+      text-align: center;
+      color: #234d7d;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 16px;
+    }
+    th {
+      background: #e7f1f9;
+      color: #234d7d;
+      font-weight: 600;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    @media (max-width: 700px) {
+      .container { padding: 10px 2px; }
+      th, td { font-size: 14px; padding: 8px 4px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Reward Redemptions</h1>
+    <div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:18px; align-items:center; justify-content:space-between;">
+      <div>
+        <label for="filterEmail" style="font-weight:600; color:#234d7d;">Email:</label>
+        <input id="filterEmail" type="text" placeholder="Filter by email" style="padding:6px 10px; border-radius:8px; border:1px solid #ccc; margin-right:10px;">
+      </div>
+      <div>
+        <label for="filterPrize" style="font-weight:600; color:#234d7d;">Prize:</label>
+        <input id="filterPrize" type="text" placeholder="Filter by prize" style="padding:6px 10px; border-radius:8px; border:1px solid #ccc; margin-right:10px;">
+      </div>
+      <div>
+        <label for="filterDate" style="font-weight:600; color:#234d7d;">Date:</label>
+        <input id="filterDate" type="date" style="padding:6px 10px; border-radius:8px; border:1px solid #ccc;">
+      </div>
+    </div>
+    <table id="redemptionsTable">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Prize</th>
+          <th>Coins Used</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="redemptionsBody">
+        <tr><td colspan="5" style="text-align:center; color:#888;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, getDocs, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let allRedemptions = [];
+
+    async function fetchRedemptions() {
+      const redemptionsSnap = await getDocs(collection(db, "redemptions"));
+      const redemptions = [];
+      for (const docSnap of redemptionsSnap.docs) {
+        const data = docSnap.data();
+        let username = data.username || "";
+        // If username is missing, fetch from users collection
+        if (!username && data.uid) {
+          const userSnap = await getDoc(doc(db, "users", data.uid));
+          if (userSnap.exists()) {
+            username = userSnap.data().username || "";
+          }
+        }
+        // Format date
+        let dateStr = "—";
+        let timestampMs = 0;
+        let dateISO = "";
+        if (data.timestamp && data.timestamp.toDate) {
+          const d = data.timestamp.toDate();
+          dateStr = d.toLocaleString();
+          timestampMs = d.getTime();
+          dateISO = d.toISOString().slice(0, 10);
+        } else if (data.timestamp && data.timestamp.seconds) {
+          // Firestore Timestamp object
+          const d = new Date(data.timestamp.seconds * 1000);
+          dateStr = d.toLocaleString();
+          timestampMs = d.getTime();
+          dateISO = d.toISOString().slice(0, 10);
+        }
+        // Extract raffle type and entry count
+        let raffleType = "";
+        let entryCount = 1;
+        let prizeDisplay = data.reward || data.prize || "—";
+        
+        if (prizeDisplay.toLowerCase().includes("raffle")) {
+          // Determine raffle type
+          if (data.raffleType) {
+            raffleType = data.raffleType;
+          } else if (data.prize && data.prize.toLowerCase().includes("spotify")) {
+            raffleType = "Spotify Premium";
+          } else if (data.prize && data.prize.toLowerCase().includes("airpods")) {
+            raffleType = "AirPods Max";
+          }
+          
+          // Get entry count (default to 1 if not specified)
+          if (data.entryCount) {
+            entryCount = data.entryCount;
+          } else if (data.quantity) {
+            entryCount = data.quantity;
+          } else if (data.coins && data.coins > 0) {
+            // Estimate entry count based on coins spent (assuming 100 coins per entry)
+            entryCount = Math.floor(data.coins / 100) || 1;
+          }
+          
+          // Check if this is a past raffle entry (older than 30 days)
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+          const isPastRaffle = timestampMs < thirtyDaysAgo.getTime();
+          
+          // Format prize display with raffle type and entry count
+          const entryText = entryCount > 1 ? ` (${entryCount} entries)` : "";
+          const pastText = isPastRaffle ? "Past " : "";
+          
+          if (raffleType) {
+            prizeDisplay = `${pastText}Raffle Entry - ${raffleType}${entryText}`;
+          } else {
+            prizeDisplay = `${pastText}Raffle Entry${entryText}`;
+          }
+        }
+        
+        // Check for coins data in multiple possible field names
+        let coinsUsed = 0;
+        if (data.cost !== undefined && data.cost !== null) {
+          coinsUsed = data.cost;
+        } else if (data.coins !== undefined && data.coins !== null) {
+          coinsUsed = data.coins;
+        } else if (data.coinsUsed !== undefined && data.coinsUsed !== null) {
+          coinsUsed = data.coinsUsed;
+        } else if (data.price !== undefined && data.price !== null) {
+          coinsUsed = data.price;
+        } else if (data.amount !== undefined && data.amount !== null) {
+          coinsUsed = data.amount;
+        }
+        
+        redemptions.push({
+          email: data.email || "—",
+          username: username || "—",
+          prize: prizeDisplay,
+          coinsUsed: coinsUsed,
+          date: dateStr,
+          dateISO,
+          timestampMs
+        });
+      }
+      // Sort by timestamp descending
+      redemptions.sort((a, b) => b.timestampMs - a.timestampMs);
+      return redemptions;
+    }
+
+    function renderTable(redemptions) {
+      const body = document.getElementById("redemptionsBody");
+      if (!redemptions.length) {
+        body.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">No redemptions found.</td></tr>';
+        return;
+      }
+      body.innerHTML = redemptions.map(r => `
+        <tr>
+          <td>${r.email}</td>
+          <td>${r.username}</td>
+          <td>${r.prize}</td>
+          <td>${r.coinsUsed > 0 ? r.coinsUsed : "—"}</td>
+          <td>${r.date}</td>
+        </tr>
+      `).join("");
+    }
+
+    function applyFilters() {
+      const emailVal = document.getElementById("filterEmail").value.trim().toLowerCase();
+      const prizeVal = document.getElementById("filterPrize").value.trim().toLowerCase();
+      const dateVal = document.getElementById("filterDate").value;
+      let filtered = allRedemptions;
+      let sortField = null;
+      let sortAsc = false;
+
+      if (emailVal) {
+        filtered = filtered.filter(r => r.email.toLowerCase().includes(emailVal));
+        sortField = 'email';
+        sortAsc = true;
+      }
+      if (prizeVal) {
+        filtered = filtered.filter(r => r.prize.toLowerCase().includes(prizeVal));
+        sortField = 'prize';
+        sortAsc = true;
+      }
+      if (dateVal) {
+        filtered = filtered.filter(r => r.dateISO === dateVal);
+        sortField = 'timestampMs';
+        sortAsc = true; // earliest to latest
+      }
+      // If filtering by username (not a field, but can be added)
+      // We'll treat email filter as username if emailVal is empty and prizeVal is empty and user types in username
+      // But let's add a username filter for clarity
+      // (Add a username filter input if you want, or use email for now)
+
+      // If sorting is needed
+      if (sortField) {
+        filtered = filtered.slice(); // copy
+        filtered.sort((a, b) => {
+          if (sortField === 'timestampMs') {
+            return sortAsc ? a.timestampMs - b.timestampMs : b.timestampMs - a.timestampMs;
+          } else {
+            // Alphabetical
+            return sortAsc
+              ? (a[sortField] || '').localeCompare(b[sortField] || '')
+              : (b[sortField] || '').localeCompare(a[sortField] || '');
+          }
+        });
+      }
+      renderTable(filtered);
+    }
+
+    document.getElementById("filterEmail").addEventListener("input", applyFilters);
+    document.getElementById("filterPrize").addEventListener("input", applyFilters);
+    document.getElementById("filterDate").addEventListener("change", applyFilters);
+
+    (async function() {
+      document.getElementById("redemptionsBody").innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">Loading...</td></tr>';
+      allRedemptions = await fetchRedemptions();
+      renderTable(allRedemptions);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile | GuessTheSinger.com</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./signup.css" />
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: #f5f6fa;
+      padding: 0;
+      margin: 0;
+    }
+    .profile-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px 40px 30px 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    @media (max-width: 700px) {
+      .profile-container {
+        max-width: 95vw;
+        padding: 20px 8px;
+      }
+    }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    .avatar-grid {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .avatar-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      object-fit: cover;
+    }
+    .avatar-display {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .avatar-display img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+    .edit-icon {
+      cursor: pointer;
+      color: #28a7ae;
+    }
+    .status-section, .dashboard-section, .socials-section {
+      margin-top: 30px;
+    }
+    .status-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .status-tag {
+      background: #e6f9f9;
+      color: #28a7ae;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #28a7ae;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .btn:hover {
+      background: #23949b;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      flex-direction: column;
+    }
+    .modal.show {
+      display: flex !important;
+    }
+    .friend-finder-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      flex-direction: column;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-family: 'Fredoka', sans-serif;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+      color: #333;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'12'%20height%3D'8'%20viewBox%3D'0%200%2012%208'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M6%208L0%200h12L6%208z'%20fill%3D'%23666'%20/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px top 50%;
+      background-size: 12px 8px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      margin-bottom: 15px;
+    }
+    .input-group select:focus {
+      outline: none;
+      border-color: #28a7ae;
+      box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
+    }
+    nav {
+      background-color: #1e2b38;
+      padding: 20px 30px; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      height: 70px; 
+    }
+    .hamburger {
+      position: absolute;
+      right: 30px;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+    .edit-btn {
+      background: none;
+      border: none;
+      color: #28a7ae;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .edit-btn:hover {
+      text-decoration: underline;
+    }
+    .avatar-img.selected {
+      border-color: #ffcb05;
+      box-shadow: 0 0 8px rgba(255, 203, 5, 0.6);
+    }
+    .close {
+      position: absolute;
+      top: 12px;
+      right: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #aaa;
+    }
+    .close:hover {
+      color: #000;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+    }
+    #vibeSearch {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-family: 'Fredoka', sans-serif;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background-color: #f9f9f9;
+      color: #333;
+      margin-bottom: 15px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    #vibeSearch:focus {
+      outline: none;
+      border-color: #28a7ae;
+      box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
+    }
+    .popup {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4caf50;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .popup.show {
+      opacity: 1;
+    }
+    .popup.hidden {
+      display: none;
+    }
+    .hidden {
+      display: none !important;
+    }
+    nav,
+    .nav-links a,
+    .welcome-msg,
+    .mobile-menu a {
+      font-family: 'Fredoka', sans-serif;
+    }
+    .locked-avatar {
+      position: relative;
+      display: inline-block;
+    }
+    .avatar-img.locked {
+      filter: grayscale(100%) brightness(80%);
+      cursor: not-allowed;
+    }
+    .lock-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      color: white;
+      text-shadow: 0 0 6px rgba(0,0,0,0.6);
+      pointer-events: none;
+    }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background-color: #1e2b38;
+      position: absolute;
+      top: 110px;
+      right: 30px;
+      z-index: 2000;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      font-weight: bold;
+    }
+    .mobile-menu a {
+      color: white;
+      padding: 10px 0;
+      text-decoration: none;
+      text-align: right;
+    }
+    .mobile-menu a:hover {
+      color: #ffcb05;
+    }
+    .mobile-menu.show {
+      display: flex;
+    }
+    .stats-popup {
+      padding: 24px;
+      border-radius: 20px;
+      background: #1e2b38;
+      color: white;
+      text-align: left;
+      width: calc(100% - 40px); 
+      max-width: 440px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+      margin: 0 auto;
+      border: 2px solid #23394d; 
+    }
+    .stats-popup h2 {
+      font-size: 22px;
+      color: white;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .stat-card {
+      background: #2c3e50; 
+      border-radius: 14px;
+      padding: 16px 20px;
+      flex: 1 1 calc(50% - 12px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: inset 0 0 0 1px #3a556f; 
+    }
+    .stat-card .icon {
+      font-size: 20px;
+    }
+    .stat-card .info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .stat-card .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e2b38;
+      margin-bottom: 4px;
+      white-space: normal;
+      overflow: visible;
+      display: block;
+      text-align: center;
+    }
+    .stat-card .label {
+      font-size: 0.97rem;
+      color: #315f85;
+      font-weight: 500;
+      margin-top: 2px;
+      display: block;
+      text-align: center;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    body {
+      padding-bottom: 70px;
+    }
+    .status-section > div:first-child {
+      gap: 18px;
+      margin-bottom: 8px;
+    }
+    .status-section h4 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .edit-btn {
+      margin-left: 12px;
+      min-width: 70px;
+    }
+    .status-tags {
+      margin-bottom: 8px;
+    }
+    .modal-content.stats-popup {
+      border-radius: 24px;
+      background: #f7fbff;
+      box-shadow: 0 4px 24px rgba(30,47,90,0.10);
+      padding: 32px 24px 24px;
+      max-width: 480px;
+      color: #1e2b38;
+      min-width: 320px;
+    }
+    .stats-popup .close {
+      top:18px;right:18px;font-size:28px;
+    }
+    .stats-popup .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 20px;
+      margin-bottom: 18px;
+    }
+    .stats-popup .stat-card {
+      background: #eaf6ff;
+      border-radius: 16px;
+      padding: 22px 12px;
+      text-align: center;
+      color: #1e2b38;
+      font-weight: 600;
+      font-size: 1.05rem;
+      border: 2px solid #dde6f2;
+      box-sizing: border-box;
+      min-width: 140px;
+      max-width: 200px;
+      overflow: hidden;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+    .stats-popup .stat-card .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e2b38;
+      margin-bottom: 4px;
+      white-space: normal;
+      overflow: visible;
+      display: block;
+      text-align: center;
+    }
+    .stats-popup .stat-card .label {
+      font-size: 0.97rem;
+      color: #315f85;
+      font-weight: 500;
+      margin-top: 2px;
+      display: block;
+      text-align: center;
+    }
+    #topPercentBadge {
+      background:#ffcb05;
+      color:#1e2b38;
+      padding:2px 10px;
+      border-radius:12px;
+      font-weight:700;
+      font-size:1.05rem;
+      display:inline-block;
+    }
+    .stats-popup .stats-footer {
+      font-size:0.97rem;
+      color:#888;
+      text-align:center;
+      margin-top:10px;
+      font-weight: 500;
+    }
+    @media (max-width: 600px) {
+      .modal-content.stats-popup {
+        max-width: 99vw;
+        min-width: 0;
+        padding: 10px 2vw 18px 2vw;
+      }
+      .stats-popup .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px 0;
+      }
+      .stats-popup .stat-card {
+        min-width: 0;
+        max-width: 100vw;
+        font-size: 0.98rem;
+        padding: 14px 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  <!--
+<nav>
+  <div class="hamburger" id="hamburger">
+    <i class="fas fa-bars"></i>
+  </div>
+</nav>
+-->
+  
+  <div id="mobileMenu" class="mobile-menu hidden">
+    <a href="/index.html">Home</a>
+    <a href="/memory.html">Play Game</a>
+    <a href="/memory-leaderboard.html">Leaderboard</a>
+    <a href="/inbox.html">Messages</a>
+    <a href="/about.html">About</a>
+  </div>
+  
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="avatar-display">
+        <img src="images/avatars/popstarpenguin.jpg" id="currentAvatar" alt="Avatar" />
+        <div>
+          <div id="profileName" style="font-weight: 600; font-size: 18px;"></div>
+          <div style="font-size: 14px; color: gray;"><i class="fas fa-map-marker-alt"></i> <span id="profileCity"></span></div>
+        </div>
+      </div>
+      <div class="edit-icon" onclick="openEditPopup()">
+        <i class="fas fa-pen"></i>
+      </div>
+    </div>
+
+    <div class="status-section">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h4>Currently Vibing To...</h4>
+          <button class="edit-btn" onclick="openVibesEditor()">Edit</button>
+        </div>
+        <div class="status-tags" id="vibingTags">
+        </div>
+      </div>
+
+      <div id="vibesModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000088; justify-content:center; align-items:center;">
+        <div style="background:white; padding:20px; border-radius:12px; max-width:400px; width:90%; position:relative;">
+          <span class="close" onclick="closeVibesEditor()">&times;</span>
+          <h3 style="margin-bottom:12px;">Edit Favorite Artists</h3>
+          <input type="text" id="vibeSearch" placeholder="Add artist..." />
+          <div id="editableVibes" class="status-tags" style="margin-bottom:10px;"></div>
+          <button class="btn" onclick="saveVibes()">Save</button>
+        </div>
+      </div>
+      
+    <div class="dashboard-section">
+      <h4>Dashboard</h4>
+      <button class="btn" style="background: #ffcb05; color: #000;" onclick="showPersonalBests()">View  Bests</button>
+   
+      <div id="personalBestsModal" class="modal">
+        <div class="modal-content stats-popup">
+          <span class="close" onclick="closePersonalBestsModal()">&times;</span>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <div style="font-size:1.5rem;font-weight:700;color:#1e2b38;">Your Game Stats</div>
+            <img src="images/avatars/popstarpenguin.jpg" alt="Logo" style="width:48px;height:48px;">
+          </div>
+          <div style="font-size:1.1rem;font-weight:600;margin-bottom:20px;color:#1e2b38;">You're a <span id="topPercentBadge">Top 1%</span> player!</div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div style="font-size:2rem;">💰</div>
+              <div class="value" id="myCoinsValue">—</div>
+              <div class="label">Total Coins</div>
+            </div>
+            <div class="stat-card">
+              <div style="font-size:2rem;">🏆</div>
+              <div class="value" id="myScoreValue">—</div>
+              <div class="label">Highest Score</div>
+            </div>
+            <div class="stat-card">
+              <div style="font-size:2rem;">🎮</div>
+              <div class="value" id="myGamesPlayedValue">—</div>
+              <div class="label">Games Played</div>
+            </div>
+            <div class="stat-card">
+              <div style="font-size:2rem;">🌍</div>
+              <div class="value" id="myRankValue">—</div>
+              <div class="label">Global Rank</div>
+            </div>
+          </div>
+          <div class="stats-footer">Playing since <span id="statsDate"></span></div>
+        </div>
+      </div>
+      
+      
+      
+      </div>
+    <button class="btn" style="background: #e74c3c;" onclick="logout()">Log Out</button>
+  </div>
+
+  <div id="editPopup" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditPopup()">&times;</span>
+      <h3 style="margin-bottom: 10px;">Edit Profile</h3>
+      <div class="input-group">
+        <label for="editUsername">Nickname</label>
+        <input type="text" id="editUsername" placeholder="Enter nickname" />
+      </div>
+      <div class="input-group">
+        <label for="city">Select Your City</label>
+        <select id="city" required>
+          <option value="">--Choose a city--</option>
+          
+            <optgroup label="🇺🇸 United States">
+              <option>Atlanta</option>
+              <option>Austin</option>
+              <option>Boise</option>
+              <option>Boston</option>
+              <option>Charlotte</option>
+              <option>Chicago</option>
+              <option>Cincinnati</option>
+              <option>Dallas</option>
+              <option>Denver</option>
+              <option>Detroit</option>
+              <option>El Paso</option>
+              <option>Houston</option>
+              <option>Jacksonville</option>
+              <option>Kansas City</option>
+              <option>Las Vegas</option>
+              <option>Los Angeles</option>
+              <option>Miami</option>
+              <option>Minneapolis</option>
+              <option>Nashville</option>
+              <option>New Orleans</option>
+              <option>New York</option>
+              <option>Oklahoma City</option>
+              <option>Orlando</option>
+              <option>Philadelphia</option>
+              <option>Phoenix</option>
+              <option>Portland</option>
+              <option>Salt Lake City</option>
+              <option>San Diego</option>
+              <option>San Francisco</option>
+              <option>Seattle</option>
+              <option>Tampa</option>
+              <option>Washington, D.C.</option>
+            </optgroup>
+          
+            <optgroup label="🌍 Worldwide">
+              <option>Amsterdam</option>
+              <option>Auckland</option>
+              <option>Bangkok</option>
+              <option>Barcelona</option>
+              <option>Beijing</option>
+              <option>Berlin</option>
+              <option>Bogotá</option>
+              <option>Brussels</option>
+              <option>Buenos Aires</option>
+              <option>Cape Town</option>
+              <option>Copenhagen</option>
+              <option>Delhi</option>
+              <option>Dubai</option>
+              <option>Dublin</option>
+              <option>Frankfurt</option>
+              <option>Hanoi</option>
+              <option>Hong Kong</option>
+              <option>Istanbul</option>
+              <option>Jakarta</option>
+              <option>Johannesburg</option>
+              <option>Kyoto</option>
+              <option>Lima</option>
+              <option>Lisbon</option>
+              <option>London</option>
+              <option>Madrid</option>
+              <option>Manila</option>
+              <option>Melbourne</option>
+              <option>Mexico City</option>
+              <option>Milan</option>
+              <option>Montreal</option>
+              <option>Mumbai</option>
+              <option>Nairobi</option>
+              <option>Osaka</option>
+              <option>Paris</option>
+              <option>Prague</option>
+              <option>Rio de Janeiro</option>
+              <option>Rome</option>
+              <option>Santiago</option>
+              <option>São Paulo</option>
+              <option>Seoul</option>
+              <option>Shanghai</option>
+              <option>Singapore</option>
+              <option>Stockholm</option>
+              <option>Sydney</option>
+              <option>Tokyo</option>
+              <option>Toronto</option>
+              <option>Vancouver</option>
+              <option>Vienna</option>
+              <option>Warsaw</option>
+              <option>Zurich</option>
+            </optgroup>
+          </select>
+      <div class="input-group">
+        <label for="avatar">Select Your Avatar</label>
+        <div class="avatar-grid">
+          <img src="images/avatars/popstarpenguin.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/discodolphin.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/musicalmonkey.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/MusicalMatcha.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+        </div>
+        
+        <div class="avatar-grid">
+
+
+          <img src="images/avatars/DancingDumpling.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/souptimmy.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <img src="images/avatars/vincent.jpg" class="avatar-img" onclick="selectAvatar(this); previewAvatar(this)"
+          />
+          <div class="locked-avatar">
+            <img src="images/avatars/ShowerSloth.jpg" class="avatar-img locked" onclick="unlockAvatar(this)" data-avatar="images/avatars/ShowerSloth.jpg" />
+            <div class="lock-icon"><i class="fas fa-lock"></i></div>
+          </div>          
+          <div class="locked-avatar">
+            <img src="images/avatars/KaraokeKoala.jpg" class="avatar-img locked" />
+            <div class="lock-icon"><i class="fas fa-lock"></i></div>
+          </div>
+          </div>
+
+          <div class="avatar-grid">
+           
+            <div class="locked-avatar">
+              <img src="images/avatars/TalentShowTurtle.jpg" class="avatar-img locked" />
+              <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </div>
+            <div class="locked-avatar">
+              <img src="images/avatars/RisingStarfish.jpg" class="avatar-img locked" />
+              <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </div>
+            <div class="locked-avatar">
+              <img src="images/avatars/ChartToppingTiger.jpg" class="avatar-img locked" />
+              <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </div>
+      </div>
+      <button class="btn" onclick="saveProfileEdits()">Save</button>
+    </div>
+  </div>
+
+  <div id="savePopup" class="popup hidden">
+    <div class="popup-content">✅ Profile saved!</div>
+  </div>
+  <div id="avatarPreviewModal" class="modal" style="background: rgba(0,0,0,0.7);">
+    <div class="modal-content" style="background: none; box-shadow: none; padding: 0;">
+      <span class="close" onclick="closeAvatarPreview()">&times;</span>
+      <img id="previewAvatarImg" src="" alt="Avatar Preview" style="max-width: 200px; max-height: 200px; border-radius: 50%; border: 4px solid #fff; display: block; margin: auto;" />
+    </div>
+  </div>
+</div>
+</div>
+
+  <footer class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>        
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+        <i class="fas fa-gift"></i>
+        <span>Rewards</span>
+      </a>
+      
+  </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const firestore = getFirestore(app);
+  
+    let selectedArtists = [];
+    let selectedAvatar = "";
+    document.addEventListener("DOMContentLoaded", () => {
+  const profileName = document.getElementById("profileName");
+  const profileCity = document.getElementById("profileCity");
+  const currentAvatar = document.getElementById("currentAvatar");
+  const editUsername = document.getElementById("editUsername");
+  const editCity = document.getElementById("city");
+  const avatarImages = document.querySelectorAll(".avatar-img");
+
+  onAuthStateChanged(auth, async user => {
+  if (!user) return (window.location.href = "login.html");
+
+  const docSnap = await getDoc(doc(firestore, "users", user.uid));
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+
+    // Fix here: safely get selectedArtists as array
+    selectedArtists = Array.isArray(data.favoriteArtist)
+      ? data.favoriteArtist
+      : (data.favoriteArtist || "").split(",").map(a => a.trim()).filter(a => a.length > 0);
+
+    // Update profile UI
+    profileName.innerText = data.username || "";
+    profileCity.innerText = data.city || "";
+    currentAvatar.src = data.avatar || "";
+    editUsername.value = data.username || "";
+    editCity.value = data.city || "";
+    selectedAvatar = data.avatar || "";
+
+    // **Display the vibing tags here:**
+    document.getElementById("vibingTags").innerHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
+  }
+});
+
+  document.getElementById("vibeSearch").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const val = e.target.value.trim();
+      if (val && !selectedArtists.includes(val)) {
+        selectedArtists.push(val);
+        e.target.value = "";
+        openVibesEditor();
+      }
+    }
+  });
+
+  document.getElementById("friendSearchInput").addEventListener("input", async function () {
+    const query = this.value.toLowerCase().trim();
+    const resultsContainer = document.getElementById("friendResults");
+
+    if (query.length < 3) {
+      resultsContainer.innerHTML = "<p>Type at least 3 characters to search.</p>";
+      return;
+    }
+
+    resultsContainer.innerHTML = "Searching...";
+
+    const snapshot = await getDocs(collection(firestore, "users"));
+    const matches = [];
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const username = data.username?.toLowerCase() || "";
+const artists = Array.isArray(data.favoriteArtist)
+  ? data.favoriteArtist.join(",").toLowerCase()
+  : (data.favoriteArtist || "").toLowerCase();
+
+if ((username.includes(query) || artists.includes(query)) && doc.id !== auth.currentUser?.uid) {
+  matches.push(data);
+}
+
+    });
+
+
+    
+    const limitedMatches = matches.slice(0, 3);
+
+    resultsContainer.innerHTML = limitedMatches.length === 0
+  ? "<p>No matches found.</p>"
+  : limitedMatches.map(user => `
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:8px">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="${user.avatar || '/images/avatars/popstarpenguin.jpg'}" style="width:50px; height:50px; border-radius:50%;">
+        <div>
+          <strong>${user.username || "Anonymous"}</strong><br>
+          <small>${user.favoriteArtist || ""}</small>
+        </div>
+      </div>
+      <button class="btn" style="margin-top:8px" onclick="startConversation('${user.uid}', '${user.username || "Anonymous"}')">Message</button>
+    </div>
+  `).join("");
+  });
+});
+
+    window.openVibesEditor = () => {
+      const container = document.getElementById("editableVibes");
+      container.innerHTML = "";
+      selectedArtists.forEach((artist, index) => {
+        const div = document.createElement("div");
+        div.className = "status-tag";
+        div.innerHTML = `${artist} <span style='cursor:pointer;' onclick='removeArtist(${index})'>&times;</span>`;
+        container.appendChild(div);
+      });
+      document.getElementById("vibesModal").style.display = "flex";
+    };
+  
+    window.removeArtist = index => {
+      selectedArtists.splice(index, 1);
+      openVibesEditor();
+    };
+  
+    window.saveVibes = async () => {
+      const val = document.getElementById("vibeSearch").value.trim();
+      if (val && !selectedArtists.includes(val)) selectedArtists.push(val);
+      const tagHTML = selectedArtists.map(a => `<div class='status-tag'>${a}</div>`).join("");
+      document.getElementById("vibingTags").innerHTML = tagHTML;
+      document.getElementById("vibeSearch").value = "";
+      await setDoc(doc(firestore, "users", auth.currentUser.uid), {
+  favoriteArtist: selectedArtists
+}, { merge: true });
+      document.getElementById("vibesModal").style.display = "none";
+    };
+  
+    window.saveProfileEdits = async () => {
+      const user = auth.currentUser;
+      const username = document.getElementById("editUsername").value.trim();
+      const city = document.getElementById("city").value;
+      await setDoc(doc(firestore, "users", user.uid), {
+        uid: user.uid,
+  email: user.email,
+  username,
+  city,
+  avatar: selectedAvatar,
+  favoriteArtist: selectedArtists
+}, { merge: true });
+
+      await updateProfile(user, { displayName: username });
+      document.getElementById("profileName").innerText = username;
+      document.getElementById("profileCity").innerText = city;
+      document.getElementById("currentAvatar").src = selectedAvatar;
+      showSavePopup();
+    };
+  
+    window.showPersonalBests = async () => {
+  const uid = auth.currentUser.uid;
+  const bestSnap = await getDoc(doc(firestore, "matchBests", uid));
+  const userSnap = await getDoc(doc(firestore, "users", uid));
+  const user = auth.currentUser;
+
+  // Highest score
+  const myScore = bestSnap.exists() ? bestSnap.data().bestScore : 0;
+  // All scores for rank
+  const scores = (await getDocs(collection(firestore, "matchScores"))).docs
+    .map(d => d.data().score)
+    .filter(n => typeof n === 'number');
+  scores.sort((a, b) => b - a);
+  const rank = scores.indexOf(myScore) + 1;
+
+  // Total coins
+  const coins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
+
+  // Games played: sum from all relevant collections
+  const matchCount = (await getDocs(query(collection(firestore, "matchScores"), where("uid", "==", uid)))).size;
+  const spellingCount = (await getDocs(query(collection(firestore, "spellingScores"), where("uid", "==", uid)))).size;
+  const memoryCount = (await getDocs(query(collection(firestore, "memoryScores"), where("uid", "==", uid)))).size;
+  const gamesPlayed = matchCount + spellingCount + memoryCount;
+
+  // Account creation date
+  let createdDate = "—";
+  if (user && user.metadata && user.metadata.creationTime) {
+    const d = new Date(user.metadata.creationTime);
+    createdDate = d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  // Top % badge (optional: you can make this dynamic)
+  let topPercent = "Top 1%";
+  if (rank > 0 && scores.length > 0) {
+    const percent = Math.ceil((rank / scores.length) * 1000) / 10;
+    if (percent <= 1) topPercent = "Top 1%";
+    else if (percent <= 5) topPercent = `Top ${percent}%`;
+    else topPercent = `Top ${Math.round(percent)}%`;
+  }
+  document.getElementById("topPercentBadge").innerText = topPercent;
+
+  document.getElementById("myScoreValue").innerText = myScore;
+  document.getElementById("myRankValue").innerText = `#${rank}`;
+  document.getElementById("myCoinsValue").innerText = coins;
+  document.getElementById("myGamesPlayedValue").innerText = gamesPlayed;
+  document.getElementById("statsDate").innerText = createdDate;
+
+  const avatarImg = document.querySelector('#personalBestsModal img');
+  if (userSnap.exists() && avatarImg) {
+    avatarImg.src = userSnap.data().avatar || 'images/avatars/popstarpenguin.jpg';
+    avatarImg.alt = userSnap.data().username || 'User Avatar';
+  }
+
+  document.getElementById("personalBestsModal").classList.add("show");
+};
+
+  
+    window.openEditPopup = () => document.getElementById("editPopup").style.display = "flex";
+    window.closeEditPopup = () => document.getElementById("editPopup").style.display = "none";
+    window.closeVibesEditor = () => document.getElementById("vibesModal").style.display = "none";
+    window.closePersonalBestsModal = () => document.getElementById("personalBestsModal").classList.remove("show");
+  
+    window.selectAvatar = img => {
+      if (img.classList.contains("locked")) return alert("This avatar is locked! Earn it by leveling up 🎉");
+      selectedAvatar = img.src;
+      document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
+      img.classList.add("selected");
+    };
+  
+    window.previewAvatar = img => {
+      if (img.classList.contains("locked")) return;
+      document.getElementById("previewAvatarImg").src = img.src;
+      document.getElementById("avatarPreviewModal").classList.add("show");
+    };
+  
+    window.closeAvatarPreview = () => document.getElementById("avatarPreviewModal").classList.remove("show");
+  
+    window.logout = () => signOut(auth).then(() => window.location.href = "login.html").catch(err => alert("Logout failed."));
+  
+
+
+    function showSavePopup() {
+      const popup = document.getElementById("savePopup");
+      popup.classList.remove("hidden");
+      popup.classList.add("show");
+      setTimeout(() => popup.classList.replace("show", "hidden"), 3000);
+    }
+    const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
+const dropdownMenu = document.getElementById("dropdownMenu");
+
+hamburger.addEventListener("click", () => {
+  if (mobileMenu.classList.contains("show")) {
+  mobileMenu.classList.remove("show");
+  mobileMenu.classList.add("hidden");
+} else {
+  mobileMenu.classList.remove("hidden");
+  mobileMenu.classList.add("show");
+}
+});
+document.addEventListener("click", function (e) {
+  const mobileMenu = document.getElementById("mobileMenu");
+  const hamburger = document.getElementById("hamburger");
+
+  const clickedInsideMenu = mobileMenu.contains(e.target);
+  const clickedHamburger = hamburger.contains(e.target);
+
+  if (!clickedInsideMenu && !clickedHamburger) {
+    mobileMenu.classList.remove("show");
+  }
+});
+if (userData.favoriteArtist && Array.isArray(userData.favoriteArtist)) {
+  const favContainer = document.getElementById("favoriteArtists");
+  favContainer.innerHTML = userData.favoriteArtist.map(artist => `
+    <div class="status-tag">${artist}</div>
+  `).join('');
+} else if (userData.favoriteArtist && typeof userData.favoriteArtist === 'string') {
+  const favContainer = document.getElementById("favoriteArtists");
+  const artists = userData.favoriteArtist.split(",").map(a => a.trim()).filter(a => a.length > 0);
+  favContainer.innerHTML = artists.map(artist => `
+    <div class="status-tag">${artist}</div>
+  `).join('');
+}
+window.unlockAvatar = async (img) => {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const avatarPath = img.getAttribute('data-avatar');
+  const userRef = doc(firestore, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
+  let unlocked = userSnap.exists() ? (userSnap.data().unlockedAvatars || []) : [];
+
+  if (unlocked.includes(avatarPath)) {
+    alert("You already unlocked this avatar!");
+    return;
+  }
+
+  if (currentCoins < 10) {
+    alert("Not enough coins to unlock this avatar.");
+    return;
+  }
+
+  const confirmUnlock = confirm("Unlock this avatar for 10 coins?");
+  if (!confirmUnlock) return;
+
+  // Deduct coins and update unlocked list
+  unlocked.push(avatarPath);
+  await setDoc(userRef, {
+    coins: currentCoins - 10,
+    unlockedAvatars: unlocked
+  }, { merge: true });
+
+  // Update UI
+  img.classList.remove("locked");
+  img.removeAttribute("onclick");
+  img.addEventListener("click", () => {
+    selectAvatar(img);
+    previewAvatar(img);
+  });
+  img.nextElementSibling?.remove(); // remove lock icon
+
+  alert("🎉 Avatar unlocked!");
+};
+
+  </script>
+</body>
+</html>

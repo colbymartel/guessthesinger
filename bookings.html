@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Inquiries</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: #f5f6fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 32px 24px;
+    }
+    h1 {
+      text-align: center;
+      color: #234d7d;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #e7f1f9;
+      color: #234d7d;
+      font-weight: 600;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .message-cell {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .message-cell:hover {
+      white-space: normal;
+      overflow: visible;
+      position: relative;
+      background: #f8f9fa;
+      z-index: 10;
+    }
+    @media (max-width: 700px) {
+      .container { padding: 10px 2px; }
+      th, td { font-size: 12px; padding: 8px 4px; }
+      .message-cell { max-width: 100px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Booking Inquiries</h1>
+    <div style="display:flex; flex-wrap:wrap; gap:16px; margin-bottom:18px; align-items:center; justify-content:space-between;">
+      <div>
+        <label for="filterName" style="font-weight:600; color:#234d7d;">Name:</label>
+        <input id="filterName" type="text" placeholder="Filter by name" style="padding:6px 10px; border-radius:8px; border:1px solid #ccc; margin-right:10px;">
+      </div>
+      <div>
+        <label for="filterEmail" style="font-weight:600; color:#234d7d;">Email:</label>
+        <input id="filterEmail" type="text" placeholder="Filter by email" style="padding:6px 10px; border-radius:8px; border:1px solid #ccc; margin-right:10px;">
+      </div>
+      <div>
+        <label for="filterPackage" style="font-weight:600; color:#234d7d;">Package:</label>
+        <input id="filterPackage" type="text" placeholder="Filter by package" style="padding:6px 10px; border-radius:8px; border:1px solid #ccc; margin-right:10px;">
+      </div>
+      <div>
+        <label for="filterDate" style="font-weight:600; color:#234d7d;">Date:</label>
+        <input id="filterDate" type="date" style="padding:6px 10px; border-radius:8px; border:1px solid #ccc;">
+      </div>
+    </div>
+    <table id="bookingsTable">
+      <thead>
+        <tr>
+          <th>Contact Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Organization</th>
+          <th>Role/Title</th>
+          <th>Preferred Date</th>
+          <th>Package</th>
+          <th>Budget</th>
+          <th>Follow-up</th>
+          <th>Message</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="bookingsBody">
+        <tr><td colspan="11" style="text-align:center; color:#888;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let allBookings = [];
+
+    async function fetchBookings() {
+      try {
+        const bookingsSnap = await getDocs(collection(db, "bookings"));
+        const bookings = [];
+        for (const docSnap of bookingsSnap.docs) {
+          const data = docSnap.data();
+          
+          // Format date
+          let dateStr = "—";
+          let timestampMs = 0;
+          let dateISO = "";
+          if (data.timestamp && data.timestamp.toDate) {
+            const d = data.timestamp.toDate();
+            dateStr = d.toLocaleString();
+            timestampMs = d.getTime();
+            dateISO = d.toISOString().slice(0, 10);
+          } else if (data.timestamp && data.timestamp.seconds) {
+            // Firestore Timestamp object
+            const d = new Date(data.timestamp.seconds * 1000);
+            dateStr = d.toLocaleString();
+            timestampMs = d.getTime();
+            dateISO = d.toISOString().slice(0, 10);
+          }
+          
+          // Format preferred date
+          let preferredDateStr = "—";
+          if (data.preferredDate) {
+            const preferredDate = new Date(data.preferredDate);
+            preferredDateStr = preferredDate.toLocaleDateString();
+          }
+          
+          // Format follow-up methods
+          let followUpStr = "—";
+          if (data.followUpMethods && data.followUpMethods.length > 0) {
+            followUpStr = data.followUpMethods.join(", ");
+          }
+          
+          bookings.push({
+            contactName: data.contactName || "—",
+            email: data.email || "—",
+            phone: data.phone || "—",
+            organization: data.org || "—",
+            role: data.role || "—",
+            preferredDate: preferredDateStr,
+            package: data.package || "—",
+            budget: data.budget || "—",
+            followUpMethods: followUpStr,
+            message: data.message || "—",
+            date: dateStr,
+            dateISO,
+            timestampMs
+          });
+        }
+        // Sort by timestamp descending (newest first)
+        bookings.sort((a, b) => b.timestampMs - a.timestampMs);
+        return bookings;
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+        return [];
+      }
+    }
+
+    function renderTable(bookings) {
+      const body = document.getElementById("bookingsBody");
+      if (!bookings.length) {
+        body.innerHTML = '<tr><td colspan="11" style="text-align:center; color:#888;">No booking inquiries found.</td></tr>';
+        return;
+      }
+      body.innerHTML = bookings.map(b => `
+        <tr>
+          <td>${b.contactName}</td>
+          <td>${b.email}</td>
+          <td>${b.phone}</td>
+          <td>${b.organization}</td>
+          <td>${b.role}</td>
+          <td>${b.preferredDate}</td>
+          <td>${b.package}</td>
+          <td>${b.budget}</td>
+          <td>${b.followUpMethods}</td>
+          <td class="message-cell" title="${b.message}">${b.message}</td>
+          <td>${b.date}</td>
+        </tr>
+      `).join("");
+    }
+
+    function applyFilters() {
+      const nameVal = document.getElementById("filterName").value.trim().toLowerCase();
+      const emailVal = document.getElementById("filterEmail").value.trim().toLowerCase();
+      const packageVal = document.getElementById("filterPackage").value.trim().toLowerCase();
+      const dateVal = document.getElementById("filterDate").value;
+      let filtered = allBookings;
+      let sortField = null;
+      let sortAsc = false;
+
+      if (nameVal) {
+        filtered = filtered.filter(b => b.contactName.toLowerCase().includes(nameVal));
+        sortField = 'contactName';
+        sortAsc = true;
+      }
+      if (emailVal) {
+        filtered = filtered.filter(b => b.email.toLowerCase().includes(emailVal));
+        sortField = 'email';
+        sortAsc = true;
+      }
+      if (packageVal) {
+        filtered = filtered.filter(b => b.package.toLowerCase().includes(packageVal));
+        sortField = 'package';
+        sortAsc = true;
+      }
+      if (dateVal) {
+        filtered = filtered.filter(b => b.dateISO === dateVal);
+        sortField = 'timestampMs';
+        sortAsc = true;
+      }
+
+      // If sorting is needed
+      if (sortField) {
+        filtered = filtered.slice(); // copy
+        filtered.sort((a, b) => {
+          if (sortField === 'timestampMs') {
+            return sortAsc ? a.timestampMs - b.timestampMs : b.timestampMs - a.timestampMs;
+          } else {
+            // Alphabetical
+            return sortAsc
+              ? (a[sortField] || '').localeCompare(b[sortField] || '')
+              : (b[sortField] || '').localeCompare(a[sortField] || '');
+          }
+        });
+      }
+      renderTable(filtered);
+    }
+
+    // Add event listeners for filters
+    document.getElementById("filterName").addEventListener("input", applyFilters);
+    document.getElementById("filterEmail").addEventListener("input", applyFilters);
+    document.getElementById("filterPackage").addEventListener("input", applyFilters);
+    document.getElementById("filterDate").addEventListener("change", applyFilters);
+
+    // Initialize
+    (async function() {
+      document.getElementById("bookingsBody").innerHTML = '<tr><td colspan="7" style="text-align:center; color:#888;">Loading...</td></tr>';
+      allBookings = await fetchBookings();
+      renderTable(allBookings);
+    })();
+  </script>
+</body>
+</html> 

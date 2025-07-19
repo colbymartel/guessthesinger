@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Guess The Singer: Test your music knowledge with daily challenges." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guessing Games</title>
+  <link rel="icon" href="/favicongg.ico" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: #ffffff;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #315f85;
+      padding: 15px 30px;
+      color: white;
+    }
+
+    .nav-links a {
+      color: white;
+      margin-left: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-header h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .section-header .underline {
+      width: 60px;
+      height: 4px;
+      background: #315f85;
+      margin: 0 auto 15px auto;
+      border-radius: 2px;
+    }
+
+    .section-header p {
+      color: #666;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section-divider {
+      text-align: center;
+      margin: 40px 0 20px 0;
+    }
+
+    .section-divider h2 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .section-divider .underline {
+      width: 60px;
+      height: 3px;
+      background: #ff6b6b;
+      margin: 0 auto;
+      border-radius: 2px;
+    }
+
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    @media (min-width: 768px) {
+      .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .games-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Game Card */
+    .game-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .game-card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .game-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 24px;
+    }
+
+    .game-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .game-category {
+      font-size: 0.875rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .game-description {
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #315f85;
+      color: white;
+      text-align: center;
+      padding: 15px 10px;
+      font-size: 1rem;
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .footer a:hover {
+      color: #ff914d;
+    }
+
+    /* Search and Navigation */
+    .search-suggestions {
+      position: absolute;
+      top: 45px;
+      left: 0;
+      width: 220px;
+      background: white;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .search-input-container {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-suggestion {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.2s ease;
+    }
+
+    .search-suggestion:last-child {
+      border-bottom: none;
+    }
+
+    .search-suggestion:hover {
+      background-color: #f0f4fa;
+    }
+
+    .search-suggestion-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      margin-right: 12px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .search-suggestion-content {
+      flex: 1;
+    }
+
+    .search-suggestion-title {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: #333;
+      margin-bottom: 2px;
+    }
+
+    .search-suggestion-category {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .search-bar {
+      padding: 8px 16px 8px 36px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 0.95rem;
+      background-color: white;
+      color: #315f85;
+      width: 100%;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: 12px center;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .search-bar::placeholder {
+      color: #888;
+    }
+
+
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px 16px;
+      }
+
+      .section-header h1 {
+        font-size: 2rem;
+      }
+
+      .games-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .game-card {
+        padding: 20px;
+      }
+    }
+
+  .category-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .category-header p {
+    font-size: 0.95rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: center;
+  }
+
+  .stats {
+    font-size: 1rem;
+  }
+
+  .footer {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .footer a {
+    font-size: 1rem;
+    margin: 0 5px;
+  }
+
+      /* Mobile Navigation */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      margin-left: auto;
+    }
+
+    .bar {
+      height: 3px;
+      width: 25px;
+      background-color: white;
+      margin: 4px 0;
+      transition: 0.4s;
+    }
+
+
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+        padding: 15px 20px;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+          .nav-links {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: #f5f5f5;
+      padding: 10px 0;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .search-container {
+      position: relative;
+      width: 320px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-direction: row;
+    }
+
+    .search-input-container {
+      position: relative;
+      flex: 1;
+    }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links .search-bar {
+        margin: 8px 20px;
+      }
+
+      .search-bar {
+        width: calc(100% - 40px);
+      }
+
+      .search-suggestions {
+        position: static;
+        width: calc(100% - 40px);
+        margin: 0 auto;
+      }
+    }
+.header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.header .logo img {
+  width: 200px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.category-header {
+  text-align: center;
+  padding: 30px 20px 10px 20px;
+}
+.category-header h2 {
+  font-size: 1.6rem;
+  color: #1e2b38;
+}
+.category-header p {
+  color: #555;
+  font-size: 14px;
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+.play-now-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  background-color: #ffcb05;
+  color: #1e2b38;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.play-now-btn:hover {
+  background-color: #e6b800;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.games-section {
+  padding: 30px 20px;
+  color: white;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.games-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  color:  #234d7d;
+
+}
+
+.games-header h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.games-header a {
+  color: #a78bfa;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.games-header a:hover {
+  text-decoration: underline;
+}
+
+.games-gallery {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.game-box {
+  position: relative; /* Add this */
+  flex: 0 0 auto;
+  width: 180px;
+  height: 250px;
+  background-color: #1e1e1e;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+
+.game-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-box:hover {
+  transform: scale(1.04);
+}
+.play-now-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffcb05;
+  color: #1e2b38;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  z-index: 10;
+}
+
+.play-now-overlay:hover {
+  background-color: #e6b800;
+  transform: translateX(-50%) translateY(-1px);
+}
+body {
+  font-family: 'Fredoka', sans-serif;
+  background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+  padding-bottom: 90px;
+  margin: 0;
+}
+
+nav {
+  background-color: #1e2b38;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.welcome-msg {
+  font-weight: bold;
+  color: #ffcb05;
+  cursor: pointer;
+}
+.welcome-msg:hover {
+  text-decoration: underline;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  margin-right: 30px;
+  background-color: #1e2b38;
+  padding: 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 10;
+}
+.dropdown.show {
+  display: flex;
+}
+.dropdown a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-weight: bold;
+}
+.dropdown a:hover {
+  background-color: #ffcb05;
+  color: #1e2b38;
+}
+
+.coin-emoji {
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+  border-radius: 50%;
+  box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
+  position: relative;
+  display: inline-block;
+}
+
+#coinDisplay {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+#coinCount {
+  font-weight: bold;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #1e2b38;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
+
+.bottom-nav .nav-item {
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+}
+.bottom-nav .nav-item i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+.bottom-nav .nav-item:hover {
+  color: #ffcb05;
+}
+
+
+
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <a href="/index.html">
+            <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+          </a>
+        </div>
+      </header>
+      
+      <nav>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div class="welcome-nav" style="position: relative;">
+            <div id="welcomeMessage" class="welcome-msg">Welcome</div>
+            <div id="dropdownMenu" class="dropdown"></div>
+          </div>
+      
+          <div id="coinDisplay">
+            <div class="coin-emoji"></div>
+            <span id="coinCount">0</span>
+          </div>
+        </div>
+      
+      
+    <!-- Collapsible nav menu -->
+    <div class="nav-links" id="mobileMenu">
+       
+      <!-- Search within dropdown -->
+      <div class="search-container">
+        <div class="search-input-container">
+          <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
+          <div class="search-suggestions" id="suggestions"></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="main-content">
+    <div class="section-header">
+      <h1>New Games</h1>
+      <div class="underline"></div>
+    </div>
+
+    <div class="games-grid">
+      <a href="/memory.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/brain.jpg" alt="Match the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Match the Singer</div>
+            <div class="game-category">Memory Game</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Test your memory to match singers' faces with their names! Challenge yourself with this engaging memory game featuring your favorite music artists.
+        </div>
+      </a>
+
+      <a href="/spelling.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/bee.jpg" alt="Spell the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Spell the Singer</div>
+            <div class="game-category">Spelling Game</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Spell singers' names as letters are revealed! Can you guess the artist before all the letters appear? Test your spelling skills and music knowledge.
+        </div>
+      </a>
+
+      <a href="/bangerbattle.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/battle.jpg" alt="Banger Battle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Banger Battle</div>
+            <div class="game-category">Music Quiz</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Guess which song has more Spotify streams! Battle it out with popular hits and discover which tracks are the biggest bangers.
+        </div>
+      </a>
+    </div>
+
+    <div class="section-divider">
+      <h2>Community</h2>
+      <div class="underline"></div>
+    </div>
+
+    <div class="games-grid">
+      <a href="/rushmore.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/rushmore.jpg" alt="Mount Rushmore of Music" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Mount Rushmore of Music</div>
+            <div class="game-category">Community Vote</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Who are the 4 most iconic music artists of all time? Cast your vote and help determine the ultimate Mount Rushmore of Music legends.
+        </div>
+      </a>
+
+      <div class="game-card" onclick="challengeColby()" style="cursor: pointer;">
+        <div class="game-card-header">
+          <div class="game-icon">
+            <img src="/images/avatars/popstarpenguin.jpg" alt="Challenge Colby" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+          </div>
+          <div>
+            <div class="game-title">Challenge Colby</div>
+            <div class="game-category">Chat & Battle</div>
+          </div>
+        </div>
+        <div class="game-description">
+          Chat with Colby and challenge him to music battles! Test your knowledge against the creator and see who knows more about music.
+        </div>
+      </div>
+    </div>
+  </main>
+<footer class="bottom-nav">
+  <a href="/index.html" class="nav-item">
+    <i class="fas fa-user"></i>
+    <span>Profile</span>
+  </a>
+  <a href="/games.html" class="nav-item highlight">
+    <img src="/images/gamesicon.png" alt="Games Icon" style="width: 24px; height: 24px;">
+    <span>Games</span>
+  </a>
+  <a href="/memory-leaderboard.html" class="nav-item">
+    <i class="fas fa-trophy"></i>
+    <span>Leaderboards</span>
+  </a>
+  <a href="/rewards.html" class="nav-item highlight">
+    <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 24px; height: 24px;">
+    <span>Rewards</span>
+  </a>
+  </footer>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+  
+    const welcomeEl = document.getElementById("welcomeMessage");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+  
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        let username = "User";
+        let coins = 0;
+  
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+  
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.username) username = data.username;
+            if (data.coins !== undefined) coins = data.coins;
+          });
+  
+          welcomeEl.textContent = `Welcome, ${username}`;
+          const coinDisplayEl = document.getElementById("coinCount");
+          if (coinDisplayEl) coinDisplayEl.textContent = coins;
+  
+          dropdownMenu.innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="#" id="logoutBtn">Log Out</a>
+          `;
+  
+          setTimeout(() => {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                try {
+                  await signOut(auth);
+                  location.reload();
+                } catch (err) {
+                  console.error("Logout failed:", err);
+                }
+              });
+            }
+          }, 0);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+  
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+        const coinDisplayEl = document.getElementById("coinCount");
+        if (coinDisplayEl) coinDisplayEl.textContent = "0";
+      }
+    });
+
+
+
+    // Game data for search functionality
+    const gamesData = [
+      {
+        title: "Match the Singer",
+        category: "Memory Game",
+        url: "/memory.html",
+        icon: "🧠",
+        description: "Test your memory to match singers' faces with their names!"
+      },
+      {
+        title: "Spell the Singer",
+        category: "Spelling Game",
+        url: "/spelling.html",
+        icon: "🐝",
+        description: "Spell singers' names as letters are revealed!"
+      },
+      {
+        title: "Banger Battle",
+        category: "Music Quiz",
+        url: "/bangerbattle.html",
+        icon: "🔥",
+        description: "Guess which song has more Spotify streams!"
+      },
+      {
+        title: "Mount Rushmore of Music",
+        category: "Community Vote",
+        url: "/rushmore.html",
+        icon: "🏔️",
+        description: "Vote for the most iconic music artists!"
+      },
+      {
+        title: "Challenge Colby",
+        category: "Chat & Battle",
+        url: "#",
+        icon: "💬",
+        description: "Chat with Colby and challenge him to music battles!"
+      }
+    ];
+
+    // Search functionality
+    window.showSuggestions = function(query) {
+      const suggestionsContainer = document.getElementById('suggestions');
+      
+      if (!query || query.trim() === '') {
+        suggestionsContainer.style.display = 'none';
+        return;
+      }
+
+      const searchTerm = query.toLowerCase().trim();
+      const matches = gamesData.filter(game => 
+        game.title.toLowerCase().includes(searchTerm) ||
+        game.category.toLowerCase().includes(searchTerm) ||
+        game.description.toLowerCase().includes(searchTerm)
+      ).slice(0, 3); // Limit to 3 results
+
+      if (matches.length === 0) {
+        suggestionsContainer.style.display = 'none';
+        return;
+      }
+
+      suggestionsContainer.innerHTML = '';
+      matches.forEach(game => {
+        const suggestion = document.createElement('div');
+        suggestion.className = 'search-suggestion';
+        suggestion.onclick = () => {
+          if (game.title === "Challenge Colby") {
+            challengeColby();
+          } else {
+            window.location.href = game.url;
+          }
+          suggestionsContainer.style.display = 'none';
+        };
+        
+        suggestion.innerHTML = `
+          <div class="search-suggestion-icon">${game.icon}</div>
+          <div class="search-suggestion-content">
+            <div class="search-suggestion-title">${game.title}</div>
+            <div class="search-suggestion-category">${game.category}</div>
+          </div>
+        `;
+        
+        suggestionsContainer.appendChild(suggestion);
+      });
+
+      suggestionsContainer.style.display = 'flex';
+    };
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      const suggestions = document.getElementById('suggestions');
+      const searchBar = document.querySelector('.search-bar');
+      
+      if (!suggestions.contains(e.target) && !searchBar.contains(e.target)) {
+        suggestions.style.display = 'none';
+      }
+    });
+
+    // Function to challenge Colby - opens chat with colbyma23@gmail.com
+    window.challengeColby = async function() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("You must be logged in to challenge Colby!");
+        return;
+      }
+
+      try {
+        // Find Colby's user ID by searching for the admin email
+        const usersRef = collection(db, "users");
+        const usersSnapshot = await getDocs(usersRef);
+        let colbyUserId = null;
+        
+        usersSnapshot.forEach(docSnap => {
+          const userData = docSnap.data();
+          if (userData.email === 'colbyma23@gmail.com') {
+            colbyUserId = docSnap.id;
+          }
+        });
+
+        if (!colbyUserId) {
+          alert("Colby's profile not found. Please try again later.");
+          return;
+        }
+
+        // Redirect to inbox.html with a parameter to open Colby's chat
+        window.location.href = `/inbox.html?openChat=${colbyUserId}`;
+        
+      } catch (error) {
+        console.error("Error finding Colby's profile:", error);
+        alert("Error connecting to chat. Please try again.");
+      }
+    };
+
+    // Welcome message dropdown functionality
+    const welcomeMessage = document.getElementById("welcomeMessage");
+
+    welcomeMessage.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeMessage) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+  </script>  
+</body>  
+</html>

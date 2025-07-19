@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Singer by Monthly Listeners</title>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
+      color: #234d7d;
+    }
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      position: relative;
+    }
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 15px;
+        top: 60px;
+        background-color: #1e2b38;
+        padding: 10px 20px;
+        border-radius: 10px;
+        z-index: 1000;
+        width: max-content;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .mobile-menu a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 0;
+        font-weight: bold;
+      }
+      .mobile-menu a:hover {
+        color: #ffcb05;
+      }
+      .mobile-menu.show { display: flex; }
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: fadeDown 1s ease-out;
+    }
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    /* Responsive Logo */
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+        padding: 0px;
+      }
+      .header{
+        height: 35px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .container {
+        margin: 8px auto;
+        padding: 12px 8px 8px 8px;
+      }
+      h1 {
+        font-size: 1.4rem;
+        margin-bottom: 6px;
+      }
+      h2 {
+        font-size: 0.85rem !important;
+        margin-bottom: 8px !important;
+      }
+      .scoreboard {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+        margin-bottom: 5px;
+      }
+      .lives {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+      }
+      .battle-row {
+        gap: 8px;
+        margin: 12px 0 6px 0;
+        flex-wrap: nowrap;
+      }
+      .song-card {
+        padding: 12px 6px 6px 6px;
+        min-width: 100px;
+        max-width: 140px;
+        flex: 1 1 100px;
+      }
+      .song-title {
+        font-size: 0.75rem;
+        margin-bottom: 3px;
+        line-height: 1.1;
+      }
+      .song-artist {
+        font-size: 0.65rem;
+        margin-bottom: 4px;
+        line-height: 1.1;
+      }
+      .streams {
+        font-size: 0.65rem;
+      }
+      .result {
+        font-size: 0.85rem;
+        margin: 6px 0 0 0;
+        min-height: 18px;
+      }
+      .next-btn {
+        margin-top: 6px;
+        padding: 5px 14px;
+        font-size: 0.85rem;
+      }
+    }
+    .container { display: none; }
+    h1, h2 { color: #234d7d; }
+    .scoreboard {
+      background: #315f85;
+      color: #fff;
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .lives {
+      font-size: 1.7rem;
+      margin-bottom: 8px;
+      color: #e74c3c;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+    .battle-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      margin: 8px 0 8px 0;
+      flex-wrap: nowrap;
+    }
+    .song-card {
+      background: #fff;
+      border: 2px solid #2ec3ff;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(30,47,90,0.07);
+      padding: 24px 16px 16px 16px;
+      min-width: 180px;
+      max-width: 260px;
+      flex: 1 1 180px;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      position: relative;
+      color: #234d7d;
+      font-size: 1.15rem;
+    }
+    .song-card.selected {
+      border-color: #28a7ae;
+      background: #e7f1f9;
+      box-shadow: 0 4px 16px rgba(40,167,174,0.13);
+    }
+    .song-card.correct {
+      border-color: #27ae60;
+      background: #d5f4e6;
+      box-shadow: 0 4px 16px rgba(39,174,96,0.2);
+    }
+    .song-card.incorrect {
+      border-color: #e74c3c;
+      background: #fdf2f2;
+      box-shadow: 0 4px 16px rgba(231,76,60,0.2);
+    }
+    .song-card:hover {
+      transform: scale(1.05);
+      background: #e7f1f9;
+      box-shadow: 0 6px 18px rgba(40,167,174,0.13);
+    }
+    .song-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #234d7d;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .song-artist {
+      font-size: 0.9rem;
+      color: #315f85;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .streams {
+      font-size: 0.98rem;
+      color: #888;
+      margin-bottom: 6px;
+      display: none;
+    }
+    .song-card.reveal .streams {
+      display: block;
+      font-weight: bold;
+      color: #28a7ae;
+    }
+    .result {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 12px 0 0 0;
+      color: #2ec3ff;
+      min-height: 28px;
+    }
+    .next-btn {
+      margin-top: 12px;
+      padding: 8px 24px;
+      background: #28a7ae;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: none;
+    }
+    .next-btn:hover {
+      background: #234d7d;
+    }
+    .gameover-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      display: none;
+    }
+    .gameover-content {
+      background: #fff;
+      border-radius: 18px;
+      padding: 36px 28px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(30,47,90,0.18);
+      max-width: 350px;
+      width: 90vw;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) {
+      .gameover-content {
+        margin: 18px;
+      }
+    }
+    .gameover-content h2 {
+      color: #234d7d;
+      margin-bottom: 10px;
+    }
+    .gameover-content .score {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #28a7ae;
+      margin-bottom: 15px;
+    }
+    .gameover-content .coins {
+      font-size: 1.4rem;
+      color: #ffcb05;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .gameover-content .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+      display: inline-block;
+      margin-right: 4px;
+      position: relative;
+    }
+    .gameover-content .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .gameover-content button {
+      margin-top: 18px;
+      padding: 10px 28px;
+      background: #28a7ae;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .gameover-content button:hover {
+      background: #234d7d;
+    }
+    @media (max-width: 600px) {
+      .battle-row { 
+        gap: 16px; 
+        margin: 6px 0 6px 0;
+      }
+      .song-card { 
+        min-width: 140px; 
+        max-width: 220px;
+        padding: 18px 8px 10px 8px;
+        font-size: 1.1rem;
+      }
+      .song-title {
+        font-size: 0.7rem;
+        margin-bottom: 2px;
+      }
+      .song-artist {
+        font-size: 0.6rem;
+        margin-bottom: 3px;
+      }
+      .streams {
+        font-size: 0.6rem;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .container {
+        margin: 5px auto;
+        padding: 10px 6px 6px 6px;
+      }
+      h1 {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+      }
+      h2 {
+        font-size: 0.75rem !important;
+        margin-bottom: 6px !important;
+      }
+      .battle-row {
+        gap: 8px;
+        margin: 4px 0 4px 0;
+      }
+      .song-card {
+        min-width: 110px;
+        max-width: 150px;
+        padding: 12px 4px 6px 4px;
+        font-size: 1rem;
+      }
+      .song-title {
+        font-size: 0.65rem;
+        margin-bottom: 2px;
+      }
+      .song-artist {
+        font-size: 0.55rem;
+        margin-bottom: 2px;
+      }
+      .streams {
+        font-size: 0.55rem;
+      }
+      .result {
+        font-size: 0.75rem;
+        margin: 4px 0 0 0;
+        min-height: 16px;
+      }
+      .next-btn {
+        margin-top: 4px;
+        padding: 4px 12px;
+        font-size: 0.75rem;
+      }
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    .bottom-nav .coin-emoji {
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+      display: inline-block;
+      margin-right: 4px;
+      position: relative;
+    }
+    .bottom-nav .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .bottom-nav .coin-total {
+      color: #ffcb05;
+      font-weight: bold;
+      font-size: 15px;
+      margin-left: 2px;
+    }
+    .coin-emoji {
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+      display: inline-block;
+      margin-right: 4px;
+      position: relative;
+    }
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .coin-gain {
+      color: #ffcb05;
+      font-weight: bold;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .coin-gain.animate {
+      opacity: 1;
+    }
+    .coin-gain.hidden {
+      display: none;
+    }
+    .bottom-spacer { display: none; }
+    
+    @media (max-width: 700px) {
+      .bottom-spacer {
+        height: 50px;
+        margin-top: 15px;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      .bottom-spacer {
+        height: 40px;
+        margin-top: 10px;
+      }
+    }
+    .welcome-nav {
+      position: relative;
+    }
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #1e2b38;
+      border-radius: 8px;
+      padding: 8px 0;
+      min-width: 150px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: none;
+    }
+    .dropdown.show {
+      display: block;
+    }
+    .dropdown a {
+      display: block;
+      padding: 8px 16px;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .dropdown a:hover {
+      background: #2c3e50;
+    }
+    .main-center {
+      padding-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: calc(100vh - 120px);
+    }
+
+   
+    h1 {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-size: 2.1rem;
+      color: #234d7d;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  <nav style="display: flex; align-items: center; justify-content: space-between; background: #1e2b38; min-height: 48px;">
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer; font-weight:bold; color:#ffcb05;" onclick="toggleDropdown()">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+      <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight: bold; color: #fff;">0</span>
+        <span id="coinGain" class="coin-gain hidden">+1</span>
+      </div>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+  <div class="main-center">
+    <h1>Spotify Showdown</h1>
+    <div class="scoreboard" id="scoreboard">Score: 0</div>
+    <div class="lives" id="lives"></div>
+    <h2 style="font-size: 1.1rem; font-weight: 400; color: #2ec3ff; margin-bottom: 20px;">Which artist has more Spotify monthly listeners?</h2>
+    <div class="battle-row">
+      <div class="song-card" id="songA"></div>
+      <div class="song-card" id="songB"></div>
+    </div>
+    <div class="result" id="result"></div>
+    <button class="next-btn" id="nextBtn">Next</button>
+  </div>
+  
+  <div class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item highlight">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </div>
+  <div class="gameover-modal" id="gameoverModal">
+    <div class="gameover-content">
+      <h2>Game Over</h2>
+      <div class="score" id="finalScore"></div>
+      <div class="coins" id="coinsAwarded"></div>
+      <button onclick="window.location.reload()">Play Again</button>
+    </div>
+  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { getFirestore, doc, getDoc, updateDoc, increment, addDoc, collection } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let currentUser = null;
+    let userCoins = 0;
+    onAuthStateChanged(auth, async user => {
+      currentUser = user;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          const username = data.username || user.displayName || "User";
+          userCoins = data.coins || 0;
+          document.getElementById("welcomeMessage").textContent = `Welcome, ${username}`;
+          document.getElementById("coinCount").textContent = userCoins;
+          
+          // Populate dropdown menu for logged in user
+          document.getElementById("dropdownMenu").innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="#" id="logoutBtn">Log Out</a>
+          `;
+          
+          // Add logout functionality
+          setTimeout(() => {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                try {
+                  await signOut(auth);
+                  window.location.reload();
+                } catch (err) {
+                  console.error("Logout failed:", err);
+                }
+              });
+            }
+          }, 0);
+        }
+      } else {
+        document.getElementById("welcomeMessage").textContent = "Welcome, Anonymous";
+        document.getElementById("coinCount").textContent = "0";
+        
+        // Populate dropdown menu for guest user
+        document.getElementById("dropdownMenu").innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+      }
+    });
+
+    function formatStreams(n) {
+      if (n >= 1_000_000_000) {
+        return (n / 1_000_000_000).toFixed(2) + ' billion';
+      } else {
+        return (n / 1_000_000).toFixed(2) + ' million';
+      }
+    }
+
+    const songs = [
+      { title: "Blinding Lights", artist: "The Weeknd", streams: 4907388050 },
+      { title: "Shape of You", artist: "Ed Sheeran", streams: 4432988344 },
+      { title: "Starboy", artist: "The Weeknd", streams: 3967502991 },
+     
+    ];
+
+    let score = 0;
+    let lives = 3;
+    let currentA = null;
+    let currentB = null;
+    let canGuess = true;
+    let highScore = localStorage.getItem('bangerBattleHighScore') || 0;
+    updateLives();
+    updateScoreboard();
+
+    function updateScoreboard() {
+      document.getElementById('scoreboard').textContent = `Score: ${score} | High Score: ${highScore}`;
+    }
+
+    function pickTwoSongs() {
+      let idxA = Math.floor(Math.random() * songs.length);
+      let idxB;
+      do {
+        idxB = Math.floor(Math.random() * songs.length);
+      } while (idxB === idxA);
+      return [songs[idxA], songs[idxB]];
+    }
+
+    function renderBattle() {
+      canGuess = true;
+      document.getElementById('result').textContent = '';
+      document.getElementById('nextBtn').style.display = 'none';
+      [currentA, currentB] = pickTwoSongs();
+      renderSong('songA', currentA);
+      renderSong('songB', currentB);
+      document.getElementById('songA').className = 'song-card';
+      document.getElementById('songB').className = 'song-card';
+    }
+
+    function renderSong(id, song) {
+      const el = document.getElementById(id);
+      el.innerHTML = `
+        <div class="song-title">${song.title}</div>
+        <div class="song-artist">${song.artist}</div>
+        <div class="streams">${formatStreams(song.streams)} streams</div>
+      `;
+      el.onclick = () => guess(id);
+    }
+
+    function updateLives() {
+      const livesEl = document.getElementById('lives');
+      livesEl.textContent = '❤️'.repeat(lives) + '🖤'.repeat(3 - lives);
+    }
+
+    function guess(selectedId) {
+      if (!canGuess || lives === 0) return;
+      canGuess = false;
+      const otherId = selectedId === 'songA' ? 'songB' : 'songA';
+      const selectedSong = selectedId === 'songA' ? currentA : currentB;
+      const otherSong = selectedId === 'songA' ? currentB : currentA;
+      
+      // Remove previous classes and add reveal
+      document.getElementById(selectedId).classList.remove('selected', 'correct', 'incorrect');
+      document.getElementById(otherId).classList.remove('selected', 'correct', 'incorrect');
+      document.getElementById(selectedId).classList.add('reveal');
+      document.getElementById(otherId).classList.add('reveal');
+      
+      // Reveal streams
+      document.querySelectorAll('.streams').forEach(e => e.style.display = 'block');
+      
+      let resultText = '';
+      if (selectedSong.streams > otherSong.streams) {
+        score++;
+        resultText = '✅ Correct!';
+        document.getElementById(selectedId).classList.add('correct');
+      } else if (selectedSong.streams === otherSong.streams) {
+        resultText = '🤷‍♂️ Tie!';
+        document.getElementById(selectedId).classList.add('selected');
+      } else {
+        lives--;
+        updateLives();
+        resultText = '❌ Nope!';
+        document.getElementById(selectedId).classList.add('incorrect');
+      }
+      
+      updateScoreboard();
+      document.getElementById('result').textContent = resultText;
+      if (lives > 0) {
+        document.getElementById('nextBtn').style.display = 'inline-block';
+      } else {
+        setTimeout(gameOver, 800);
+      }
+    }
+
+    async function gameOver() {
+      document.getElementById('gameoverModal').style.display = 'flex';
+      document.getElementById('finalScore').textContent = `Final Score: ${score}`;
+      document.getElementById('coinsAwarded').innerHTML = `<div class="coin-emoji"></div><span>+${score} coins</span>`;
+      // Update high score if current score is higher
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('bangerBattleHighScore', highScore);
+      }
+      // Award coins if logged in
+      if (currentUser && score > 0) {
+        const userRef = doc(db, "users", currentUser.uid);
+        
+        // Check for double coins boost
+        const userSnap = await getDoc(userRef);
+        let coinsToAward = score;
+        let newTotal = 0;
+        
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          if (userData.doubleCoinsUntil && Date.now() < userData.doubleCoinsUntil) {
+            coinsToAward *= 2;
+          }
+          newTotal = (userData.coins || 0) + coinsToAward;
+        }
+        
+        await updateDoc(userRef, { coins: increment(coinsToAward) });
+        userCoins += coinsToAward; // Update user's coin count in the UI
+        document.getElementById("coinCount").textContent = userCoins;
+        animateCoinGain(coinsToAward);
+        
+        // Save score to leaderboard
+        try {
+          const userData = userSnap.data();
+          await addDoc(collection(db, "bangerBattleScores"), {
+            uid: currentUser.uid,
+            username: userData?.username || currentUser.displayName || "Anonymous",
+            email: currentUser.email,
+            score: score,
+            city: userData?.city || null,
+            avatar: userData?.avatar || null,
+            timestamp: new Date()
+          });
+        } catch (err) {
+          console.error("Failed to save score:", err);
+        }
+      }
+      updateScoreboard(); // Update scoreboard to show new high score
+    }
+
+    document.getElementById('nextBtn').onclick = renderBattle;
+    
+    function animateCoinGain(amount) {
+      const coinGain = document.getElementById("coinGain");
+      if (!coinGain) return;
+
+      coinGain.textContent = `+${amount}`;
+      coinGain.classList.remove("hidden");
+      coinGain.classList.add("animate");
+
+      setTimeout(() => {
+        coinGain.classList.remove("animate");
+        coinGain.classList.add("hidden");
+      }, 1000);
+    }
+    
+    // Hamburger menu logic
+    window.toggleMenu = function(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('show');
+    };
+    
+    // Dropdown menu functionality
+    window.toggleDropdown = function() {
+      const dropdown = document.getElementById('dropdownMenu');
+      dropdown.classList.toggle('show');
+    };
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('dropdownMenu');
+      const welcomeMsg = document.getElementById('welcomeMessage');
+      if (dropdown && !dropdown.contains(event.target) && !welcomeMsg.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+    
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.querySelector('.hamburger');
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove('show');
+      }
+    });
+    renderBattle();
+  </script>
+</body>
+</html>

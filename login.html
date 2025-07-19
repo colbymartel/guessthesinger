@@ -1,106 +1,310 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Guess The Singer: Create an account...">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GuessTheSinger.com - Log In</title>
-  <link rel="icon" href="/favicon.ico">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-T42NG5C994"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-T42NG5C994');
-</script>
-  <!-- Font Awesome, Google Fonts, your CSS, etc. -->
+  <meta name="description" content="Login to Guess The Singer and compete in daily music challenges!" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | GuessTheSinger.com</title>
+  <link rel="icon" href="/favicon.ico" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./signup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./signup.css" />
+  <style>
+
+html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+  .modal {
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-content {
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    text-align: center;
+  }
+  .modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  .modal-content .btn {
+    width: 100%;
+  }
+  .close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+  .hidden {
+    display: none;
+  }
+</style>  
 </head>
 <body>
   <!-- Header -->
   <header class="header">
     <div class="logo">
-      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+      </a>
     </div>
+    
   </header>
-
+  <nav>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/about.html">About</a>
+    </div>
+  </nav>
   <!-- Main Section with Login Form -->
   <main class="main">
     <div class="auth-container">
-      <h2>Log Into Your Account</h2>
+      <h2>Log In</h2>
       <form id="loginForm">
         <div class="input-group">
-          <label for="loginEmail">Email</label>
-          <input type="email" id="loginEmail" name="loginEmail" placeholder="Your email" required>
+          <label for="identifier">Email</label>
+          <input type="text" id="identifier" name="identifier" placeholder="Enter email" required />
+
+          
+        </div>
+
+        <div class="input-group" style="position: relative;">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter password" required />
+          <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 38px; cursor: pointer;"></i>
         </div>
         
+
         <div class="input-group">
-          <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" name="loginPassword" placeholder="Your password" required>
+          <label>
+            <input type="checkbox" id="keepLoggedIn" />
+            Keep me logged in
+          </label>
         </div>
-        
-        <button type="submit" class="btn">Log-In</button>
-        
+
+        <button type="submit" class="btn">Log In</button>
+
         <p class="redirect">
-          Don’t have an account?
-          <a href="signup.html">Sign-Up</a>
+          Don’t have an account? <a href="signup.html">Sign-Up</a>
         </p>
+        <p class="redirect">
+          Forgot password? <a href="#" id="forgotPasswordLink">Reset</a>
+        </p>
+        
       </form>
     </div>
   </main>
+  <!-- Forgot Password Modal -->
+<div id="forgotModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Reset Password</h2>
+    <p>Enter your email or username and we’ll send you a reset link.</p>
+    <input type="text" id="forgotInput" placeholder="Enter email or username" />
+    <button id="sendResetBtn" class="btn">Send Reset Link</button>
+  </div>
+</div>
+
 
   <!-- Footer -->
   <footer class="footer">
-      &copy; 2024 Colby Martel |
+      &copy; 2025 Colby Martel | 
       <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
       <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
       <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="https://discord.gg/AEH92GCs" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+      <a href="https://discord.gg/egQzdDSM" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
   </footer>
 
-  <!-- Use type="module" so we can import Firebase libraries -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+  <!-- Firebase Auth Script -->
+  <!-- Firebase Auth Script -->
+<script type="module">
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  import {
+  getAuth,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence
+} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+  import {
+    getDatabase,
+    ref,
+    get
+  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+    authDomain: "guessthesinger10.firebaseapp.com",
+    databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
+    projectId: "guessthesinger10",
+    storageBucket: "guessthesinger10.appspot.com",
+    messagingSenderId: "97201023235",
+    appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+  };
   
-    const firebaseConfig = {
-        apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-  authDomain: "guessthesinger10.firebaseapp.com",
-  databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
-  projectId: "guessthesinger10",
-  storageBucket: "guessthesinger10.firebasestorage.app",
-  messagingSenderId: "97201023235",
-  appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
-  measurementId: "G-3R005HTKEW"
-};
-  
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-  
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-      loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            console.log("Successfully logged in:", userCredential.user);
-            // Redirect to game page.
-            window.location.href = 'HISTORY/day142.html';
-          })
-          .catch((error) => {
-            console.error("Error logging in:", error.code, error.message);
-            alert("Login failed. " + error.message);
-          });
-      });
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  // Elements
+  const forgotLink = document.getElementById('forgotPasswordLink');
+  const forgotModal = document.getElementById('forgotModal');
+  const closeModal = forgotModal.querySelector('.close');
+  const sendResetBtn = document.getElementById('sendResetBtn');
+  const forgotInput = document.getElementById('forgotInput');
+// Login form submission
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const identifier = document.getElementById('identifier').value.trim();
+  const password = document.getElementById('password').value;
+  const keepLoggedIn = document.getElementById('keepLoggedIn').checked;
+  let emailToUse = identifier;
+
+  if (!identifier.includes('@')) {
+    const snapshot = await get(ref(db, 'signupForm'));
+    let found = false;
+    snapshot.forEach(child => {
+      const data = child.val();
+      if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
+        emailToUse = data.newEmail;
+        found = true;
+      }
+    });
+
+    if (!found) {
+      alert("Username not found. Please use your registered email.");
+      return;
     }
-  </script>
+  }
+
+  try {
+    await setPersistence(auth, keepLoggedIn ? browserLocalPersistence : browserSessionPersistence);
+    const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+    const user = userCredential.user;
+
+    const userRef = ref(db, 'signupForm/' + user.uid);
+    const snapshot = await get(userRef);
+    const userData = snapshot.exists() ? snapshot.val() : null;
+
+    // Check for redirect parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectTo = urlParams.get('redirect');
+    
+    if (!userData || !userData.newUsername) {
+      window.location.href = "profile.html";
+    } else if (redirectTo) {
+      // Redirect to the page they came from
+      window.location.href = decodeURIComponent(redirectTo);
+    } else {
+      // Default fallback
+      window.location.href = "memory.html";
+    }
+  } catch (error) {
+    alert("Login failed: " + error.message);
+  }
+});
+
+
+  closeModal.addEventListener('click', () => {
+    forgotModal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === forgotModal) {
+      forgotModal.classList.add('hidden');
+    }
+  });
+
+  // Handle password reset logic
+  sendResetBtn.addEventListener('click', async () => {
+  const input = forgotInput.value.trim();
+
+  if (!input) {
+    alert("Please enter your email or username.");
+    return;
+  }
+
+  let emailToUse = input;
+
+  if (!input.includes('@')) {
+    const snapshot = await get(ref(db, 'signupForm'));
+    let found = false;
+    snapshot.forEach(child => {
+      const data = child.val();
+      if (data.newUsername?.toLowerCase() === input.toLowerCase()) {
+        emailToUse = data.newEmail;
+        found = true;
+      }
+    });
+
+    if (!found) {
+      alert("Username not found. Try again or use your email.");
+      return;
+    }
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, emailToUse);
+    alert("Reset link sent to " + emailToUse);
+    forgotModal.classList.add('hidden');
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+});
+// Toggle password visibility
+document.getElementById('togglePassword').addEventListener('click', () => {
+  const passwordInput = document.getElementById('password');
+  const toggleIcon = document.getElementById('togglePassword');
+  const isHidden = passwordInput.type === "password";
+  passwordInput.type = isHidden ? "text" : "password";
+  toggleIcon.classList.toggle("fa-eye");
+  toggleIcon.classList.toggle("fa-eye-slash");
+});
+
+</script>
+
 </body>
 </html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book the ultimate music guessing game show experience - Guess The Singer!" />
+  <title>Book an Event - Guess The Singer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #4682b4, #254a6d);
+      color: #1b1b1b;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 18px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      color: #254a6d;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      color: #666;
+      font-size: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+      color: #254a6d;
+      font-size: 1rem;
+    }
+    
+    .form-hint {
+      display: block;
+      color: #888;
+      font-size: 0.9em;
+      margin-bottom: 8px;
+    }
+    
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="tel"],
+    .form-group input[type="date"],
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #b0c4de;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #4682b4;
+      box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.1);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .radio-group {
+      margin-bottom: 20px;
+    }
+    
+    .radio-group .label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #254a6d;
+      font-size: 1rem;
+    }
+    
+    .radio-group .subtext {
+      font-weight: 400;
+      color: #888;
+      font-size: 0.95em;
+      margin-bottom: 12px;
+    }
+    
+    .radio-group label {
+      display: inline-block;
+      margin-right: 20px;
+      font-weight: 400;
+      color: #254a6d;
+      cursor: pointer;
+    }
+    
+    .radio-group input[type="radio"] {
+      margin-right: 8px;
+    }
+    
+    .checkbox-group {
+      margin-bottom: 20px;
+    }
+    
+    .checkbox-group .label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #254a6d;
+      font-size: 1rem;
+    }
+    
+    .checkbox-group label {
+      display: inline-block;
+      margin-right: 20px;
+      font-weight: 400;
+      color: #254a6d;
+      cursor: pointer;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 8px;
+    }
+    
+    .submit-btn {
+      background: #4682b4;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .submit-btn:hover {
+      background: #254a6d;
+      transform: translateY(-2px);
+    }
+    
+    .submit-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .back-link a {
+      color: #4682b4;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+    
+    .success-message {
+      text-align: center;
+      color: #28a745;
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .error-message {
+      text-align: center;
+      color: #dc3545;
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px auto;
+        padding: 30px 20px;
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .radio-group label,
+      .checkbox-group label {
+        display: block;
+        margin-bottom: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Interest Form</h1>
+      <p>Fill out the form below and I'll get back to you within 24 hours!</p>
+    </div>
+    
+    <div class="success-message" id="successMessage">
+      <h3>Thank You!</h3>
+      <p>Your booking request has been received. I will reach out over email or call within 24 hours.</p>
+    </div>
+    
+    <div class="error-message" id="errorMessage">
+      <h3>Error</h3>
+      <p>There was an error submitting your booking. Please try again.</p>
+    </div>
+    
+    <form id="bookingForm">
+      <div class="form-group">
+        <label for="contactName">Contact Name *</label>
+        <input type="text" id="contactName" name="contactName" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="org">School/Business Name *</label>
+        <input type="text" id="org" name="org" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="role">Role/Title (Optional)</label>
+        <input type="text" id="role" name="role" placeholder="e.g., Event Coordinator, Teacher, etc.">
+      </div>
+      
+      <div class="form-group">
+        <label for="preferredDate">Preferred Date</label>
+        <small class="form-hint">(can be changed later)</small>
+        <input type="date" id="preferredDate" name="preferredDate">
+      </div>
+      
+      <div class="radio-group">
+        <div class="label">Select Package</div>
+        <div class="subtext">(can be changed later)</div>
+        <label>
+          <input type="radio" name="package" value="Basic"> General
+        </label>
+        <label>
+          <input type="radio" name="package" value="Standard"> Pro
+        </label>
+        <label>
+          <input type="radio" name="package" value="Ultimate"> Platinum
+        </label>
+      </div>
+      
+      <div class="form-group">
+        <label for="budget">Estimated Budget (Optional)</label>
+        <input type="text" id="budget" name="budget">
+      </div>
+      
+      <div class="checkbox-group">
+        <div class="label">Preferred Follow-up Method</div>
+        <label>
+          <input type="checkbox" name="followUpText" value="text"> Text
+        </label>
+        <label>
+          <input type="checkbox" name="followUpCall" value="call"> Call
+        </label>
+        <label>
+          <input type="checkbox" name="followUpEmail" value="email"> Email
+        </label>
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Message / Inquiry</label>
+        <textarea id="message" name="message" placeholder="Let us know any details or questions!"></textarea>
+      </div>
+      
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Event Inquiry</button>
+    </form>
+        </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById('bookingForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Check for package parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedPackage = urlParams.get('package');
+    
+    if (selectedPackage) {
+      const radioButton = document.querySelector(`input[name="package"][value="${selectedPackage}"]`);
+      if (radioButton) {
+        radioButton.checked = true;
+      }
+    }
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Disable submit button
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      
+      // Hide any existing messages
+      successMessage.style.display = 'none';
+      errorMessage.style.display = 'none';
+      
+      const formData = new FormData(form);
+      
+      // Collect follow-up preferences
+      const followUpMethods = [];
+      if (formData.get('followUpText')) followUpMethods.push('Text');
+      if (formData.get('followUpCall')) followUpMethods.push('Call');
+      if (formData.get('followUpEmail')) followUpMethods.push('Email');
+      
+      const bookingData = {
+        contactName: formData.get('contactName'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        org: formData.get('org'),
+        role: formData.get('role') || null,
+        preferredDate: formData.get('preferredDate') || null,
+        package: formData.get('package'),
+        budget: formData.get('budget') || null,
+        followUpMethods: followUpMethods.length > 0 ? followUpMethods : null,
+        message: formData.get('message'),
+        timestamp: new Date()
+      };
+      
+      try {
+        // Save to Firebase
+        const docRef = await addDoc(collection(db, "bookings"), bookingData);
+        console.log("Booking saved with ID: ", docRef.id);
+        
+        // Show success message
+        successMessage.style.display = 'block';
+        form.reset();
+        
+        // Scroll to top to show success message
+        window.scrollTo(0, 0);
+        
+      } catch (error) {
+        console.error("Error saving booking: ", error);
+        errorMessage.style.display = 'block';
+        
+        // Scroll to top to show error message
+        window.scrollTo(0, 0);
+      } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Event Inquiry';
+      }
+    });
+  </script>
+</body>
+</html> 

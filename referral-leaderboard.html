@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Referral Leaderboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      color: #333;
+    }
+    header {
+      background-color: #1e2b38;
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      margin: 20px 0;
+      text-align: center;
+      color: #315f85;
+    }
+    .leaderboard {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead {
+      background-color: #1e2b38;
+      color: white;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .generate-code {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #315f85;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #3c6fa0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Guess The Singer</h2>
+  </header>
+  <h1>Referral Leaderboard</h1>
+  <div class="leaderboard">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Referrals</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="referralTableBody">
+        <!-- Dynamic rows will be inserted here -->
+      </tbody>
+    </table>
+  </div>
+  <div class="generate-code">
+    <button onclick="generateReferralCode()">Generate My Referral Code</button>
+  </div>
+
+  <script>
+    const referralData = [
+      { username: "musicfan23", referrals: 8, points: 180 },
+      { username: "beatlover", referrals: 5, points: 130 },
+      { username: "colbyma23", referrals: 12, points: 220 },
+      { username: "souptimmy", referrals: 6, points: 140 },
+    ];
+
+    function loadReferralLeaderboard() {
+      const tbody = document.getElementById("referralTableBody");
+      tbody.innerHTML = "";
+
+      referralData
+        .sort((a, b) => b.points - a.points)
+        .forEach((user, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${user.username}</td>
+            <td>${user.referrals}</td>
+            <td>${user.points}</td>
+          `;
+          tbody.appendChild(row);
+        });
+    }
+
+    function generateReferralCode() {
+      const code = Math.random().toString(36).substr(2, 8).toUpperCase();
+      alert(`Your referral code is: ${code}`);
+    }
+
+    window.onload = loadReferralLeaderboard;
+  </script>
+</body>
+</html>

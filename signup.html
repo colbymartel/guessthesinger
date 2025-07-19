@@ -1,137 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="description" content="Guess The Singer: Create an account to test your music knowledge with daily challenges, share your results, and win prizes!">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="description" content="Guess The Singer: Create an account to test your music knowledge with daily challenges, share your results, and win prizes!" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GuessTheSinger.com - Sign Up</title>
-  <link rel="icon" href="/favicon.ico">
-  <!-- Font Awesome for icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <!-- External CSS -->
-  <link rel="stylesheet" href="./signup.css">
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./signup.css" />
 </head>
+<style>
+
+html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+.input-group select {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-family: 'Fredoka', sans-serif;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  color: #333;
+  appearance: none; /* Removes native arrow in some browsers */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'12'%20height%3D'8'%20viewBox%3D'0%200%2012%208'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M6%208L0%200h12L6%208z'%20fill%3D'%23666'%20/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px top 50%;
+  background-size: 12px 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group select:focus {
+  outline: none;
+  border-color: #28a7ae;
+  box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
+}
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.avatar-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  object-fit: cover;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.avatar-img:hover {
+  transform: scale(1.05);
+}
+
+.avatar-img.selected {
+  border-color: #ffcb05;
+  box-shadow: 0 0 10px rgba(255, 203, 5, 0.6);
+}
+
+</style>
 <body>
   <!-- Header -->
   <header class="header">
     <div class="logo">
-      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy" />
     </div>
   </header>
-
-  <!-- Main Section with Signup Form -->
+  <nav>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/about.html">About</a>
+    </div>
+  </nav>
+  <!-- Main Signup Form -->
   <main class="main">
     <div class="auth-container">
       <h2>Create an Account</h2>
-      <form id="signupForm">
+
+      <form id="step1Form">
         <div class="input-group">
-          <label for="newUsername">First Name</label>
-          <input type="text" id="newUsername" name="newUsername" placeholder="Enter your first name" required>
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Choose a username" required />
         </div>
-        
+
         <div class="input-group">
-          <label for="newEmail">Email</label>
-          <input type="email" id="newEmail" name="newEmail" placeholder="Enter your email" required>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required />
         </div>
-        
+
         <div class="input-group">
-          <label for="newPassword">Password</label>
-          <input type="password" id="newPassword" name="newPassword" placeholder="Create a password" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a password" required />
         </div>
-        
-        <button type="submit" class="btn">Sign Up</button>
-        
-        <p class="redirect">
-          Already have an account? <a href="login.html">Log-In</a>
-        </p>
+
+        <button type="button" class="btn" onclick="goToStep2()">Next</button>
       </form>
+
+      <form id="step2Form" style="display:none;">
+        <div class="input-group">
+          <label for="city">City</label>
+          <select id="city" required>
+            <optgroup label="USA">
+              <option>Atlanta</option>
+              <option>Austin</option>
+              <option>Boston</option>
+              <option>Charlotte</option>
+              <option>Chicago</option>
+              <option>Dallas</option>
+              <option>Denver</option>
+              <option>Houston</option>
+              <option>Jacksonville</option>
+              <option>Las Vegas</option>
+              <option>Los Angeles</option>
+              <option>Miami</option>
+              <option>Minneapolis</option>
+              <option>Nashville</option>
+              <option>New Orleans</option>
+              <option>New York</option>
+              <option>Oklahoma City</option>
+              <option>Orlando</option>
+              <option>Philadelphia</option>
+              <option>Phoenix</option>
+              <option>Salt Lake City</option>
+              <option>San Diego</option>
+              <option>San Francisco</option>
+              <option>Seattle</option>
+              <option>Tampa</option>
+              <option>Washington, D.C.</option>
+            </optgroup>
+            <optgroup label="Worldwide">
+              <option>Bangkok</option>
+              <option>Beijing</option>
+              <option>Berlin</option>
+              <option>Buenos Aires</option>
+              <option>Delhi</option>
+              <option>Dubai</option>
+              <option>London</option>
+              <option>Madrid</option>
+              <option>Melbourne</option>
+              <option>Mexico City</option>
+              <option>Mumbai</option>
+              <option>Paris</option>
+              <option>Rome</option>
+              <option>Sao Paulo</option>
+              <option>Seoul</option>
+              <option>Shanghai</option>
+              <option>Singapore</option>
+              <option>Sydney</option>
+              <option>Tokyo</option>
+              <option>Toronto</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Choose Avatar</label>
+          <div class="avatar-grid">
+            <img src="images/avatars/popstarpenguin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/jazzyjaguar.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/discodolphin.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/musicalmonkey.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/MusicalMatcha.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/DancingDumpling.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+            <img src="images/avatars/souptimmy.jpg" class="avatar-img" onclick="selectAvatar(this)" />
+          </div>
+        </div>
+        <button type="submit" class="btn">Finish Sign-Up</button>
+      </form>
+
+      <p class="redirect">
+        Already have an account? <a href="login.html">Log-In</a>
+      </p>
     </div>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
-      &copy; 2024 Colby Martel | 
-      <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-      <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="https://discord.gg/AEH92GCs" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+    &copy; 2025 Colby Martel |
+    <a href="https://www.instagram.com/colbymartel19/" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.youtube.com/ColbyMartel" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://discord.gg/egQzdDSM" target="_blank"><i class="fab fa-discord"></i></a>
   </footer>
-
-  <!-- Firebase and Signup Script -->
   <script type="module">
-    // Import Firebase modules.
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
-
-    // Your Firebase configuration – update these values if needed.
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
-      databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
       projectId: "guessthesinger10",
-      storageBucket: "guessthesinger10.firebasestorage.app",
+      storageBucket: "guessthesinger10.appspot.com",
       messagingSenderId: "97201023235",
-      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
-      measurementId: "G-3R005HTKEW"
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
-
-    // Initialize Firebase
+  
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);  // For Authentication
-    const database = getDatabase(app); // For Realtime Database
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+  
+    let tempUserData = {};
+    window.goToStep2 = function () {
+  tempUserData.username = document.getElementById('username').value.trim();
+  tempUserData.email = document.getElementById('email').value.trim();
+  tempUserData.password = document.getElementById('password').value;
 
-    // Listen for form submission
-    document.getElementById('signupForm').addEventListener('submit', submitForm);
+  if (!tempUserData.username || !tempUserData.email || !tempUserData.password) {
+    alert("Please fill out all fields");
+    return;
+  }
 
-    function submitForm(e) {
-      e.preventDefault();  // Prevent default form submission
+  if (tempUserData.password.length < 6) {
+    alert("Password must be at least 6 characters long.");
+    return;
+  }
 
-      // Get form values
-      var newUsername = getElementVal('newUsername');
-      var newEmail = getElementVal('newEmail');
-      var newPassword = getElementVal('newPassword');
+  document.getElementById('step1Form').style.display = 'none';
+  document.getElementById('step2Form').style.display = 'block';
+};
 
-      // Create the user in Firebase Authentication
-      createUserWithEmailAndPassword(auth, newEmail, newPassword)
-        .then((userCredential) => {
-          // User successfully created in Firebase Auth.
-          const user = userCredential.user;
-          console.log('User created: ', user);
+  
+    let selectedAvatar = "images/avatars/popstarpenguin.jpg"; // default
+  
+    window.selectAvatar = function (img) {
+      selectedAvatar = img.src;
+      document.querySelectorAll(".avatar-img").forEach(i => i.classList.remove("selected"));
+      img.classList.add("selected");
+    };
+  
+  
+    // Get redirect URL from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get('redirect') || 'rushmore.html';
 
-          // Save additional user info in the Realtime Database under their userId.
-          saveUserInfo(newUsername, newEmail, user.uid);
-
-          // Redirect to the login page so the user can log in.
-          window.location.href = 'HISTORY/day142.html';
-        })
-        .catch((error) => {
-          // Handle errors.
-          console.error(`Error: ${error.code}, ${error.message}`);
-          alert(`Error: ${error.message}`);
+    document.getElementById('step2Form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const city = document.getElementById('city').value;
+  
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, tempUserData.email, tempUserData.password);
+        const user = userCredential.user;
+  
+        await updateProfile(user, {
+          displayName: tempUserData.username,
+          photoURL: selectedAvatar
         });
-    }
-
-    // Function to save the user's info in the Realtime Database.
-    const saveUserInfo = (newUsername, newEmail, userId) => {
-      // Create a reference for this user.
-      const userRef = ref(database, 'signupForm/' + userId);
-      
-      // Save the user's username, email, and uid.
-      set(userRef, {
-        newUsername: newUsername,
-        newEmail: newEmail,
-        userId: userId
-      });
-    };
-
-    // Helper function to get the value of a form element by id.
-    const getElementVal = (id) => {
-      return document.getElementById(id).value;
-    };
+  
+        await setDoc(doc(db, "users", user.uid), {
+          username: tempUserData.username,
+          email: tempUserData.email,
+          uid: user.uid,
+          city: city,
+          avatar: selectedAvatar,
+          coins: 0
+        });
+  
+        alert("Signup complete! 🎉");
+        window.location.href = redirectUrl;
+      } catch (err) {
+        alert("Signup error: " + err.message);
+      }
+    });
   </script>
+  
 </body>
 </html>

@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Rewards | Guess The Singer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: #19202a;
+      padding-bottom: 90px;
+    }
+
+    
+.header {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  padding: 40px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.header .logo img {
+  width: 200px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+    /* Responsive Logo */
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+        padding: 0px;
+      }
+      .header{
+        height: 35px;
+      }
+    }
+
+    .points-banner {
+      background-color: #1e2b38;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .points-banner span {
+      font-weight: bold;
+      font-size: 22px;
+      color: #ffcb05;
+    }
+
+    .reward-section {
+      padding: 20px;
+    }
+
+    .shop-style {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 12px;
+      width: 160px;
+      border: 2px solid #ccc;
+      border-radius: 15px;
+      background: #fdfdfd;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .shop-style:hover {
+      transform: scale(1.03);
+    }
+
+    .reward-image-top {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    .center-text {
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .price-tag {
+      background: linear-gradient(to right, #f1c40f, #f39c12);
+      color: #1e2b38;
+      font-weight: bold;
+      border-radius: 12px;
+      padding: 6px 14px;
+      font-size: 16px;
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+
+    .coin-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b;
+    }
+
+    .reward-image {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .reward-info {
+      max-width: 75%;
+    }
+
+    .reward-title {
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: #1e2b38;
+    }
+
+    .reward-desc {
+      color: #555;
+      font-size: 14px;
+    }
+
+    .coin-tag {
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border-radius: 40px;
+      padding: 6px 12px;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+    }
+
+    .coin-emoji {
+      width: 15px;
+      height: 15px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      margin-bottom: 3px;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b,
+        0 3px 0 #8c6e00;
+      position: relative;
+    }
+
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    body, html {
+      scroll-padding-bottom: 120px;
+    }
+
+    input, textarea, select {
+      font-size: 16px;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 30px 25px;
+      text-align: center;
+      max-width: 320px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.3s ease-out;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+      color: #1e2b38;
+      font-size: 22px;
+    }
+
+    #redeemText {
+      font-size: 16px;
+      color: #444;
+      margin: 15px 0 25px;
+      line-height: 1.5;
+    }
+
+    .modal-content button {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: bold;
+      padding: 10px 18px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #confirmRedeem {
+      background-color: #28a745;
+      color: white;
+      margin-right: 10px;
+    }
+
+    #confirmRedeem:hover {
+      background-color: #218838;
+    }
+
+    #cancelRedeem {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #cancelRedeem:hover {
+      background-color: #c0392b;
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .disabled-reward {
+      opacity: 0.6;
+      pointer-events: none;
+      filter: grayscale(70%);
+      cursor: not-allowed;
+    }
+
+    .highlight {
+      color: #ffcb05; /* yellow */
+    }
+
+    .highlight i {
+      color: #ffcb05; /* yellow */
+    }
+
+    .reward-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* default: 2 per row */
+      gap: 20px;
+      justify-items: center;
+      padding: 0 16px;
+    }
+
+    @media (min-width: 769px) {
+      .reward-grid {
+        grid-template-columns: repeat(6, 1fr); /* 4 per row on desktop */
+      }
+    }
+
+    .shop-style {
+      width: 100%;
+      max-width: 160px;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #f9fbfd, #d6eaf8);
+    }
+
+    .alert-bar {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #1e2b38;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 50px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      font-weight: bold;
+      z-index: 2000;
+      font-size: 14px;
+      animation: fadeSlideUp 0.3s ease;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translate(-50%, 20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    /* Desktop only by default */
+    .desktop-only {
+      display: flex;
+    }
+
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      color: white;
+      margin: 0;
+    }
+
+    .hamburger {
+  display: block;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  z-index: 1001; 
+  position: relative;
+}
+
+
+    .mobile-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  right: 15px;
+  top: 120px;
+  background-color: #1e2b38;
+  padding: 10px 20px;
+  border-radius: 10px;
+  z-index: 1002; /* higher than hamburger */
+  width: max-content;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      font-weight: bold;
+    }
+
+    .mobile-menu a:hover {
+      color: #ffcb05;
+    }
+
+    .mobile-menu.show {
+      display: flex;
+    }
+
+    .reward-card.locked {
+      filter: grayscale(1) brightness(0.85);
+      opacity: 0.7;
+      position: relative;
+      pointer-events: none;
+    }
+    .locked-overlay {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      top: auto;
+      transform: none;
+      background: rgba(255,255,255,0.92);
+      border-radius: 0 0 12px 12px;
+      padding: 8px 0 8px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #1e2b38;
+      z-index: 2;
+      font-size: 1.05rem;
+      box-shadow: 0 -2px 8px rgba(30,47,90,0.08);
+      width: 100%;
+      gap: 8px;
+    }
+    .locked-overlay i {
+      font-size: 1.2rem;
+      margin-bottom: 0;
+      color: #b8860b;
+    }
+
+    .price-tag.locked {
+      filter: grayscale(1) brightness(0.85);
+      opacity: 0.7;
+    }
+    /* Sticker dropdown fit */
+    #stickerSelect {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 10px 0 10px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #f7fafc;
+      border: 1.5px solid #cfd8dc;
+      outline: none;
+      display: block;
+    }
+    
+    /* Raffle dropdown fit */
+    #raffleSelect {
+      width: 100%;
+      box-sizing: border-box;
+      margin: 10px 0 10px 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #f7fafc;
+      border: 1.5px solid #cfd8dc;
+      outline: none;
+      display: block;
+    }
+    /* Add highlight for selected card */
+    .selected-reward-card {
+      outline: 3px solid #4682b4;
+      box-shadow: 0 0 0 4px #b3d1ee;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+    <div class="points-banner">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div>Total Coins: <span id="coinTotal">0</span></div>
+        <div class="coin-emoji"></div>
+      </div>
+      <div class="hamburger" onclick="toggleMenu(event)">
+        <i class="fas fa-bars"></i>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#" onclick="showUserProfile()">My Profile</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  <div class="reward-grid">
+
+
+    <!-- Condensed Sticker Reward Card -->
+    <div class="reward-card shop-style" data-title="Sticker" data-cost="100" id="sticker-reward">
+      <img id="stickerImage" src="images/avatars/penguindecal.png" alt="Sticker" class="reward-image-top">
+      <div class="reward-title center-text" id="stickerTitle">Pop-Star Penguin Sticker</div>
+      <div class="reward-desc center-text">2'' die-cut sticker</div>
+      <select id="stickerSelect" style="margin: 10px auto 10px auto; display: block; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+        <option value="penguindecal.png" data-title="Pop-Star Penguin Sticker" data-cost="100">Pop-Star Penguin</option>
+        <option value="discodecal.png" data-title="Disco Dolphin Sticker" data-cost="100">Disco Dolphin</option>
+        <option value="dumpling.png" data-title="Dancing Dumpling Sticker" data-cost="250">Dancing Dumpling</option>
+        <option value="MusicalMatcha.png" data-title="Musical Matcha Sticker" data-cost="250">Musical Matcha</option>
+        <option value="jazzyjaguar.png" data-title="Jazzy Jaguar Sticker" data-cost="250">Jazzy Jaguar</option>
+        <option value="timmysticker.png" data-title="SoupTimmy Sticker" data-cost="250">SoupTimmy</option>
+      </select>
+      <div class="price-tag" id="stickerPrice">
+        <span class='coin-icon'></span> 100
+      </div>
+    </div>
+
+
+  <div class="reward-card shop-style" data-title="Charitable Donation" data-cost="400">
+    <img src="images/donatingdove.png" alt="Charitable Donation" class="reward-image-top">
+    <div class="reward-title center-text">Charitable Donation</div>
+    <div class="reward-desc center-text">Donate $1 to St. Jude or Make-A-Wish!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      400
+    </div>
+  </div>
+
+
+  <div class="reward-card shop-style" data-title="Spotify Premium" data-cost="100" id="raffle-reward">
+    <img src="images/premium.jpg" alt="Raffle Entry" class="reward-image-top">
+    <div class="reward-title center-text" id="raffleTitle">Spotify Premium</div>
+    <div class="reward-desc center-text">Entry into raffle for a 1-Year Spotify Premium Subscription!</div>
+    <select id="raffleSelect" style="margin: 10px auto 10px auto; display: block; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+      <option value="1" data-title="1 Raffle Entry" data-cost="100">1 Entry (100 coins)</option>
+      <option value="5" data-title="5 Raffle Entries" data-cost="400">5 Entries (400 coins)</option>
+      <option value="10" data-title="10 Raffle Entries" data-cost="700">10 Entries (700 coins)</option>
+      <option value="20" data-title="20 Raffle Entries" data-cost="1200">20 Entries (1200 coins)</option>
+      <option value="50" data-title="50 Raffle Entries" data-cost="2500">50 Entries (2500 coins)</option>
+    </select>
+    <div class="price-tag" id="rafflePrice">
+      <span class="coin-icon"></span> 100
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="AirPods Max" data-cost="500" id="raffle-reward">
+    <img src="images/AIRPODSMAX.jpg" alt="AirPods Entry" class="reward-image-top">
+    <div class="reward-title center-text" id="raffleTitle">AirPods Max</div>
+    <div class="reward-desc center-text">Entry into raffle to win AirPods Max!</div>
+    <select id="raffleSelect" style="margin: 10px auto 10px auto; display: block; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+      <option value="1" data-title="1 AirPods Entry" data-cost="100">1 Entry (500 coins)</option>
+      <option value="5" data-title="5 AirPods Entries" data-cost="2000">5 Entries (2000 coins)</option>
+      <option value="10" data-title="10 AirPods Entries" data-cost="3500">10 Entries (3500 coins)</option>
+      <option value="20" data-title="20 AirPods Entries" data-cost="6000">20 Entries (6000 coins)</option>
+      <option value="50" data-title="50 AirPods Entries" data-cost="12000">50 Entries (12000 coins)</option>
+    </select>
+    <div class="price-tag" id="rafflePrice">
+      <span class="coin-icon"></span> 500
+    </div>
+  </div>
+  <div class="reward-card shop-style" data-title="Double Coins" data-cost="300" id="double-coins-reward">
+    <img src="images/doublecoins.png" alt="Double Coins" class="reward-image-top">
+    <div class="reward-title center-text">Double Coins</div>
+    <div class="reward-desc center-text">Earn double coins on all games for the next 24 hours!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      300
+    </div>
+  </div>
+
+  <div class="reward-card shop-style" data-title="Call with Colby" data-cost="5000">
+    <img src="images/avatars/colbypfp.jpeg" alt="Colby Martel" class="reward-image-top">
+    <div class="reward-title center-text">Call with Colby</div>
+    <div class="reward-desc center-text">I will guess your favorite singer on a live call!</div>
+    <div class="price-tag">
+      <span class="coin-icon"></span>
+      5000
+    </div>
+  </div>
+
+
+
+      </div>    
+  </div>
+  <div id="redeemModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Confirm Redemption</h2>
+      <p id="redeemText">Are you sure you want to redeem this reward?</p>
+      <select id="charitySelect" class="hidden" style="margin-bottom: 20px; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+        <option value="St. Jude">St. Jude</option>
+        <option value="Make-A-Wish">Make-A-Wish</option>
+      </select>      
+      <div style="margin-top: 20px;">
+        <button id="confirmRedeem" style="margin-right: 10px;">Redeem</button>
+        <button id="cancelRedeem">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="bottom-nav">
+        <a href="/index.html" class="nav-item">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="/games.html" class="nav-item">
+          <i class="fas fa-gamepad"></i>
+          <span>Games</span>
+        </a>       
+        <a href="/memory-leaderboard.html" class="nav-item">
+          <i class="fas fa-trophy"></i>
+          <span>Leaderboards</span>
+        </a>
+        <a href="/rewards.html" class="nav-item highlight">
+            <i class="fas fa-gift"></i>
+            <span>Rewards</span>
+          </a>
+          
+          <div id="alertBar" class="alert-bar hidden"></div>
+
+  </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    
+    window.onload = () => {
+      const coinEl = document.getElementById("coinTotal");
+    
+      onAuthStateChanged(auth, async (user) => {
+        if (user && coinEl) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+    
+          if (userSnap.exists()) {
+            const data = userSnap.data();
+            const coins = data.coins || 0;
+            coinEl.textContent = coins;
+            updateLockedRewards(coins);
+          } else {
+            coinEl.textContent = "0";
+            updateLockedRewards(0);
+          }
+        } else if (coinEl) {
+          coinEl.textContent = "0";
+          updateLockedRewards(0);
+        }
+      });
+    };
+    import { updateDoc, increment, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+let selectedReward = null;
+
+  document.querySelectorAll('.price-tag').forEach(priceTag => {
+    priceTag.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const card = priceTag.closest('.reward-card');
+      if (!card || card.classList.contains('disabled-reward') || card.classList.contains('locked')) return;
+      // For sticker reward, use the selected sticker info
+      if (card.id === 'sticker-reward') {
+        const stickerSelect = document.getElementById('stickerSelect');
+        const selected = stickerSelect.options[stickerSelect.selectedIndex];
+        selectedReward = {
+          title: selected.getAttribute('data-title'),
+          coinCost: parseInt(selected.getAttribute('data-cost')),
+          image: selected.value
+        };
+        document.getElementById('charitySelect').classList.add('hidden');
+        document.getElementById('redeemText').textContent = `Redeem \"${selectedReward.title}\" for ${selectedReward.coinCost} coins?`;
+        document.getElementById('redeemModal').classList.remove('hidden');
+        return;
+      }
+      // For donation, show charity select
+      if (card.dataset.title === 'Charitable Donation') {
+        document.getElementById('charitySelect').classList.remove('hidden');
+      } else {
+        document.getElementById('charitySelect').classList.add('hidden');
+      }
+      selectedReward = {
+        title: card.dataset.title,
+        coinCost: parseInt(card.dataset.cost)
+      };
+      document.getElementById('redeemText').textContent = `Redeem \"${selectedReward.title}\" for ${selectedReward.coinCost} coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
+  });
+
+  document.getElementById('cancelRedeem').addEventListener('click', () => {
+    document.getElementById('redeemModal').classList.add('hidden');
+    document.getElementById('charitySelect').classList.add('hidden');
+  });
+
+  document.getElementById('confirmRedeem').addEventListener('click', async () => {
+    if (!auth.currentUser || !selectedReward) {
+      showAlert("⚠️ Please log in to redeem.", "#f39c12");
+      return;
+    }
+    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    const currentCoins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
+    if (currentCoins < selectedReward.coinCost) {
+      showAlert("⚠️ Not enough coins to redeem.", "#c0392b");
+      document.getElementById('redeemModal').classList.add('hidden');
+      return;
+    }
+    let charity = null;
+    if (selectedReward.title === 'Charitable Donation') {
+      charity = document.getElementById('charitySelect').value;
+    }
+    if (selectedReward.title && selectedReward.title.includes('Double Coins')) {
+      // Check if user already has an active double coins boost
+      const userData = userSnap.data();
+      if (userData.doubleCoinsUntil && Date.now() < userData.doubleCoinsUntil) {
+        const remainingTime = Math.ceil((userData.doubleCoinsUntil - Date.now()) / (1000 * 60 * 60));
+        showAlert(`⚠️ Double Coins already active! ${remainingTime} hours remaining.`, "#f39c12");
+        document.getElementById('redeemModal').classList.add('hidden');
+        document.getElementById('charitySelect').classList.add('hidden');
+        return;
+      }
+      // Set doubleCoinsUntil to 24 hours from now
+      const now = Date.now();
+      const doubleUntil = now + 24 * 60 * 60 * 1000;
+      await updateDoc(userRef, {
+        coins: increment(-300),
+        doubleCoinsUntil: doubleUntil
+      });
+      await addDoc(collection(db, "redemptions"), {
+        uid: auth.currentUser.uid,
+        reward: selectedReward.title,
+        cost: 300,
+        timestamp: serverTimestamp(),
+        email: auth.currentUser.email || "N/A"
+      });
+      document.getElementById('coinTotal').textContent = currentCoins - 300;
+      showAlert("⚡ Double Coins activated for 24 hours!", "#28a745");
+      document.getElementById('redeemModal').classList.add('hidden');
+      document.getElementById('charitySelect').classList.add('hidden');
+      return;
+    }
+    // Default: normal reward logic
+    await updateDoc(userRef, {
+      coins: increment(-selectedReward.coinCost)
+    });
+    await addDoc(collection(db, "redemptions"), {
+      uid: auth.currentUser.uid,
+      reward: selectedReward.title,
+      cost: selectedReward.coinCost,
+      timestamp: serverTimestamp(),
+      email: auth.currentUser.email || "N/A",
+      charity: charity
+    });
+    document.getElementById('coinTotal').textContent = currentCoins - selectedReward.coinCost;
+    showAlert(`🎉 Redeemed: ${selectedReward.title}${charity ? ` to ${charity}` : ''}!`, "#28a745");
+    document.getElementById('redeemModal').classList.add('hidden');
+    document.getElementById('charitySelect').classList.add('hidden');
+  });
+
+  // Add logic to handle Double Coins reward
+  const doubleCoinsReward = document.getElementById('double-coins-reward');
+  if (doubleCoinsReward) {
+    doubleCoinsReward.addEventListener('click', () => {
+      selectedReward = { title: 'Double Coins (24 Hours)', coinCost: 300 };
+      document.getElementById('charitySelect').classList.add('hidden');
+      document.getElementById('redeemText').textContent = `Redeem "Double Coins (24 Hours)" for 300 coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
+  }
+
+  // Sticker dropdown logic
+  const stickerSelect = document.getElementById('stickerSelect');
+  if (stickerSelect) {
+    const stickerImage = document.getElementById('stickerImage');
+    const stickerTitle = document.getElementById('stickerTitle');
+    const stickerPrice = document.getElementById('stickerPrice');
+    let currentSticker = {
+      title: stickerSelect.options[stickerSelect.selectedIndex].getAttribute('data-title'),
+      cost: parseInt(stickerSelect.options[stickerSelect.selectedIndex].getAttribute('data-cost')),
+      image: stickerSelect.value
+    };
+    stickerSelect.addEventListener('change', function() {
+      const selected = stickerSelect.options[stickerSelect.selectedIndex];
+      stickerImage.src = 'images/avatars/' + selected.value;
+      stickerTitle.textContent = selected.getAttribute('data-title');
+      stickerPrice.innerHTML = `<span class='coin-icon'></span> ${selected.getAttribute('data-cost')}`;
+      currentSticker = {
+        title: selected.getAttribute('data-title'),
+        cost: parseInt(selected.getAttribute('data-cost')),
+        image: selected.value
+      };
+    });
+    // Only open redeem modal if price tag is clicked
+    stickerPrice.addEventListener('click', function(e) {
+      e.stopPropagation();
+      selectedReward = { title: currentSticker.title, coinCost: currentSticker.cost, image: currentSticker.image };
+      document.getElementById('charitySelect').classList.add('hidden');
+      document.getElementById('redeemText').textContent = `Redeem \"${currentSticker.title}\" for ${currentSticker.cost} coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
+  }
+
+  // Raffle dropdown logic
+  const raffleSelect = document.getElementById('raffleSelect');
+  if (raffleSelect) {
+    const raffleTitle = document.getElementById('raffleTitle');
+    const rafflePrice = document.getElementById('rafflePrice');
+    let currentRaffle = {
+      title: raffleSelect.options[raffleSelect.selectedIndex].getAttribute('data-title'),
+      cost: parseInt(raffleSelect.options[raffleSelect.selectedIndex].getAttribute('data-cost')),
+      entries: parseInt(raffleSelect.value)
+    };
+    raffleSelect.addEventListener('change', function() {
+      const selected = raffleSelect.options[raffleSelect.selectedIndex];
+      raffleTitle.textContent = selected.getAttribute('data-title');
+      rafflePrice.innerHTML = `<span class='coin-icon'></span> ${selected.getAttribute('data-cost')}`;
+      currentRaffle = {
+        title: selected.getAttribute('data-title'),
+        cost: parseInt(selected.getAttribute('data-cost')),
+        entries: parseInt(selected.value)
+      };
+    });
+    // Only open redeem modal if price tag is clicked
+    rafflePrice.addEventListener('click', function(e) {
+      e.stopPropagation();
+      selectedReward = { title: currentRaffle.title, coinCost: currentRaffle.cost, entries: currentRaffle.entries };
+      document.getElementById('charitySelect').classList.add('hidden');
+      document.getElementById('redeemText').textContent = `Redeem \"${currentRaffle.title}\" for ${currentRaffle.cost} coins?`;
+      document.getElementById('redeemModal').classList.remove('hidden');
+    });
+  }
+
+function showAlert(message, color = "#1e2b38") {
+  const alertBar = document.getElementById("alertBar");
+  alertBar.textContent = message;
+  alertBar.style.backgroundColor = color;
+  alertBar.classList.remove("hidden");
+
+  setTimeout(() => {
+    alertBar.classList.add("hidden");
+  }, 3000);
+}
+
+    </script>
+    
+  <script>
+    function toggleMenu(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('show');
+    }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.querySelector('.hamburger');
+      if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove('show');
+      }
+    });
+
+    function showUserProfile() {
+      if (window.firebaseAuth && window.firebaseAuth.currentUser) {
+        window.location.href = '/profile.html';
+      } else if (window.auth && window.auth.currentUser) {
+        window.location.href = '/profile.html';
+      } else {
+        window.location.href = '/login.html';
+      }
+    }
+
+    // Make sure firebaseAuth is set for compatibility
+    window.firebaseAuth = window.firebaseAuth || window.auth;
+
+    // After coins are loaded, lock cards if needed
+    function updateLockedRewards(userCoins) {
+      document.querySelectorAll('.reward-card').forEach(card => {
+        const price = parseInt(card.dataset.cost);
+        let overlay = card.querySelector('.locked-overlay');
+        const priceTag = card.querySelector('.price-tag');
+        if (userCoins < price) {
+          card.classList.add('locked');
+          if (priceTag) {
+            priceTag.classList.add('locked');
+            const icon = priceTag.querySelector('.coin-icon, .fa-lock');
+            if (!icon || !icon.classList.contains('fa-lock')) {
+              if (icon) icon.outerHTML = "<i class='fas fa-lock'></i>";
+            }
+          }
+          if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'locked-overlay';
+            overlay.innerHTML = `<span style='font-size:0.98em;'></span>`;
+            card.appendChild(overlay);
+          }
+          overlay.querySelector('span').textContent = `Need ${price - userCoins} more coins`;
+          overlay.style.display = 'flex';
+        } else {
+          card.classList.remove('locked');
+          if (priceTag) {
+            priceTag.classList.remove('locked');
+            const icon = priceTag.querySelector('.fa-lock');
+            if (icon) icon.outerHTML = "<span class='coin-icon'></span>";
+          }
+          if (overlay) overlay.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

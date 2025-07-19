@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spell the Singer</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: #e7f1f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    nav {
+      width: 100%;
+      margin: 0;
+      padding: 15px 30px;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      flex-wrap: wrap;
+      box-sizing: border-box;
+    }
+
+    .nav-links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .nav-links a:hover {
+      color: #ffcb05;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .search-bar {
+      padding: 8px 16px 8px 36px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      background: white;
+      color: #315f85;
+      font-size: 0.95rem;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: 12px center;
+    }
+
+    .search-bar::placeholder {
+      color: #888;
+    }
+
+    .login-btn {
+      background-color: #ffcb05;
+      border: none;
+      padding: 8px 16px;
+      height: 40px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #1e2b38;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .login-btn:hover {
+      background-color: #e6b800;
+      transform: translateY(-1px);
+    }
+    .container {
+      margin-top: 40px;
+      max-width: 600px;
+      width: 100%;
+    }
+    #blanks {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      word-spacing: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .blank-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .blank-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 5px 0;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .blank {
+      width: 40px;
+      height: 50px;
+      border: 2px solid #315f85;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      background: white;
+      color: #315f85;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      #blanks {
+        font-size: 1.5rem;
+        padding: 0 5px;
+      }
+      .blank {
+        width: 35px;
+        height: 45px;
+        font-size: 1.2rem;
+      }
+      .blank-row {
+        gap: 5px;
+      }
+    }
+    .guess-input {
+      padding: 10px;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    .btn-row {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px 0;
+      align-items: center;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffcb05;
+      color: #1e2b38;
+      border: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #ffd84d;
+    }
+    
+    .play-button,
+.share-button {
+  height: 50px;
+  padding: 0 25px;
+  font-size: 18px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.play-button,
+.share-button {
+  min-width: 160px;
+}
+
+    .play-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      background: linear-gradient(135deg, #3ba4f1, #315f85);
+    }
+
+    .play-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .play-button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+
+    .share-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      background: linear-gradient(135deg, #45a049, #4CAF50);
+    }
+
+    .share-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .play-button i,
+.share-button i {
+  vertical-align: middle;
+  display: inline-block;
+  line-height: 1;
+}
+
+    #play-again {
+      display: none;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .stats {
+      font-size: 1.2rem;
+      margin-bottom: 35px;
+      color: #315f85;
+    }
+    .message {
+      font-size: 1.2rem;
+      color: #28a745;
+      margin-top: 20px;
+    }
+    .emoji {
+      font-size: 2rem;
+      margin-top: 20px;
+    }
+
+    .bee-image {
+      width: 200px;
+      height: auto;
+      margin: 20px auto;
+      display: block;
+    }
+
+    @media (max-width: 480px) {
+      .bee-image {
+        width: 150px;
+      }
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+    }
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+    .dropdown.show {
+      display: flex;
+    }
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .coin-gain {
+      color: #27ae60;
+      font-weight: bold;
+      font-size: 16px;
+      margin-left: 4px;
+      opacity: 0;
+      transform: translateY(0px);
+      transition: all 0.6s ease-out;
+    }
+    .coin-gain.animate {
+      opacity: 1;
+      transform: translateY(-10px);
+    }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      right: 15px;
+      top: 80px;
+      background-color: #1e2b38;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      width: max-content;
+      margin-top: 40px;
+
+    }
+    .mobile-menu a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 0;
+      font-weight: bold;
+      width: 100%;
+    }
+    .mobile-menu.show {
+      display: flex;
+    }
+    .hamburger {
+      display: block;
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      animation: fadeDown 1s ease-out;
+      width: 100%;
+    }
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+
+    /* Responsive Logo */
+    @media (max-width: 768px) {
+      .header .logo img {
+        width: 60%;
+        padding: 0px;
+      }
+      .header{
+        height: 35px;
+      }
+    }
+
+    .leaderboard-dropdown {
+      position: relative;
+      display: inline-block;
+      margin: 20px 0;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .leaderboard-dropdown select {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 2px solid #315f85;
+      border-radius: 8px;
+      background-color: white;
+      color: #315f85;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23315f85' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .leaderboard-dropdown select:hover {
+      border-color: #3ba4f1;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .leaderboard-dropdown select:focus {
+      outline: none;
+      border-color: #3ba4f1;
+      box-shadow: 0 0 0 3px rgba(59,164,241,0.2);
+    }
+
+    .leaderboard-dropdown select option {
+      padding: 10px;
+      font-size: 16px;
+      background-color: white;
+      color: #315f85;
+    }
+
+    .leaderboard-dropdown select option:hover {
+      background-color: #f0f7ff;
+    }
+
+    .option:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <a href="/index.html">
+            <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
+          </a>
+        </div>
+        
+    </header>
+    <nav style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <div class="welcome-nav" style="position: relative;">
+            <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer;">Welcome</div>
+            <div id="dropdownMenu" class="dropdown"></div>
+          </div>
+      
+          <!-- Coin Display aligned next to Welcome -->
+          <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
+            <div class="coin-emoji"></div>
+            <span id="coinCount" style="font-weight: bold;">0</span>
+            <span id="coinGain" class="coin-gain hidden">+10</span>
+          </div>
+        </div>
+      
+        <!-- Hamburger menu on far right -->
+        <div class="hamburger" id="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+      
+      <div id="mobileMenu" class="mobile-menu hidden">
+        <a href="/profile.html" class="nav-item">
+          <i class="fas fa-user"></i>
+          <span>My Profile</span>
+        </a>
+        <a href="/about.html">About</a>
+      </div>
+      
+
+  <div class="container">
+    <h1 class="game-title">Spell the Singer</h1>
+    <div class="stats">
+      Time Left: <span id="timer">100</span> | High Score: <span id="highscore">0</span> | Correct: <span id="correctCount">0</span>/5
+    </div>
+    <div id="blanks"></div>
+    <input type="text" id="guessInput" class="guess-input" placeholder="Guess the singer..." style="display: none;">
+    <div class="btn-row">
+      <button id="start-game" onclick="startGame()">Start Game</button>
+      <button id="submit-guess" onclick="submitGuess()" style="display: none;">Submit Guess</button>
+      <button id="play-again" class="play-button" onclick="startGame()" style="display: none;">
+        <i class="fas fa-redo-alt"></i> Play Again
+      </button>
+      <button id="share-score" class="play-button" onclick="shareScore()" style="background: linear-gradient(135deg, #4CAF50, #45a049); display: none;">
+        <i class="fas fa-share-alt"></i> Share Score
+      </button>
+    </div>
+    <div id="message" class="message"></div>
+    <img src="images/beatboxbee.png" alt="Beatbox Bee" class="bee-image">
+  </div>
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, getDocs, query, where, doc, getDoc, updateDoc, setDoc, addDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+
+    const welcomeEl = document.getElementById('welcomeMessage');
+    const coinDisplayEl = document.getElementById('coinCount');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        let username = "User";
+        let coins = 0;
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.username) username = data.username;
+            if (data.coins !== undefined) coins = data.coins;
+          });
+          welcomeEl.textContent = `Welcome, ${username}`;
+          if (coinDisplayEl) coinDisplayEl.textContent = coins;
+          dropdownMenu.innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="#" id="logoutBtn">Log Out</a>
+          `;
+          setTimeout(() => {
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+              logoutBtn.addEventListener("click", async (e) => {
+                e.preventDefault();
+                try {
+                  await signOut(auth);
+                  location.reload();
+                } catch (err) {
+                  console.error("Logout failed:", err);
+                }
+              });
+            }
+          }, 0);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+        if (coinDisplayEl) coinDisplayEl.textContent = "0";
+      }
+    });
+
+    const singers = [
+      "Adele", "Taylor Swift", "Bruno Mars", "Ed Sheeran", "Lady Gaga", "Justin Bieber", "Beyonce",
+      "Rihanna", "Harry Styles", "Ariana Grande", "Billie Eilish", "Sam Smith", "Dua Lipa", "Shawn Mendes",
+      "Camila Cabello", "Selena Gomez", "Katy Perry", "Nicki Minaj", "Doja Cat", "Post Malone", "Olivia Rodrigo",
+      "The Weeknd", "Drake", "Lizzo", "Miley Cyrus", "Halsey", "SZA", "Frank Ocean", "Charlie Puth",
+      "Jennifer Lopez", "Kelly Clarkson", "Jason Derulo", "Zayn Malik", "Liam Payne", "Louis Tomlinson",
+      "Niall Horan", "Avril Lavigne", "Britney Spears", "Mariah Carey", "Alicia Keys", "John Legend",
+      "Elton John", "Stevie Wonder", "Aretha Franklin", "Whitney Houston", "Celine Dion", "Michael Bublé",
+      "Eminem", "50 Cent", "Kendrick Lamar", "Travis Scott", "Tyler the Creator", "Ice Spice", "Flo Rida",
+      "Pitbull", "Sia", "Adam Levine", "Chris Brown", "Tinashe", "Lana Del Rey", "Lorde", "Troye Sivan",
+      "Tove Lo", "Becky G", "Anitta", "Karol G", "Bad Bunny", "Rosalia", "J Balvin", "Shakira",
+      "Ricky Martin", "Luis Fonsi", "Paul McCartney", "Mick Jagger", "Freddie Mercury", "David Bowie",
+      "George Michael", "Elvis Presley", "Prince", "Billy Joel", "Bob Dylan", "James Taylor", "Phil Collins",
+      "Jon Bon Jovi", "Sting", "Meghan Trainor", "Ava Max", "Bebe Rexha", "Madison Beer", "Jennie", "Rosé", "Alex Warren",
+      "Tate McRae", "Noah Cyrus", "Hailee Steinfeld", "Victoria Monét", "Conan Gray", "Hozier", "J Cole", "Lil Wayne", "Lil Nas X",
+      "Megan Thee Stallion", "Ice Cube", "Cardi B", "A$AP Rocky", "Future", "Jack Harlow", "Diana Ross", "Barbra Streisand", "Tina Turner",
+"Michael Jackson", "Bruce Springsteen", "Cher", "Burna Boy", "Rauw Alejandro"
+    ];
+
+    let currentSinger = "";
+    let revealedLetters = [];
+    let correctCount = 0;
+    let timeLeft = 100;
+    let timerInterval, revealInterval;
+    let singerQueue = [];
+    let highScore = localStorage.getItem('spellSingerHighScore') || 0;
+    document.getElementById('highscore').textContent = highScore;
+    let score = 0;
+    let lives = 3;
+    let coins = 0;
+    let letterRevealInterval;
+
+    function shuffle(array) {
+      return array.sort(() => 0.5 - Math.random());
+    }
+    // Named function for Enter key handler so we can remove it
+    function handleEnterKey(event) {
+      if (event.key === 'Enter') {
+        submitGuess();
+      }
+    }
+
+    function startGame() {
+      score = 0;
+      lives = 3;
+      coins = 0;
+      updateStats();
+      singerQueue = shuffle([...singers]);
+      correctCount = 0;
+      timeLeft = 100;
+      currentSinger = ''; // Reset current singer
+      revealedLetters = []; // Reset revealed letters
+      document.getElementById('correctCount').textContent = correctCount;
+      document.getElementById('timer').textContent = timeLeft;
+      
+      // Show/hide appropriate buttons
+      document.getElementById('start-game').style.display = 'none';
+      document.getElementById('submit-guess').style.display = 'inline-block';
+      document.getElementById('play-again').style.display = 'none';
+      document.getElementById('share-score').style.display = 'none';
+      document.getElementById('guessInput').style.display = 'inline-block';
+      
+      // Clear any existing message and reset the message element
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = '';
+      messageEl.className = 'message';
+      
+      clearInterval(timerInterval);
+      clearInterval(revealInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+      loadNextSinger();
+
+      // Remove any existing event listener and add new one
+      const guessInput = document.getElementById('guessInput');
+      guessInput.removeEventListener('keypress', handleEnterKey);
+      guessInput.addEventListener('keypress', handleEnterKey);
+    }
+
+    function loadNextSinger() {
+      if (singerQueue.length === 0) {
+        singerQueue = shuffle([...singers]);
+      }
+      currentSinger = singerQueue.shift().toUpperCase();
+      revealedLetters = currentSinger.split('').map(char => char === ' ' ? ' ' : '_');
+      updateBlanks();
+      clearInterval(revealInterval);
+      let unrevealedIndices = currentSinger.split('').map((_, i) => i).filter(i => currentSinger[i] !== ' ');
+
+      revealInterval = setInterval(() => {
+        if (unrevealedIndices.length === 0) return;
+        const randIndex = unrevealedIndices.splice(Math.floor(Math.random() * unrevealedIndices.length), 1)[0];
+        revealedLetters[randIndex] = currentSinger[randIndex];
+        updateBlanks();
+      }, 2000);
+    }
+
+    function updateBlanks() {
+      const blanksDiv = document.getElementById('blanks');
+      blanksDiv.innerHTML = '';
+      blanksDiv.style.cssText = `
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 0 10px;
+      `;
+      
+      // Split the name into words
+      const words = currentSinger.split(' ');
+      
+      // Calculate width needed for each word
+      const letterWidth = window.innerWidth <= 480 ? 30 : 34; // Smaller width on mobile
+      const maxWidth = window.innerWidth - 40; // Account for padding
+      const maxLettersPerRow = Math.floor(maxWidth / letterWidth);
+      
+      // Group words into rows
+      let currentRow = [];
+      let currentRowLength = 0;
+      const rows = [];
+      
+      words.forEach(word => {
+        const wordLength = word.length;
+        
+        // If adding this word would exceed max width, start a new row
+        if (currentRowLength + wordLength > maxLettersPerRow) {
+          if (currentRow.length > 0) {
+            rows.push([...currentRow]);
+            currentRow = [];
+            currentRowLength = 0;
+          }
+          // If a single word is too long, split it into its own row
+          if (wordLength > maxLettersPerRow) {
+            rows.push([word]);
+            return;
+          }
+        }
+        
+        currentRow.push(word);
+        currentRowLength += wordLength + 1; // +1 for space between words
+      });
+      
+      // Add the last row if it has any words
+      if (currentRow.length > 0) {
+        rows.push(currentRow);
+      }
+      
+      // Create rows
+      let currentIndex = 0;
+      rows.forEach(rowWords => {
+        const wordRow = document.createElement('div');
+        wordRow.style.cssText = `
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 10px;
+          flex-wrap: nowrap;
+          width: 100%;
+        `;
+        
+        rowWords.forEach((word, wordIndex) => {
+          // Add each letter of the word
+          for (let i = 0; i < word.length; i++) {
+            const letterSpan = document.createElement('span');
+            letterSpan.style.cssText = `
+              display: inline-block;
+              width: ${window.innerWidth <= 480 ? '24px' : '28px'};
+              height: ${window.innerWidth <= 480 ? '40px' : '50px'};
+              margin: ${window.innerWidth <= 480 ? '3px' : '5px'};
+              background-color: #ffffff;
+              border: 2px solid #315f85;
+              border-radius: 6px;
+              font-size: ${window.innerWidth <= 480 ? '1.2rem' : '1.4rem'};
+              font-weight: bold;
+              line-height: ${window.innerWidth <= 480 ? '40px' : '50px'};
+              text-align: center;
+              vertical-align: middle;
+              color: #315f85;
+            `;
+            
+            // Skip spaces in revealedLetters when they appear
+            while (currentIndex < revealedLetters.length && revealedLetters[currentIndex] === ' ') {
+              currentIndex++;
+            }
+            
+            const letter = revealedLetters[currentIndex];
+            letterSpan.textContent = letter === '_' ? '' : letter;
+            currentIndex++;
+            
+            wordRow.appendChild(letterSpan);
+          }
+          
+          // Add space between words (except after last word)
+          if (wordIndex < rowWords.length - 1) {
+            const spaceSpan = document.createElement('span');
+            spaceSpan.style.cssText = `
+              display: inline-block;
+              width: ${window.innerWidth <= 480 ? '12px' : '20px'};
+              height: ${window.innerWidth <= 480 ? '40px' : '50px'};
+            `;
+            wordRow.appendChild(spaceSpan);
+            // Skip the space in revealedLetters
+            while (currentIndex < revealedLetters.length && revealedLetters[currentIndex] === ' ') {
+              currentIndex++;
+            }
+          }
+        });
+        
+        blanksDiv.appendChild(wordRow);
+      });
+    }
+
+    function normalizeText(text) {
+      return text.normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-zA-Z0-9\s]/g, '') // Remove any remaining special characters
+        .toUpperCase();
+    }
+
+    function submitGuess() {
+      const guess = normalizeText(document.getElementById('guessInput').value.trim());
+      const normalizedSinger = normalizeText(currentSinger);
+      document.getElementById('guessInput').value = '';
+      
+      if (guess === normalizedSinger) {
+        document.getElementById('message').textContent = '✅ Correct!';
+        correctCount++;
+        document.getElementById('correctCount').textContent = correctCount;
+        if (correctCount >= 5) {
+          endGame(true);
+        } else {
+          setTimeout(() => {
+            document.getElementById('message').textContent = '';
+            loadNextSinger();
+          }, 1000);
+        }
+      } else {
+        document.getElementById('message').textContent = '❌ Incorrect. Try again!';
+        setTimeout(() => {
+          if (document.getElementById('message').textContent === '❌ Incorrect. Try again!') {
+            document.getElementById('message').textContent = '';
+          }
+        }, 2000);
+      }
+    }
+    async function endGame(won) {
+      clearInterval(timerInterval);
+      clearInterval(revealInterval);
+
+      const score = won ? timeLeft : 0;
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = won 
+        ? `🎉 You win! Score: ${score}` 
+        : '⏰ Time is up!';
+
+      if (score > highScore) {
+        localStorage.setItem('spellSingerHighScore', score);
+        document.getElementById('highscore').textContent = score;
+      }
+
+      // Hide submit button and show play again
+      document.getElementById('submit-guess').style.display = 'none';
+      document.getElementById('play-again').style.display = 'inline-block';
+      document.getElementById('share-score').style.display = 'inline-block';
+      document.getElementById('guessInput').style.display = 'none';
+
+      // Award coins based on score
+      let coinsEarned = score >= 50 ? 10 : (score > 0 ? 5 : 0);
+
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+
+          if (userSnap.exists()) {
+            // Double coins if boost is active
+            const data = userSnap.data();
+            if (data.doubleCoinsUntil && Date.now() < data.doubleCoinsUntil) {
+              coinsEarned *= 2;
+            }
+            const currentCoins = data.coins || 0;
+            const newCoinAmount = currentCoins + coinsEarned;
+
+            await updateDoc(userRef, { coins: newCoinAmount });
+
+            // Animate coin gain
+            const gainEl = document.getElementById("coinGain");
+            const countEl = document.getElementById("coinCount");
+            if (coinsEarned > 0) {
+              gainEl.textContent = `+${coinsEarned}`;
+              gainEl.classList.add("animate");
+              if (countEl) countEl.textContent = newCoinAmount;
+              setTimeout(() => {
+                gainEl.classList.remove("animate");
+              }, 1500);
+            }
+            // Immediately update coin display
+            if (countEl) countEl.textContent = newCoinAmount;
+          }
+
+          // Leaderboard entry
+          const scoreEntry = {
+            uid: user.uid,
+            score: score,
+            timestamp: new Date(),
+            username: user.displayName || "Anonymous",
+            email: user.email,
+            city: "", // optionally replace with user.city
+          };
+
+          await addDoc(collection(db, "spellingScores"), scoreEntry);
+
+          const bestRef = doc(db, "spellingBests", user.uid);
+          const bestSnap = await getDoc(bestRef);
+
+          if (!bestSnap.exists() || bestSnap.data().score < score) {
+            await setDoc(bestRef, scoreEntry);
+          }
+        }
+      } catch (error) {
+        console.error("Error awarding coins or updating leaderboard:", error);
+      }
+    }
+
+    function updateStats() {
+      const scoreElement = document.getElementById('score');
+      const livesElement = document.getElementById('lives');
+      const coinsElement = document.getElementById('coins');
+      if (scoreElement) scoreElement.textContent = `Score: ${score}`;
+      if (livesElement) livesElement.textContent = `Lives: ${lives}`;
+      if (coinsElement) coinsElement.textContent = `Coins: ${coins}`;
+    }
+
+    function shareScore() {
+      const score = document.getElementById('timer').textContent;
+      const shareText = `I just scored ${score} in Spell the Singer 🐝. Try here: ${window.location.href}`;
+      
+      navigator.clipboard.writeText(shareText).then(() => {
+        const messageEl = document.getElementById('message');
+        messageEl.textContent = 'Score copied to clipboard!';
+        setTimeout(() => {
+          if (messageEl.textContent === 'Score copied to clipboard!') {
+            messageEl.textContent = '';
+          }
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+      });
+    }
+
+    window.startGame = startGame;
+    window.submitGuess = submitGuess;
+    window.shareScore = shareScore;
+
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (hamburger) {
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("show");
+      });
+    }
+
+    window.addEventListener("click", (e) => {
+      const isClickInsideMenu = mobileMenu.contains(e.target);
+      const isClickOnHamburger = hamburger.contains(e.target);
+
+      if (!isClickInsideMenu && !isClickOnHamburger) {
+        mobileMenu.classList.remove("show");
+      }
+    });
+  </script>
+</body>
+</html>
