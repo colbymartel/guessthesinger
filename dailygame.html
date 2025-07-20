@@ -31,12 +31,13 @@
     }
     nav {
       background-color: #1e2b38;
-      padding: 15px 30px;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: white;
       width: 100%;
+      box-sizing: border-box;
     }
     .nav-links a {
       color: white;
@@ -47,37 +48,7 @@
     .nav-links a:hover {
       color: #ffcb05;
     }
-    .hamburger {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: white;
-    }
-    .mobile-menu {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      right: 15px;
-      top: 70px;
-      background-color: #1e2b38;
-      padding: 10px 20px;
-      border-radius: 10px;
-      z-index: 1000;
-      width: max-content;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    .mobile-menu a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 0;
-      font-weight: bold;
-    }
-    .mobile-menu a:hover {
-      color: #ffcb05;
-    }
-    .mobile-menu.show {
-      display: flex;
-    }
+
     .progress-bar {
       height: 12px;
       background: #ccc;
@@ -98,6 +69,7 @@
       border-radius: 16px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       text-align: center;
+      box-sizing: border-box;
     }
     .question {
       font-size: 1.6rem;
@@ -153,14 +125,7 @@
     .buttons button:hover {
       background: #357ab8;
     }
-    @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-      }
-      .hamburger {
-        display: block;
-      }
-    }
+
     .option.correct {
   background-color: #28a745 !important;
   border-color: #28a745;
@@ -335,24 +300,14 @@
         <span id="coinGain" class="coin-gain hidden">+10</span>
       </div>
     </div>
-    <!-- Instructions and hamburger menu on far right -->
-    <div style="display: flex; align-items: center; gap: 15px;">
+    <!-- Instructions icon on far right -->
+    <div style="display: flex; align-items: center;">
       <div class="instructions-icon" id="instructionsIcon" style="cursor: pointer; color: #ffcb05; font-size: 1.2rem;">
         <i class="fas fa-lightbulb"></i>
       </div>
-      <div class="hamburger" id="hamburger">
-        <i class="fas fa-bars"></i>
-      </div>
     </div>
   </nav>
-  <div id="mobileMenu" class="mobile-menu hidden">
-    <a href="/profile.html" class="nav-item">
-      <i class="fas fa-user"></i>
-      <span>My Profile</span>
-    </a>
-    <a href="#" id="infoIcon">Game Rules</a>
-    <a href="/about.html">About</a>
-  </div>
+
 
   <div class="progress-bar"><div class="progress" id="progress"></div></div>
   <div class="container" id="quizContainer"></div>
@@ -430,15 +385,9 @@
   </div>
 
   <script>
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
     const instructionsIcon = document.getElementById("instructionsIcon");
     const instructionsModal = document.getElementById("instructionsModal");
     const closeInstructions = document.getElementById("closeInstructions");
-    
-    hamburger.addEventListener("click", () => {
-      mobileMenu.classList.toggle("show");
-    });
     
     // Instructions modal functionality
     instructionsIcon.addEventListener("click", () => {
@@ -559,7 +508,7 @@
           <div class="start-date">August 1, 2025 - Game #1</div>
           <img src="images/carson.jpg" alt="Carson" class="start-img" />
           <div class="start-description">
-            Guess Carson's favorite singer and donate $0.01 to Team Water! Every game completion helps provide clean water to those in need.
+            Guess Carson's favorite singer and donate $0.01 to Team Water!
           </div>
           <button class="start-btn" onclick="startQuiz()">
             <i class="fas fa-play" style="margin-right: 8px;"></i>
@@ -613,8 +562,7 @@
         </div>`;
       }).join('') + `</div>`;
 
-      // Guess, Next, Back buttons
-      const guessDisabled = selected ? '' : 'disabled';
+      // Next, Back buttons
       const nextDisabled = (current < questions.length) ? '' : 'disabled';
       let backBtnHtml = '';
       if (current === 0) {
@@ -625,7 +573,6 @@
       const buttons = `
         <div class="button-row">
           ${backBtnHtml}
-          <button id="guessBtn" class="guess-btn" ${guessDisabled} onclick="guessAnswer()">Guess</button>
           <button id="nextBtn" class="nav-btn" ${nextDisabled} onclick="goNext()">Next</button>
         </div>
       `;
@@ -669,30 +616,24 @@
 
     window.selectOption = function(el) {
       const label = el.querySelector('.option-label').innerText;
+      const correct = questions[current].correct;
       let userAnswer = userAnswers[current] || { guesses: [] };
+      
+      // Check if this option was already guessed
+      const existingGuess = userAnswer.guesses.find(g => g.option === label);
+      if (!existingGuess) {
+        // Add new guess
+        userAnswer.guesses.push({ option: label, isCorrect: correct.includes(label) });
+        totalGuesses++; // Increment total guesses
+        updateGuessCounter(); // Update the display
+      }
+      
       userAnswer.selected = label;
       userAnswers[current] = userAnswer;
       renderQuestion();
-      // Enable guess button
-      document.getElementById('guessBtn').disabled = false;
     }
 
-    window.guessAnswer = function() {
-      const selectedEl = document.querySelector('.option-card.selected');
-      if (!selectedEl) return;
-      const answer = selectedEl.querySelector('.option-label').innerText;
-      const correct = questions[current].correct;
-      let userAnswer = userAnswers[current] || { guesses: [] };
-      // Only add guess if not already guessed
-      if (!userAnswer.guesses.some(g => g.option === answer)) {
-  userAnswer.guesses.push({ option: answer, isCorrect: correct.includes(answer) });
-  totalGuesses++; // Increment total guesses
-  updateGuessCounter(); // Update the display
-}
-      userAnswer.selected = answer;
-      userAnswers[current] = userAnswer;
-      renderQuestion();
-    }
+
 
     function updateGuessCounter() {
       const totalGuessesEl = document.getElementById('totalGuessesDisplay');
@@ -761,12 +702,10 @@
       
       // Generate hint display content for all unlocked hints
       const hints = {
-        1: "💡 This artist is known for writing raw, emotional songs about heartbreak, self-reflection, and growing up.",
-        2: "💡 She rose to fame through viral performances on YouTube and TikTok, later landing spots on Billboard charts.",
-        3: "💡 She started as a dancer and was a finalist on “So You Think You Can Dance” at just 13 years old.",
-        4: "💡 She is currently dating a famous singer from Australia.",
-        5: "💡 Her name starts with T.",
-        6: "💡 Her most popular songs are 'greedy' and 'you broke me first'."
+        1: "💡 She started as a dancer and was a finalist on “So You Think You Can Dance” at just 13 years old.",
+        2: "💡 She is currently dating a famous singer from Australia.",
+        3: "💡 Her name starts with T.",
+        4: "💡 Her most popular songs are 'greedy' and 'you broke me first'."
       };
       
       // Get the currently displayed hint from session storage
@@ -787,55 +726,54 @@
       container.innerHTML = `
         <div class="question-prompt">Need a hint?</div>
         <div class="hint-info">Hints unlock after every 3 guesses. You've made ${totalGuesses} guesses so far.</div>
+        
         <div class="hint-boxes">
           <div class="hint-box ${unlockedHints.includes(1) ? (currentlyDisplayedHint == 1 ? 'unlocked currently-showing' : 'unlocked') : (availableHints >= 1 ? 'available' : 'locked')}" onclick="${unlockedHints.includes(1) ? 'switchToHint(1)' : 'attemptUnlockHint(1)'}">
             <div class="hint-box-content">
-              <div class="hint-icon">${unlockedHints.includes(1) ? '🔓' : (availableHints >= 1 ? '🔓' : '🔒')}</div>
-              <div class="hint-label">Hint 1</div>
-              <div class="hint-requirement">${unlockedHints.includes(1) ? (currentlyDisplayedHint == 1 ? 'Currently Showing' : 'Click to view') : (availableHints >= 1 ? 'Click to unlock' : 'Need 3 guesses')}</div>
+              ${currentlyDisplayedHint == 1 && unlockedHints.includes(1) ? 
+                `<div class="hint-text-display">${hints[1]}</div>` : 
+                `<div class="hint-icon">${unlockedHints.includes(1) ? '🔓' : (availableHints >= 1 ? '🔓' : '🔒')}</div>
+                 <div class="hint-label">Hint 1</div>
+                 <div class="hint-requirement">${unlockedHints.includes(1) ? (currentlyDisplayedHint == 1 ? 'Currently Showing' : 'Click to view') : (availableHints >= 1 ? 'Click to unlock' : 'Need 3 guesses')}</div>`
+              }
             </div>
           </div>
           <div class="hint-box ${unlockedHints.includes(2) ? (currentlyDisplayedHint == 2 ? 'unlocked currently-showing' : 'unlocked') : (availableHints >= 2 && unlockedHints.includes(1) ? 'available' : 'locked')}" onclick="${unlockedHints.includes(2) ? 'switchToHint(2)' : 'attemptUnlockHint(2)'}">
             <div class="hint-box-content">
-              <div class="hint-icon">${unlockedHints.includes(2) ? '🔓' : (availableHints >= 2 && unlockedHints.includes(1) ? '🔓' : '🔒')}</div>
-              <div class="hint-label">Hint 2</div>
-              <div class="hint-requirement">${unlockedHints.includes(2) ? (currentlyDisplayedHint == 2 ? 'Currently Showing' : 'Click to view') : (availableHints >= 2 && unlockedHints.includes(1) ? 'Click to unlock' : (unlockedHints.includes(1) ? 'Need 6 guesses' : 'Need Hint 1 first'))}</div>
+              ${currentlyDisplayedHint == 2 && unlockedHints.includes(2) ? 
+                `<div class="hint-text-display">${hints[2]}</div>` : 
+                `<div class="hint-icon">${unlockedHints.includes(2) ? '🔓' : (availableHints >= 2 && unlockedHints.includes(1) ? '🔓' : '🔒')}</div>
+                 <div class="hint-label">Hint 2</div>
+                 <div class="hint-requirement">${unlockedHints.includes(2) ? (currentlyDisplayedHint == 2 ? 'Currently Showing' : 'Click to view') : (availableHints >= 2 && unlockedHints.includes(1) ? 'Click to unlock' : (unlockedHints.includes(1) ? 'Need 6 guesses' : 'Need Hint 1 first'))}</div>`
+              }
             </div>
           </div>
           <div class="hint-box ${unlockedHints.includes(3) ? (currentlyDisplayedHint == 3 ? 'unlocked currently-showing' : 'unlocked') : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? 'available' : 'locked')}" onclick="${unlockedHints.includes(3) ? 'switchToHint(3)' : 'attemptUnlockHint(3)'}">
             <div class="hint-box-content">
-              <div class="hint-icon">${unlockedHints.includes(3) ? '🔓' : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? '🔓' : '🔒')}</div>
-              <div class="hint-label">Hint 3</div>
-              <div class="hint-requirement">${unlockedHints.includes(3) ? (currentlyDisplayedHint == 3 ? 'Currently Showing' : 'Click to view') : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Need 9 guesses' : 'Need previous hints'))}</div>
+              ${currentlyDisplayedHint == 3 && unlockedHints.includes(3) ? 
+                `<div class="hint-text-display">${hints[3]}</div>` : 
+                `<div class="hint-icon">${unlockedHints.includes(3) ? '🔓' : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? '🔓' : '🔒')}</div>
+                 <div class="hint-label">Hint 3</div>
+                 <div class="hint-requirement">${unlockedHints.includes(3) ? (currentlyDisplayedHint == 3 ? 'Currently Showing' : 'Click to view') : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Need 9 guesses' : 'Need previous hints'))}</div>`
+              }
             </div>
           </div>
           <div class="hint-box ${unlockedHints.includes(4) ? (currentlyDisplayedHint == 4 ? 'unlocked currently-showing' : 'unlocked') : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'available' : 'locked')}" onclick="${unlockedHints.includes(4) ? 'switchToHint(4)' : 'attemptUnlockHint(4)'}">
             <div class="hint-box-content">
-              <div class="hint-icon">${unlockedHints.includes(4) ? '🔓' : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? '🔓' : '🔒')}</div>
-              <div class="hint-label">Hint 4</div>
-              <div class="hint-requirement">${unlockedHints.includes(4) ? (currentlyDisplayedHint == 4 ? 'Currently Showing' : 'Click to view') : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Need 12 guesses' : 'Need previous hints'))}</div>
+              ${currentlyDisplayedHint == 4 && unlockedHints.includes(4) ? 
+                `<div class="hint-text-display">${hints[4]}</div>` : 
+                `<div class="hint-icon">${unlockedHints.includes(4) ? '🔓' : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? '🔓' : '🔒')}</div>
+                 <div class="hint-label">Hint 4</div>
+                 <div class="hint-requirement">${unlockedHints.includes(4) ? (currentlyDisplayedHint == 4 ? 'Currently Showing' : 'Click to view') : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Need 12 guesses' : 'Need previous hints'))}</div>`
+              }
             </div>
           </div>
-          <div class="hint-box ${unlockedHints.includes(5) ? (currentlyDisplayedHint == 5 ? 'unlocked currently-showing' : 'unlocked') : (availableHints >= 4 ? 'available' : 'locked')}" onclick="${unlockedHints.includes(5) ? 'switchToHint(5)' : 'attemptUnlockHint(5)'}">
-            <div class="hint-box-content">
-              <div class="hint-icon">${unlockedHints.includes(5) ? '🔓' : (availableHints >= 4 ? '🔓' : '🔒')}</div>
-              <div class="hint-label">Hint 5</div>
-              <div class="hint-requirement">${unlockedHints.includes(5) ? (currentlyDisplayedHint == 5 ? 'Currently Showing' : 'Click to view') : (availableHints >= 4 ? 'Click to unlock' : 'Need 12 guesses')}</div>
-            </div>
-          </div>
-          <div class="hint-box ${unlockedHints.includes(6) ? (currentlyDisplayedHint == 6 ? 'unlocked currently-showing' : 'unlocked') : (availableHints >= 4 ? 'available' : 'locked')}" onclick="${unlockedHints.includes(6) ? 'switchToHint(6)' : 'attemptUnlockHint(6)'}">
-            <div class="hint-box-content">
-              <div class="hint-icon">${unlockedHints.includes(6) ? '🔓' : (availableHints >= 4 ? '🔓' : '🔒')}</div>
-              <div class="hint-label">Hint 6</div>
-              <div class="hint-requirement">${unlockedHints.includes(6) ? (currentlyDisplayedHint == 6 ? 'Currently Showing' : 'Click to view') : (availableHints >= 4 ? 'Click to unlock' : 'Need 12 guesses')}</div>
-            </div>
-          </div>
+
         </div>
         <div class="hint-buttons">
           ${backBtnHtml}
           <button id="proceedToFinalBtn" class="guess-btn" onclick="proceedToFinal()">Guess the Singer</button>
         </div>
-        <div id="hintDisplay" class="hint-display">${hintDisplayContent}</div>
       `;
       document.getElementById('progress').style.width = `100%`;
     }
@@ -874,11 +812,10 @@
           }
         }
       }
-      // For hints 5 and 6, no sequential requirement - they unlock at the same time as hint 4
+
       
       // Check if hint is available based on guesses
-      // For hints 5 and 6, they unlock at the same time as hint 4 (12 guesses)
-      const requiredGuesses = hintNumber <= 4 ? hintNumber * 3 : 12;
+      const requiredGuesses = hintNumber * 3;
       if (totalGuesses < requiredGuesses) {
         console.log('Not enough guesses to unlock this hint');
         showInsufficientGuessesModal(requiredGuesses, totalGuesses);
@@ -938,6 +875,13 @@
         console.log('Hint marked as unlocked in session storage');
       }
       
+      // Mark hint as viewed (since unlocking reveals it)
+      const viewedHints = JSON.parse(sessionStorage.getItem('viewedHints') || '[]');
+      if (!viewedHints.includes(hintNumber)) {
+        viewedHints.push(hintNumber);
+        sessionStorage.setItem('viewedHints', JSON.stringify(viewedHints));
+      }
+      
       // Set this as the currently displayed hint
       sessionStorage.setItem('currentlyDisplayedHint', hintNumber);
       
@@ -952,6 +896,17 @@
 
     function switchToHint(hintNumber) {
       console.log('Switching to hint', hintNumber);
+      
+      // Check if this hint has been viewed before
+      const viewedHints = JSON.parse(sessionStorage.getItem('viewedHints') || '[]');
+      if (!viewedHints.includes(hintNumber)) {
+        // This is the first time viewing this hint, so increment hints used
+        hintsUsed++;
+        viewedHints.push(hintNumber);
+        sessionStorage.setItem('viewedHints', JSON.stringify(viewedHints));
+        updateGuessCounter();
+        console.log('First time viewing hint', hintNumber, 'Hints used updated:', hintsUsed);
+      }
       
       // Set this as the currently displayed hint
       sessionStorage.setItem('currentlyDisplayedHint', hintNumber);
@@ -1676,6 +1631,7 @@
       gap: 16px;
       margin-top: 18px;
       justify-content: center;
+      align-items: center;
     }
     .guess-btn {
       background: linear-gradient(to bottom, #ffcb05, #ffd700);
@@ -1819,6 +1775,38 @@
       color: #666;
       margin-bottom: 24px;
       text-align: center;
+    }
+    
+    .hint-display-main {
+      background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+      border: 2px solid #28a745;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+    }
+    
+    .hint-display-main .hint-section-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+    
+    .hint-display-main .hint-text {
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.5;
+    }
+    
+    .hint-text-display {
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.4;
+      text-align: center;
+      padding: 8px;
+      font-weight: 500;
     }
     .hint-boxes {
       display: grid;
@@ -2309,31 +2297,82 @@
       margin-top: 15px;
     }
     @media (max-width: 600px) {
+      body {
+        overflow-x: hidden;
+      }
+      nav {
+        padding: 15px 15px;
+      }
       .container {
-        padding: 12px 2vw;
+        padding: 12px 15px;
+        width: calc(100% - 30px);
+        margin: 20px auto;
       }
       .options-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
       }
       .option-card {
-        padding: 18px 4px 12px 4px;
+        padding: 16px 8px 12px 8px;
+        min-height: 90px;
       }
       .hint-boxes {
         grid-template-columns: 1fr;
       }
       .hint-box {
-        padding: 16px 4px 10px 4px;
+        padding: 16px 8px 10px 8px;
       }
       .start-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
       }
       .start-img {
-        width: 140px;
-        height: 140px;
+        width: 120px;
+        height: 120px;
       }
       .start-btn {
-        padding: 16px 40px;
-        font-size: 1.2rem;
+        padding: 14px 32px;
+        font-size: 1.1rem;
+      }
+      .start-description {
+        padding: 16px 20px;
+        font-size: 1rem;
+      }
+      .question {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+      }
+    }
+    
+    @media (max-width: 400px) {
+      nav {
+        padding: 12px 10px;
+      }
+      .container {
+        padding: 10px 12px;
+        width: calc(100% - 24px);
+        margin: 15px auto;
+      }
+      .options-grid {
+        gap: 8px;
+      }
+      .option-card {
+        padding: 12px 6px 10px 6px;
+        min-height: 80px;
+      }
+      .start-title {
+        font-size: 1.4rem;
+      }
+      .start-img {
+        width: 100px;
+        height: 100px;
+      }
+      .start-btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+      }
+      .start-description {
+        padding: 12px 16px;
+        font-size: 0.9rem;
       }
     }
     .start-page {
@@ -2363,10 +2402,15 @@
     
     .start-date {
       font-size: 0.9rem;
-      color: #888;
+      color: #666;
       margin-bottom: 32px;
       text-align: center;
-      font-weight: 400;
+      font-weight: 500;
+      background: #f5f5f5;
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
     .start-img {
@@ -2387,16 +2431,35 @@
     
     .start-description {
       font-size: 1rem;
-      color: #555;
+      color: #1565c0;
       margin-bottom: 32px;
       text-align: center;
       line-height: 1.5;
       max-width: 400px;
-      padding: 0 20px;
+      padding: 20px 20px 16px 20px;
+      background: linear-gradient(135deg, #e3f2fd, #f3f9ff);
+      border-radius: 12px;
+      border: 2px solid #2196f3;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.15);
+      position: relative;
+      font-weight: 500;
+    }
+    
+    .start-description::before {
+      content: '💧';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: white;
+      padding: 4px 8px;
+      border-radius: 16px;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border: 2px solid #2196f3;
     }
     
     .start-btn {
-      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      background: linear-gradient(135deg, #2196f3, #1976d2);
       color: #fff;
       font-weight: bold;
       border: none;
@@ -2406,15 +2469,15 @@
       cursor: pointer;
       transition: all 0.3s ease;
       margin-top: 10px;
-      box-shadow: 0 4px 16px rgba(74, 144, 226, 0.3);
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.3);
       position: relative;
       overflow: hidden;
     }
     
     .start-btn:hover {
-      background: linear-gradient(135deg, #357ab8, #2c5f8f);
+      background: linear-gradient(135deg, #1976d2, #1565c0);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
     }
     
     .start-btn:active {
