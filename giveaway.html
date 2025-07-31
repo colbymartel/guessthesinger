@@ -3,391 +3,513 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guess The Singer - Live Intro</title>
+  <title>Lollapalooza Giveaway | Guessing Games</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Reset & Base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top, #1e3a5f, #0f1c2e);
-      color: #fff;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      transition: background-color 0.5s ease;
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      padding-bottom: 90px;
+      margin: 0;
     }
 
-    .slide {
-      display: none;
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
       text-align: center;
-      padding: 40px;
-      max-width: 900px;
-      width: 100%;
-      animation: fadeIn 0.8s ease;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
-    .slide.active {
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
       display: block;
     }
 
-    h1, h2, h3 {
-      margin-bottom: 20px;
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
     }
 
-    h1 {
-      font-size: 3rem;
-      color: #ffeb3b;
-    }
-    h2 {
-      font-size: 2rem;
-    }
-    p {
-      font-size: 1.2rem;
-      line-height: 1.6;
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+      cursor: pointer;
     }
 
-    .highlight {
-      color: #4caf50;
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
       font-weight: bold;
     }
 
-    .breakdown {
-      margin-top: 20px;
-      padding: 20px;
-      background: #ffffff10;
-      border: 2px solid #ffffff20;
-      border-radius: 20px;
-      backdrop-filter: blur(8px);
-      font-size: 1.2rem;
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
     }
 
-    .nav-arrow {
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+
+    #coinDisplay {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    #coinCount {
+      font-weight: bold;
+    }
+
+    .bottom-nav {
       position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 3rem;
-      color: #fff;
-      background: rgba(0,0,0,0.3);
-      padding: 10px 20px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      padding: 15px 0;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-item img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .giveaway-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #234d7d;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+
+    .lollapalooza-image {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      margin: 15px auto 30px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .lollapalooza-image:hover {
+      transform: scale(1.05);
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      color: #234d7d;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e1f0ff;
       border-radius: 10px;
+      font-size: 1rem;
+      font-family: 'Fredoka', sans-serif;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+
+    .form-group input::placeholder, .form-group textarea::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
       cursor: pointer;
-      z-index: 999;
-      user-select: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+      margin-top: 20px;
     }
 
-    .nav-arrow:hover {
-      background: rgba(255, 255, 255, 0.2);
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
     }
 
-    .nav-left {
-      left: 20px;
-    }
-    .nav-right {
-      right: 20px;
+    .submit-btn:active {
+      transform: translateY(0);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: 1px solid #c3e6cb;
+      display: none;
     }
-    .prize-gallery {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  margin-top: 40px;
-  flex-wrap: nowrap; /* Prevents wrapping */
-}
 
-.prize {
-  text-align: center;
-  max-width: 1000px;
-}
-.prize img {
-  width: 400px;
-  height: auto;
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
-  transition: transform 0.3s ease;
-}
+    .error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: 1px solid #f5c6cb;
+      display: none;
+    }
 
+    @media (max-width: 768px) {
+      .giveaway-container {
+        padding: 20px;
+        margin: 20px;
+      }
 
-.prize img:hover {
-  transform: scale(1.05);
-}
+      h1 {
+        font-size: 2rem;
+      }
 
-.prize p {
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: 1rem;
-  color: #fff;
-}
-#grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 8px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.singer {
-  border: 2px solid transparent;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: border 0.2s ease;
-}
-
-.singer img {
-  width: 100%;
-  border-radius: 8px;
-  display: block;
-}
-
-.highlight {
-  border: 2px solid #4caf50;
-}
-
-#startBtn {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-#popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  background: #ffffff10;
-  border: 2px solid #ffffff30;
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 20px;
-  z-index: 1000;
-  transition: transform 0.3s ease;
-  text-align: center;
-}
-
-#popup img {
-  max-width: 250px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-}
-
-#popup.active {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-#overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 999;
-  display: none;
-}
-
-#overlay.active {
-  display: block;
-}
-
+      .form-group input, .form-group textarea {
+        padding: 12px;
+      }
+    }
   </style>
 </head>
 <body>
-
-  <div class="nav-arrow nav-left" id="prevSlide">&#8592;</div>
-  <div class="nav-arrow nav-right" id="nextSlide">&#8594;</div>
-
-  <div class="slide active">
-
-    <h2>Could you Guess These Singers? 🤔</h2>
-    <div class="prize-gallery">
-      <div class="prize">
-        <img src="/images/adelepromo.jpg" alt="Option 1" class="toggle-img" data-alt="option1b.png">
-      </div>
-      <div class="prize">
-        <img src="/images/aripromo.jpg" alt="Option 2" class="toggle-img" data-alt="option2b.png">
-      </div>
-      <div class="prize">
-        <img src="/images/futurepromo.jpg" alt="Option 3" class="toggle-img" data-alt="option3b.png">
-      </div>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      </a>
     </div>
-  </div>
+  </header>
 
-  <div class="slide">
-    <h2>Could you Guess These Singers? 🤔</h2>
-    <div class="prize-gallery">
-      <div class="prize">
-        <img src="/images/adelepromo.jpg" alt="Option 1" class="toggle-img" data-alt="option1b.png">
-      </div>
-      <div class="prize">
-        <img src="/images/ADELEid.jpg" alt="Option 2" class="toggle-img" data-alt="option2b.png">
-      </div>
+  <nav>
+    <div id="welcomeMessage" class="welcome-msg">
+      Welcome, Anonymous
     </div>
-  </div>
-
-
-  <div class="slide">
-    <h2>Who's it gonna land on? 🎯</h2>
-    <div id="grid" style="margin-top: 20px;"></div>
-    <button id="startBtn" style="margin-top: 20px;">Pick a Random Singer</button>
-  
-    <div id="overlay"></div>
-    <div id="popup">
-      <img id="popupImg" src="" alt="Selected Singer">
-      <h2 id="popupText">You got...</h2>
+    <div id="dropdownMenu" class="dropdown">
+      <a href="/signup.html">Create Profile</a>
+      <a href="/login.html">Log In</a>
     </div>
-  </div>
-  
+    <div id="coinDisplay" style="display: none;">
+      <div class="coin-emoji"></div>
+      <span id="coinCount">0</span>
+    </div>
+  </nav>
 
-  <script>
-    const slides = document.querySelectorAll(".slide");
-    const nextBtn = document.getElementById("nextSlide");
-    const prevBtn = document.getElementById("prevSlide");
-    let current = 0;
+  <main>
+    <div class="giveaway-container">
+      <h1>🎫 Lollapalooza Giveaway</h1>
+      <p class="subtitle">Enter for a chance to win Sunday General Admission tickets!</p>
+      
+      <a href="https://www.lollapalooza.com" target="_blank" rel="noopener noreferrer">
+        <img src="images/lolla.png" alt="Lollapalooza Festival" class="lollapalooza-image">
+      </a>
+      
+      <div class="form-container">
+        <form id="giveawayForm">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+          </div>
 
-    function showSlide(index) {
-  slides.forEach((slide, i) => {
-    const isActive = i === index;
+          <div class="form-group">
+            <label for="age">Age *</label>
+            <input type="number" id="age" name="age" placeholder="Enter your age" min="13" max="100" required>
+          </div>
 
-    slide.classList.toggle("active", isActive);
+          <div class="form-group">
+            <label for="location">Where are you from? *</label>
+            <input type="text" id="location" name="location" placeholder="City, State/Province, Country" required>
+          </div>
 
-    // Find and control videos in the slide
-    const video = slide.querySelector("video");
-    if (video) {
-      if (isActive) {
-        video.currentTime = 0;
-        video.play();
+          <div class="form-group">
+            <label for="contact">Contact Information *</label>
+            <input type="email" id="contact" name="contact" placeholder="Email address" required>
+          </div>
+
+          <div class="form-group">
+            <label for="reason">Why do you want to attend Lollapalooza? *</label>
+            <textarea id="reason" name="reason" placeholder="Tell us why you want to go to Lollapalooza and what makes you the perfect winner..." required></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-ticket-alt" style="margin-right: 8px;"></i>
+            Submit Entry
+          </button>
+        </form>
+
+        <div id="successMessage" class="success-message">
+          <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+          Your entry has been submitted successfully! You'll be notified by Saturday at noon if you win. Good luck!
+        </div>
+
+        <div id="errorMessage" class="error-message">
+          <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>
+          <span id="errorText">An error occurred. Please try again.</span>
+        </div>
+              </div>
+    </div>
+  </main>
+
+  <footer class="bottom-nav">
+    <a href="/index.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <img src="/images/gamesicon.png" alt="Games Icon" style="width: 24px; height: 24px;">
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 24px; height: 24px;">
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+
+    const welcomeEl = document.getElementById('welcomeMessage');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const coinDisplay = document.getElementById('coinDisplay');
+    const coinCount = document.getElementById('coinCount');
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        let displayName = user.displayName || user.email?.split('@')[0] || "User";
+        let coinCount = 0;
+        
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+          
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.username) displayName = data.username;
+            if (data.coins) coinCount = data.coins;
+          });
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+
+        welcomeEl.textContent = `Welcome, ${displayName}`;
+        dropdownMenu.innerHTML = `
+          <a href="/profile.html">Edit Profile</a>
+          <a href="#" id="logoutBtn">Log Out</a>
+        `;
+        
+        if (coinCount > 0) {
+          coinDisplay.style.display = 'flex';
+          coinCount.textContent = coinCount;
+        }
+
+        // Attach logout listener
+        setTimeout(() => {
+          const logoutBtn = document.getElementById("logoutBtn");
+          if (logoutBtn) {
+            logoutBtn.addEventListener("click", async (e) => {
+              e.preventDefault();
+              try {
+                await signOut(auth);
+                window.location.reload();
+              } catch (err) {
+                console.error("Logout failed:", err);
+              }
+            });
+          }
+        }, 0);
       } else {
-        video.pause();
-        video.currentTime = 0;
-      }
-    }
-  });
-}
-
-
-    function nextSlide() {
-  if (current < slides.length - 1) {
-    current++;
-    showSlide(current);
-  } else {
-    // Last slide → redirect
-    window.location.href = "rounds.html";
-  }
-}
-
-
-    function prevSlide() {
-      current = Math.max(current - 1, 0);
-      showSlide(current);
-    }
-
-    document.addEventListener("keydown", e => {
-      if (e.key === "ArrowRight" || e.key === " ") {
-        nextSlide();
-      } else if (e.key === "ArrowLeft") {
-        prevSlide();
+        welcomeEl.textContent = "Welcome, Anonymous";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+        coinDisplay.style.display = 'none';
       }
     });
 
-    document.addEventListener("click", () => {
-      nextSlide();
-    });
-
-    nextBtn.addEventListener("click", e => {
+    // Dropdown show/hide logic
+    welcomeEl.addEventListener("click", (e) => {
       e.stopPropagation();
-      nextSlide();
+      dropdownMenu.classList.toggle("show");
     });
 
-    prevBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      prevSlide();
-    });
-    document.querySelectorAll(".toggle-img").forEach(img => {
-  img.addEventListener("click", (e) => {
-    const currentSrc = e.target.src;
-    const altSrc = e.target.dataset.alt;
-
-    // Swap the current src with the alt src
-    e.target.dataset.alt = currentSrc;
-    e.target.src = altSrc;
-  });
-});
-const grid = document.getElementById('grid');
-const popup = document.getElementById('popup');
-const popupImg = document.getElementById('popupImg');
-const popupText = document.getElementById('popupText');
-const overlay = document.getElementById('overlay');
-const startBtn = document.getElementById('startBtn');
-
-if (grid) {
-  const singerCount = 100;
-  const singers = [];
-
-  for (let i = 1; i <= singerCount; i++) {
-    const div = document.createElement('div');
-    div.classList.add('singer');
-    const img = document.createElement('img');
-    img.src = `images/singers/singer${i}.jpg`; // adjust path if needed
-    img.alt = `Singer ${i}`;
-    div.appendChild(img);
-    grid.appendChild(div);
-    singers.push(div);
-  }
-
-  function pickRandomSinger() {
-    let currentIndex = 0;
-    const minCycles = 1; // Minimum full loops
-const maxCycles = 2; // Maximum full loops
-
-const loops = Math.floor(Math.random() * (maxCycles - minCycles + 1)) + minCycles;
-const totalCycles = loops * singers.length + Math.floor(Math.random() * singers.length);
-
-    let cycles = 0;
-
-    let interval = setInterval(() => {
-      singers.forEach(s => s.classList.remove('highlight'));
-      singers[currentIndex].classList.add('highlight');
-      currentIndex = (currentIndex + 1) % singers.length;
-      cycles++;
-
-      if (cycles > totalCycles) {
-        clearInterval(interval);
-        const selected = (currentIndex - 1 + singers.length) % singers.length;
-        showPopup(singers[selected].querySelector('img').src);
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeEl) {
+        dropdownMenu.classList.remove("show");
       }
-    }, 50);
-  }
+    });
 
-  function showPopup(imageSrc) {
-    popupImg.src = imageSrc;
-    popupText.textContent = "You got this singer!";
-    popup.classList.add('active');
-    overlay.classList.add('active');
-  }
+    // Form submission
+    const form = document.getElementById('giveawayForm');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+    const errorText = document.getElementById('errorText');
 
-  overlay.addEventListener('click', () => {
-    popup.classList.remove('active');
-    overlay.classList.remove('active');
-  });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = form.querySelector('.submit-btn');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>Submitting...';
+      submitBtn.disabled = true;
 
-  startBtn.addEventListener('click', (e) => {
-  e.stopPropagation(); // Prevent slide advance
-  pickRandomSinger();
-});
-}
+      try {
+        const formData = new FormData(form);
+        const entry = {
+          name: formData.get('name'),
+          age: parseInt(formData.get('age')),
+          location: formData.get('location'),
+          contact: formData.get('contact'),
+          reason: formData.get('reason'),
+          timestamp: serverTimestamp(),
+          userId: auth.currentUser?.uid || null,
+          userEmail: auth.currentUser?.email || null
+        };
 
+        await addDoc(collection(db, "giveawayEntries"), entry);
+        
+        successMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+        form.reset();
+        
+                 // Hide success message after 5 seconds
+         setTimeout(() => {
+           successMessage.style.display = 'none';
+         }, 5000);
+       } catch (error) {
+         console.error("Error submitting entry:", error);
+         errorText.textContent = "Failed to submit entry. Please try again.";
+         errorMessage.style.display = 'block';
+         successMessage.style.display = 'none';
+       } finally {
+         submitBtn.innerHTML = originalText;
+         submitBtn.disabled = false;
+       }
+     });
   </script>
 </body>
 </html>

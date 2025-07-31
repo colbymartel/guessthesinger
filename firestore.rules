@@ -144,5 +144,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+
+    // Giveaway entries collection for lollapalooza giveaway
+    match /giveawayEntries/{entryId} {
+      allow read, write, list, query: if true;
+    }
   }
 } 
