@@ -107,6 +107,13 @@
       padding: 40px;
     }
 
+    @media (max-width: 768px) {
+      .hero-grid {
+        padding: 20px;
+        gap: 20px;
+      }
+    }
+
     .grid-row {
       display: flex;
       gap: 40px;
@@ -263,16 +270,16 @@
       }
 
       .grid-item {
-        width: 300px;
-        height: 180px;
+        width: 500px;
+        height: 300px;
       }
 
       .grid-row {
-        gap: 20px;
+        gap: 10px;
       }
 
       .hero-grid {
-        gap: 25px;
+        gap: 15px;
       }
 
       .grid-row {
@@ -284,7 +291,11 @@
       }
 
       .grid-row:nth-child(3) {
-        display: none;
+        display: none !important;
+      }
+
+      .hero-grid .grid-row:nth-child(3) {
+        display: none !important;
       }
     }
 
