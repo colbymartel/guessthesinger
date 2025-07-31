@@ -49,16 +49,220 @@
       margin-top: 60px;
       margin-left: 0;
       margin-right: 0;
-      background: linear-gradient(135deg, #4682b4, #254a6d);
-      color: white;
-      padding: 30px 0;
-      text-align: center;
       width: 100vw;
       position: relative;
       left: 50%;
       right: 50%;
       margin-left: -50vw;
       margin-right: -50vw;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4682b4, #254a6d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 3;
+    }
+
+    .hero-grid-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      width: 100%;
+      max-width: 1600px;
+      padding: 40px;
+    }
+
+    .grid-row {
+      display: flex;
+      gap: 40px;
+      animation: scrollRow 60s linear infinite;
+    }
+
+    .grid-row:nth-child(2) {
+      animation-direction: reverse;
+      animation-duration: 50s;
+    }
+
+    .grid-row:nth-child(3) {
+      animation-duration: 70s;
+    }
+
+    .grid-item {
+      flex-shrink: 0;
+      width: 500px;
+      height: 300px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .grid-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      filter: brightness(1) contrast(1);
+    }
+
+    .grid-item:hover .grid-image {
+      transform: scale(1.05);
+      filter: brightness(1) contrast(1);
+    }
+
+    @keyframes scrollRow {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      color: white;
+      max-width: 800px;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-logo {
+      width: 200px;
+      height: auto;
+      margin-bottom: 40px;
+      filter: brightness(0) invert(1);
+      display: block;
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      line-height: 1.4;
+    }
+
+    .hero-cta {
+      background: linear-gradient(135deg, #4682b4, #254a6d);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      padding: 18px 40px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 8px 25px rgba(70, 130, 180, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .hero-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(70, 130, 180, 0.5);
+      background: linear-gradient(135deg, #5a8bc4, #2d5a8a);
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    .hero-cta:hover::before {
+      left: 100%;
+    }
+
+    .hero-cta:active {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 6px 20px rgba(70, 130, 180, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        height: 80vh;
+        min-height: 500px;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .hero-logo {
+        width: 150px;
+        margin-bottom: 30px;
+      }
+
+      .hero-cta {
+        padding: 16px 32px;
+        font-size: 1.1rem;
+        letter-spacing: 1.5px;
+      }
+
+
     }
 
     .hero h1 {
@@ -625,11 +829,18 @@
   </nav>
   
   <section class="hero">
-    <div class="hero-slider-container">
-      <button class="hero-arrow left" id="heroPrev" aria-label="Previous images">&#8592;</button>
-      <div class="hero-slider" id="heroSlider">
+    <div class="hero-background">
+      <div class="hero-grid-wrapper">
+        <div class="hero-grid" id="heroGrid">
+          <!-- Images will be populated here by JavaScript -->
+        </div>
       </div>
-      <button class="hero-arrow right" id="heroNext" aria-label="Next images">&#8594;</button>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <img src="images/SingerLogo.png" alt="Guess The Singer" class="hero-logo">
+        <h1 class="hero-title">New England's #1 Campus Game Show</h1>
+        <button class="hero-cta" onclick="scrollToContact()">Send Inquiry</button>
+      </div>
     </div>
   </section>
 
@@ -1216,58 +1427,91 @@ const heroGalleryImages = [
   'images/Gallery3.jpg',
   'images/Gallery4.jpg',
   'images/Gallery5.jpg',
-  'images/Gallery9.jpg',
+  'images/Gallery6.jpg',
   'images/Gallery7.jpg',
   'images/Gallery8.jpg',
+  'images/Gallery9.jpg',
+  'images/Gallery10.jpg',
+  'images/Gallery11.jpg',
+  'images/Gallery12.jpg',
+  'images/Gallery13.jpg',
+  'images/Gallery14.jpg',
+  'images/Gallery15.jpg',
+  'images/Gallery16.jpg',
+  'images/Gallery17.jpg',
+  'images/Gallery18.jpg',
+  'images/Gallery19.jpg'
 ];
-const galleryPairs = Math.ceil(heroGalleryImages.length / 2);
-let heroSliderIndex = -1; // -1 means show gameshowheading.jpg only
 
-function renderHeroSlider() {
-  const slider = document.getElementById('heroSlider');
-  slider.innerHTML = '';
+function renderHeroGrid() {
+  const grid = document.getElementById('heroGrid');
+  grid.innerHTML = '';
   
-  // Check if mobile
-  const isMobile = window.innerWidth <= 768;
+  // Define which images go in each row
+  const rowImages = [
+    // Row 1: Gallery1.jpg through Gallery6.jpg
+    heroGalleryImages.slice(0, 6),
+    // Row 2: Gallery7.jpg through Gallery12.jpg
+    heroGalleryImages.slice(6, 12),
+    // Row 3: Gallery13.jpg through Gallery19.jpg
+    heroGalleryImages.slice(12, 19)
+  ];
   
-  if (heroSliderIndex === -1) {
-    // Show only the heading image
-    const img = document.createElement('img');
-    img.src = 'images/gameshowheading.jpg';
-    img.alt = 'Guess The Singer Game Show';
-    img.className = 'hero-slider-img';
-    slider.appendChild(img);
-  } else {
-    if (isMobile) {
-      // On mobile, show only one image at a time
-      const imgIdx = heroSliderIndex;
-      if (imgIdx < heroGalleryImages.length) {
+  // Create 3 rows
+  for (let row = 0; row < 3; row++) {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'grid-row';
+    
+    const rowImageSet = rowImages[row];
+    
+    // Create two sets of images for seamless looping
+    for (let set = 0; set < 2; set++) {
+      for (let i = 0; i < rowImageSet.length; i++) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'grid-item';
+        
         const img = document.createElement('img');
-        img.src = heroGalleryImages[imgIdx];
-        img.alt = `Gallery Image ${imgIdx + 1}`;
-        img.className = 'hero-slider-img';
-        slider.appendChild(img);
+        img.src = rowImageSet[i];
+        img.alt = `Gallery Image ${i + 1 + (row * 6)}`;
+        img.className = 'grid-image';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        
+        itemDiv.appendChild(img);
+        rowDiv.appendChild(itemDiv);
       }
-    } else {
-      // On desktop, show two images at a time
-      for (let i = 0; i < 2; i++) {
-        const imgIdx = (heroSliderIndex * 2 + i);
-        if (imgIdx < heroGalleryImages.length) {
-          const img = document.createElement('img');
-          img.src = heroGalleryImages[imgIdx];
-          img.alt = `Gallery Image ${imgIdx + 1}`;
-          img.className = 'hero-slider-img';
-          slider.appendChild(img);
-        }
-      }
+    }
+    
+    grid.appendChild(rowDiv);
+  }
+}
+
+function scrollToContact() {
+  // Find the contact section or booking form
+  const contactSection = document.querySelector('.event-packages-section') || 
+                        document.querySelector('.booking-section') ||
+                        document.querySelector('section[class*="contact"]');
+  
+  if (contactSection) {
+    contactSection.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  } else {
+    // Fallback: scroll to the main content area
+    const mainContent = document.querySelector('.event-packages-section');
+    if (mainContent) {
+      mainContent.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
     }
   }
 }
 
 // Preload all images for smooth transitions
 function preloadImages() {
-  const allImages = ['images/gameshowheading.jpg', ...heroGalleryImages];
-  allImages.forEach(src => {
+  heroGalleryImages.forEach(src => {
     const img = new Image();
     img.src = src;
   });
@@ -1277,75 +1521,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // Preload all images first
   preloadImages();
   
-  // Then render the slider
-  renderHeroSlider();
+  // Then render the grid
+  renderHeroGrid();
   
-  document.getElementById('heroPrev').onclick = function() {
-    const isMobile = window.innerWidth <= 768;
-    
-    if (heroSliderIndex === -1) return; // Already at the start
-    if (heroSliderIndex === 0) {
-      heroSliderIndex = -1;
-    } else {
-      heroSliderIndex--;
-    }
-    renderHeroSlider();
-  };
+
   
-  document.getElementById('heroNext').onclick = function() {
-    const isMobile = window.innerWidth <= 768;
-    
-    if (heroSliderIndex === -1) {
-      heroSliderIndex = 0;
-    } else if (isMobile) {
-      // On mobile, cycle through individual images
-      if (heroSliderIndex === heroGalleryImages.length - 1) {
-        heroSliderIndex = -1;
-      } else {
-        heroSliderIndex++;
-      }
-    } else {
-      // On desktop, cycle through pairs
-      const galleryPairs = Math.ceil(heroGalleryImages.length / 2);
-      if (heroSliderIndex === galleryPairs - 1) {
-        heroSliderIndex = -1;
-      } else {
-        heroSliderIndex++;
-      }
-    }
-    renderHeroSlider();
-  };
-  
-  // Re-render on window resize to handle orientation changes
+  // Re-render on window resize
   window.addEventListener('resize', function() {
-    renderHeroSlider();
+    renderHeroGrid();
   });
 });
 </script>
 <style>
-.hero-slider-img.single {
-  width: 100%;
-  max-width: 700px;
-  max-height: 340px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  border-radius: 18px;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.13);
-  object-fit: contain;
-  background: #eee;
-}
-@media (max-width: 768px) {
-  .hero-slider-img.single { 
-    max-height: 200px;
-    width: 100%;
-  }
-}
-@media (max-width: 600px) {
-  .hero-slider-img.single { 
-    max-height: 150px;
-  }
-}
+
+
 .package-price {
   font-size: 1.5rem;
   font-weight: bold;

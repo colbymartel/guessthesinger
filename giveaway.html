@@ -155,7 +155,43 @@
     .subtitle {
       color: #666;
       font-size: 1.1rem;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+    }
+
+    .event-details {
+      background: linear-gradient(135deg, #f8f9fa, #ffffff);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid #e9ecef;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 1rem;
+      color: #495057;
+    }
+
+    .detail-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-item i {
+      color: #ff6b35;
+      width: 20px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .detail-item span {
+      line-height: 1.4;
     }
 
     .lollapalooza-image {
@@ -303,6 +339,25 @@
     <div class="giveaway-container">
       <h1>🎫 Lollapalooza Giveaway</h1>
       <p class="subtitle">Enter for a chance to win Sunday General Admission tickets!</p>
+      
+      <div class="event-details">
+        <div class="detail-item">
+          <i class="fas fa-calendar"></i>
+          <span><strong>Date:</strong> Sunday, August 3rd, 2025</span>
+        </div>
+        <div class="detail-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span><strong>Location:</strong> Grant Park, Chicago</span>
+        </div>
+        <div class="detail-item">
+          <i class="fas fa-star"></i>
+          <span><strong>Headliners:</strong> Post Malone, SZA, The Killers</span>
+        </div>
+        <div class="detail-item">
+          <i class="fas fa-clock"></i>
+          <span><strong>Gates Open:</strong> 11:00 AM</span>
+        </div>
+      </div>
       
       <a href="https://www.lollapalooza.com" target="_blank" rel="noopener noreferrer">
         <img src="images/lolla.png" alt="Lollapalooza Festival" class="lollapalooza-image">
