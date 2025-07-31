@@ -24,6 +24,7 @@
       align-items: center;
       color: white;
       position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .nav-links a {
       color: white;
@@ -75,7 +76,48 @@
       color: white;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       animation: fadeDown 1s ease-out;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(46, 195, 255, 0.1) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .song-card {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .song-card:nth-child(1) { animation-delay: 0.1s; }
+    .song-card:nth-child(2) { animation-delay: 0.2s; }
     .header .logo img {
       width: 200px;
       height: auto;
@@ -156,10 +198,12 @@
       background: #315f85;
       color: #fff;
       display: inline-block;
-      padding: 6px 18px;
-      border-radius: 12px;
+      padding: 8px 20px;
+      border-radius: 25px;
       font-size: 1.2rem;
       margin-bottom: 8px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(49, 95, 133, 0.3);
     }
     .lives {
       font-size: 1.7rem;
@@ -167,6 +211,7 @@
       color: #e74c3c;
       letter-spacing: 2px;
       user-select: none;
+      text-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
     }
     .battle-row {
       display: flex;
@@ -177,43 +222,73 @@
       flex-wrap: nowrap;
     }
     .song-card {
-      background: #fff;
-      border: 2px solid #2ec3ff;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(30,47,90,0.07);
-      padding: 24px 16px 16px 16px;
+      background: #ffffff;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      padding: 20px 16px 16px 16px;
       min-width: 180px;
       max-width: 260px;
       flex: 1 1 180px;
       cursor: pointer;
-      transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       color: #234d7d;
       font-size: 1.15rem;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+    
+    .song-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2ec3ff, #28a7ae);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .song-card:hover::before {
+      transform: scaleX(1);
     }
     .song-card.selected {
       border-color: #28a7ae;
-      background: #e7f1f9;
-      box-shadow: 0 4px 16px rgba(40,167,174,0.13);
+      background: linear-gradient(135deg, #f8fffe 0%, #e7f1f9 100%);
+      box-shadow: 0 8px 24px rgba(40, 167, 174, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .song-card.selected::before {
+      transform: scaleX(1);
     }
     .song-card.correct {
       border-color: #27ae60;
-      background: #d5f4e6;
-      box-shadow: 0 4px 16px rgba(39,174,96,0.2);
+      background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+      box-shadow: 0 8px 24px rgba(39, 174, 96, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .song-card.correct::before {
+      transform: scaleX(1);
     }
     .song-card.incorrect {
       border-color: #e74c3c;
-      background: #fdf2f2;
-      box-shadow: 0 4px 16px rgba(231,76,60,0.2);
+      background: linear-gradient(135deg, #fdf2f2 0%, #f8d7da 100%);
+      box-shadow: 0 8px 24px rgba(231, 76, 60, 0.2);
+      transform: translateY(-2px);
     }
     .song-card:hover {
-      transform: scale(1.05);
-      background: #e7f1f9;
-      box-shadow: 0 6px 18px rgba(40,167,174,0.13);
+      transform: translateY(-4px) scale(1.02);
+      background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+      box-shadow: 0 12px 32px rgba(46, 195, 255, 0.15);
+      border-color: #2ec3ff;
     }
     .song-title {
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       color: #234d7d;
       margin-bottom: 6px;
       line-height: 1.2;
@@ -223,6 +298,7 @@
       color: #315f85;
       margin-bottom: 8px;
       line-height: 1.2;
+      font-weight: 500;
     }
     .streams {
       font-size: 0.98rem;
@@ -232,31 +308,38 @@
     }
     .song-card.reveal .streams {
       display: block;
-      font-weight: bold;
+      font-weight: 700;
       color: #28a7ae;
+      font-size: 1.1rem;
     }
     .result {
       font-size: 1.2rem;
-      font-weight: 600;
+      font-weight: 700;
       margin: 12px 0 0 0;
       color: #2ec3ff;
       min-height: 28px;
+      text-align: center;
     }
     .next-btn {
       margin-top: 12px;
-      padding: 8px 24px;
+      padding: 12px 32px;
       background: #28a7ae;
       color: #fff;
       border: none;
-      border-radius: 10px;
+      border-radius: 25px;
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: none;
+      box-shadow: 0 4px 12px rgba(40, 167, 174, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .next-btn:hover {
-      background: #234d7d;
+      background: #2ec3ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(40, 167, 174, 0.4);
     }
     .gameover-modal {
       position: fixed;
@@ -269,14 +352,15 @@
       display: none;
     }
     .gameover-content {
-      background: #fff;
-      border-radius: 18px;
-      padding: 36px 28px;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px 32px;
       text-align: center;
-      box-shadow: 0 8px 32px rgba(30,47,90,0.18);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.2);
       max-width: 350px;
       width: 90vw;
       margin: 0 auto;
+      border: 2px solid #28a7ae;
     }
     @media (max-width: 700px) {
       .gameover-content {
@@ -286,10 +370,11 @@
     .gameover-content h2 {
       color: #234d7d;
       margin-bottom: 10px;
+      font-weight: 700;
     }
     .gameover-content .score {
       font-size: 2.2rem;
-      font-weight: bold;
+      font-weight: 700;
       color: #28a7ae;
       margin-bottom: 15px;
     }
@@ -327,18 +412,23 @@
     }
     .gameover-content button {
       margin-top: 18px;
-      padding: 10px 28px;
+      padding: 12px 32px;
       background: #28a7ae;
       color: #fff;
       border: none;
-      border-radius: 10px;
+      border-radius: 25px;
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(40, 167, 174, 0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .gameover-content button:hover {
-      background: #234d7d;
+      background: #2ec3ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(40, 167, 174, 0.4);
     }
     @media (max-width: 600px) {
       .battle-row { 
@@ -574,6 +664,9 @@
         <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
       </a>
     </div>
+    <div style="position: absolute; top: 20px; right: 20px; color: #2ec3ff; font-size: 2rem;">
+      <i class="fas fa-music" style="animation: pulse 2s infinite;"></i>
+    </div>
   </header>
   <nav style="display: flex; align-items: center; justify-content: space-between; background: #1e2b38; min-height: 48px;">
     <div style="display: flex; align-items: center; gap: 20px;">
@@ -595,7 +688,10 @@
     <h1>Banger Battle</h1>
     <div class="scoreboard" id="scoreboard">Score: 0</div>
     <div class="lives" id="lives"></div>
-    <h2 style="font-size: 1.1rem; font-weight: 400; color: #2ec3ff; margin-bottom: 20px;">Which song has more Spotify streams?</h2>
+    <h2 style="font-size: 1.1rem; font-weight: 500; color: #2ec3ff; margin-bottom: 20px; text-align: center;">
+      <i class="fas fa-play-circle" style="margin-right: 8px;"></i>
+      Which song has more Spotify streams?
+    </h2>
     <div class="battle-row">
       <div class="song-card" id="songA"></div>
       <div class="song-card" id="songB"></div>

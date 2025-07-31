@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Ideas Submissions | Guessing Games</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      padding-bottom: 90px;
+      margin: 0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+      cursor: pointer;
+    }
+
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+
+    #coinDisplay {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    #coinCount {
+      font-weight: bold;
+    }
+
+    .search-suggestions {
+      position: absolute;
+      top: 50px;
+      right: 30px;
+      width: 300px;
+      background: white;
+      color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .search-suggestion {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+
+    .search-suggestion:last-child {
+      border-bottom: none;
+    }
+
+    .search-suggestion:hover {
+      background-color: #f0f4fa;
+    }
+
+    .search-bar {
+      padding: 8px 16px 8px 36px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 0.95rem;
+      background-color: white;
+      color: #315f85;
+      width: 220px;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: 12px center;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .search-bar::placeholder {
+      color: #888;
+    }
+
+    .login-btn {
+      background-color: #ffcb05;
+      border: none;
+      padding: 8px 16px;
+      height: 40px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #1e2b38;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .login-btn:hover {
+      background-color: #e6b800;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .submissions-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      padding: 40px;
+    }
+
+    h1 {
+      color: #234d7d;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #234d7d;
+      display: block;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      border: 2px solid #e1f0ff;
+      background: white;
+      color: #234d7d;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn.active {
+      background: #4a90e2;
+      color: white;
+      border-color: #4a90e2;
+    }
+
+    .filter-btn:hover {
+      border-color: #4a90e2;
+      background: #e6f0ff;
+    }
+
+    .submissions-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .submission-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 25px;
+      border: 1px solid #e1f0ff;
+      transition: all 0.3s ease;
+    }
+
+    .submission-card:hover {
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .submission-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .submission-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #234d7d;
+      margin-bottom: 5px;
+    }
+
+    .submission-category {
+      display: inline-block;
+      padding: 5px 12px;
+      background: #4a90e2;
+      color: white;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .submission-meta {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .submission-description {
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .submission-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #e1f0ff;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .detail-item i {
+      color: #4a90e2;
+      width: 16px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+
+    .loading i {
+      font-size: 2rem;
+      color: #4a90e2;
+      margin-bottom: 10px;
+    }
+
+    .no-submissions {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+
+    .no-submissions i {
+      font-size: 3rem;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    .category-colors {
+      --game-show: #ff6b35;
+      --reaction: #e74c3c;
+      --challenge: #f39c12;
+      --tutorial: #27ae60;
+      --collaboration: #9b59b6;
+      --behind-scenes: #34495e;
+      --q-and-a: #1abc9c;
+      --other: #95a5a6;
+    }
+
+    .submission-category.game-show { background: var(--game-show); }
+    .submission-category.reaction { background: var(--reaction); }
+    .submission-category.challenge { background: var(--challenge); }
+    .submission-category.tutorial { background: var(--tutorial); }
+    .submission-category.collaboration { background: var(--collaboration); }
+    .submission-category.behind-scenes { background: var(--behind-scenes); }
+    .submission-category.q-and-a { background: var(--q-and-a); }
+    .submission-category.other { background: var(--other); }
+
+    @media (max-width: 768px) {
+      .submissions-container {
+        padding: 20px;
+        margin: 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .stats-bar {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .filters {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .submission-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="/index.html">
+        <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+      </a>
+    </div>
+  </header>
+  
+  <nav>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div class="welcome-nav" style="position: relative;">
+        <div id="welcomeMessage" class="welcome-msg">Welcome</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+  
+      <div id="coinDisplay">
+        <div class="coin-emoji"></div>
+        <span id="coinCount">0</span>
+      </div>
+    </div>
+  
+  <!-- Collapsible nav menu -->
+  <div class="nav-links" id="mobileMenu">
+     
+    <!-- Search and login within dropdown -->
+    <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
+    <div class="search-suggestions" id="suggestions"></div>
+    <button class="login-btn">Login</button>
+  </div>
+</nav>
+
+  <main>
+    <div class="submissions-container">
+      <h1>🎬 Video Ideas Submissions</h1>
+      <p class="subtitle">See all the creative video ideas submitted by our community</p>
+
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="stat-number" id="totalSubmissions">0</span>
+          <span class="stat-label">Total Ideas</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="uniqueUsers">0</span>
+          <span class="stat-label">Unique Contributors</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="topCategory">-</span>
+          <span class="stat-label">Most Popular Category</span>
+        </div>
+      </div>
+
+      <div class="filters">
+        <button class="filter-btn active" data-category="all">All Ideas</button>
+        <button class="filter-btn" data-category="game-show">Game Show</button>
+        <button class="filter-btn" data-category="reaction">Reaction</button>
+        <button class="filter-btn" data-category="challenge">Challenge</button>
+        <button class="filter-btn" data-category="tutorial">Tutorial</button>
+        <button class="filter-btn" data-category="collaboration">Collaboration</button>
+        <button class="filter-btn" data-category="behind-scenes">Behind Scenes</button>
+        <button class="filter-btn" data-category="q-and-a">Q&A</button>
+        <button class="filter-btn" data-category="other">Other</button>
+      </div>
+
+      <div id="submissionsGrid" class="submissions-grid">
+        <div class="loading">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading submissions...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <div style="display: block; margin-bottom: 2px;">
+        <i class="fas fa-user"></i>
+      </div>
+      <span>Profile</span>
+    </a>
+    
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>      
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { 
+      getFirestore, 
+      collection, 
+      getDocs, 
+      query, 
+      where,
+      orderBy, 
+      limit,
+      serverTimestamp 
+    } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+
+    let currentUser = null;
+    let allSubmissions = [];
+    let currentFilter = 'all';
+
+    const welcomeEl = document.getElementById("welcomeMessage");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+
+    // Global login function
+    window.handleLogin = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const currentUrl = window.location.href;
+        const redirectUrl = encodeURIComponent(currentUrl);
+        
+        sessionStorage.setItem('loginRedirect', redirectUrl);
+        
+        await signInWithPopup(auth, provider);
+        dropdownMenu.classList.remove('show');
+        
+        const storedRedirect = sessionStorage.getItem('loginRedirect');
+        if (storedRedirect) {
+          sessionStorage.removeItem('loginRedirect');
+          const redirectTo = decodeURIComponent(storedRedirect);
+          if (redirectTo !== window.location.href) {
+            window.location.href = redirectTo;
+          }
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+      }
+    };
+
+    // Global logout function
+    window.handleLogout = async () => {
+      try {
+        await signOut(auth);
+        dropdownMenu.classList.remove('show');
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
+
+    async function loadSubmissions() {
+      try {
+        const submissionsSnapshot = await getDocs(collection(db, 'videoIdeas'));
+        allSubmissions = submissionsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          timestamp: doc.data().timestamp?.toDate() || new Date()
+        }));
+
+        // Sort by timestamp (newest first)
+        allSubmissions.sort((a, b) => b.timestamp - a.timestamp);
+
+        updateStats();
+        renderSubmissions();
+      } catch (error) {
+        console.error('Error loading submissions:', error);
+        document.getElementById('submissionsGrid').innerHTML = `
+          <div class="no-submissions">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Error loading submissions. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    function updateStats() {
+      // Total submissions
+      document.getElementById('totalSubmissions').textContent = allSubmissions.length;
+
+      // Unique users
+      const uniqueUsers = new Set(allSubmissions.map(sub => sub.userId));
+      document.getElementById('uniqueUsers').textContent = uniqueUsers.size;
+
+      // Most popular category
+      const categoryCounts = {};
+      allSubmissions.forEach(sub => {
+        categoryCounts[sub.category] = (categoryCounts[sub.category] || 0) + 1;
+      });
+
+      const topCategory = Object.keys(categoryCounts).reduce((a, b) => 
+        categoryCounts[a] > categoryCounts[b] ? a : b, 'none');
+
+      const categoryLabels = {
+        'game-show': 'Game Show',
+        'reaction': 'Reaction',
+        'challenge': 'Challenge',
+        'tutorial': 'Tutorial',
+        'collaboration': 'Collaboration',
+        'behind-scenes': 'Behind Scenes',
+        'q-and-a': 'Q&A',
+        'other': 'Other'
+      };
+
+      document.getElementById('topCategory').textContent = categoryLabels[topCategory] || 'None';
+    }
+
+    function renderSubmissions() {
+      const grid = document.getElementById('submissionsGrid');
+      
+      if (allSubmissions.length === 0) {
+        grid.innerHTML = `
+          <div class="no-submissions">
+            <i class="fas fa-lightbulb"></i>
+            <p>No video ideas submitted yet. Be the first to submit an idea!</p>
+            <a href="/video-ideas.html" style="color: #4a90e2; text-decoration: none; font-weight: bold;">Submit Your Idea</a>
+          </div>
+        `;
+        return;
+      }
+
+      const filteredSubmissions = currentFilter === 'all' 
+        ? allSubmissions 
+        : allSubmissions.filter(sub => sub.category === currentFilter);
+
+      if (filteredSubmissions.length === 0) {
+        grid.innerHTML = `
+          <div class="no-submissions">
+            <i class="fas fa-filter"></i>
+            <p>No submissions found for this category.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const categoryLabels = {
+        'game-show': 'Game Show',
+        'reaction': 'Reaction',
+        'challenge': 'Challenge',
+        'tutorial': 'Tutorial',
+        'collaboration': 'Collaboration',
+        'behind-scenes': 'Behind Scenes',
+        'q-and-a': 'Q&A',
+        'other': 'Other'
+      };
+
+      grid.innerHTML = filteredSubmissions.map(sub => `
+        <div class="submission-card">
+          <div class="submission-header">
+            <div>
+              <div class="submission-title">${sub.title}</div>
+              <span class="submission-category ${sub.category}">${categoryLabels[sub.category] || sub.category}</span>
+            </div>
+            <div class="submission-meta">
+              <i class="fas fa-user"></i> ${sub.username || 'Anonymous'}
+            </div>
+          </div>
+          
+          <div class="submission-description">${sub.description}</div>
+          
+          <div class="submission-details">
+            <div class="detail-item">
+              <i class="fas fa-users"></i>
+              <span>Target: ${sub.targetAudience}</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-calendar"></i>
+              <span>${sub.timestamp.toLocaleDateString()}</span>
+            </div>
+            ${sub.contactInfo ? `
+            <div class="detail-item">
+              <i class="fas fa-envelope"></i>
+              <span>Contact: ${sub.contactInfo}</span>
+            </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Filter functionality
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        currentFilter = btn.dataset.category;
+        renderSubmissions();
+      });
+    });
+
+    // Auth state listener
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        let username = user.displayName || user.email?.split('@')[0] || "User";
+        let coins = 0;
+
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+
+          if (!snapshot.empty) {
+            snapshot.forEach(doc => {
+              const data = doc.data();
+              if (data.username) username = data.username;
+              if (data.coins !== undefined) coins = data.coins;
+            });
+          }
+
+          welcomeEl.textContent = `Welcome, ${username}`;
+          const coinDisplayEl = document.getElementById("coinCount");
+          if (coinDisplayEl) {
+            coinDisplayEl.textContent = coins;
+          }
+
+          // Set up dropdown menu
+          dropdownMenu.innerHTML = `
+            <a href="/profile.html">Edit Profile</a>
+            <a href="#" onclick="handleLogout()">Logout</a>
+          `;
+
+          welcomeEl.onclick = () => {
+            dropdownMenu.classList.toggle('show');
+          };
+
+          // Close dropdown when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!welcomeEl.contains(e.target) && !dropdownMenu.contains(e.target)) {
+              dropdownMenu.classList.remove('show');
+            }
+          });
+
+        } catch (error) {
+          console.error("Error loading user data:", error);
+          welcomeEl.textContent = `Welcome, ${username}`;
+        }
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html?redirect=${encodeURIComponent(window.location.pathname)}">Log In</a>
+        `;
+        
+        const coinDisplayEl = document.getElementById("coinCount");
+        if (coinDisplayEl) {
+          coinDisplayEl.textContent = "0";
+        }
+      }
+    });
+
+    // Welcome message dropdown functionality
+    const welcomeMessage = document.getElementById("welcomeMessage");
+
+    welcomeMessage.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("show");
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeMessage) {
+        dropdownMenu.classList.remove("show");
+      }
+    });
+
+    // Load submissions on page load
+    loadSubmissions();
+  </script>
+</body>
+</html> 

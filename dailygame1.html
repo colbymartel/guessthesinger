@@ -513,48 +513,16 @@
       const container = document.getElementById('quizContainer');
       container.innerHTML = `
         <div class="start-page">
-          <div class="start-badge">
-            <i class="fas fa-calendar-day"></i>
-            Daily Challenge
+          <div class="start-title">Can you guess his favorite singer?</div>
+          <div class="start-date">August 1, 2025 - Game #1</div>
+          <img src="images/carson.jpg" alt="Carson" class="start-img" />
+          <div class="start-description">
+            Guess Carson's favorite singer and donate $0.01 to Team Water!
           </div>
-          <div class="start-title">Guess His Favorite Singer</div>
-          <div class="start-date">August 1, 2025 - Challenge #1</div>
-          
-          <div class="host-section">
-            <img src="images/carson.jpg" alt="Carson" class="start-img" />
-            <div class="host-info">
-              <div class="host-name">Carson</div>
-              <div class="host-title">@carsoncurran_</div>
-            </div>
-          </div>
-          
-          <div class="game-stats">
-            <div class="stat-item">
-              <i class="fas fa-users"></i>
-              <span>1,247 players today</span>
-            </div>
-            <div class="stat-item">
-              <i class="fas fa-trophy"></i>
-              <span>89% success rate</span>
-            </div>
-          </div>
-          
           <button class="start-btn" onclick="startQuiz()">
             <i class="fas fa-play" style="margin-right: 8px;"></i>
-            Start Today's Challenge
+            Start Game
           </button>
-          
-          <div class="start-description">
-            <div class="description-header">
-              <i class="fas fa-heart"></i>
-              <span>For Every Game Completed</span>
-            </div>
-            <div class="donation-info">
-              <span class="donation-amount">$0.01</span>
-              <span class="donation-text">donated to Team Water</span>
-            </div>
-            <div class="impact-text">Help provide clean water to communities in need</div>
-          </div>
         </div>
       `;
     }
@@ -2526,31 +2494,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 20px 0 30px 0;
+      margin: 40px 0 30px 0;
       text-align: center;
-      padding: 20px;
-    }
-
-    .start-badge {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 12px rgba(59, 123, 191, 0.3);
-    }
-
-    .start-subtitle {
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 16px;
-      text-align: center;
-      font-weight: 500;
     }
     .start-title {
       font-size: 2.2rem;
@@ -2597,117 +2542,38 @@
       transform: scale(1.05);
       box-shadow: 0 12px 32px rgba(0,0,0,0.2);
     }
-
-    .host-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: 2px solid #dee2e6;
-    }
-
-    .host-info {
-      text-align: left;
-    }
-
-    .host-name {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: #2c3e50;
-      margin-bottom: 4px;
-    }
-
-    .host-title {
-      font-size: 0.9rem;
-      color: #6c757d;
-      font-weight: 500;
-    }
-
-    .game-stats {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 24px;
-      justify-content: center;
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
-      color: #495057;
-      font-weight: 500;
-    }
-
-    .stat-item i {
-      color: #2196f3;
-      font-size: 1rem;
-    }
     
     .start-description {
       font-size: 1rem;
       color: #1565c0;
-      margin-top: 32px;
-      margin-bottom: 16px;
+      margin-bottom: 32px;
       text-align: center;
       line-height: 1.5;
-      max-width: 350px;
-      padding: 20px 24px;
-      background: linear-gradient(135deg, #f8f9fa, #ffffff);
+      max-width: 400px;
+      padding: 20px 20px 16px 20px;
+      background: linear-gradient(135deg, #e3f2fd, #f3f9ff);
       border-radius: 12px;
-      border: 1px solid #e9ecef;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 2px solid #2196f3;
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.15);
+      position: relative;
       font-weight: 500;
     }
-
-    .description-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      font-weight: 600;
-      color: #495057;
-      font-size: 0.9rem;
-    }
-
-    .description-header i {
-      color: #e91e63;
-      font-size: 0.8rem;
-    }
-
-    .donation-info {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 4px;
-      margin-bottom: 8px;
-    }
-
-    .donation-amount {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #2e7d32;
-    }
-
-    .donation-text {
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-
-    .impact-text {
-      font-size: 0.8rem;
-      color: #868e96;
-      font-style: italic;
+    
+    .start-description::before {
+      content: '💧';
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: white;
+      padding: 4px 8px;
+      border-radius: 16px;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border: 2px solid #2196f3;
     }
     
-
-
     .start-btn {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      background: linear-gradient(135deg, #2196f3, #1976d2);
       color: #fff;
       font-weight: bold;
       border: none;
@@ -2717,18 +2583,16 @@
       cursor: pointer;
       transition: all 0.3s ease;
       margin-top: 10px;
-      box-shadow: 0 4px 16px rgba(59, 123, 191, 0.3);
+      box-shadow: 0 4px 16px rgba(33, 150, 243, 0.3);
       position: relative;
       overflow: hidden;
     }
     
     .start-btn:hover {
-      background: linear-gradient(135deg, #234d7d, #1e3a5f);
+      background: linear-gradient(135deg, #1976d2, #1565c0);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(59, 123, 191, 0.4);
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
     }
-
-
     
     .start-btn:active {
       transform: translateY(0);
