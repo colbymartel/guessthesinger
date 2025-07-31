@@ -6,6 +6,13 @@
   <meta name="description" content="Book the ultimate music guessing game show experience - Guess The Singer!" />
   <title>Guess The Singer: Live Show</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  
+  <!-- Preload critical images -->
+  <link rel="preload" as="image" href="images/Gallery1.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/Gallery2.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/Gallery3.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/Gallery4.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/Gallery5.jpg" fetchpriority="high">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -1736,6 +1743,11 @@ document.addEventListener('DOMContentLoaded', function() {
       height: 100%;
       object-fit: cover;
       border-radius: 20px;
+      will-change: transform;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
     }
 
     .gallery-arrow {
@@ -1857,9 +1869,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const img = document.createElement('img');
         img.src = src;
         img.alt = `Gallery Image ${index + 1}`;
-        img.loading = index < 3 ? 'eager' : 'lazy'; // Load first 3 images immediately
+        img.loading = index < 5 ? 'eager' : 'lazy'; // Load first 5 images immediately
         img.decoding = 'async';
-        img.fetchPriority = index < 3 ? 'high' : 'auto';
+        img.fetchPriority = index < 5 ? 'high' : 'auto';
+        
+        // Add loading optimization attributes
+        img.crossOrigin = 'anonymous';
+        img.referrerPolicy = 'no-referrer';
         
         slide.appendChild(img);
         slider.appendChild(slide);
@@ -1917,14 +1933,31 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
 
-    // Preload gallery images
+    // Preload gallery images with aggressive optimization
     function preloadGalleryImages() {
-      galleryImages.forEach((src, index) => {
+      // Preload critical images immediately
+      const criticalImages = galleryImages.slice(0, 5);
+      criticalImages.forEach((src, index) => {
         const link = document.createElement('link');
         link.rel = 'preload';
         link.as = 'image';
         link.href = src;
-        link.fetchPriority = index < 3 ? 'high' : 'low';
+        link.fetchPriority = 'high';
+        document.head.appendChild(link);
+        
+        // Also preload the actual image
+        const img = new Image();
+        img.src = src;
+      });
+      
+      // Preload remaining images with lower priority
+      const remainingImages = galleryImages.slice(5);
+      remainingImages.forEach((src, index) => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        link.fetchPriority = 'low';
         document.head.appendChild(link);
       });
     }
