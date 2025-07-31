@@ -262,7 +262,30 @@
         letter-spacing: 1.5px;
       }
 
+      .grid-item {
+        width: 300px;
+        height: 180px;
+      }
 
+      .grid-row {
+        gap: 20px;
+      }
+
+      .hero-grid {
+        gap: 25px;
+      }
+
+      .grid-row {
+        animation-duration: 20s;
+      }
+
+      .grid-row:nth-child(2) {
+        animation-duration: 18s;
+      }
+
+      .grid-row:nth-child(3) {
+        display: none;
+      }
     }
 
     .hero h1 {
@@ -1473,18 +1496,23 @@ function renderHeroGrid() {
   const grid = document.getElementById('heroGrid');
   grid.innerHTML = '';
   
+  // Check if mobile
+  const isMobile = window.innerWidth <= 768;
+  
   // Define which images go in each row
   const rowImages = [
     // Row 1: Gallery1.jpg through Gallery6.jpg
     heroGalleryImages.slice(0, 6),
     // Row 2: Gallery7.jpg through Gallery12.jpg
     heroGalleryImages.slice(6, 12),
-    // Row 3: Gallery13.jpg through Gallery19.jpg
+    // Row 3: Gallery13.jpg through Gallery19.jpg (desktop only)
     heroGalleryImages.slice(12, 19)
   ];
   
-  // Create 3 rows
-  for (let row = 0; row < 3; row++) {
+  // Create rows (2 for mobile, 3 for desktop)
+  const numRows = isMobile ? 2 : 3;
+  
+  for (let row = 0; row < numRows; row++) {
     const rowDiv = document.createElement('div');
     rowDiv.className = 'grid-row';
     
