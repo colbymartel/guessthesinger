@@ -1465,9 +1465,7 @@
 }
 </style>
 
-  <footer>
-    &copy; 2025 Guess The Singer. All Rights Reserved.
-  </footer>
+
 
   <script>
     function switchVideo(id) {
@@ -1674,6 +1672,324 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   </script>
+
+  <!-- Full Gallery Section -->
+  <section class="full-gallery-section">
+    <div class="gallery-container">
+      <h2 class="gallery-title">Event Gallery</h2>
+      <div class="gallery-slider-container">
+        <button class="gallery-arrow left" id="galleryPrev" aria-label="Previous image">&#8592;</button>
+        <div class="gallery-slider" id="gallerySlider">
+          <!-- Images will be populated by JavaScript -->
+        </div>
+        <button class="gallery-arrow right" id="galleryNext" aria-label="Next image">&#8594;</button>
+      </div>
+      <div class="gallery-dots" id="galleryDots">
+        <!-- Dots will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .full-gallery-section {
+      background: #f4f9fd;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .gallery-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-title {
+      color: #254a6d;
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 50px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .gallery-slider-container {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery-slider {
+      display: flex;
+      transition: transform 0.6s ease-in-out;
+      height: 500px;
+    }
+
+    .gallery-slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .gallery-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    .gallery-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-arrow:hover {
+      background: rgba(0, 0, 0, 0.8);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .gallery-arrow.left {
+      left: 20px;
+    }
+
+    .gallery-arrow.right {
+      right: 20px;
+    }
+
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .gallery-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(70, 130, 180, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-dot.active {
+      background: #4682b4;
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+      .gallery-title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+      }
+
+      .gallery-slider {
+        height: 300px;
+      }
+
+      .gallery-arrow {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .gallery-arrow.left {
+        left: 10px;
+      }
+
+      .gallery-arrow.right {
+        right: 10px;
+      }
+    }
+  </style>
+
+  <script>
+    // Gallery functionality
+    const galleryImages = [
+      'images/Gallery1.jpg',
+      'images/Gallery2.jpg',
+      'images/Gallery3.jpg',
+      'images/Gallery4.jpg',
+      'images/Gallery5.jpg',
+      'images/Gallery6.jpg',
+      'images/Gallery7.jpg',
+      'images/Gallery8.jpg',
+      'images/Gallery9.jpg',
+      'images/Gallery10.jpg',
+      'images/Gallery11.jpg',
+      'images/Gallery12.jpg',
+      'images/Gallery13.jpg',
+      'images/Gallery14.jpg',
+      'images/Gallery15.jpg',
+      'images/Gallery16.jpg',
+      'images/Gallery17.jpg',
+      'images/Gallery18.jpg',
+      'images/Gallery19.jpg'
+    ];
+
+    let currentGalleryIndex = 0;
+    let galleryAutoScrollInterval = null;
+
+    function renderGallery() {
+      const slider = document.getElementById('gallerySlider');
+      const dots = document.getElementById('galleryDots');
+      
+      slider.innerHTML = '';
+      dots.innerHTML = '';
+      
+      galleryImages.forEach((src, index) => {
+        // Create slide
+        const slide = document.createElement('div');
+        slide.className = 'gallery-slide';
+        
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Gallery Image ${index + 1}`;
+        img.loading = index < 3 ? 'eager' : 'lazy'; // Load first 3 images immediately
+        img.decoding = 'async';
+        img.fetchPriority = index < 3 ? 'high' : 'auto';
+        
+        slide.appendChild(img);
+        slider.appendChild(slide);
+        
+        // Create dot
+        const dot = document.createElement('button');
+        dot.className = 'gallery-dot';
+        dot.setAttribute('data-index', index);
+        dot.onclick = () => goToSlide(index);
+        dots.appendChild(dot);
+      });
+      
+      updateGallery();
+    }
+
+    function updateGallery() {
+      const slider = document.getElementById('gallerySlider');
+      const dots = document.querySelectorAll('.gallery-dot');
+      
+      // Update slider position
+      slider.style.transform = `translateX(-${currentGalleryIndex * 100}%)`;
+      
+      // Update dots
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentGalleryIndex);
+      });
+    }
+
+    function nextSlide() {
+      currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+      updateGallery();
+    }
+
+    function prevSlide() {
+      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+      updateGallery();
+    }
+
+    function goToSlide(index) {
+      currentGalleryIndex = index;
+      updateGallery();
+    }
+
+    function startGalleryAutoScroll() {
+      if (galleryAutoScrollInterval) {
+        clearInterval(galleryAutoScrollInterval);
+      }
+      galleryAutoScrollInterval = setInterval(nextSlide, 5000);
+    }
+
+    function stopGalleryAutoScroll() {
+      if (galleryAutoScrollInterval) {
+        clearInterval(galleryAutoScrollInterval);
+        galleryAutoScrollInterval = null;
+      }
+    }
+
+    // Preload gallery images
+    function preloadGalleryImages() {
+      galleryImages.forEach((src, index) => {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = src;
+        link.fetchPriority = index < 3 ? 'high' : 'low';
+        document.head.appendChild(link);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      preloadGalleryImages();
+      renderGallery();
+      startGalleryAutoScroll();
+      
+      // Manual navigation
+      document.getElementById('galleryPrev').onclick = function() {
+        prevSlide();
+        stopGalleryAutoScroll();
+        setTimeout(startGalleryAutoScroll, 10000);
+      };
+      
+      document.getElementById('galleryNext').onclick = function() {
+        nextSlide();
+        stopGalleryAutoScroll();
+        setTimeout(startGalleryAutoScroll, 10000);
+      };
+      
+      // Pause on hover
+      const sliderContainer = document.querySelector('.gallery-slider-container');
+      sliderContainer.addEventListener('mouseenter', stopGalleryAutoScroll);
+      sliderContainer.addEventListener('mouseleave', startGalleryAutoScroll);
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <p>&copy; 2025 Guess The Singer. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <style>
+    .main-footer {
+      background-color: #254a6d;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 1rem;
+      margin-top: 0;
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .main-footer p {
+      margin: 0;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      .main-footer {
+        padding: 25px 15px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 
 </body>
 </html>
