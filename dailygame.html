@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Preload critical images for better mobile performance -->
-  <link rel="preload" as="image" href="images/carson.jpg">
-  <link rel="preload" as="image" href="images/tatemcrae.jpg">
+  <link rel="preload" as="image" href="images/jake.jpg">
+  <link rel="preload" as="image" href="images/chrisstapleton.jpg">
   <link rel="preload" as="image" href="images/poppenguin.png">
   <link rel="preload" as="image" href="images/rhinorapper.png">
   <link rel="preload" as="image" href="images/horsecountry.png">
@@ -395,6 +395,9 @@
   </div>
 
   <script>
+    // Jake's game with Chris Stapleton
+    const isJakeGame = true;
+    
     const instructionsIcon = document.getElementById("instructionsIcon");
     const instructionsModal = document.getElementById("instructionsModal");
     const closeInstructions = document.getElementById("closeInstructions");
@@ -461,43 +464,49 @@
       "Starts N-Z": "<img src='/images/sza.jpg' alt='SZA' style='width:80px; height:80px; border-radius: 8px; object-fit: cover;' loading='lazy' decoding='async'>",
     };
 
-    const questions = [
-       {
+
+
+    // Questions for Jake's game (Chris Stapleton)
+    const jakeQuestions = [
+      {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Female", "Blond Hair"] 
+        correct: ["Male", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Pop"]
+        correct: ["Country"]
       },
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["Under 30"]
+        correct: ["40-49"]
       },
       {
         question: "Guess the Birthplace",
         options: ["USA", "Canada", "Europe", "Australia", "Asia", "South America"],
-        correct: ["Canada"]
+        correct: ["USA"]
       },
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["40-80 Million"]
+        correct: ["20-40 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Active on TikTok"]
+        correct: ["Grammy Winner", "Band Member"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Birth Name", "Starts N-Z"]
+        correct: ["Two Words", "Birth Name", "Starts A-M"]
       }
     ];
+
+    // Use Jake's questions (Chris Stapleton)
+    const questions = jakeQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -511,40 +520,36 @@
 
     function renderStartPage() {
       const container = document.getElementById('quizContainer');
+      const hostName = "Jake";
+      const hostImage = "images/jake.jpg";
+      const hostTitle = "@jake.smith.22";
+      const challengeDate = "August 1, 2025 - Challenge #1";
+      
       container.innerHTML = `
         <div class="start-page">
-          <div class="start-badge">
-            <i class="fas fa-calendar-day"></i>
-            Daily Challenge
+          <div class="date-challenge-section">
+            <div class="date">August 1, 2025</div>
+            <div class="challenge-number">Challenge #1</div>
           </div>
-          <div class="start-title">Guess His Favorite Singer</div>
-          <div class="start-date">August 1, 2025 - Challenge #1</div>
           
-          <div class="host-section">
-            <img src="images/carson.jpg" alt="Carson" class="start-img" />
+          
+          <div class="tagline">Can you Guess His Favorite Singer?</div>
+          
+            <div class="host-section">
+            <img src="${hostImage}" alt="${hostName}" class="start-img" />
             <div class="host-info">
-              <div class="host-name">Carson</div>
-              <div class="host-title">@carsoncurran_</div>
+              <div class="host-name">${hostName}</div>
+              <div class="host-title">${hostTitle}</div>
             </div>
           </div>
-          
-         
           
           <button class="start-btn" onclick="startQuiz()">
-            <i class="fas fa-play" style="margin-right: 8px;"></i>
-            Start Today's Challenge
+            <span>START GAME</span>
           </button>
           
-          <div class="start-description">
-            <div class="description-header">
-              <i class="fas fa-heart"></i>
-              <span>For Every Game Completed</span>
-            </div>
-            <div class="donation-info">
-              <span class="donation-amount">$0.01</span>
-              <span class="donation-text">donated to Team Water</span>
-            </div>
-            <div class="impact-text">Help provide clean water to communities in need</div>
+          <div class="impact-section">
+            <div class="impact-icon">💧</div>
+            <div class="impact-text">Every game helps provide clean water to communities in need</div>
           </div>
         </div>
       `;
@@ -621,10 +626,13 @@
     function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
+      const hostName = "Jake";
+      const hostImage = "images/jake.jpg";
+      
       container.innerHTML = `
         <div class="final-guess-header">
           <div class="question-prompt">Guess His Favorite Singer</div>
-          <img src="images/carson.jpg" alt="Carson" class="final-guess-carson" />
+          <img src="${hostImage}" alt="${hostName}" class="final-guess-carson" />
         </div>
         <div class="autocomplete-container">
           <input id="finalGuessInput" class="final-guess-input" type="text" placeholder="Type your guess..." autocomplete="off" />
@@ -713,7 +721,7 @@
       finalSingerGuessMade = true; // Mark that the final singer guess has been made
       updateGuessCounter();
       
-      const finalSingerAnswer = "Tate McRae"; 
+      const finalSingerAnswer = "Chris Stapleton"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -734,10 +742,10 @@
       
       // Generate hint display content for all unlocked hints
       const hints = {
-        1: "💡 She started as a dancer and was a finalist on “So You Think You Can Dance” at just 13 years old.",
-        2: "💡 She is currently dating a famous singer from Australia.",
-        3: "💡 Her name starts with T.",
-        4: "💡 Her most popular songs are 'greedy' and 'you broke me first'."
+        1: "💡 They have won more than 5 Grammy Awards.",
+        2: "💡 They were born in Kentucky, USA.",
+        3: "💡 He has a common American name, beginning with the letter 'C'.",
+        4: "💡 His most popular song is 'Tennessee Whiskey'."
       };
       
       // Get the currently displayed hint from session storage
@@ -1349,11 +1357,13 @@
       console.log('Showing hint', hintNumber);
       
       const hintDisplay = document.getElementById('hintDisplay');
+      
+      // Hints for Chris Stapleton
       const hints = {
-        1: "💡 The singer's name starts with T.",
-        2: "💡 This artist is known for writing songs about her personal life and relationships, often referencing her ex-boyfriends.",
-        3: "💡 This artist has won multiple Grammy Awards for Album of the Year and is one of the best-selling music artists of all time.",
-        4: "💡 She is famous for her \"eras\" concept and has re-recorded her early albums to own her masters."
+        1: "💡 The singer's name starts with C.",
+        2: "💡 This artist is known for his powerful voice and country music style.",
+        3: "💡 This artist has won multiple Grammy Awards and is considered one of the best country singers.",
+        4: "💡 He is famous for his soulful voice and has been called the 'voice of country music'."
       };
       
       if (hintDisplay) {
@@ -1402,8 +1412,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-            <img src="images/carson.jpg" alt="Carson" class="celebration-carson" />
-            <img src="images/tatemcrae.jpg" alt="Tate McRae" class="celebration-singer" />
+            <img src="images/jake.jpg" alt="Jake" class="celebration-carson" />
+            <img src="images/chrisstapleton.jpg" alt="Chris Stapleton" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
@@ -1442,8 +1452,8 @@
     // Preload critical images for better performance
     function preloadImages() {
       const criticalImages = [
-        'images/carson.jpg',
-        'images/tatemcrae.jpg',
+        'images/jake.jpg',
+        'images/chrisstapleton.jpg',
         'images/poppenguin.png',
         'images/rhinorapper.png',
         'images/horsecountry.png',
@@ -2517,23 +2527,39 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 20px 0 30px 0;
+      min-height: 50vh;
       text-align: center;
-      padding: 20px;
+      padding: 10px;
+      max-width: 400px;
+      margin: 0 auto;
     }
 
-    .start-badge {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      font-weight: 600;
+    .date-challenge-section {
       margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 12px rgba(59, 123, 191, 0.3);
+      text-align: center;
+    }
+
+    .date {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .challenge-number {
+      font-size: 1.1rem;
+      color: #3b7bbf;
+      font-weight: bold;
+    }
+
+    .logo-section {
+      margin-bottom: 32px;
+    }
+
+    .main-logo {
+      width: 120px;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
     }
 
     .start-subtitle {
@@ -2544,60 +2570,46 @@
       font-weight: 500;
     }
     .start-title {
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: bold;
-      color: #315f85;
-      margin-bottom: 12px;
+      color: #2c3e50;
+      margin-bottom: 16px;
       text-align: center;
       line-height: 1.2;
+      letter-spacing: -0.5px;
     }
     
-    .start-subtitle {
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 8px;
+    .tagline {
+      font-size: 1.4rem;
+      color: #2c3e50;
+      margin-bottom: 20px;
       text-align: center;
-      font-weight: 500;
+      font-weight: bold;
+      line-height: 1.3;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
     }
     
-    .start-date {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 32px;
-      text-align: center;
-      font-weight: 500;
-      background: #f5f5f5;
-      padding: 8px 16px;
-      border-radius: 20px;
-      display: inline-block;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
+
     
     .start-img {
-      width: 160px;
-      height: 160px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 24px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      border: 5px solid #ffcb05;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .start-img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+      border: 3px solid #3b7bbf;
     }
 
     .host-section {
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-      padding: 16px 20px;
-      border-radius: 16px;
-      border: 2px solid #dee2e6;
+      margin-bottom: 20px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
     }
 
     .host-info {
@@ -2605,10 +2617,10 @@
     }
 
     .host-name {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: bold;
       color: #2c3e50;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .host-title {
@@ -2638,20 +2650,27 @@
       font-size: 1rem;
     }
     
-    .start-description {
-      font-size: 1rem;
-      color: #1565c0;
-      margin-top: 32px;
-      margin-bottom: 8px;
-      text-align: center;
-      line-height: 1.5;
-      max-width: 350px;
-      padding: 20px 24px;
-      background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    .impact-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: #f8f9fa;
       border-radius: 12px;
       border: 1px solid #e9ecef;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      font-weight: 500;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .impact-icon {
+      font-size: 1.2rem;
+    }
+
+    .impact-text {
+      font-size: 0.9rem;
+      color: #6c757d;
+      text-align: left;
+      line-height: 1.4;
     }
 
     .description-header {
@@ -2698,25 +2717,23 @@
 
 
     .start-btn {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      background: #3b7bbf;
       color: #fff;
       font-weight: bold;
       border: none;
-      border-radius: 25px;
-      padding: 20px 56px;
-      font-size: 1.4rem;
+      border-radius: 12px;
+      padding: 16px 48px;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-      box-shadow: 0 4px 16px rgba(59, 123, 191, 0.3);
-      position: relative;
-      overflow: hidden;
+      transition: all 0.2s ease;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
     
     .start-btn:hover {
-      background: linear-gradient(135deg, #234d7d, #1e3a5f);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(59, 123, 191, 0.4);
+      background: #234d7d;
+      transform: translateY(-1px);
     }
 
 
