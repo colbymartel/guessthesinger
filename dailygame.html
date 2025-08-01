@@ -398,6 +398,18 @@
     // Jake's game with Chris Stapleton
     const isJakeGame = true;
     
+    // Check if user has already played today
+    function checkIfAlreadyPlayed() {
+      const today = new Date().toDateString();
+      const playedToday = localStorage.getItem(`dailyGame_${today}`);
+      return playedToday === 'true';
+    }
+    
+    function markAsPlayed() {
+      const today = new Date().toDateString();
+      localStorage.setItem(`dailyGame_${today}`, 'true');
+    }
+    
     const instructionsIcon = document.getElementById("instructionsIcon");
     const instructionsModal = document.getElementById("instructionsModal");
     const closeInstructions = document.getElementById("closeInstructions");
@@ -518,12 +530,13 @@
     // Track if the final singer guess has been made (to not deduct points for it)
     let finalSingerGuessMade = false;
 
-    function renderStartPage() {
+        function renderStartPage() {
       const container = document.getElementById('quizContainer');
       const hostName = "Jake";
       const hostImage = "images/jake.jpg";
       const hostTitle = "@jake.smith.22";
       const challengeDate = "August 1, 2025 - Challenge #1";
+      const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
@@ -535,7 +548,7 @@
           
           <div class="tagline">Can you Guess His Favorite Singer?</div>
           
-            <div class="host-section">
+          <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
             <div class="host-info">
               <div class="host-name">${hostName}</div>
@@ -543,9 +556,10 @@
             </div>
           </div>
           
-          <button class="start-btn" onclick="startQuiz()">
-            <span>START GAME</span>
-          </button>
+          ${alreadyPlayed ? 
+            '<div class="already-played-message">✅ You\'ve completed today\'s challenge! Come back tomorrow for a new one.</div>' :
+            '<button class="start-btn" onclick="startQuiz()"><span>START GAME</span></button>'
+          }
           
           <div class="impact-section">
             <div class="impact-icon">💧</div>
@@ -556,6 +570,12 @@
     }
 
     window.startQuiz = function() {
+      // Check if user has already played today
+      if (checkIfAlreadyPlayed()) {
+        alert("🎯 You've already completed today's challenge! Come back tomorrow for a new challenge.");
+        return;
+      }
+      
       quizStarted = true;
       // Set progress to first question (not 0% anymore)
       document.getElementById('progress').style.width = `${(1 / (questions.length + 1)) * 100}%`;
@@ -1427,6 +1447,9 @@
           <a class="more-games-btn" href="/games.html">More Games</a>
         </div>
       `;
+      
+      // Mark as played for today
+      markAsPlayed();
       
       // Record the completion for Team Water tracking
       if (window.recordDailyGameCompletion) {
@@ -2671,6 +2694,17 @@
       color: #6c757d;
       text-align: left;
       line-height: 1.4;
+    }
+
+    .already-played-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-weight: 500;
+      border: 1px solid #c3e6cb;
+      text-align: center;
     }
 
     .description-header {
