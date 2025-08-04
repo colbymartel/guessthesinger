@@ -17,8 +17,8 @@
   gtag('config', 'G-T42NG5C994');
 </script>
   <!-- Preload critical images for better mobile performance -->
-  <link rel="preload" as="image" href="images/salish.jpg">
-  <link rel="preload" as="image" href="images/billieeilish.jpg">
+  <link rel="preload" as="image" href="images/alexandre.png">
+  <link rel="preload" as="image" href="images/franksinatra.jpg">
   <link rel="preload" as="image" href="images/poppenguin.png">
   <link rel="preload" as="image" href="images/rhinorapper.png">
   <link rel="preload" as="image" href="images/horsecountry.png">
@@ -404,8 +404,8 @@
   </div>
 
   <script>
-    // Salish's game with Billie Eilish
-    const isSalishGame = true;
+    // Alexandre's game with Frank Sinatra
+    const isAlexandreGame = true;
     
     // Check if user has already played today
     function checkIfAlreadyPlayed() {
@@ -487,12 +487,12 @@
 
 
 
-    // Questions for Salish's game (Billie Eilish)
-    const salishQuestions = [
+    // Questions for Alexandre's game (Frank Sinatra)
+    const alexandreQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Female", "Dark Hair"]
+        correct: ["Male", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
@@ -502,7 +502,7 @@
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["Under 30"]
+        correct: ["Passed Away"]
       },
       {
         question: "Guess the Birthplace",
@@ -512,12 +512,12 @@
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["80+ Million"]
+        correct: ["10-20 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Also an Actor"]
+        correct: ["Also an Actor", "Grammy Winner", "Band Member"]
       },
       {
         question: "Guess the Name",
@@ -526,8 +526,8 @@
       }
     ];
 
-    // Use Salish's questions (Billie Eilish)
-    const questions = salishQuestions;
+    // Use Alexandre's questions (Frank Sinatra)
+    const questions = alexandreQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -541,21 +541,21 @@
 
         function renderStartPage() {
       const container = document.getElementById('quizContainer');
-      const hostName = "Salish";
-      const hostImage = "images/salish.jpg";
-      const hostTitle = "@salishmatter";
-      const challengeDate = "August 3, 2025 - Challenge #3";
+      const hostName = "Alexandre";
+      const hostImage = "images/alexandre.png";
+      const hostTitle = "@alexandre3130";
+      const challengeDate = "August 4, 2025 - Challenge #4";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 3, 2025</div>
-            <div class="challenge-number">Challenge #3</div>
+            <div class="date">August 4, 2025</div>
+            <div class="challenge-number">Challenge #4</div>
           </div>
           
           
-          <div class="tagline">Can you Guess Her Favorite Singer?</div>
+          <div class="tagline">Can you Guess His Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -655,8 +655,8 @@
     function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-      const hostName = "Salish";
-      const hostImage = "images/salish.jpg";
+      const hostName = "Alexandre";
+      const hostImage = "images/alexandre.png";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -750,7 +750,7 @@
       finalSingerGuessMade = true; // Mark that the final singer guess has been made
       updateGuessCounter();
       
-      const finalSingerAnswer = "Billie Eilish"; 
+      const finalSingerAnswer = "Frank Sinatra"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -771,10 +771,10 @@
       
       // Generate hint display content for all unlocked hints
       const hints = {
-        1: "💡 They are known for their dark pop and alternative music.",
-        2: "💡 She was born in Los Angeles, California.",
-        3: "💡 She goes by first name, which starts with 'B', then middle name.",
-        4: "💡 Her most popular song is 'bad guy'."
+        1: "💡 He is known as 'The Voice' and for his smooth crooning style.",
+        2: "💡 He was born in Hoboken, New Jersey.",
+        3: "💡 His name begins with the letter 'F'.",
+        4: "💡 His most popular song is 'My Way'."
       };
       
       // Get the currently displayed hint from session storage
@@ -1441,8 +1441,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-            <img src="images/salish.jpg" alt="Salish" class="celebration-carson" />
-            <img src="images/billieeilish.jpg" alt="Billie Eilish" class="celebration-singer" />
+            <img src="images/alexandre.png" alt="Alexandre" class="celebration-carson" />
+            <img src="images/franksinatra.jpg" alt="Frank Sinatra" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
@@ -1484,8 +1484,8 @@
     // Preload critical images for better performance
     function preloadImages() {
       const criticalImages = [
-        'images/salish.jpg',
-        'images/billieeilish.jpg',
+        'images/alexandre.png',
+        'images/franksinatra.jpg',
         'images/poppenguin.png',
         'images/rhinorapper.png',
         'images/horsecountry.png',
