@@ -33,7 +33,96 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 15px;
+      margin-bottom: 25px;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      border-radius: 16px;
+      border: 1px solid #dee2e6;
+    }
+    
+    .avatar-wrapper {
+      position: relative;
+      margin-right: 15px;
+    }
+    
+    .avatar-status {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 16px;
+      height: 16px;
+      background: #28a745;
+      border-radius: 50%;
+      border: 2px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .avatar-status i {
+      font-size: 8px;
+      color: white;
+    }
+    
+    .profile-info {
+      flex: 1;
+    }
+    
+    .profile-name {
+      font-weight: 600;
+      font-size: 20px;
+      color: #1e2b38;
+      margin-bottom: 4px;
+    }
+    
+    .profile-location {
+      font-size: 14px;
+      color: #6c757d;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .profile-level {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .level-badge {
+      background: #ffcb05;
+      color: #1e2b38;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .level-progress {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .progress-bar {
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #28a7ae, #23949b);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      font-size: 11px;
+      color: #6c757d;
     }
     .avatar-grid {
       display: flex;
@@ -66,6 +155,108 @@
     .status-section, .dashboard-section, .socials-section {
       margin-top: 30px;
     }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title i {
+      color: #28a7ae;
+      font-size: 18px;
+    }
+    
+    .section-title h4 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #1e2b38;
+    }
+    
+    .dashboard-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .dashboard-card {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e9ecef;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-color: #28a7ae;
+    }
+    
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 20px;
+    }
+    
+    .dashboard-card:nth-child(1) .card-icon {
+      background: linear-gradient(135deg, #ffcb05, #ffd700);
+      color: #1e2b38;
+    }
+    
+    .dashboard-card:nth-child(2) .card-icon {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+    }
+    
+    .dashboard-card:nth-child(3) .card-icon {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+    
+    .card-content {
+      flex: 1;
+    }
+    
+    .card-content h5 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e2b38;
+    }
+    
+    .card-content p {
+      margin: 0;
+      font-size: 13px;
+      color: #6c757d;
+      line-height: 1.4;
+    }
+    
+    .card-arrow {
+      color: #cbd5e0;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    
+    .dashboard-card:hover .card-arrow {
+      color: #28a7ae;
+    }
     .status-tags {
       display: flex;
       flex-wrap: wrap;
@@ -73,25 +264,39 @@
       margin-top: 10px;
     }
     .status-tag {
-      background: #e6f9f9;
+      background: linear-gradient(135deg, #e6f9f9, #d4f4f4);
       color: #28a7ae;
       padding: 8px 14px;
       border-radius: 20px;
       font-size: 14px;
+      font-weight: 500;
+      border: 1px solid #d1f2f2;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(40, 167, 174, 0.1);
+    }
+    
+    .status-tag:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(40, 167, 174, 0.2);
     }
     .btn {
       width: 100%;
-      padding: 12px;
-      background: #28a7ae;
+      padding: 14px;
+      background: linear-gradient(135deg, #28a7ae, #23949b);
       border: none;
       color: #fff;
       font-size: 16px;
-      border-radius: 10px;
+      font-weight: 600;
+      border-radius: 12px;
       cursor: pointer;
       margin-top: 20px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 8px rgba(40, 167, 174, 0.2);
     }
     .btn:hover {
-      background: #23949b;
+      background: linear-gradient(135deg, #23949b, #1e7e85);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(40, 167, 174, 0.3);
     }
     .modal {
       display: none;
@@ -182,14 +387,24 @@
       color: #ffcb05;
     }
     .edit-btn {
-      background: none;
+      background: linear-gradient(135deg, #28a7ae, #23949b);
       border: none;
-      color: #28a7ae;
-      font-weight: bold;
+      color: white;
+      font-weight: 600;
       cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 4px rgba(40, 167, 174, 0.2);
     }
     .edit-btn:hover {
-      text-decoration: underline;
+      background: linear-gradient(135deg, #23949b, #1e7e85);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(40, 167, 174, 0.3);
     }
     .avatar-img.selected {
       border-color: #ffcb05;
@@ -484,6 +699,1238 @@
       margin-top:10px;
       font-weight: 500;
     }
+    
+    /* Rewards History Modal Styles */
+    .rewards-popup {
+      max-width: 600px;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .rewards-header {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .rewards-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .rewards-title i {
+      font-size: 24px;
+    }
+    
+    .rewards-title h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .rewards-summary {
+      display: flex;
+      justify-content: space-around;
+      gap: 20px;
+    }
+    
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .summary-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .summary-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .summary-value.pending {
+      color: #ffcb05;
+    }
+    
+    .rewards-list {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    .reward-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+    }
+    
+    .reward-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .reward-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      font-size: 20px;
+    }
+    
+    .reward-icon.received {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+    }
+    
+    .reward-icon.pending {
+      background: linear-gradient(135deg, #ffcb05, #ffd700);
+      color: #1e2b38;
+    }
+    
+    .reward-content {
+      flex: 1;
+    }
+    
+    .reward-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: #1e2b38;
+      margin-bottom: 4px;
+    }
+    
+    .reward-description {
+      font-size: 14px;
+      color: #6c757d;
+      margin-bottom: 8px;
+    }
+    
+    .reward-date {
+      font-size: 12px;
+      color: #adb5bd;
+    }
+    
+    .reward-cost {
+      font-size: 12px;
+      color: #28a7ae;
+      font-weight: 600;
+    }
+    
+    .reward-status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .reward-status.received {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .reward-status.pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    .rewards-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6c757d;
+    }
+    
+    .empty-icon {
+      font-size: 4rem;
+      color: #dee2e6;
+      margin-bottom: 16px;
+    }
+    
+    .rewards-empty h4 {
+      margin: 0 0 8px 0;
+      color: #495057;
+      font-size: 1.2rem;
+    }
+    
+    .rewards-empty p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    
+    /* Enhanced Personal Bests Modal Styles */
+    .personal-bests-popup {
+      max-width: 700px;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .personal-bests-header {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .bests-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .bests-title i {
+      font-size: 24px;
+    }
+    
+    .bests-title h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .bests-avatar img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .achievement-badge {
+      background: linear-gradient(135deg, #ffcb05, #ffd700);
+      margin: 20px;
+      padding: 20px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #1e2b38;
+    }
+    
+    .badge-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    
+    .badge-content h4 {
+      margin: 0 0 4px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .badge-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .enhanced-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      padding: 0 20px 20px 20px;
+    }
+    
+    .enhanced-stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e9ecef;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s ease;
+    }
+    
+    .enhanced-stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+    }
+    
+    .stat-content {
+      flex: 1;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1e2b38;
+      margin-bottom: 4px;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    
+    .stat-trend {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      color: #28a745;
+      font-weight: 600;
+    }
+    
+    .recent-achievements {
+      padding: 0 20px 20px 20px;
+    }
+    
+    .recent-achievements h4 {
+      margin: 0 0 16px 0;
+      color: #1e2b38;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .achievements-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .achievement-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border-left: 4px solid #28a7ae;
+    }
+    
+    .achievement-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      background: linear-gradient(135deg, #ffcb05, #ffd700);
+      color: #1e2b38;
+    }
+    
+    .achievement-content {
+      flex: 1;
+    }
+    
+    .achievement-title {
+      font-weight: 600;
+      color: #1e2b38;
+      margin-bottom: 2px;
+    }
+    
+    .achievement-desc {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+    
+    .achievement-date {
+      font-size: 0.8rem;
+      color: #adb5bd;
+    }
+    
+    /* Logout Button Styles */
+    .logout-btn {
+      width: 30%;
+      margin: 10px auto 0 auto;
+      background: #e74c3c !important;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+    }
+    
+    .logout-btn:hover {
+      background: #c0392b !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+    }
+    
+    @media (max-width: 700px) {
+      .logout-btn {
+        width: 60%;
+      }
+    }
+    
+    /* Friends Modal Styles */
+    .friends-popup {
+      max-width: 700px;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .friends-header {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .friends-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .friends-title i {
+      font-size: 24px;
+    }
+    
+    .friends-title h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .friends-subtitle p {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .friends-search {
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .search-input-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+      font-size: 16px;
+    }
+    
+    #friendsSearch {
+      width: 100%;
+      padding: 16px 48px 16px 48px;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      font-size: 16px;
+      font-family: 'Fredoka', sans-serif;
+      transition: all 0.3s ease;
+    }
+    
+    #friendsSearch:focus {
+      outline: none;
+      border-color: #28a7ae;
+      box-shadow: 0 0 6px rgba(40, 167, 174, 0.4);
+    }
+    
+    .clear-search {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #6c757d;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+    
+    .clear-search:hover {
+      background: #f8f9fa;
+      color: #495057;
+    }
+    
+    .search-filters {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .filter-btn {
+      padding: 8px 16px;
+      border: 1px solid #e9ecef;
+      background: white;
+      color: #6c757d;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .filter-btn.active {
+      background: #28a7ae;
+      color: white;
+      border-color: #28a7ae;
+    }
+    
+    .filter-btn:hover {
+      background: #f8f9fa;
+    }
+    
+    .filter-btn.active:hover {
+      background: #23949b;
+    }
+    
+    .friends-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 0 20px;
+    }
+    
+    .friend-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+    }
+    
+    .friend-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .friend-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 16px;
+      object-fit: cover;
+    }
+    
+    .friend-info {
+      flex: 1;
+    }
+    
+    .friend-name {
+      font-weight: 600;
+      color: #1e2b38;
+      margin-bottom: 4px;
+    }
+    
+    .friend-location {
+      font-size: 14px;
+      color: #6c757d;
+      margin-bottom: 8px;
+    }
+    
+    .friend-artists {
+      font-size: 12px;
+      color: #28a7ae;
+      font-weight: 500;
+    }
+    
+    .friend-action {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .friend-action.add {
+      background: #28a7ae;
+      color: white;
+    }
+    
+    .friend-action.add:hover {
+      background: #23949b;
+    }
+    
+    .friend-action.remove {
+      background: #e74c3c;
+      color: white;
+    }
+    
+    .friend-action.remove:hover {
+      background: #c0392b;
+    }
+    
+    .friend-action.friends {
+      background: #28a745;
+      color: white;
+    }
+    
+    .friend-action.friends:hover {
+      background: #20c997;
+    }
+    
+    .friends-loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6c757d;
+    }
+    
+    .loading-spinner {
+      font-size: 2rem;
+      color: #28a7ae;
+      margin-bottom: 16px;
+    }
+    
+    .friends-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6c757d;
+    }
+    
+    .my-friends-section {
+      padding: 20px;
+      border-top: 1px solid #e9ecef;
+    }
+    
+    .my-friends-section h4 {
+      margin: 0 0 16px 0;
+      color: #1e2b38;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .my-friends-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .friends-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .view-all-btn {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .view-all-btn:hover {
+      background: linear-gradient(135deg, #23949b, #1e7e85);
+      transform: translateY(-1px);
+    }
+    
+    .friends-leaderboard-section {
+      padding: 20px;
+      border-top: 1px solid #e9ecef;
+    }
+    
+    .leaderboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .leaderboard-header h4 {
+      margin: 0;
+      color: #1e2b38;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .leaderboard-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .tab-btn {
+      padding: 6px 12px;
+      border: 1px solid #e9ecef;
+      background: white;
+      color: #6c757d;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .tab-btn.active {
+      background: #28a7ae;
+      color: white;
+      border-color: #28a7ae;
+    }
+    
+    .tab-btn:hover {
+      background: #f8f9fa;
+    }
+    
+    .tab-btn.active:hover {
+      background: #23949b;
+    }
+    
+    .leaderboard-content {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    .leaderboard-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+    }
+    
+    .leaderboard-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .leaderboard-rank {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      margin-right: 12px;
+    }
+    
+    .leaderboard-rank.gold {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #1e2b38;
+    }
+    
+    .leaderboard-rank.silver {
+      background: linear-gradient(135deg, #c0c0c0, #e5e5e5);
+      color: #1e2b38;
+    }
+    
+    .leaderboard-rank.bronze {
+      background: linear-gradient(135deg, #cd7f32, #daa520);
+      color: white;
+    }
+    
+    .leaderboard-rank.other {
+      background: #f8f9fa;
+      color: #6c757d;
+    }
+    
+    .leaderboard-user {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .leaderboard-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .leaderboard-info {
+      flex: 1;
+    }
+    
+    .leaderboard-name {
+      font-weight: 600;
+      color: #1e2b38;
+      font-size: 14px;
+    }
+    
+    .leaderboard-score {
+      font-size: 18px;
+      font-weight: bold;
+      color: #28a7ae;
+    }
+    
+    .leaderboard-game {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 2px;
+    }
+    
+    /* All Friends Modal Styles */
+    .all-friends-popup {
+      max-width: 800px;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .all-friends-header {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .all-friends-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .all-friends-title i {
+      font-size: 24px;
+    }
+    
+    .all-friends-title h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .all-friends-search {
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .all-friends-list {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    .all-friend-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    
+    .all-friend-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-color: #28a7ae;
+    }
+    
+    .all-friend-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 16px;
+      object-fit: cover;
+    }
+    
+    .all-friend-info {
+      flex: 1;
+    }
+    
+    .all-friend-name {
+      font-weight: 600;
+      color: #1e2b38;
+      margin-bottom: 4px;
+    }
+    
+    .all-friend-location {
+      font-size: 14px;
+      color: #6c757d;
+      margin-bottom: 8px;
+    }
+    
+    .all-friend-artists {
+      font-size: 12px;
+      color: #28a7ae;
+      font-weight: 500;
+    }
+    
+    .all-friend-arrow {
+      color: #cbd5e0;
+      font-size: 16px;
+      transition: color 0.2s ease;
+    }
+    
+    .all-friend-item:hover .all-friend-arrow {
+      color: #28a7ae;
+    }
+    
+    /* Friend Profile Modal */
+    .friend-profile-popup {
+      max-width: 600px;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .friend-profile-header {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .friend-profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 16px auto;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      object-fit: cover;
+    }
+    
+    .friend-profile-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .friend-profile-location {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .friend-profile-content {
+      padding: 24px;
+    }
+    
+    .friend-profile-section {
+      margin-bottom: 24px;
+    }
+    
+    .friend-profile-section h4 {
+      color: #1e2b38;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    
+    .friend-artists-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .friend-artist-tag {
+      background: linear-gradient(135deg, #e6f9f9, #d4f4f4);
+      color: #28a7ae;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #d1f2f2;
+    }
+    
+    .friend-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    
+    .friend-stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #e9ecef;
+      text-align: center;
+    }
+    
+    .friend-stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #28a7ae;
+      margin-bottom: 4px;
+    }
+    
+    .friend-stat-label {
+      font-size: 12px;
+      color: #6c757d;
+    }
+    
+    /* Enhanced All Friends Search Styles */
+    .search-actions {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .leaderboard-btn {
+      background: linear-gradient(135deg, #ffcb05, #ffd700);
+      color: #1e2b38;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .leaderboard-btn:hover {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(255, 203, 5, 0.3);
+    }
+    
+    /* Friends Leaderboard Modal Styles */
+    .friends-leaderboard-popup {
+      max-width: 900px;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .friends-leaderboard-header {
+      background: linear-gradient(135deg, #28a7ae, #23949b);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .friends-leaderboard-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    
+    .friends-leaderboard-title i {
+      font-size: 24px;
+    }
+    
+    .friends-leaderboard-title h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .friends-leaderboard-subtitle p {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    .leaderboard-tabs-container {
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .leaderboard-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .leaderboard-tabs .tab-btn {
+      padding: 10px 16px;
+      border: 1px solid #e9ecef;
+      background: white;
+      color: #6c757d;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .leaderboard-tabs .tab-btn.active {
+      background: #28a7ae;
+      color: white;
+      border-color: #28a7ae;
+    }
+    
+    .leaderboard-tabs .tab-btn:hover {
+      background: #f8f9fa;
+    }
+    
+    .leaderboard-tabs .tab-btn.active:hover {
+      background: #23949b;
+    }
+    
+    .time-filter {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .time-btn {
+      padding: 8px 16px;
+      border: 1px solid #e9ecef;
+      background: white;
+      color: #6c757d;
+      border-radius: 16px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .time-btn.active {
+      background: #ffcb05;
+      color: #1e2b38;
+      border-color: #ffcb05;
+    }
+    
+    .time-btn:hover {
+      background: #f8f9fa;
+    }
+    
+    .time-btn.active:hover {
+      background: #ffd700;
+    }
+    
+    .game-leaderboard-content {
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
+    .game-leaderboard-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+    }
+    
+    .game-leaderboard-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .game-leaderboard-rank {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 16px;
+    }
+    
+    .game-leaderboard-rank.gold {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #1e2b38;
+    }
+    
+    .game-leaderboard-rank.silver {
+      background: linear-gradient(135deg, #c0c0c0, #e5e5e5);
+      color: #1e2b38;
+    }
+    
+    .game-leaderboard-rank.bronze {
+      background: linear-gradient(135deg, #cd7f32, #daa520);
+      color: white;
+    }
+    
+    .game-leaderboard-rank.other {
+      background: #f8f9fa;
+      color: #6c757d;
+    }
+    
+    .game-leaderboard-user {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .game-leaderboard-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .game-leaderboard-info {
+      flex: 1;
+    }
+    
+    .game-leaderboard-name {
+      font-weight: 600;
+      color: #1e2b38;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    
+    .game-leaderboard-details {
+      font-size: 12px;
+      color: #6c757d;
+    }
+    
+    .game-leaderboard-score {
+      font-size: 20px;
+      font-weight: bold;
+      color: #28a7ae;
+      margin-right: 16px;
+    }
+    
+    .game-leaderboard-position {
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: 600;
+    }
     @media (max-width: 600px) {
       .modal-content.stats-popup {
         max-width: 99vw;
@@ -530,10 +1977,27 @@
   <div class="profile-container">
     <div class="profile-header">
       <div class="avatar-display">
-        <img src="images/avatars/popstarpenguin.jpg" id="currentAvatar" alt="Avatar" />
-        <div>
-          <div id="profileName" style="font-weight: 600; font-size: 18px;"></div>
-          <div style="font-size: 14px; color: gray;"><i class="fas fa-map-marker-alt"></i> <span id="profileCity"></span></div>
+        <div class="avatar-wrapper">
+          <img src="images/avatars/popstarpenguin.jpg" id="currentAvatar" alt="Avatar" />
+          <div class="avatar-status">
+            <i class="fas fa-circle"></i>
+          </div>
+        </div>
+        <div class="profile-info">
+          <div id="profileName" class="profile-name"></div>
+          <div class="profile-location">
+            <i class="fas fa-map-marker-alt"></i> 
+            <span id="profileCity"></span>
+          </div>
+          <div class="profile-level">
+            <span class="level-badge">Level 5</span>
+            <div class="level-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+              </div>
+              <span class="progress-text">75% to next level</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="edit-icon" onclick="openEditPopup()">
@@ -542,13 +2006,19 @@
     </div>
 
     <div class="status-section">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="fas fa-music"></i>
           <h4>Currently Vibing To...</h4>
-          <button class="edit-btn" onclick="openVibesEditor()">Edit</button>
         </div>
-        <div class="status-tags" id="vibingTags">
-        </div>
+        <button class="edit-btn" onclick="openVibesEditor()">
+          <i class="fas fa-edit"></i>
+          Edit
+        </button>
       </div>
+      <div class="status-tags" id="vibingTags">
+      </div>
+    </div>
 
       <div id="vibesModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000088; justify-content:center; align-items:center;">
         <div style="background:white; padding:20px; border-radius:12px; max-width:400px; width:90%; position:relative;">
@@ -561,39 +2031,166 @@
       </div>
       
     <div class="dashboard-section">
-      <h4>Dashboard</h4>
-      <button class="btn" style="background: #ffcb05; color: #000;" onclick="showPersonalBests()">View  Bests</button>
+      <div class="section-header">
+        <div class="section-title">
+          <i class="fas fa-chart-line"></i>
+          <h4>Dashboard</h4>
+        </div>
+      </div>
+      <div class="dashboard-cards">
+        <div class="dashboard-card" onclick="showPersonalBests()">
+          <div class="card-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="card-content">
+            <h5>View Bests</h5>
+            <p>Check your game statistics and achievements</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+        
+        <div class="dashboard-card" onclick="showFriendsModal()">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="card-content">
+            <h5>Find Friends</h5>
+            <p>Connect with other music lovers</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+        
+        <div class="dashboard-card" onclick="showRewardsHistory()">
+          <div class="card-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <div class="card-content">
+            <h5>Rewards</h5>
+            <p>View your redemption history</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
    
       <div id="personalBestsModal" class="modal">
-        <div class="modal-content stats-popup">
+        <div class="modal-content personal-bests-popup">
           <span class="close" onclick="closePersonalBestsModal()">&times;</span>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <div style="font-size:1.5rem;font-weight:700;color:#1e2b38;">Your Game Stats</div>
-            <img src="images/avatars/popstarpenguin.jpg" alt="Logo" style="width:48px;height:48px;">
-          </div>
-          <div style="font-size:1.1rem;font-weight:600;margin-bottom:20px;color:#1e2b38;">You're a <span id="topPercentBadge">Top 1%</span> player!</div>
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div style="font-size:2rem;">💰</div>
-              <div class="value" id="myCoinsValue">—</div>
-              <div class="label">Total Coins</div>
+          
+          <!-- Enhanced Header -->
+          <div class="personal-bests-header">
+            <div class="bests-title">
+              <i class="fas fa-trophy"></i>
+              <h3>Personal Bests</h3>
             </div>
-            <div class="stat-card">
-              <div style="font-size:2rem;">🏆</div>
-              <div class="value" id="myScoreValue">—</div>
-              <div class="label">Highest Score</div>
-            </div>
-            <div class="stat-card">
-              <div style="font-size:2rem;">🎮</div>
-              <div class="value" id="myGamesPlayedValue">—</div>
-              <div class="label">Games Played</div>
-            </div>
-            <div class="stat-card">
-              <div style="font-size:2rem;">🌍</div>
-              <div class="value" id="myRankValue">—</div>
-              <div class="label">Global Rank</div>
+            <div class="bests-avatar">
+              <img src="images/avatars/popstarpenguin.jpg" alt="Avatar" />
             </div>
           </div>
+          
+          <!-- Achievement Badge -->
+          <div class="achievement-badge">
+            <div class="badge-icon">
+              <i class="fas fa-crown"></i>
+            </div>
+            <div class="badge-content">
+              <h4>You're a <span id="topPercentBadge">Top 1%</span> Player!</h4>
+              <p>Keep up the amazing work!</p>
+            </div>
+          </div>
+          
+          <!-- Enhanced Stats Grid -->
+          <div class="enhanced-stats-grid">
+            <div class="enhanced-stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-coins"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="myCoinsValue">—</div>
+                <div class="stat-label">Total Coins</div>
+              </div>
+              <div class="stat-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+15%</span>
+              </div>
+            </div>
+            
+            <div class="enhanced-stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="myScoreValue">—</div>
+                <div class="stat-label">Highest Score</div>
+              </div>
+              <div class="stat-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+8%</span>
+              </div>
+            </div>
+            
+            <div class="enhanced-stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-gamepad"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="myGamesPlayedValue">—</div>
+                <div class="stat-label">Games Played</div>
+              </div>
+              <div class="stat-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+12%</span>
+              </div>
+            </div>
+            
+            <div class="enhanced-stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-globe"></i>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" id="myRankValue">—</div>
+                <div class="stat-label">Global Rank</div>
+              </div>
+              <div class="stat-trend">
+                <i class="fas fa-arrow-up"></i>
+                <span>+5%</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Recent Achievements -->
+          <div class="recent-achievements">
+            <h4>Recent Achievements</h4>
+            <div class="achievements-list">
+              <div class="achievement-item">
+                <div class="achievement-icon">
+                  <i class="fas fa-medal"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">Speed Demon</div>
+                  <div class="achievement-desc">Completed 10 games in under 5 minutes</div>
+                </div>
+                <div class="achievement-date">2 days ago</div>
+              </div>
+              
+              <div class="achievement-item">
+                <div class="achievement-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="achievement-content">
+                  <div class="achievement-title">Perfect Score</div>
+                  <div class="achievement-desc">Achieved 100% accuracy in Memory Game</div>
+                </div>
+                <div class="achievement-date">1 week ago</div>
+              </div>
+            </div>
+          </div>
+          
           <div class="stats-footer">Playing since <span id="statsDate"></span></div>
         </div>
       </div>
@@ -601,7 +2198,287 @@
       
       
       </div>
-    <button class="btn" style="background: #e74c3c;" onclick="logout()">Log Out</button>
+    </div>
+    
+    <!-- Friends Modal -->
+    <div id="friendsModal" class="modal">
+      <div class="modal-content friends-popup">
+        <span class="close" onclick="closeFriendsModal()">&times;</span>
+        
+        <!-- Friends Header -->
+        <div class="friends-header">
+          <div class="friends-title">
+            <i class="fas fa-users"></i>
+            <h3>Find Friends</h3>
+          </div>
+          <div class="friends-subtitle">
+            <p>Search by name or favorite artist</p>
+          </div>
+        </div>
+        
+        <!-- Search Section -->
+        <div class="friends-search">
+          <div class="search-input-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="friendsSearch" placeholder="Search by name or artist..." />
+            <button class="clear-search" id="clearSearch" onclick="clearFriendsSearch()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-filters">
+            <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
+            <button class="filter-btn" data-filter="name" onclick="setFilter('name')">Name</button>
+            <button class="filter-btn" data-filter="artist" onclick="setFilter('artist')">Artist</button>
+          </div>
+        </div>
+        
+        <!-- Friends List -->
+        <div class="friends-list" id="friendsList">
+          <!-- Friends will be populated here -->
+        </div>
+        
+        <!-- Loading State -->
+        <div class="friends-loading" id="friendsLoading" style="display: none;">
+          <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <p>Searching for friends...</p>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="friends-empty" id="friendsEmpty" style="display: none;">
+          <div class="empty-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h4>No Friends Found</h4>
+          <p>Try searching with different keywords or browse all users</p>
+        </div>
+        
+        <!-- My Friends Section -->
+        <div class="my-friends-section">
+          <div class="friends-section-header">
+            <h4>My Friends</h4>
+            <button class="view-all-btn" onclick="showAllFriends()">
+              <i class="fas fa-users"></i>
+              View All Friends
+            </button>
+          </div>
+          <div class="my-friends-list" id="myFriendsList">
+            <!-- My friends will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Friends Leaderboard Section -->
+        <div class="friends-leaderboard-section">
+          <div class="leaderboard-header">
+            <h4>Friends Leaderboard</h4>
+            <div class="leaderboard-tabs">
+              <button class="tab-btn active" data-tab="alltime" onclick="switchLeaderboardTab('alltime')">All-Time</button>
+              <button class="tab-btn" data-tab="daily" onclick="switchLeaderboardTab('daily')">Daily</button>
+            </div>
+          </div>
+          <div class="leaderboard-content" id="leaderboardContent">
+            <!-- Leaderboard will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- All Friends Modal -->
+    <div id="allFriendsModal" class="modal">
+      <div class="modal-content all-friends-popup">
+        <span class="close" onclick="closeAllFriendsModal()">&times;</span>
+        
+        <!-- All Friends Header -->
+        <div class="all-friends-header">
+          <div class="all-friends-title">
+            <i class="fas fa-users"></i>
+            <h3>All Friends</h3>
+          </div>
+          <div class="all-friends-subtitle">
+            <p>Browse and search your friends</p>
+          </div>
+        </div>
+        
+        <!-- All Friends Search -->
+        <div class="all-friends-search">
+          <div class="search-input-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="allFriendsSearch" placeholder="Search friends by name or favorite artists..." />
+            <button class="clear-search" id="clearAllFriendsSearch" onclick="clearAllFriendsSearch()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="search-filters">
+            <button class="filter-btn active" data-filter="all" onclick="setAllFriendsFilter('all')">All</button>
+            <button class="filter-btn" data-filter="name" onclick="setAllFriendsFilter('name')">Name</button>
+            <button class="filter-btn" data-filter="artist" onclick="setAllFriendsFilter('artist')">Artist</button>
+            <button class="filter-btn" data-filter="location" onclick="setAllFriendsFilter('location')">Location</button>
+          </div>
+          <div class="search-actions">
+            <button class="leaderboard-btn" onclick="showFriendsLeaderboardModal()">
+              <i class="fas fa-trophy"></i>
+              View Leaderboards
+            </button>
+          </div>
+        </div>
+        
+        <!-- All Friends List -->
+        <div class="all-friends-list" id="allFriendsList">
+          <!-- All friends will be populated here -->
+        </div>
+        
+        <!-- All Friends Loading -->
+        <div class="friends-loading" id="allFriendsLoading" style="display: none;">
+          <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <p>Loading friends...</p>
+        </div>
+        
+        <!-- All Friends Empty -->
+        <div class="friends-empty" id="allFriendsEmpty" style="display: none;">
+          <div class="empty-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h4>No Friends Yet</h4>
+          <p>Add some friends to see them here!</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Friend Profile Modal -->
+    <div id="friendProfileModal" class="modal">
+      <div class="modal-content friend-profile-popup">
+        <span class="close" onclick="closeFriendProfileModal()">&times;</span>
+        
+        <!-- Friend Profile Header -->
+        <div class="friend-profile-header">
+          <img src="" alt="Friend Avatar" class="friend-profile-avatar" id="friendProfileAvatar" />
+          <div class="friend-profile-name" id="friendProfileName"></div>
+          <div class="friend-profile-location" id="friendProfileLocation"></div>
+        </div>
+        
+        <!-- Friend Profile Content -->
+        <div class="friend-profile-content">
+          <!-- Favorite Artists Section -->
+          <div class="friend-profile-section">
+            <h4>Currently Vibing To</h4>
+            <div class="friend-artists-list" id="friendProfileArtists">
+              <!-- Artists will be populated here -->
+            </div>
+          </div>
+          
+          <!-- Friend Stats Section -->
+          <div class="friend-profile-section">
+            <h4>Game Statistics</h4>
+            <div class="friend-stats-grid" id="friendProfileStats">
+              <!-- Stats will be populated here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Friends Leaderboard Modal -->
+    <div id="friendsLeaderboardModal" class="modal">
+      <div class="modal-content friends-leaderboard-popup">
+        <span class="close" onclick="closeFriendsLeaderboardModal()">&times;</span>
+        
+        <!-- Friends Leaderboard Header -->
+        <div class="friends-leaderboard-header">
+          <div class="friends-leaderboard-title">
+            <i class="fas fa-trophy"></i>
+            <h3>Friends Leaderboards</h3>
+          </div>
+          <div class="friends-leaderboard-subtitle">
+            <p>See how your friends rank across all games</p>
+          </div>
+        </div>
+        
+        <!-- Leaderboard Tabs -->
+        <div class="leaderboard-tabs-container">
+          <div class="leaderboard-tabs">
+            <button class="tab-btn active" data-tab="memory" onclick="switchGameLeaderboard('memory')">
+              <i class="fas fa-brain"></i>
+              Memory
+            </button>
+            <button class="tab-btn" data-tab="spelling" onclick="switchGameLeaderboard('spelling')">
+              <i class="fas fa-spell-check"></i>
+              Spelling
+            </button>
+            <button class="tab-btn" data-tab="battle" onclick="switchGameLeaderboard('battle')">
+              <i class="fas fa-sword"></i>
+              Banger Battle
+            </button>
+          </div>
+          <div class="time-filter">
+            <button class="time-btn active" data-time="alltime" onclick="switchTimeFilter('alltime')">All-Time</button>
+            <button class="time-btn" data-time="daily" onclick="switchTimeFilter('daily')">Daily</button>
+          </div>
+        </div>
+        
+        <!-- Leaderboard Content -->
+        <div class="game-leaderboard-content" id="gameLeaderboardContent">
+          <!-- Leaderboard will be populated here -->
+        </div>
+        
+        <!-- Loading State -->
+        <div class="friends-loading" id="gameLeaderboardLoading" style="display: none;">
+          <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <p>Loading leaderboard...</p>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="friends-empty" id="gameLeaderboardEmpty" style="display: none;">
+          <div class="empty-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <h4>No Data Available</h4>
+          <p>Your friends haven't played this game yet</p>
+        </div>
+      </div>
+    </div>
+    
+    <button class="btn logout-btn" onclick="logout()">Log Out</button>
+    
+    <!-- Rewards History Modal -->
+    <div id="rewardsHistoryModal" class="modal">
+      <div class="modal-content rewards-popup">
+        <span class="close" onclick="closeRewardsHistory()">&times;</span>
+        <div class="rewards-header">
+          <div class="rewards-title">
+            <i class="fas fa-gift"></i>
+            <h3>Rewards History</h3>
+          </div>
+          <div class="rewards-summary">
+            <div class="summary-item">
+              <span class="summary-label">Total Redeemed:</span>
+              <span class="summary-value" id="totalRedeemed">0</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Pending:</span>
+              <span class="summary-value pending" id="totalPending">0</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="rewards-list" id="rewardsList">
+          <!-- Rewards will be populated here -->
+        </div>
+        
+        <div class="rewards-empty" id="rewardsEmpty" style="display: none;">
+          <div class="empty-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <h4>No Rewards Yet</h4>
+          <p>Start playing games to earn coins and redeem rewards!</p>
+        </div>
+      </div>
+    </div>
+    
   </div>
 
   <div id="editPopup" class="modal">
@@ -792,7 +2669,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
   
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
@@ -950,67 +2827,1003 @@ if ((username.includes(query) || artists.includes(query)) && doc.id !== auth.cur
       showSavePopup();
     };
   
-    window.showPersonalBests = async () => {
-  const uid = auth.currentUser.uid;
-  const bestSnap = await getDoc(doc(firestore, "matchBests", uid));
-  const userSnap = await getDoc(doc(firestore, "users", uid));
-  const user = auth.currentUser;
+    window.showPersonalBests = () => {
+      // Show modal immediately
+      document.getElementById("personalBestsModal").classList.add("show");
+      
+      // Load data in background
+      loadPersonalBestsData();
+    };
+    
+    const loadPersonalBestsData = async () => {
+      const uid = auth.currentUser.uid;
+      const bestSnap = await getDoc(doc(firestore, "matchBests", uid));
+      const userSnap = await getDoc(doc(firestore, "users", uid));
+      const user = auth.currentUser;
 
-  // Highest score
-  const myScore = bestSnap.exists() ? bestSnap.data().bestScore : 0;
-  // All scores for rank
-  const scores = (await getDocs(collection(firestore, "matchScores"))).docs
-    .map(d => d.data().score)
-    .filter(n => typeof n === 'number');
-  scores.sort((a, b) => b - a);
-  const rank = scores.indexOf(myScore) + 1;
+      // Highest score
+      const myScore = bestSnap.exists() ? bestSnap.data().bestScore : 0;
+      // All scores for rank
+      const scores = (await getDocs(collection(firestore, "matchScores"))).docs
+        .map(d => d.data().score)
+        .filter(n => typeof n === 'number');
+      scores.sort((a, b) => b - a);
+      const rank = scores.indexOf(myScore) + 1;
 
-  // Total coins
-  const coins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
+      // Total coins
+      const coins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
 
-  // Games played: sum from all relevant collections
-  const matchCount = (await getDocs(query(collection(firestore, "matchScores"), where("uid", "==", uid)))).size;
-  const spellingCount = (await getDocs(query(collection(firestore, "spellingScores"), where("uid", "==", uid)))).size;
-  const memoryCount = (await getDocs(query(collection(firestore, "memoryScores"), where("uid", "==", uid)))).size;
-  const gamesPlayed = matchCount + spellingCount + memoryCount;
+      // Games played: sum from all relevant collections
+      const matchCount = (await getDocs(query(collection(firestore, "matchScores"), where("uid", "==", uid)))).size;
+      const spellingCount = (await getDocs(query(collection(firestore, "spellingScores"), where("uid", "==", uid)))).size;
+      const memoryCount = (await getDocs(query(collection(firestore, "memoryScores"), where("uid", "==", uid)))).size;
+      const gamesPlayed = matchCount + spellingCount + memoryCount;
 
-  // Account creation date
-  let createdDate = "—";
-  if (user && user.metadata && user.metadata.creationTime) {
-    const d = new Date(user.metadata.creationTime);
-    createdDate = d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-  }
+      // Account creation date
+      let createdDate = "—";
+      if (user && user.metadata && user.metadata.creationTime) {
+        const d = new Date(user.metadata.creationTime);
+        createdDate = d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      }
 
-  // Top % badge (optional: you can make this dynamic)
-  let topPercent = "Top 1%";
-  if (rank > 0 && scores.length > 0) {
-    const percent = Math.ceil((rank / scores.length) * 1000) / 10;
-    if (percent <= 1) topPercent = "Top 1%";
-    else if (percent <= 5) topPercent = `Top ${percent}%`;
-    else topPercent = `Top ${Math.round(percent)}%`;
-  }
-  document.getElementById("topPercentBadge").innerText = topPercent;
+      // Top % badge (optional: you can make this dynamic)
+      let topPercent = "Top 1%";
+      if (rank > 0 && scores.length > 0) {
+        const percent = Math.ceil((rank / scores.length) * 1000) / 10;
+        if (percent <= 1) topPercent = "Top 1%";
+        else if (percent <= 5) topPercent = `Top ${percent}%`;
+        else topPercent = `Top ${Math.round(percent)}%`;
+      }
+      document.getElementById("topPercentBadge").innerText = topPercent;
 
-  document.getElementById("myScoreValue").innerText = myScore;
-  document.getElementById("myRankValue").innerText = `#${rank}`;
-  document.getElementById("myCoinsValue").innerText = coins;
-  document.getElementById("myGamesPlayedValue").innerText = gamesPlayed;
-  document.getElementById("statsDate").innerText = createdDate;
+      document.getElementById("myScoreValue").innerText = myScore;
+      document.getElementById("myRankValue").innerText = `#${rank}`;
+      document.getElementById("myCoinsValue").innerText = coins;
+      document.getElementById("myGamesPlayedValue").innerText = gamesPlayed;
+      document.getElementById("statsDate").innerText = createdDate;
 
-  const avatarImg = document.querySelector('#personalBestsModal img');
-  if (userSnap.exists() && avatarImg) {
-    avatarImg.src = userSnap.data().avatar || 'images/avatars/popstarpenguin.jpg';
-    avatarImg.alt = userSnap.data().username || 'User Avatar';
-  }
-
-  document.getElementById("personalBestsModal").classList.add("show");
-};
+      const avatarImg = document.querySelector('#personalBestsModal img');
+      if (userSnap.exists() && avatarImg) {
+        avatarImg.src = userSnap.data().avatar || 'images/avatars/popstarpenguin.jpg';
+        avatarImg.alt = userSnap.data().username || 'User Avatar';
+      }
+    };
 
   
     window.openEditPopup = () => document.getElementById("editPopup").style.display = "flex";
     window.closeEditPopup = () => document.getElementById("editPopup").style.display = "none";
     window.closeVibesEditor = () => document.getElementById("vibesModal").style.display = "none";
     window.closePersonalBestsModal = () => document.getElementById("personalBestsModal").classList.remove("show");
+    
+    // Rewards History Functions
+    window.showRewardsHistory = async () => {
+      const uid = auth.currentUser.uid;
+      
+      try {
+        // Get user's redemption history from Firebase
+        const redemptionsRef = collection(firestore, "redemptions");
+        const q = query(redemptionsRef, where("uid", "==", uid));
+        const snapshot = await getDocs(q);
+        
+        const rewards = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          
+          // Determine reward title and description based on actual data
+          let title = data.reward || "Unknown Reward";
+          let description = "";
+          let status = "received"; // Default to received since these are completed redemptions
+          
+          // Create meaningful descriptions based on reward type
+          if (title.toLowerCase().includes("double coins")) {
+            description = "24-hour coin multiplier activated";
+          } else if (title.toLowerCase().includes("sticker")) {
+            description = "Custom avatar sticker unlocked";
+          } else if (title.toLowerCase().includes("raffle")) {
+            const entries = data.entries || 1;
+            description = `${entries} raffle entr${entries === 1 ? 'y' : 'ies'} purchased`;
+          } else if (title.toLowerCase().includes("charitable")) {
+            const charity = data.charity || "Unknown Charity";
+            description = `Donation to ${charity}`;
+          } else if (title.toLowerCase().includes("gift card")) {
+            description = "Digital gift card reward";
+          } else {
+            description = "Reward redemption";
+          }
+          
+          rewards.push({
+            id: doc.id,
+            title: title,
+            description: description,
+            status: status,
+            date: data.timestamp ? data.timestamp.toDate() : new Date(),
+            coins: data.cost || data.coinsUsed || 0,
+            charity: data.charity,
+            entries: data.entries
+          });
+        });
+        
+        // Sort by date (newest first)
+        rewards.sort((a, b) => b.date - a.date);
+        
+        // Update summary
+        const totalRedeemed = rewards.filter(r => r.status === "received").length;
+        const totalPending = rewards.filter(r => r.status === "pending").length;
+        
+        document.getElementById("totalRedeemed").textContent = totalRedeemed;
+        document.getElementById("totalPending").textContent = totalPending;
+        
+        // Display rewards
+        const rewardsList = document.getElementById("rewardsList");
+        const rewardsEmpty = document.getElementById("rewardsEmpty");
+        
+        if (rewards.length === 0) {
+          rewardsList.style.display = "none";
+          rewardsEmpty.style.display = "block";
+        } else {
+          rewardsList.style.display = "block";
+          rewardsEmpty.style.display = "none";
+          
+          rewardsList.innerHTML = rewards.map(reward => `
+            <div class="reward-item">
+              <div class="reward-icon ${reward.status}">
+                <i class="fas ${reward.status === 'received' ? 'fa-check' : 'fa-clock'}"></i>
+              </div>
+              <div class="reward-content">
+                <div class="reward-title">${reward.title}</div>
+                <div class="reward-description">${reward.description}</div>
+                <div class="reward-date">${reward.date.toLocaleDateString()} at ${reward.date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                ${reward.coins > 0 ? `<div class="reward-cost">Cost: ${reward.coins} coins</div>` : ''}
+              </div>
+              <div class="reward-status ${reward.status}">
+                ${reward.status === 'received' ? 'Received' : 'Pending'}
+              </div>
+            </div>
+          `).join("");
+        }
+        
+        // Show modal
+        document.getElementById("rewardsHistoryModal").classList.add("show");
+        
+      } catch (error) {
+        console.error("Error loading rewards history:", error);
+        alert("Failed to load rewards history. Please try again.");
+      }
+    };
+    
+    window.closeRewardsHistory = () => {
+      document.getElementById("rewardsHistoryModal").classList.remove("show");
+    };
+    
+    // Friends Modal Functions
+    let currentFilter = 'all';
+    let allUsers = [];
+    let myFriends = [];
+    
+    window.showFriendsModal = async () => {
+      document.getElementById("friendsModal").classList.add("show");
+      await loadFriendsData();
+      await loadFriendsLeaderboard(); // Load leaderboard data
+    };
+    
+    window.closeFriendsModal = () => {
+      document.getElementById("friendsModal").classList.remove("show");
+    };
+    
+    const loadFriendsData = async () => {
+      const uid = auth.currentUser.uid;
+      
+      try {
+        // Show loading state
+        document.getElementById("friendsLoading").style.display = "block";
+        document.getElementById("friendsList").style.display = "none";
+        document.getElementById("friendsEmpty").style.display = "none";
+        
+        // Get all users
+        const usersRef = collection(firestore, "users");
+        const usersSnapshot = await getDocs(usersRef);
+        
+        allUsers = [];
+        usersSnapshot.forEach(doc => {
+          if (doc.id !== uid) { // Exclude current user
+            const data = doc.data();
+            
+            // Get favorite artists - handle both array and string formats
+            let favoriteArtists = [];
+            if (data.favoriteArtist) {
+              if (Array.isArray(data.favoriteArtist)) {
+                favoriteArtists = data.favoriteArtist;
+              } else {
+                // Handle string format (comma-separated)
+                favoriteArtists = data.favoriteArtist.split(',').map(artist => artist.trim()).filter(artist => artist.length > 0);
+              }
+            }
+            
+            allUsers.push({
+              id: doc.id,
+              username: data.username || "Anonymous",
+              avatar: data.avatar || "images/avatars/popstarpenguin.jpg",
+              city: data.city || "Unknown",
+              vibingTo: favoriteArtists
+            });
+          }
+        });
+        
+        // Get current user's friends
+        const userDoc = await getDoc(doc(firestore, "users", uid));
+        if (userDoc.exists()) {
+          myFriends = userDoc.data().friends || [];
+        }
+        
+        // Display initial results
+        displayFriends(allUsers);
+        displayMyFriends();
+        
+        // Hide loading
+        document.getElementById("friendsLoading").style.display = "none";
+        document.getElementById("friendsList").style.display = "block";
+        
+      } catch (error) {
+        console.error("Error loading friends data:", error);
+        document.getElementById("friendsLoading").style.display = "none";
+        document.getElementById("friendsEmpty").style.display = "block";
+      }
+    };
+    
+    const displayFriends = (users) => {
+      const friendsList = document.getElementById("friendsList");
+      const friendsEmpty = document.getElementById("friendsEmpty");
+      
+      if (users.length === 0) {
+        friendsList.style.display = "none";
+        friendsEmpty.style.display = "block";
+        return;
+      }
+      
+      friendsList.style.display = "block";
+      friendsEmpty.style.display = "none";
+      
+      friendsList.innerHTML = users.map(user => {
+        const isFriend = myFriends.includes(user.id);
+        const actionClass = isFriend ? 'remove' : 'add';
+        const actionText = isFriend ? 'Remove' : 'Add Friend';
+        
+        return `
+          <div class="friend-item">
+            <img src="${user.avatar}" alt="${user.username}" class="friend-avatar" />
+            <div class="friend-info">
+              <div class="friend-name">${user.username}</div>
+              <div class="friend-location">
+                <i class="fas fa-map-marker-alt"></i> ${user.city}
+              </div>
+              <div class="friend-artists">
+                ${user.vibingTo.length > 0 ? 
+                  `Vibing to: ${user.vibingTo.slice(0, 2).join(', ')}${user.vibingTo.length > 2 ? '...' : ''}` : 
+                  'No artists listed'
+                }
+              </div>
+            </div>
+            <button class="friend-action ${actionClass}" onclick="toggleFriend('${user.id}')">
+              ${actionText}
+            </button>
+          </div>
+        `;
+      }).join("");
+    };
+    
+    const displayMyFriends = () => {
+      const myFriendsList = document.getElementById("myFriendsList");
+      
+      if (myFriends.length === 0) {
+        myFriendsList.innerHTML = '<p style="color: #6c757d; text-align: center;">No friends yet</p>';
+        return;
+      }
+      
+      const friendsData = allUsers.filter(user => myFriends.includes(user.id));
+      
+      myFriendsList.innerHTML = friendsData.map(user => `
+        <div class="friend-item">
+          <img src="${user.avatar}" alt="${user.username}" class="friend-avatar" />
+          <div class="friend-info">
+            <div class="friend-name">${user.username}</div>
+            <div class="friend-location">
+              <i class="fas fa-map-marker-alt"></i> ${user.city}
+            </div>
+          </div>
+          <button class="friend-action friends">Friends</button>
+        </div>
+      `).join("");
+    };
+    
+    window.toggleFriend = async (userId) => {
+      const uid = auth.currentUser.uid;
+      const userRef = doc(firestore, "users", uid);
+      
+      try {
+        if (myFriends.includes(userId)) {
+          // Remove friend
+          myFriends = myFriends.filter(id => id !== userId);
+        } else {
+          // Add friend
+          myFriends.push(userId);
+        }
+        
+        // Update Firebase
+        await updateDoc(userRef, {
+          friends: myFriends
+        });
+        
+        // Refresh display
+        displayFriends(allUsers);
+        displayMyFriends();
+        
+      } catch (error) {
+        console.error("Error updating friends:", error);
+        alert("Failed to update friends. Please try again.");
+      }
+    };
+    
+    window.clearFriendsSearch = () => {
+      document.getElementById("friendsSearch").value = "";
+      displayFriends(allUsers);
+    };
+    
+    window.setFilter = (filter) => {
+      currentFilter = filter;
+      
+      // Update active filter button
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+      
+      // Apply search if there's a search term
+      const searchTerm = document.getElementById("friendsSearch").value.trim();
+      if (searchTerm) {
+        performSearch(searchTerm);
+      } else {
+        displayFriends(allUsers);
+      }
+    };
+    
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById("friendsSearch");
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const searchTerm = e.target.value.trim();
+          if (searchTerm) {
+            performSearch(searchTerm);
+          } else {
+            displayFriends(allUsers);
+          }
+        });
+      }
+    });
+    
+    const performSearch = (searchTerm) => {
+      const filteredUsers = allUsers.filter(user => {
+        const searchLower = searchTerm.toLowerCase();
+        
+        if (currentFilter === 'name') {
+          return user.username.toLowerCase().includes(searchLower);
+        } else if (currentFilter === 'artist') {
+          return user.vibingTo.some(artist => 
+            artist.toLowerCase().includes(searchLower)
+          );
+        } else {
+          // Search in both name and artists
+          return user.username.toLowerCase().includes(searchLower) ||
+                 user.vibingTo.some(artist => 
+                   artist.toLowerCase().includes(searchLower)
+                 );
+        }
+      });
+      
+      displayFriends(filteredUsers);
+    };
+    
+    // All Friends Modal Functions
+    let allFriendsData = [];
+    let currentLeaderboardTab = 'alltime';
+    
+    window.showAllFriends = async () => {
+      document.getElementById("allFriendsModal").classList.add("show");
+      await loadAllFriendsData();
+    };
+    
+    window.closeAllFriendsModal = () => {
+      document.getElementById("allFriendsModal").classList.remove("show");
+    };
+    
+    const loadAllFriendsData = async () => {
+      const uid = auth.currentUser.uid;
+      
+      try {
+        // Show loading state
+        document.getElementById("allFriendsLoading").style.display = "block";
+        document.getElementById("allFriendsList").style.display = "none";
+        document.getElementById("allFriendsEmpty").style.display = "none";
+        
+        // Get friends data
+        const friendsData = allUsers.filter(user => myFriends.includes(user.id));
+        allFriendsData = friendsData;
+        
+        // Display friends
+        displayAllFriends(friendsData);
+        
+        // Hide loading
+        document.getElementById("allFriendsLoading").style.display = "none";
+        document.getElementById("allFriendsList").style.display = "block";
+        
+      } catch (error) {
+        console.error("Error loading all friends data:", error);
+        document.getElementById("allFriendsLoading").style.display = "none";
+        document.getElementById("allFriendsEmpty").style.display = "block";
+      }
+    };
+    
+    const displayAllFriends = (friends) => {
+      const allFriendsList = document.getElementById("allFriendsList");
+      const allFriendsEmpty = document.getElementById("allFriendsEmpty");
+      
+      if (friends.length === 0) {
+        allFriendsList.style.display = "none";
+        allFriendsEmpty.style.display = "block";
+        return;
+      }
+      
+      allFriendsList.style.display = "block";
+      allFriendsEmpty.style.display = "none";
+      
+      allFriendsList.innerHTML = friends.map(friend => `
+        <div class="all-friend-item" onclick="showFriendProfile('${friend.id}')">
+          <img src="${friend.avatar}" alt="${friend.username}" class="all-friend-avatar" />
+          <div class="all-friend-info">
+            <div class="all-friend-name">${friend.username}</div>
+            <div class="all-friend-location">
+              <i class="fas fa-map-marker-alt"></i> ${friend.city}
+            </div>
+            <div class="all-friend-artists">
+              ${friend.vibingTo.length > 0 ? 
+                `Vibing to: ${friend.vibingTo.slice(0, 2).join(', ')}${friend.vibingTo.length > 2 ? '...' : ''}` : 
+                'No artists listed'
+              }
+            </div>
+          </div>
+          <div class="all-friend-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      `).join("");
+    };
+    
+    window.clearAllFriendsSearch = () => {
+      document.getElementById("allFriendsSearch").value = "";
+      displayAllFriends(allFriendsData);
+    };
+    
+    // Friend Profile Modal Functions
+    window.showFriendProfile = async (friendId) => {
+      const friend = allUsers.find(user => user.id === friendId);
+      if (!friend) return;
+      
+      // Populate friend profile data
+      document.getElementById("friendProfileAvatar").src = friend.avatar;
+      document.getElementById("friendProfileName").textContent = friend.username;
+      document.getElementById("friendProfileLocation").textContent = `📍 ${friend.city}`;
+      
+      // Display artists
+      const artistsList = document.getElementById("friendProfileArtists");
+      if (friend.vibingTo.length > 0) {
+        artistsList.innerHTML = friend.vibingTo.map(artist => 
+          `<div class="friend-artist-tag">${artist}</div>`
+        ).join("");
+      } else {
+        artistsList.innerHTML = '<div style="color: #6c757d;">No artists listed</div>';
+      }
+      
+      // Load friend stats
+      await loadFriendStats(friendId);
+      
+      // Show modal
+      document.getElementById("friendProfileModal").classList.add("show");
+    };
+    
+    window.closeFriendProfileModal = () => {
+      document.getElementById("friendProfileModal").classList.remove("show");
+    };
+    
+    const loadFriendStats = async (friendId) => {
+      try {
+        // Get friend's best scores
+        const bestSnap = await getDoc(doc(firestore, "matchBests", friendId));
+        const bestScore = bestSnap.exists() ? bestSnap.data().bestScore : 0;
+        
+        // Get friend's coins
+        const userSnap = await getDoc(doc(firestore, "users", friendId));
+        const coins = userSnap.exists() ? (userSnap.data().coins || 0) : 0;
+        
+        // Get games played count
+        const matchCount = (await getDocs(query(collection(firestore, "matchScores"), where("uid", "==", friendId)))).size;
+        const spellingCount = (await getDocs(query(collection(firestore, "spellingScores"), where("uid", "==", friendId)))).size;
+        const memoryCount = (await getDocs(query(collection(firestore, "memoryScores"), where("uid", "==", friendId)))).size;
+        const gamesPlayed = matchCount + spellingCount + memoryCount;
+        
+        // Display stats
+        const statsGrid = document.getElementById("friendProfileStats");
+        statsGrid.innerHTML = `
+          <div class="friend-stat-card">
+            <div class="friend-stat-value">${bestScore}</div>
+            <div class="friend-stat-label">Best Score</div>
+          </div>
+          <div class="friend-stat-card">
+            <div class="friend-stat-value">${coins}</div>
+            <div class="friend-stat-label">Total Coins</div>
+          </div>
+          <div class="friend-stat-card">
+            <div class="friend-stat-value">${gamesPlayed}</div>
+            <div class="friend-stat-label">Games Played</div>
+          </div>
+          <div class="friend-stat-card">
+            <div class="friend-stat-value">${friend.vibingTo.length}</div>
+            <div class="friend-stat-label">Favorite Artists</div>
+          </div>
+        `;
+        
+      } catch (error) {
+        console.error("Error loading friend stats:", error);
+        document.getElementById("friendProfileStats").innerHTML = 
+          '<div style="color: #6c757d; text-align: center;">Failed to load stats</div>';
+      }
+    };
+    
+    // Leaderboard Functions
+    window.switchLeaderboardTab = async (tab) => {
+      currentLeaderboardTab = tab;
+      
+      // Update active tab
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+      
+      // Load leaderboard data
+      await loadFriendsLeaderboard();
+    };
+    
+    const loadFriendsLeaderboard = async () => {
+      const uid = auth.currentUser.uid;
+      
+      try {
+        // Get friends' data
+        const friendsData = allUsers.filter(user => myFriends.includes(user.id));
+        
+        if (friendsData.length === 0) {
+          document.getElementById("leaderboardContent").innerHTML = 
+            '<p style="color: #6c757d; text-align: center;">No friends to compare with</p>';
+          return;
+        }
+        
+        // Get scores for all friends
+        const leaderboardData = [];
+        
+        for (const friend of friendsData) {
+          let score = 0;
+          let gameType = "Memory";
+          
+          if (currentLeaderboardTab === 'alltime') {
+            // Get best score
+            const bestSnap = await getDoc(doc(firestore, "matchBests", friend.id));
+            if (bestSnap.exists()) {
+              score = bestSnap.data().bestScore || 0;
+            }
+          } else {
+            // Get today's score (you can implement daily scores logic here)
+            const today = new Date().toISOString().split('T')[0];
+            const todayScores = await getDocs(query(
+              collection(firestore, "matchScores"), 
+              where("uid", "==", friend.id),
+              where("date", "==", today)
+            ));
+            
+            if (!todayScores.empty) {
+              score = Math.max(...todayScores.docs.map(doc => doc.data().score || 0));
+            }
+          }
+          
+          leaderboardData.push({
+            id: friend.id,
+            name: friend.username,
+            avatar: friend.avatar,
+            score: score,
+            gameType: gameType
+          });
+        }
+        
+        // Sort by score (descending)
+        leaderboardData.sort((a, b) => b.score - a.score);
+        
+        // Display leaderboard
+        displayFriendsLeaderboard(leaderboardData);
+        
+      } catch (error) {
+        console.error("Error loading friends leaderboard:", error);
+        document.getElementById("leaderboardContent").innerHTML = 
+          '<p style="color: #6c757d; text-align: center;">Failed to load leaderboard</p>';
+      }
+    };
+    
+    const displayFriendsLeaderboard = (leaderboardData) => {
+      const leaderboardContent = document.getElementById("leaderboardContent");
+      
+      if (leaderboardData.length === 0) {
+        leaderboardContent.innerHTML = 
+          '<p style="color: #6c757d; text-align: center;">No data available</p>';
+        return;
+      }
+      
+      leaderboardContent.innerHTML = leaderboardData.map((entry, index) => {
+        const rank = index + 1;
+        let rankClass = 'other';
+        let rankIcon = rank;
+        
+        if (rank === 1) {
+          rankClass = 'gold';
+          rankIcon = '🥇';
+        } else if (rank === 2) {
+          rankClass = 'silver';
+          rankIcon = '🥈';
+        } else if (rank === 3) {
+          rankClass = 'bronze';
+          rankIcon = '🥉';
+        }
+        
+        return `
+          <div class="leaderboard-item">
+            <div class="leaderboard-rank ${rankClass}">${rankIcon}</div>
+            <div class="leaderboard-user">
+              <img src="${entry.avatar}" alt="${entry.name}" class="leaderboard-avatar" />
+              <div class="leaderboard-info">
+                <div class="leaderboard-name">${entry.name}</div>
+                <div class="leaderboard-game">${entry.gameType}</div>
+              </div>
+            </div>
+            <div class="leaderboard-score">${entry.score}</div>
+          </div>
+        `;
+      }).join("");
+    };
+    
+    // Enhanced All Friends Search Functions
+    let currentAllFriendsFilter = 'all';
+    let currentGameLeaderboard = 'memory';
+    let currentTimeFilter = 'alltime';
+    
+    window.setAllFriendsFilter = (filter) => {
+      currentAllFriendsFilter = filter;
+      
+      // Update active filter button
+      document.querySelectorAll('.all-friends-search .filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.all-friends-search [data-filter="${filter}"]`).classList.add('active');
+      
+      // Apply search if there's a search term
+      const searchTerm = document.getElementById("allFriendsSearch").value.trim();
+      if (searchTerm) {
+        performAllFriendsSearch(searchTerm);
+      } else {
+        displayAllFriends(allFriendsData);
+      }
+    };
+    
+    const performAllFriendsSearch = (searchTerm) => {
+      const searchLower = searchTerm.toLowerCase();
+      const filteredFriends = allFriendsData.filter(friend => {
+        if (currentAllFriendsFilter === 'name') {
+          return friend.username.toLowerCase().includes(searchLower);
+        } else if (currentAllFriendsFilter === 'artist') {
+          return friend.vibingTo.some(artist => 
+            artist.toLowerCase().includes(searchLower)
+          );
+        } else if (currentAllFriendsFilter === 'location') {
+          return friend.city.toLowerCase().includes(searchLower);
+        } else {
+          // Search in all fields
+          return friend.username.toLowerCase().includes(searchLower) ||
+                 friend.vibingTo.some(artist => 
+                   artist.toLowerCase().includes(searchLower)
+                 ) ||
+                 friend.city.toLowerCase().includes(searchLower);
+        }
+      });
+      
+      displayAllFriends(filteredFriends);
+    };
+    
+    // Friends Leaderboard Modal Functions
+    window.showFriendsLeaderboardModal = async () => {
+      document.getElementById("friendsLeaderboardModal").classList.add("show");
+      await loadGameLeaderboard();
+    };
+    
+    window.closeFriendsLeaderboardModal = () => {
+      document.getElementById("friendsLeaderboardModal").classList.remove("show");
+    };
+    
+    window.switchGameLeaderboard = async (game) => {
+      currentGameLeaderboard = game;
+      
+      // Update active tab
+      document.querySelectorAll('.leaderboard-tabs .tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.leaderboard-tabs [data-tab="${game}"]`).classList.add('active');
+      
+      // Load leaderboard data
+      await loadGameLeaderboard();
+    };
+    
+    window.switchTimeFilter = async (time) => {
+      currentTimeFilter = time;
+      
+      // Update active time filter
+      document.querySelectorAll('.time-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.time-btn[data-time="${time}"]`).classList.add('active');
+      
+      // Load leaderboard data
+      await loadGameLeaderboard();
+    };
+    
+    const loadGameLeaderboard = async () => {
+      const uid = auth.currentUser.uid;
+      
+      try {
+        // Show loading state
+        document.getElementById("gameLeaderboardLoading").style.display = "block";
+        document.getElementById("gameLeaderboardContent").style.display = "none";
+        document.getElementById("gameLeaderboardEmpty").style.display = "none";
+        
+        // Get friends' data
+        const friendsData = allUsers.filter(user => myFriends.includes(user.id));
+        
+        if (friendsData.length === 0) {
+          document.getElementById("gameLeaderboardLoading").style.display = "none";
+          document.getElementById("gameLeaderboardEmpty").style.display = "block";
+          return;
+        }
+        
+        // Get leaderboard data based on game type
+        let leaderboardData = [];
+        
+        if (currentGameLeaderboard === 'memory') {
+          leaderboardData = await getMemoryLeaderboard(friendsData);
+        } else if (currentGameLeaderboard === 'spelling') {
+          leaderboardData = await getSpellingLeaderboard(friendsData);
+        } else if (currentGameLeaderboard === 'battle') {
+          leaderboardData = await getBattleLeaderboard(friendsData);
+        }
+        
+        // Display leaderboard
+        displayGameLeaderboard(leaderboardData);
+        
+        // Hide loading
+        document.getElementById("gameLeaderboardLoading").style.display = "none";
+        document.getElementById("gameLeaderboardContent").style.display = "block";
+        
+      } catch (error) {
+        console.error("Error loading game leaderboard:", error);
+        document.getElementById("gameLeaderboardLoading").style.display = "none";
+        document.getElementById("gameLeaderboardEmpty").style.display = "block";
+      }
+    };
+    
+    const getMemoryLeaderboard = async (friendsData) => {
+      const leaderboardData = [];
+      
+      for (const friend of friendsData) {
+        let score = 0;
+        let globalRank = "—";
+        
+        if (currentTimeFilter === 'alltime') {
+          // Get best score from matchBests
+          const bestSnap = await getDoc(doc(firestore, "matchBests", friend.id));
+          if (bestSnap.exists()) {
+            score = bestSnap.data().bestScore || 0;
+          }
+        } else {
+          // Get today's scores
+          const today = new Date().toISOString().split('T')[0];
+          const todayScores = await getDocs(query(
+            collection(firestore, "matchScores"), 
+            where("uid", "==", friend.id),
+            where("date", "==", today)
+          ));
+          
+          if (!todayScores.empty) {
+            score = Math.max(...todayScores.docs.map(doc => doc.data().score || 0));
+          }
+        }
+        
+        // Get global rank
+        const allScores = await getDocs(collection(firestore, "matchScores"));
+        const scores = allScores.docs.map(doc => doc.data().score).filter(s => typeof s === 'number');
+        scores.sort((a, b) => b - a);
+        const rank = scores.indexOf(score) + 1;
+        globalRank = rank > 0 ? `#${rank}` : "—";
+        
+        leaderboardData.push({
+          id: friend.id,
+          name: friend.username,
+          avatar: friend.avatar,
+          score: score,
+          globalRank: globalRank,
+          gameType: "Memory Game"
+        });
+      }
+      
+      return leaderboardData.sort((a, b) => b.score - a.score);
+    };
+    
+    const getSpellingLeaderboard = async (friendsData) => {
+      const leaderboardData = [];
+      
+      for (const friend of friendsData) {
+        let score = 0;
+        let globalRank = "—";
+        
+        if (currentTimeFilter === 'alltime') {
+          // Get best score from spellingBests
+          const bestSnap = await getDoc(doc(firestore, "spellingBests", friend.id));
+          if (bestSnap.exists()) {
+            score = bestSnap.data().bestScore || 0;
+          }
+        } else {
+          // Get today's scores
+          const today = new Date().toISOString().split('T')[0];
+          const todayScores = await getDocs(query(
+            collection(firestore, "spellingScores"), 
+            where("uid", "==", friend.id),
+            where("date", "==", today)
+          ));
+          
+          if (!todayScores.empty) {
+            score = Math.max(...todayScores.docs.map(doc => doc.data().score || 0));
+          }
+        }
+        
+        // Get global rank
+        const allScores = await getDocs(collection(firestore, "spellingScores"));
+        const scores = allScores.docs.map(doc => doc.data().score).filter(s => typeof s === 'number');
+        scores.sort((a, b) => b - a);
+        const rank = scores.indexOf(score) + 1;
+        globalRank = rank > 0 ? `#${rank}` : "—";
+        
+        leaderboardData.push({
+          id: friend.id,
+          name: friend.username,
+          avatar: friend.avatar,
+          score: score,
+          globalRank: globalRank,
+          gameType: "Spelling Game"
+        });
+      }
+      
+      return leaderboardData.sort((a, b) => b.score - a.score);
+    };
+    
+    const getBattleLeaderboard = async (friendsData) => {
+      const leaderboardData = [];
+      
+      for (const friend of friendsData) {
+        let score = 0;
+        let globalRank = "—";
+        
+        if (currentTimeFilter === 'alltime') {
+          // Get best score from bangerBattleScores
+          const bestScores = await getDocs(query(
+            collection(firestore, "bangerBattleScores"),
+            where("uid", "==", friend.id)
+          ));
+          
+          if (!bestScores.empty) {
+            score = Math.max(...bestScores.docs.map(doc => doc.data().score || 0));
+          }
+        } else {
+          // Get today's scores
+          const today = new Date().toISOString().split('T')[0];
+          const todayScores = await getDocs(query(
+            collection(firestore, "bangerBattleScores"), 
+            where("uid", "==", friend.id),
+            where("date", "==", today)
+          ));
+          
+          if (!todayScores.empty) {
+            score = Math.max(...todayScores.docs.map(doc => doc.data().score || 0));
+          }
+        }
+        
+        // Get global rank
+        const allScores = await getDocs(collection(firestore, "bangerBattleScores"));
+        const scores = allScores.docs.map(doc => doc.data().score).filter(s => typeof s === 'number');
+        scores.sort((a, b) => b - a);
+        const rank = scores.indexOf(score) + 1;
+        globalRank = rank > 0 ? `#${rank}` : "—";
+        
+        leaderboardData.push({
+          id: friend.id,
+          name: friend.username,
+          avatar: friend.avatar,
+          score: score,
+          globalRank: globalRank,
+          gameType: "Banger Battle"
+        });
+      }
+      
+      return leaderboardData.sort((a, b) => b.score - a.score);
+    };
+    
+    const displayGameLeaderboard = (leaderboardData) => {
+      const leaderboardContent = document.getElementById("gameLeaderboardContent");
+      
+      if (leaderboardData.length === 0) {
+        leaderboardContent.innerHTML = 
+          '<p style="color: #6c757d; text-align: center;">No data available</p>';
+        return;
+      }
+      
+      leaderboardContent.innerHTML = leaderboardData.map((entry, index) => {
+        const rank = index + 1;
+        let rankClass = 'other';
+        let rankIcon = rank;
+        
+        if (rank === 1) {
+          rankClass = 'gold';
+          rankIcon = '🥇';
+        } else if (rank === 2) {
+          rankClass = 'silver';
+          rankIcon = '🥈';
+        } else if (rank === 3) {
+          rankClass = 'bronze';
+          rankIcon = '🥉';
+        }
+        
+        return `
+          <div class="game-leaderboard-item">
+            <div class="game-leaderboard-rank ${rankClass}">${rankIcon}</div>
+            <div class="game-leaderboard-user">
+              <img src="${entry.avatar}" alt="${entry.name}" class="game-leaderboard-avatar" />
+              <div class="game-leaderboard-info">
+                <div class="game-leaderboard-name">${entry.name}</div>
+                <div class="game-leaderboard-details">
+                  ${entry.gameType} • Global Rank: ${entry.globalRank}
+                </div>
+              </div>
+            </div>
+            <div class="game-leaderboard-score">${entry.score}</div>
+            <div class="game-leaderboard-position">#${rank}</div>
+          </div>
+        `;
+      }).join("");
+    };
+    
+    // Initialize enhanced search functionality for all friends
+    document.addEventListener('DOMContentLoaded', () => {
+      const allFriendsSearchInput = document.getElementById("allFriendsSearch");
+      if (allFriendsSearchInput) {
+        allFriendsSearchInput.addEventListener('input', (e) => {
+          const searchTerm = e.target.value.trim();
+          if (searchTerm) {
+            performAllFriendsSearch(searchTerm);
+          } else {
+            displayAllFriends(allFriendsData);
+          }
+        });
+      }
+    });
   
     window.selectAvatar = img => {
       if (img.classList.contains("locked")) return alert("This avatar is locked! Earn it by leveling up 🎉");
