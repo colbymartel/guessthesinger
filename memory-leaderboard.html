@@ -447,6 +447,7 @@ h1 select:focus {
   </style>
 </head>
 <body>
+
   <header class="header">
     <div class="logo">
       <a href="/index.html">
@@ -467,7 +468,7 @@ h1 select:focus {
       <i class="fas fa-bars"></i>
     </div>
   </nav>
-  
+
   <div id="mobileMenu" class="mobile-menu hidden">
     <a href="/profile.html" class="nav-item">
       <i class="fas fa-user"></i>
@@ -477,33 +478,32 @@ h1 select:focus {
 
     <a href="/about.html">About</a>
   </div>
-  
 
     <div style="text-align:center;">
       <h1>
-        <select id="leaderboardType" onchange="switchLeaderboardType()">
+    <select id="leaderboardType" onchange="switchLeaderboardType()">
             <option value="memory">Memory Leaderboard</option>
             <option value="spelling">Spelling Leaderboard</option>
             <option value="bangerbattle">Banger Battle Leaderboard</option>
-        </select>
+    </select>
     </h1>
     
-      
-    <div class="tab-buttons">
+  
+  <div class="tab-buttons">
     <button id="dailyBtn" class="active" onclick="switchTab('daily')">🏆 Daily</button>
     <button id="alltimeBtn" onclick="switchTab('alltime')">🌍 All-Time</button>
     <button id="cityBtn" onclick="switchTab('city')">📍 My City</button>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Player</th>
-        <th>Score</th>
-        <th>City</th>
-      </tr>
-    </thead>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Player</th>
+          <th>Score</th>
+          <th>City</th>
+        </tr>
+      </thead>
     <tbody id="leaderboardBody"></tbody>
   </table>
   <div class="pagination">
@@ -1040,30 +1040,30 @@ function showUserProfile(userId) {
         .join("");
 
       content.innerHTML = `
-      <div class="profile-modal" style="text-align:left;">
-        <div class="profile-top" style="display:flex; align-items:center; gap:16px;">
-          <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" alt="Avatar" class="profile-avatar" style="width:64px; height:64px;" />
-          <div>
-            <div class="profile-name">
-              ${userData.username || "Anonymous"}
-              ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co", "jackmama4@gmail.com"].includes(userData.email)
-                ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
-                : ''}
-            </div>
-            <div class="profile-city">
-              <i class="fas fa-map-marker-alt"></i> ${userData.city || "—"}
+        <div class="profile-modal" style="text-align:left;">
+          <div class="profile-top" style="display:flex; align-items:center; gap:16px;">
+            <img src="${userData.avatar || 'images/avatars/popstarpenguin.jpg'}" alt="Avatar" class="profile-avatar" style="width:64px; height:64px;" />
+            <div>
+              <div class="profile-name">
+                ${userData.username || "Anonymous"}
+                ${["colbyma23@gmail.com", "souptimmy@greenlightgroup.co", "jackmama4@gmail.com"].includes(userData.email)
+                  ? '<i class="fas fa-check-circle" style="color:#3ba4f1; margin-left:6px;" title="Verified"></i>'
+                  : ''}
+              </div>
+              <div class="profile-city">
+                <i class="fas fa-map-marker-alt"></i> ${userData.city || "—"}
+              </div>
             </div>
           </div>
+
+          <div class="vibe-header">Currently Vibing To…</div>
+          <div class="vibe-tags">
+            ${artistTags || '<div style="color:#888;">—</div>'}
+          </div>
+
+
         </div>
-
-        <div class="vibe-header">Currently Vibing To…</div>
-        <div class="vibe-tags">
-          ${artistTags || '<div style="color:#888;">—</div>'}
-        </div>
-
-
-      </div>
-    `;
+      `;
 
     });
 
@@ -1079,5 +1079,5 @@ window.showUserProfile = showUserProfile;
 
     </script>
     
-</body>
-</html>
+  </body>
+  </html>
