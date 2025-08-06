@@ -149,5 +149,19 @@ service cloud.firestore {
     match /giveawayEntries/{entryId} {
       allow read, write, list, query: if true;
     }
+
+    // Unsubscribe requests collection
+    match /unsubscribeRequests/{document} {
+      allow read: if isAdmin();
+      allow write: if true; // Anyone can write (for unsubscribe form)
+    }
+
+    // Feature submissions collection for daily game requests
+    match /featureSubmissions/{submissionId} {
+      allow read: if true; // Anyone can view feature submissions
+      allow create: if true; // Anyone can submit a feature request
+      allow update: if isAdmin(); // Only admin can update status
+      allow delete: if isAdmin();
+    }
   }
 } 

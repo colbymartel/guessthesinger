@@ -1,0 +1,20 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow public read access to all files
+    match /{allPaths=**} {
+      allow read: if true;
+    }
+    
+    // Allow authenticated users to upload files to feature-submissions
+    match /feature-submissions/{allPaths=**} {
+      allow read: if true;
+      allow write: if true; // Allow anyone to upload feature submission photos
+    }
+    
+    // Allow anyone to upload to other directories (for general use)
+    match /{allPaths=**} {
+      allow write: if true;
+    }
+  }
+} 
