@@ -17,8 +17,8 @@
   gtag('config', 'G-T42NG5C994');
 </script>
   <!-- Preload critical images for better mobile performance -->
-      <link rel="preload" as="image" href="images/kush.jpg">
-    <link rel="preload" as="image" href="images/edsheeran.jpg">
+      <link rel="preload" as="image" href="images/chunka.jpg">
+    <link rel="preload" as="image" href="images/forrestfrank.jpg">
   <link rel="preload" as="image" href="images/poppenguin.png">
   <link rel="preload" as="image" href="images/rhinorapper.png">
   <link rel="preload" as="image" href="images/horsecountry.png">
@@ -489,7 +489,7 @@
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Male", "Visible Tattoos"]
+        correct: ["Male", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
@@ -504,17 +504,17 @@
       {
         question: "Guess the Birthplace",
         options: ["USA", "Canada", "Europe", "Australia", "Asia", "South America"],
-        correct: ["Europe"]
+        correct: ["USA"]
       },
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["80+ Million"]
+        correct: ["1-10 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Active on TikTok"]
+        correct: ["Active on TikTok", "Band Member"]
       },
       {
         question: "Guess the Name",
@@ -538,21 +538,21 @@
 
         function renderStartPage() {
       const container = document.getElementById('quizContainer');
-      const hostName = "Kush";
-      const hostImage = "images/kush.jpg";
+      const hostName = "Chunka";
+      const hostImage = "images/chunka.jpg";
       const hostTitle = "";
-      const challengeDate = "August 7, 2025 - Challenge #7";
+      const challengeDate = "August 8, 2025 - Challenge #8";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 7, 2025</div>
-            <div class="challenge-number">Challenge #7</div>
+            <div class="date">August 8, 2025</div>
+            <div class="challenge-number">Challenge #8</div>
           </div>
           
           
-                     <div class="tagline">Can you Guess His Favorite Singer?</div>
+                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -652,12 +652,12 @@
     function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-             const hostName = "Kush";
-       const hostImage = "images/kush.jpg";
+             const hostName = "Chunka";
+       const hostImage = "images/chunka.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
-                     <div class="question-prompt">Guess His Favorite Singer</div>
+                     <div class="question-prompt">Guess Her Favorite Singer</div>
           <img src="${hostImage}" alt="${hostName}" class="final-guess-carson" />
         </div>
         <div class="autocomplete-container">
@@ -747,7 +747,7 @@
       finalSingerGuessMade = true; // Mark that the final singer guess has been made
       updateGuessCounter();
       
-      const finalSingerAnswer = "Ed Sheeran"; 
+      const finalSingerAnswer = "Forrest Frank"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -768,10 +768,10 @@
       
       // Generate hint display content for all unlocked hints
       const hints = {
-        1: "💡 He is known to play the acoustic guitar.",
-        2: "💡 He has 99 million monthly Spotify listeners.",
-        3: "💡 His name begins with 'E'.",
-        4: "💡 His breakout hit is 'The A Team' and he's known for 'Shape of You'."
+        1: "💡 He was part of a duo then went viral with a solo album.",
+        2: "💡 He is recognized as a contemporary Christian artist.",
+        3: "💡 His name begins with 'F'.",
+        4: "💡 He is famous for his song 'UP!' and 'YOUR WAY'S BETTER'."
       };
       
       // Get the currently displayed hint from session storage
@@ -1438,8 +1438,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                    <img src="images/kush.jpg" alt="Kush" class="celebration-carson" />
-        <img src="images/edsheeran.jpg" alt="Ed Sheeran" class="celebration-singer" />
+                    <img src="images/chunka.jpg" alt="Chunka" class="celebration-carson" />
+        <img src="images/forrestfrank.jpg" alt="Forrest Frank" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
@@ -1481,8 +1481,8 @@
     // Preload critical images for better performance
     function preloadImages() {
       const criticalImages = [
-        'images/kush.jpg',
-        'images/edsheeran.jpg',
+        'images/chunka.jpg',
+        'images/forrestfrank.jpg',
         'images/poppenguin.png',
         'images/rhinorapper.png',
         'images/horsecountry.png',

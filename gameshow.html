@@ -6,13 +6,6 @@
   <meta name="description" content="Book the ultimate music guessing game show experience - Guess The Singer!" />
   <title>Guess The Singer: Live Show</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
-  
-  <!-- Preload critical images -->
-  <link rel="preload" as="image" href="images/Gallery1.jpg" fetchpriority="high">
-  <link rel="preload" as="image" href="images/Gallery2.jpg" fetchpriority="high">
-  <link rel="preload" as="image" href="images/Gallery3.jpg" fetchpriority="high">
-  <link rel="preload" as="image" href="images/Gallery4.jpg" fetchpriority="high">
-  <link rel="preload" as="image" href="images/Gallery5.jpg" fetchpriority="high">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
@@ -67,7 +60,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
     }
 
     .hero-background {
@@ -77,10 +69,9 @@
       width: 100%;
       height: 100%;
       background: linear-gradient(135deg, #4682b4, #254a6d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     .hero-overlay {
@@ -89,82 +80,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 3;
-    }
-
-    .hero-grid-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 40px;
-      width: 100%;
-      max-width: 1600px;
-      padding: 40px;
-    }
-
-    @media (max-width: 768px) {
-      .hero-grid {
-        padding: 20px;
-        gap: 20px;
-      }
-    }
-
-    .grid-row {
-      display: flex;
-      gap: 40px;
-      animation: scrollRow 60s linear infinite;
-    }
-
-    .grid-row:nth-child(2) {
-      animation-direction: reverse;
-      animation-duration: 50s;
-    }
-
-    .grid-row:nth-child(3) {
-      animation-duration: 70s;
-    }
-
-    .grid-item {
-      flex-shrink: 0;
-      width: 500px;
-      height: 300px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-
-    .grid-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: all 0.3s ease;
-      filter: brightness(1) contrast(1);
-    }
-
-    .grid-item:hover .grid-image {
-      transform: scale(1.05);
-      filter: brightness(1) contrast(1);
-    }
-
-    @keyframes scrollRow {
-      0% {
-        transform: translateX(0%);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
+      background: rgba(0, 0, 0, 0.4);
     }
 
     .hero-content {
@@ -174,10 +90,6 @@
       color: white;
       max-width: 800px;
       padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
 
     .hero-logo {
@@ -185,7 +97,6 @@
       height: auto;
       margin-bottom: 40px;
       filter: brightness(0) invert(1);
-      display: block;
     }
 
     .hero-title {
@@ -193,7 +104,6 @@
       font-weight: bold;
       margin-bottom: 20px;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      line-height: 1.2;
     }
 
     .hero-subtitle {
@@ -201,54 +111,26 @@
       margin-bottom: 40px;
       opacity: 0.9;
       text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-      line-height: 1.4;
     }
 
     .hero-cta {
-      background: linear-gradient(135deg, #4682b4, #254a6d);
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
       color: white;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      padding: 18px 40px;
-      font-size: 1.3rem;
-      font-weight: 700;
+      border: none;
+      padding: 16px 32px;
+      font-size: 1.2rem;
+      font-weight: bold;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 8px 25px rgba(70, 130, 180, 0.4);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
       text-transform: uppercase;
-      letter-spacing: 2px;
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-      text-decoration: none;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    .hero-cta::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.6s ease;
+      letter-spacing: 1px;
     }
 
     .hero-cta:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 35px rgba(70, 130, 180, 0.5);
-      background: linear-gradient(135deg, #5a8bc4, #2d5a8a);
-      border-color: rgba(255, 255, 255, 1);
-    }
-
-    .hero-cta:hover::before {
-      left: 100%;
-    }
-
-    .hero-cta:active {
-      transform: translateY(-1px) scale(1.01);
-      box-shadow: 0 6px 20px rgba(70, 130, 180, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
     }
 
     @media (max-width: 768px) {
@@ -271,38 +153,8 @@
       }
 
       .hero-cta {
-        padding: 16px 32px;
-        font-size: 1.1rem;
-        letter-spacing: 1.5px;
-      }
-
-      .grid-item {
-        width: 500px;
-        height: 300px;
-      }
-
-      .grid-row {
-        gap: 10px;
-      }
-
-      .hero-grid {
-        gap: 15px;
-      }
-
-      .grid-row {
-        animation-duration: 20s;
-      }
-
-      .grid-row:nth-child(2) {
-        animation-duration: 18s;
-      }
-
-      .grid-row:nth-child(3) {
-        display: none !important;
-      }
-
-      .hero-grid .grid-row:nth-child(3) {
-        display: none !important;
+        padding: 14px 28px;
+        font-size: 1rem;
       }
     }
 
@@ -648,46 +500,20 @@
       gap: 12px;
       background: linear-gradient(135deg, #4682b4, #254a6d);
       color: white;
-      padding: 18px 40px;
+      padding: 18px 32px;
       border-radius: 50px;
       text-decoration: none;
-      font-weight: 700;
-      font-size: 1.3rem;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 8px 25px rgba(70, 130, 180, 0.4);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      position: relative;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-    }
-
-    .learn-more-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left 0.6s ease;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(70, 130, 180, 0.3);
     }
 
     .learn-more-btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 35px rgba(70, 130, 180, 0.5);
-      background: linear-gradient(135deg, #5a8bc4, #2d5a8a);
-      border-color: rgba(255, 255, 255, 1);
-    }
-
-    .learn-more-btn:hover::before {
-      left: 100%;
-    }
-
-    .learn-more-btn:active {
-      transform: translateY(-1px) scale(1.01);
-      box-shadow: 0 6px 20px rgba(70, 130, 180, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(70, 130, 180, 0.4);
+      background: linear-gradient(135deg, #ffcc00, #e6b800);
+      color: #1e2b38;
     }
 
     .learn-more-btn .arrow {
@@ -906,7 +732,7 @@
       <div class="hero-content">
         <img src="images/SingerLogo.png" alt="Guess The Singer" class="hero-logo">
         <h1 class="hero-title">New England's #1 Campus Game Show</h1>
-        <a href="booking-form.html" class="hero-cta">Send Inquiry</a>
+        <button class="hero-cta" onclick="scrollToContact()">Send Inquiry</button>
       </div>
     </div>
   </section>
@@ -1472,7 +1298,9 @@
 }
 </style>
 
-
+  <footer>
+    &copy; 2025 Guess The Singer. All Rights Reserved.
+  </footer>
 
   <script>
     function switchVideo(id) {
@@ -1486,76 +1314,6 @@
   </script>
 
 <script>
-const heroGalleryImages = [
-  'images/Gallery1.jpg',
-  'images/Gallery2.jpg',
-  'images/Gallery3.jpg',
-  'images/Gallery4.jpg',
-  'images/Gallery5.jpg',
-  'images/Gallery6.jpg',
-  'images/Gallery7.jpg',
-  'images/Gallery8.jpg',
-  'images/Gallery9.jpg',
-  'images/Gallery10.jpg',
-  'images/Gallery11.jpg',
-  'images/Gallery12.jpg',
-  'images/Gallery13.jpg',
-  'images/Gallery14.jpg',
-  'images/Gallery15.jpg',
-  'images/Gallery16.jpg',
-  'images/Gallery17.jpg',
-  'images/Gallery18.jpg',
-  'images/Gallery19.jpg'
-];
-
-function renderHeroGrid() {
-  const grid = document.getElementById('heroGrid');
-  grid.innerHTML = '';
-  
-  // Check if mobile
-  const isMobile = window.innerWidth <= 768;
-  
-  // Define which images go in each row
-  const rowImages = [
-    // Row 1: Gallery1.jpg through Gallery6.jpg
-    heroGalleryImages.slice(0, 6),
-    // Row 2: Gallery7.jpg through Gallery12.jpg
-    heroGalleryImages.slice(6, 12),
-    // Row 3: Gallery13.jpg through Gallery19.jpg (desktop only)
-    heroGalleryImages.slice(12, 19)
-  ];
-  
-  // Create rows (2 for mobile, 3 for desktop)
-  const numRows = isMobile ? 2 : 3;
-  
-  for (let row = 0; row < numRows; row++) {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'grid-row';
-    
-    const rowImageSet = rowImages[row];
-    
-    // Create two sets of images for seamless looping
-    for (let set = 0; set < 2; set++) {
-      for (let i = 0; i < rowImageSet.length; i++) {
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'grid-item';
-        
-        const img = document.createElement('img');
-        img.src = rowImageSet[i];
-        img.alt = `Gallery Image ${i + 1 + (row * 6)}`;
-        img.className = 'grid-image';
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        
-        itemDiv.appendChild(img);
-        rowDiv.appendChild(itemDiv);
-      }
-    }
-    
-    grid.appendChild(rowDiv);
-  }
-}
-
 function scrollToContact() {
   // Find the contact section or booking form
   const contactSection = document.querySelector('.event-packages-section') || 
@@ -1579,27 +1337,17 @@ function scrollToContact() {
   }
 }
 
-// Preload all images for smooth transitions
-function preloadImages() {
-  heroGalleryImages.forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-}
-
+// Add parallax effect to hero background
 document.addEventListener('DOMContentLoaded', function() {
-  // Preload all images first
-  preloadImages();
+  const heroBackground = document.querySelector('.hero-background');
   
-  // Then render the grid
-  renderHeroGrid();
-  
-
-  
-  // Re-render on window resize
-  window.addEventListener('resize', function() {
-    renderHeroGrid();
-  });
+  if (heroBackground) {
+    window.addEventListener('scroll', function() {
+      const scrolled = window.pageYOffset;
+      const rate = scrolled * -0.5;
+      heroBackground.style.transform = `translateY(${rate}px)`;
+    });
+  }
 });
 </script>
 <style>
@@ -1679,350 +1427,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   </script>
-
-  <!-- Full Gallery Section -->
-  <section class="full-gallery-section">
-    <div class="gallery-container">
-      <h2 class="gallery-title">Event Gallery</h2>
-      <div class="gallery-slider-container">
-        <button class="gallery-arrow left" id="galleryPrev" aria-label="Previous image">&#8592;</button>
-        <div class="gallery-slider" id="gallerySlider">
-          <!-- Images will be populated by JavaScript -->
-        </div>
-        <button class="gallery-arrow right" id="galleryNext" aria-label="Next image">&#8594;</button>
-      </div>
-      <div class="gallery-dots" id="galleryDots">
-        <!-- Dots will be populated by JavaScript -->
-      </div>
-    </div>
-  </section>
-
-  <style>
-    .full-gallery-section {
-      background: #f4f9fd;
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .gallery-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .gallery-title {
-      color: #254a6d;
-      font-size: 2.5rem;
-      font-weight: bold;
-      margin-bottom: 50px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .gallery-slider-container {
-      position: relative;
-      max-width: 1000px;
-      margin: 0 auto;
-      overflow: hidden;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-
-    .gallery-slider {
-      display: flex;
-      transition: transform 0.6s ease-in-out;
-      height: 500px;
-    }
-
-    .gallery-slide {
-      min-width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    .gallery-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 20px;
-      will-change: transform;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
-    }
-
-    .gallery-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 10;
-      transition: all 0.3s ease;
-    }
-
-    .gallery-arrow:hover {
-      background: rgba(0, 0, 0, 0.8);
-      transform: translateY(-50%) scale(1.1);
-    }
-
-    .gallery-arrow.left {
-      left: 20px;
-    }
-
-    .gallery-arrow.right {
-      right: 20px;
-    }
-
-    .gallery-dots {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 30px;
-    }
-
-    .gallery-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(70, 130, 180, 0.3);
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .gallery-dot.active {
-      background: #4682b4;
-      transform: scale(1.2);
-    }
-
-    @media (max-width: 768px) {
-      .gallery-title {
-        font-size: 2rem;
-        margin-bottom: 30px;
-      }
-
-      .gallery-slider {
-        height: 300px;
-      }
-
-      .gallery-arrow {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-      }
-
-      .gallery-arrow.left {
-        left: 10px;
-      }
-
-      .gallery-arrow.right {
-        right: 10px;
-      }
-    }
-  </style>
-
-  <script>
-    // Gallery functionality
-    const galleryImages = [
-      'images/Gallery1.jpg',
-      'images/Gallery2.jpg',
-      'images/Gallery3.jpg',
-      'images/Gallery4.jpg',
-      'images/Gallery5.jpg',
-      'images/Gallery6.jpg',
-      'images/Gallery7.jpg',
-      'images/Gallery8.jpg',
-      'images/Gallery9.jpg',
-      'images/Gallery10.jpg',
-      'images/Gallery11.jpg',
-      'images/Gallery12.jpg',
-      'images/Gallery13.jpg',
-      'images/Gallery14.jpg',
-      'images/Gallery15.jpg',
-      'images/Gallery16.jpg',
-      'images/Gallery17.jpg',
-      'images/Gallery18.jpg',
-      'images/Gallery19.jpg'
-    ];
-
-    let currentGalleryIndex = 0;
-    let galleryAutoScrollInterval = null;
-
-    function renderGallery() {
-      const slider = document.getElementById('gallerySlider');
-      const dots = document.getElementById('galleryDots');
-      
-      slider.innerHTML = '';
-      dots.innerHTML = '';
-      
-      galleryImages.forEach((src, index) => {
-        // Create slide
-        const slide = document.createElement('div');
-        slide.className = 'gallery-slide';
-        
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = `Gallery Image ${index + 1}`;
-        img.loading = index < 5 ? 'eager' : 'lazy'; // Load first 5 images immediately
-        img.decoding = 'async';
-        img.fetchPriority = index < 5 ? 'high' : 'auto';
-        
-        // Add loading optimization attributes
-        img.crossOrigin = 'anonymous';
-        img.referrerPolicy = 'no-referrer';
-        
-        slide.appendChild(img);
-        slider.appendChild(slide);
-        
-        // Create dot
-        const dot = document.createElement('button');
-        dot.className = 'gallery-dot';
-        dot.setAttribute('data-index', index);
-        dot.onclick = () => goToSlide(index);
-        dots.appendChild(dot);
-      });
-      
-      updateGallery();
-    }
-
-    function updateGallery() {
-      const slider = document.getElementById('gallerySlider');
-      const dots = document.querySelectorAll('.gallery-dot');
-      
-      // Update slider position
-      slider.style.transform = `translateX(-${currentGalleryIndex * 100}%)`;
-      
-      // Update dots
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentGalleryIndex);
-      });
-    }
-
-    function nextSlide() {
-      currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
-      updateGallery();
-    }
-
-    function prevSlide() {
-      currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
-      updateGallery();
-    }
-
-    function goToSlide(index) {
-      currentGalleryIndex = index;
-      updateGallery();
-    }
-
-    function startGalleryAutoScroll() {
-      if (galleryAutoScrollInterval) {
-        clearInterval(galleryAutoScrollInterval);
-      }
-      galleryAutoScrollInterval = setInterval(nextSlide, 5000);
-    }
-
-    function stopGalleryAutoScroll() {
-      if (galleryAutoScrollInterval) {
-        clearInterval(galleryAutoScrollInterval);
-        galleryAutoScrollInterval = null;
-      }
-    }
-
-    // Preload gallery images with aggressive optimization
-    function preloadGalleryImages() {
-      // Preload critical images immediately
-      const criticalImages = galleryImages.slice(0, 5);
-      criticalImages.forEach((src, index) => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = src;
-        link.fetchPriority = 'high';
-        document.head.appendChild(link);
-        
-        // Also preload the actual image
-        const img = new Image();
-        img.src = src;
-      });
-      
-      // Preload remaining images with lower priority
-      const remainingImages = galleryImages.slice(5);
-      remainingImages.forEach((src, index) => {
-        const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = 'image';
-        link.href = src;
-        link.fetchPriority = 'low';
-        document.head.appendChild(link);
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      preloadGalleryImages();
-      renderGallery();
-      startGalleryAutoScroll();
-      
-      // Manual navigation
-      document.getElementById('galleryPrev').onclick = function() {
-        prevSlide();
-        stopGalleryAutoScroll();
-        setTimeout(startGalleryAutoScroll, 10000);
-      };
-      
-      document.getElementById('galleryNext').onclick = function() {
-        nextSlide();
-        stopGalleryAutoScroll();
-        setTimeout(startGalleryAutoScroll, 10000);
-      };
-      
-      // Pause on hover
-      const sliderContainer = document.querySelector('.gallery-slider-container');
-      sliderContainer.addEventListener('mouseenter', stopGalleryAutoScroll);
-      sliderContainer.addEventListener('mouseleave', startGalleryAutoScroll);
-    });
-  </script>
-
-  <!-- Footer -->
-  <footer class="main-footer">
-    <div class="footer-content">
-      <p>&copy; 2025 Guess The Singer. All Rights Reserved.</p>
-    </div>
-  </footer>
-
-  <style>
-    .main-footer {
-      background-color: #254a6d;
-      color: white;
-      text-align: center;
-      padding: 30px 20px;
-      font-size: 1rem;
-      margin-top: 0;
-      border-top: 2px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .main-footer p {
-      margin: 0;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    @media (max-width: 768px) {
-      .main-footer {
-        padding: 25px 15px;
-        font-size: 0.9rem;
-      }
-    }
-  </style>
 
 </body>
 </html>
