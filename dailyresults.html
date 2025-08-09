@@ -122,6 +122,7 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 30px 20px;
+      padding-bottom: 100px; /* Add space for bottom navigation */
     }
 
     /* Date Selector */
@@ -257,6 +258,32 @@
       background-color: #f8f9fa;
     }
 
+    .admin-row {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+    }
+    
+    .admin-row:hover {
+      background-color: #ffeaa7;
+    }
+    
+    .admin-badge {
+      color: #ffc107;
+      font-size: 0.9em;
+      margin-left: 5px;
+    }
+    
+    .admin-note {
+      background-color: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 20px;
+      color: #856404;
+      font-size: 0.9em;
+      text-align: center;
+    }
+
     .results-table tr:last-child td {
       border-bottom: none;
     }
@@ -341,6 +368,7 @@
     @media (max-width: 768px) {
       .main-container {
         padding: 20px 15px;
+        padding-bottom: 100px; /* Add space for bottom navigation */
       }
 
       .header h1 {
@@ -381,6 +409,10 @@
     }
 
     @media (max-width: 480px) {
+      .main-container {
+        padding-bottom: 100px; /* Add space for bottom navigation */
+      }
+      
       .header h1 {
         font-size: 1.6rem;
       }
@@ -570,9 +602,9 @@
         const completionsRef = collection(db, "dailyGameCompletions");
         const q = query(
           completionsRef,
-          where("completionDate", ">=", startOfDay),
-          where("completionDate", "<=", endOfDay),
-          orderBy("completionDate", "desc")
+          where("timestamp", ">=", startOfDay),
+          where("timestamp", "<=", endOfDay),
+          orderBy("timestamp", "desc")
         );
         
         const querySnapshot = await getDocs(q);
@@ -580,13 +612,15 @@
         
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+          const isAdmin = data.userEmail === "colbyma23@gmail.com";
           results.push({
             name: data.username || data.displayName || "Anonymous",
-            email: data.email || "No email",
+            email: data.userEmail || data.email || "No email",
             guessCount: data.totalGuesses || 0,
             hintCount: data.hintsUsed || 0,
             score: data.score || 0,
-            completionTime: data.completionDate?.toDate() || new Date()
+            completionTime: data.completionDate?.toDate() || data.timestamp?.toDate() || new Date(),
+            isAdmin: isAdmin
           });
         });
 
@@ -631,8 +665,8 @@
           </thead>
           <tbody>
             ${results.map(result => `
-              <tr>
-                <td>${result.name}</td>
+              <tr class="${result.isAdmin ? 'admin-row' : ''}">
+                <td>${result.name}${result.isAdmin ? ' <span class="admin-badge">👑</span>' : ''}</td>
                 <td>${result.email}</td>
                 <td>${result.guessCount}</td>
                 <td>${result.hintCount}</td>

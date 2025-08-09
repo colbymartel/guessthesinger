@@ -408,12 +408,22 @@
     
     // Check if user has already played today
     function checkIfAlreadyPlayed() {
+      // Allow unlimited games for admin user
+      if (currentUser && currentUser.email === "colbyma23@gmail.com") {
+        return false;
+      }
+      
       const today = new Date().toDateString();
       const playedToday = localStorage.getItem(`dailyGame_${today}`);
       return playedToday === 'true';
     }
     
     function markAsPlayed() {
+      // Don't mark as played for admin user (allows unlimited games)
+      if (currentUser && currentUser.email === "colbyma23@gmail.com") {
+        return;
+      }
+      
       const today = new Date().toDateString();
       localStorage.setItem(`dailyGame_${today}`, 'true');
     }
@@ -535,6 +545,11 @@
     let hintsUsed = 0;
     // Track if the final singer guess has been made (to not deduct points for it)
     let finalSingerGuessMade = false;
+    
+    // Make variables globally accessible for Firebase recording
+    window.totalGuesses = totalGuesses;
+    window.hintsUsed = hintsUsed;
+    window.finalSingerGuessMade = finalSingerGuessMade;
 
         function renderStartPage() {
       const container = document.getElementById('quizContainer');
@@ -566,6 +581,9 @@
             '<div class="already-played-message">✅ You\'ve completed today\'s challenge! Come back tomorrow for a new one.</div>' :
             '<button class="start-btn" onclick="startQuiz()"><span>START GAME</span></button>'
           }
+          ${currentUser && currentUser.email === "colbyma23@gmail.com" ? 
+            '<div class="admin-notice">👑 Admin Mode: Unlimited Games Available</div>' : ''
+          }
           
           <div class="impact-section">
             <div class="impact-icon">💧</div>
@@ -576,7 +594,7 @@
     }
 
     window.startQuiz = function() {
-      // Check if user has already played today
+      // Check if user has already played today (skip for admin)
       if (checkIfAlreadyPlayed()) {
         alert("🎯 You've already completed today's challenge! Come back tomorrow for a new challenge.");
         return;
@@ -702,6 +720,11 @@
 
 
     function updateGuessCounter() {
+      // Update global variables
+      window.totalGuesses = totalGuesses;
+      window.hintsUsed = hintsUsed;
+      window.finalSingerGuessMade = finalSingerGuessMade;
+      
       const totalGuessesEl = document.getElementById('totalGuessesDisplay');
       const hintsUsedEl = document.getElementById('hintsUsedDisplay');
       const scoreEl = document.getElementById('scoreDisplay');
@@ -711,8 +734,10 @@
       
       // Calculate score: 100 base - 5 per guess - 10 per hint
       // Don't deduct points for the final singer guess
-      const guessesForScoring = finalSingerGuessMade ? totalGuesses - 1 : totalGuesses;
-      const score = Math.max(0, 100 - (guessesForScoring * 5) - (hintsUsed * 10));
+      const currentTotalGuesses = window.totalGuesses || totalGuesses;
+      const currentHintsUsed = window.hintsUsed || hintsUsed;
+      const guessesForScoring = finalSingerGuessMade ? currentTotalGuesses - 1 : currentTotalGuesses;
+      const score = Math.max(0, 100 - (guessesForScoring * 5) - (currentHintsUsed * 10));
       if (scoreEl) scoreEl.textContent = score;
     }
 
@@ -953,6 +978,7 @@
       
       // Update counters
       hintsUsed++;
+      window.hintsUsed = hintsUsed;
       updateGuessCounter();
       console.log('Hints used updated:', hintsUsed);
       
@@ -968,6 +994,7 @@
       if (!viewedHints.includes(hintNumber)) {
         // This is the first time viewing this hint, so increment hints used
         hintsUsed++;
+        window.hintsUsed = hintsUsed;
         viewedHints.push(hintNumber);
         sessionStorage.setItem('viewedHints', JSON.stringify(viewedHints));
         updateGuessCounter();
@@ -1430,8 +1457,10 @@
     function renderCelebrationPage() {
       const container = document.getElementById('quizContainer');
       // Don't deduct points for the final singer guess
-      const guessesForScoring = finalSingerGuessMade ? totalGuesses - 1 : totalGuesses;
-      const score = Math.max(0, 100 - (guessesForScoring * 5) - (hintsUsed * 10));
+      const currentTotalGuesses = window.totalGuesses || totalGuesses;
+      const currentHintsUsed = window.hintsUsed || hintsUsed;
+      const guessesForScoring = finalSingerGuessMade ? currentTotalGuesses - 1 : currentTotalGuesses;
+      const score = Math.max(0, 100 - (guessesForScoring * 5) - (currentHintsUsed * 10));
       container.innerHTML = `
         <div class="celebration water-themed">
           <div class="celebration-emoji">💧</div>
@@ -1465,9 +1494,11 @@
 
     window.shareScore = function() {
       // Don't deduct points for the final singer guess
-      const guessesForScoring = finalSingerGuessMade ? totalGuesses - 1 : totalGuesses;
-      const score = Math.max(0, 100 - (guessesForScoring * 5) - (hintsUsed * 10));
-      const shareText = `I just completed the Guess the Singer daily game with a score of ${score}/100! (${totalGuesses} guesses, ${hintsUsed} hints used) Can you beat my score? Play now at https://guessthesinger.com`;
+      const currentTotalGuesses = window.totalGuesses || totalGuesses;
+      const currentHintsUsed = window.hintsUsed || hintsUsed;
+      const guessesForScoring = finalSingerGuessMade ? currentTotalGuesses - 1 : currentTotalGuesses;
+      const score = Math.max(0, 100 - (guessesForScoring * 5) - (currentHintsUsed * 10));
+      const shareText = `I just completed the Guess the Singer daily game with a score of ${score}/100! (${currentTotalGuesses} guesses, ${currentHintsUsed} hints used) Can you beat my score? Play now at https://guessthesinger.com`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(shareText).then(() => {
           alert('Score copied to clipboard!');
@@ -1525,14 +1556,19 @@
       });
     }
 
-    // On load, show the start page
-    renderQuestion();
+    // Initialize game after Firebase auth is ready
+    function initializeGame() {
+      renderQuestion();
+      
+      // Reset progress bar to 0% on game load
+      document.getElementById('progress').style.width = '0%';
+      
+      // Preload images after initial render
+      setTimeout(preloadImages, 100);
+    }
     
-    // Reset progress bar to 0% on game load
-    document.getElementById('progress').style.width = '0%';
-    
-    // Preload images after initial render
-    setTimeout(preloadImages, 100);
+    // Make initializeGame globally accessible
+    window.initializeGame = initializeGame;
 
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
@@ -1619,6 +1655,11 @@
           coinDisplayEl.textContent = "0";
         }
       }
+      
+      // Initialize the game after auth state is determined
+      if (window.initializeGame) {
+        window.initializeGame();
+      }
     });
 
     // Dropdown show/hide logic
@@ -1687,31 +1728,45 @@
       }
 
       try {
-        // Check if user has already completed the game today
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        const completionsRef = collection(db, "dailyGameCompletions");
-        const q = query(
-          completionsRef, 
-          where("userId", "==", currentUser.uid),
-          where("timestamp", ">=", today)
-        );
-        const snapshot = await getDocs(q);
-        
-        if (!snapshot.empty) {
-          console.log("User already completed daily game today");
-          return;
+        // Check if user has already completed the game today (skip for admin)
+        if (currentUser.email !== "colbyma23@gmail.com") {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          
+          const completionsRef = collection(db, "dailyGameCompletions");
+          const q = query(
+            completionsRef, 
+            where("userId", "==", currentUser.uid),
+            where("timestamp", ">=", today)
+          );
+          const snapshot = await getDocs(q);
+          
+          if (!snapshot.empty) {
+            console.log("User already completed daily game today");
+            return;
+          }
         }
 
-        // Record the completion
-        await addDoc(collection(db, "dailyGameCompletions"), {
+        // Calculate score using the same logic as display
+        const currentTotalGuesses = window.totalGuesses || totalGuesses;
+        const currentHintsUsed = window.hintsUsed || hintsUsed;
+        const currentFinalSingerGuessMade = window.finalSingerGuessMade || finalSingerGuessMade;
+        const guessesForScoring = currentFinalSingerGuessMade ? currentTotalGuesses - 1 : currentTotalGuesses;
+        const calculatedScore = Math.max(0, 100 - (guessesForScoring * 5) - (currentHintsUsed * 10));
+
+        // Record the completion with detailed statistics
+        const docRef = await addDoc(collection(db, "dailyGameCompletions"), {
           userId: currentUser.uid,
           userEmail: currentUser.email,
           username: currentUser.displayName || currentUser.email?.split('@')[0] || "Anonymous",
           timestamp: serverTimestamp(),
+          completionDate: serverTimestamp(),
           gameType: "daily",
-          donationAmount: 0.01
+          donationAmount: 0.01,
+          totalGuesses: currentTotalGuesses,
+          hintsUsed: currentHintsUsed,
+          score: calculatedScore,
+          finalSingerGuessMade: currentFinalSingerGuessMade
         });
 
         console.log("✅ Daily game completion recorded for Team Water");
@@ -2711,6 +2766,18 @@
       font-weight: 500;
       border: 1px solid #c3e6cb;
       text-align: center;
+    }
+
+    .admin-notice {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+      margin: 15px 0;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
     }
 
     .description-header {
