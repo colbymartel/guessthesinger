@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guessing Games</title>
   <link rel="icon" href="/favicongg.ico" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -17,41 +17,135 @@
 
     body {
       font-family: 'Fredoka', sans-serif;
-      background: #ffffff;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
       color: #333;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* Navbar */
-    .navbar {
+    /* Enhanced Header */
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      pointer-events: none;
+    }
+
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Enhanced Navigation */
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #315f85;
-      padding: 15px 30px;
       color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    .nav-links a {
-      color: white;
-      margin-left: 20px;
+    .welcome-msg {
       font-weight: bold;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-    
-    .nav-links a:hover {
       color: #ffcb05;
+      cursor: pointer;
     }
 
-    .daily-game-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(70, 130, 180, 0.4);
-}
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
 
-    /* Main Content */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      display: flex;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+
+    .coin-emoji {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3);
+      position: relative;
+      display: inline-block;
+      animation: coinGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes coinGlow {
+      from { box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3); }
+      to { box-shadow: 0 4px 16px rgba(241, 196, 15, 0.6); }
+    }
+
+    #coinDisplay {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    #coinCount {
+      font-weight: 600;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    /* Enhanced Main Content */
     .main-content {
       flex: 1;
       padding: 40px 20px;
@@ -60,59 +154,136 @@
       width: 100%;
     }
 
-    /* Section Headers */
+    /* Enhanced Daily Game Section */
+    .daily-game-section {
+      text-align: center;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .daily-game-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      background: linear-gradient(135deg, #4682b4, #254a6d);
+      color: white;
+      text-decoration: none;
+      padding: 20px 30px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      box-shadow: 0 8px 25px rgba(70, 130, 180, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .daily-game-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .daily-game-button:hover::before {
+      left: 100%;
+    }
+
+    .daily-game-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(70, 130, 180, 0.4);
+    }
+
+    .daily-game-button i {
+      font-size: 28px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Enhanced Section Headers */
     .section-header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
+      position: relative;
     }
 
     .section-header h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 10px;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1e2b38;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .section-header .underline {
-      width: 60px;
-      height: 4px;
-      background: #315f85;
-      margin: 0 auto 15px auto;
-      border-radius: 2px;
+      width: 80px;
+      height: 5px;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      margin: 0 auto 20px auto;
+      border-radius: 3px;
+      position: relative;
+    }
+
+    .section-header .underline::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      border-radius: 3px;
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
     }
 
     .section-header p {
       color: #666;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       max-width: 600px;
       margin: 0 auto;
+      font-weight: 500;
     }
 
     .section-divider {
       text-align: center;
-      margin: 40px 0 20px 0;
+      margin: 60px 0 30px 0;
     }
 
     .section-divider h2 {
       font-size: 2.5rem;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 10px;
+      font-weight: 700;
+      color: #1e2b38;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .section-divider .underline {
       width: 60px;
-      height: 3px;
-      background: #ff6b6b;
+      height: 4px;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
       margin: 0 auto;
       border-radius: 2px;
     }
 
-    /* Games Grid */
+    /* Enhanced Games Grid */
     .games-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 30px;
       margin-bottom: 60px;
     }
 
@@ -128,97 +299,98 @@
       }
     }
 
-    /* Game Card */
+    /* Enhanced Game Cards */
     .game-card {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s ease;
       text-decoration: none;
       color: inherit;
       display: block;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover::before {
+      transform: scaleX(1);
     }
 
     .game-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
 
     .game-card-header {
       display: flex;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .game-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: #f8f9fa;
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 16px;
-      font-size: 24px;
+      margin-right: 20px;
+      font-size: 28px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .game-card:hover .game-icon {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
     .game-title {
-      font-size: 1.25rem;
-      font-weight: bold;
+      font-size: 1.4rem;
+      font-weight: 700;
       color: #333;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .game-category {
-      font-size: 0.875rem;
-      color: #666;
-      font-weight: 500;
+      font-size: 0.95rem;
+      color: #3b7bbf;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .game-description {
       color: #666;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-
-    /* Footer */
-    .footer {
-      background-color: #315f85;
-      color: white;
-      text-align: center;
-      padding: 15px 10px;
+      line-height: 1.6;
+      margin-bottom: 0;
       font-size: 1rem;
-      margin-top: auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .footer a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-      font-size: 1.2rem;
-    }
-
-    .footer a:hover {
-      color: #ff914d;
-    }
-
-    /* Search and Navigation */
-    .search-suggestions {
-      position: absolute;
-      top: 45px;
-      left: 0;
-      width: 220px;
-      background: white;
-      color: #333;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 999;
-      display: none;
-      flex-direction: column;
-      max-height: 300px;
-      overflow-y: auto;
+    /* Enhanced Search */
+    .search-container {
+      position: relative;
+      width: 320px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-direction: row;
     }
 
     .search-input-container {
@@ -226,13 +398,59 @@
       flex: 1;
     }
 
+    .search-bar {
+      padding: 12px 20px 12px 45px;
+      height: 45px;
+      border-radius: 25px;
+      border: 2px solid rgba(59, 123, 191, 0.2);
+      outline: none;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      width: 100%;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%233b7bbf" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
+      background-size: 16px;
+      background-repeat: no-repeat;
+      background-position: 15px center;
+      font-family: 'Fredoka', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .search-bar:focus {
+      border-color: #3b7bbf;
+      box-shadow: 0 0 0 3px rgba(59, 123, 191, 0.1);
+      background: white;
+    }
+
+    .search-bar::placeholder {
+      color: #999;
+    }
+
+    .search-suggestions {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      color: #333;
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
     .search-suggestion {
-      padding: 12px 16px;
-      border-bottom: 1px solid #eee;
+      padding: 15px 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
       cursor: pointer;
       display: flex;
       align-items: center;
-      transition: background-color 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     .search-suggestion:last-child {
@@ -240,20 +458,27 @@
     }
 
     .search-suggestion:hover {
-      background-color: #f0f4fa;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      color: white;
+      transform: translateX(5px);
     }
 
     .search-suggestion-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      margin-right: 12px;
-      background: #f8f9fa;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      margin-right: 15px;
+      background: rgba(59, 123, 191, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 18px;
       flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .search-suggestion:hover .search-suggestion-icon {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .search-suggestion-content {
@@ -261,41 +486,17 @@
     }
 
     .search-suggestion-title {
-      font-weight: bold;
-      font-size: 0.9rem;
-      color: #333;
-      margin-bottom: 2px;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 3px;
     }
 
     .search-suggestion-category {
-      font-size: 0.8rem;
-      color: #666;
+      font-size: 0.85rem;
+      opacity: 0.8;
     }
 
-    .search-bar {
-      padding: 8px 16px 8px 36px;
-      height: 40px;
-      border-radius: 20px;
-      border: none;
-      outline: none;
-      font-size: 0.95rem;
-      background-color: white;
-      color: #315f85;
-      width: 100%;
-      background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
-      background-size: 16px;
-      background-repeat: no-repeat;
-      background-position: 12px center;
-      font-family: 'Fredoka', sans-serif;
-    }
-
-    .search-bar::placeholder {
-      color: #888;
-    }
-
-
-
-    /* Bottom Navigation */
+    /* Enhanced Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -340,113 +541,50 @@
       }
 
       .section-header h1 {
+        font-size: 2.2rem;
+      }
+
+      .section-divider h2 {
         font-size: 2rem;
       }
 
       .games-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 20px;
       }
 
       .game-card {
-        padding: 20px;
-      }
-    }
-
-  .category-header h2 {
-    font-size: 1.4rem;
-  }
-
-  .category-header p {
-    font-size: 0.95rem;
-  }
-
-  .tabs {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .tab {
-    width: 100%;
-    text-align: center;
-  }
-
-  .stats {
-    font-size: 1rem;
-  }
-
-  .footer {
-    font-size: 0.9rem;
-    padding: 10px;
-  }
-
-  .footer a {
-    font-size: 1rem;
-    margin: 0 5px;
-  }
-
-      /* Mobile Navigation */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      margin-left: auto;
-    }
-
-    .bar {
-      height: 3px;
-      width: 25px;
-      background-color: white;
-      margin: 4px 0;
-      transition: 0.4s;
-    }
-
-
-
-    @media (max-width: 768px) {
-      .navbar {
-        flex-wrap: wrap;
-        padding: 15px 20px;
+        padding: 25px;
       }
 
-      .hamburger {
-        display: flex;
+      .daily-game-button {
+        padding: 18px 25px;
+        font-size: 1.1rem;
       }
 
-          .nav-links {
-      display: none;
-      flex-direction: column;
-      width: 100%;
-      background-color: #f5f5f5;
-      padding: 10px 0;
-      border-radius: 0 0 12px 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+      .search-container {
+        width: 100%;
+        max-width: 300px;
+      }
 
-    .search-container {
-      position: relative;
-      width: 320px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-direction: row;
-    }
-
-    .search-input-container {
-      position: relative;
-      flex: 1;
-    }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 0;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
 
       .nav-links.active {
         display: flex;
       }
 
       .nav-links .search-bar {
-        margin: 8px 20px;
-      }
-
-      .search-bar {
-        width: calc(100% - 40px);
+        margin: 10px 20px;
       }
 
       .search-suggestions {
@@ -455,237 +593,100 @@
         margin: 0 auto;
       }
     }
-.header {
-  background: linear-gradient(135deg, #3b7bbf, #234d7d);
-  padding: 40px 20px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-.header .logo img {
-  width: 200px;
-  height: auto;
-  margin: 0 auto;
-  display: block;
-}
 
-.category-header {
-  text-align: center;
-  padding: 30px 20px 10px 20px;
-}
-.category-header h2 {
-  font-size: 1.6rem;
-  color: #1e2b38;
-}
-.category-header p {
-  color: #555;
-  font-size: 14px;
-  margin-top: 6px;
-  margin-bottom: 20px;
-}
-.play-now-btn {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  background-color: #ffcb05;
-  color: #1e2b38;
-  border-radius: 25px;
-  text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.2s;
-  font-family: 'Fredoka', sans-serif;
-}
+    @media (max-width: 480px) {
+      .section-header h1 {
+        font-size: 1.8rem;
+      }
 
-.play-now-btn:hover {
-  background-color: #e6b800;
-  transform: translateY(-2px);
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-}
+      .section-divider h2 {
+        font-size: 1.6rem;
+      }
 
-.games-section {
-  padding: 30px 20px;
-  color: white;
-  font-family: 'Fredoka', sans-serif;
-}
+      .game-card {
+        padding: 20px;
+      }
 
-.games-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  color:  #234d7d;
+      .game-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+      }
 
-}
+      .game-title {
+        font-size: 1.2rem;
+      }
 
-.games-header h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-}
+      .daily-game-button {
+        padding: 15px 20px;
+        font-size: 1rem;
+      }
+    }
 
-.games-header a {
-  color: #a78bfa;
-  font-weight: 500;
-  font-size: 0.95rem;
-  text-decoration: none;
-}
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
 
-.games-header a:hover {
-  text-decoration: underline;
-}
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
-.games-gallery {
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  padding-bottom: 10px;
-}
+    /* Floating Animation for Cards */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
 
-.game-box {
-  position: relative; /* Add this */
-  flex: 0 0 auto;
-  width: 180px;
-  height: 250px;
-  background-color: #1e1e1e;
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
+    .game-card:nth-child(odd) {
+      animation: float 6s ease-in-out infinite;
+    }
 
+    .game-card:nth-child(even) {
+      animation: float 6s ease-in-out infinite reverse;
+    }
 
-.game-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    /* Enhanced Mobile Navigation */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      margin-left: auto;
+      padding: 5px;
+    }
 
-.game-box:hover {
-  transform: scale(1.04);
-}
-.play-now-overlay {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ffcb05;
-  color: #1e2b38;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 0.85rem;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  z-index: 10;
-}
+    .bar {
+      height: 3px;
+      width: 25px;
+      background: #333;
+      margin: 3px 0;
+      transition: 0.4s;
+      border-radius: 2px;
+    }
 
-.play-now-overlay:hover {
-  background-color: #e6b800;
-  transform: translateX(-50%) translateY(-1px);
-}
-body {
-  font-family: 'Fredoka', sans-serif;
-  background: linear-gradient(to bottom, #ffffff, #e7f1f9);
-  padding-bottom: 90px;
-  margin: 0;
-}
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
 
-nav {
-  background-color: #1e2b38;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-}
+      .hamburger.active .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
 
-.welcome-msg {
-  font-weight: bold;
-  color: #ffcb05;
-  cursor: pointer;
-}
-.welcome-msg:hover {
-  text-decoration: underline;
-}
+      .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+      }
 
-.dropdown {
-  display: none;
-  position: absolute;
-  top: 40px;
-  margin-right: 30px;
-  background-color: #1e2b38;
-  padding: 10px;
-  border-radius: 10px;
-  flex-direction: column;
-  min-width: 150px;
-  z-index: 10;
-}
-.dropdown.show {
-  display: flex;
-}
-.dropdown a {
-  color: white;
-  text-decoration: none;
-  padding: 8px 12px;
-  font-weight: bold;
-}
-.dropdown a:hover {
-  background-color: #ffcb05;
-  color: #1e2b38;
-}
-
-.coin-emoji {
-  width: 24px;
-  height: 24px;
-  background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
-  border-radius: 50%;
-  box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
-  position: relative;
-  display: inline-block;
-}
-
-#coinDisplay {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
-}
-
-#coinCount {
-  font-weight: bold;
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #1e2b38;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 8px 0;
-  z-index: 999;
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-}
-
-.bottom-nav .nav-item {
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  font-size: 12px;
-}
-.bottom-nav .nav-item i {
-  display: block;
-  font-size: 20px;
-  margin-bottom: 2px;
-}
-.bottom-nav .nav-item:hover {
-  color: #ffcb05;
-}
-
-
-
+      .hamburger.active .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+    }
   </style>
 </head>
 <body>
@@ -725,15 +726,15 @@ nav {
   </nav>
   
   <main class="main-content">
-    <div class="daily-game-section" style="text-align: center; margin-bottom: 40px;">
-  <a href="/dailygame.html" class="daily-game-button" style="display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(135deg, #4682b4, #254a6d); color: white; text-decoration: none; padding: 16px 24px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 15px rgba(70, 130, 180, 0.3); transition: all 0.3s ease; border: 2px solid rgba(255, 255, 255, 0.8);">
-    <i class="fas fa-calendar-day" style="font-size: 24px;"></i>
-    Play Today's Daily Challenge!
-  </a>
-</div>
+    <div class="daily-game-section">
+      <a href="/dailygame.html" class="daily-game-button">
+        <i class="fas fa-calendar-day"></i>
+        Play Today's Daily Challenge!
+      </a>
+    </div>
 
     <div class="section-header">
-      <h1>New Games</h1>
+      <h1>🎮 New Games</h1>
       <div class="underline"></div>
     </div>
 
@@ -741,7 +742,7 @@ nav {
       <a href="/memory.html" class="game-card">
         <div class="game-card-header">
           <div class="game-icon">
-            <img src="/images/brain.jpg" alt="Match the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+            <img src="/images/brain.jpg" alt="Match the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
           </div>
           <div>
             <div class="game-title">Match the Singer</div>
@@ -756,7 +757,7 @@ nav {
       <a href="/spelling.html" class="game-card">
         <div class="game-card-header">
           <div class="game-icon">
-            <img src="/images/bee.jpg" alt="Spell the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+            <img src="/images/bee.jpg" alt="Spell the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
           </div>
           <div>
             <div class="game-title">Spell the Singer</div>
@@ -771,7 +772,7 @@ nav {
       <a href="/bangerbattle.html" class="game-card">
         <div class="game-card-header">
           <div class="game-icon">
-            <img src="/images/battle.jpg" alt="Banger Battle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+            <img src="/images/battle.jpg" alt="Banger Battle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
           </div>
           <div>
             <div class="game-title">Banger Battle</div>
@@ -785,17 +786,15 @@ nav {
     </div>
 
     <div class="section-divider">
-      <h2>Community</h2>
+      <h2>🤝 Community</h2>
       <div class="underline"></div>
     </div>
 
     <div class="games-grid">
-
-
       <a href="https://forms.gle/7TdiZswfKZBZSyAZ9" target="_blank" rel="noopener noreferrer" class="game-card">
         <div class="game-card-header">
           <div class="game-icon">
-            <i class="fas fa-star" style="font-size: 2rem; color: #ffcb05; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-radius: 12px;"></i>
+            <i class="fas fa-star" style="font-size: 2rem; color: #ffcb05; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-radius: 15px;"></i>
           </div>
           <div>
             <div class="game-title">Be Featured!</div>
@@ -810,7 +809,7 @@ nav {
       <a href="/video-ideas.html" class="game-card">
         <div class="game-card-header">
           <div class="game-icon">
-            <i class="fas fa-video" style="font-size: 2rem; color: #4a90e2; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 12px;"></i>
+            <i class="fas fa-video" style="font-size: 2rem; color: #4a90e2; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 15px;"></i>
           </div>
           <div>
             <div class="game-title">Video Ideas</div>
@@ -825,7 +824,7 @@ nav {
       <a href="/gameshow.html" class="game-card">
         <div class="game-card-header">
           <div class="game-icon">
-            <i class="fas fa-tv" style="font-size: 2rem; color: #ff6b35; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-radius: 12px;"></i>
+            <i class="fas fa-tv" style="font-size: 2rem; color: #ff6b35; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-radius: 15px;"></i>
           </div>
           <div>
             <div class="game-title">Game Show</div>
@@ -833,33 +832,18 @@ nav {
           </div>
         </div>
         <div class="game-description">
-          Learn more about how to bring Guess the Singer to your school, company, or event!</div>
+          Learn more about how to bring Guess the Singer to your school, company, or event!
+        </div>
       </a>
-
-      <!-- Challenge Colby temporarily hidden
-      <div class="game-card" onclick="challengeColby()" style="cursor: pointer;">
-        <div class="game-card-header">
-          <div class="game-icon">
-            <img src="/images/avatars/popstarpenguin.jpg" alt="Challenge Colby" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
-          </div>
-          <div>
-            <div class="game-title">Challenge Colby</div>
-            <div class="game-category">Chat & Battle</div>
-          </div>
-        </div>
-        <div class="game-description">
-          Chat with Colby and challenge him to music battles! Test your knowledge against the creator and see who knows more about music.
-        </div>
-      </div>
-      -->
     </div>
   </main>
+
 <footer class="bottom-nav">
-  <a href="/index.html" class="nav-item">
+  <a href="/profile.html" class="nav-item">
     <i class="fas fa-user"></i>
     <span>Profile</span>
   </a>
-  <a href="/games.html" class="nav-item highlight">
+  <a href="/games.html" class="nav-item">
     <img src="/images/gamesicon.png" alt="Games Icon" style="width: 24px; height: 24px;">
     <span>Games</span>
   </a>
@@ -867,11 +851,12 @@ nav {
     <i class="fas fa-trophy"></i>
     <span>Leaderboards</span>
   </a>
-  <a href="/rewards.html" class="nav-item highlight">
+  <a href="/rewards.html" class="nav-item">
     <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 24px; height: 24px;">
     <span>Rewards</span>
   </a>
   </footer>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
@@ -946,8 +931,6 @@ nav {
         if (coinDisplayEl) coinDisplayEl.textContent = "0";
       }
     });
-
-
 
     // Game data for search functionality
     const gamesData = [

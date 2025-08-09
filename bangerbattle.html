@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Banger Battle: Spotify Streams Edition</title>
   <link rel="icon" href="/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     html, body {
@@ -15,7 +15,31 @@
       background: linear-gradient(to bottom, #ffffff, #e7f1f9);
       min-height: 100vh;
       color: #234d7d;
+      overflow-x: hidden;
     }
+
+    /* Enhanced Header */
+    .header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Enhanced Navigation */
     nav {
       background-color: #1e2b38;
       padding: 15px 30px;
@@ -24,83 +48,101 @@
       align-items: center;
       color: white;
       position: relative;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
-    .nav-links a {
+
+    .welcome-msg {
+      font-weight: bold;
+      color: #ffcb05;
+      cursor: pointer;
+    }
+
+    .welcome-msg:hover {
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      margin-right: 30px;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 150px;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .dropdown.show {
+      display: flex;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown a {
       color: white;
-      margin: 0 15px;
       text-decoration: none;
+      padding: 8px 12px;
       font-weight: bold;
     }
-    .nav-links a:hover {
-      color: #ffcb05;
+
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
     }
-    .hamburger {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: white;
-    }
-    @media (max-width: 700px) {
-      .nav-links { display: none; }
-      .hamburger { display: block; }
-      .mobile-menu {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        right: 15px;
-        top: 60px;
-        background-color: #1e2b38;
-        padding: 10px 20px;
-        border-radius: 10px;
-        z-index: 1000;
-        width: max-content;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      }
-      .mobile-menu a {
-        color: white;
-        text-decoration: none;
-        padding: 10px 0;
-        font-weight: bold;
-      }
-      .mobile-menu a:hover {
-        color: #ffcb05;
-      }
-      .mobile-menu.show { display: flex; }
-    }
-    
-    .header {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      padding: 40px 20px;
-      text-align: center;
-      color: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      animation: fadeDown 1s ease-out;
+
+    .coin-emoji {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3);
       position: relative;
-      overflow: hidden;
+      display: inline-block;
+      animation: coinGlow 2s ease-in-out infinite alternate;
     }
-    
-    .header::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, transparent 30%, rgba(46, 195, 255, 0.1) 50%, transparent 70%);
-      animation: shimmer 3s infinite;
+
+    @keyframes coinGlow {
+      from { box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3); }
+      to { box-shadow: 0 4px 16px rgba(241, 196, 15, 0.6); }
     }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+
+    #coinCount {
+      font-weight: 600;
+      color: white;
+      font-size: 1.1rem;
     }
-    
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+
+    /* Enhanced Main Content */
+    .main-center {
+      padding-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: calc(100vh - 200px);
+      max-width: 600px;
+      margin: 0 auto;
+      padding-left: 20px;
+      padding-right: 20px;
+      position: relative;
     }
-    
+
+    h1 {
+      margin-top: 10px;
+      margin-bottom: 8px;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #234d7d;
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -111,134 +153,72 @@
         transform: translateY(0);
       }
     }
-    
-    .song-card {
-      animation: fadeInUp 0.6s ease-out;
-    }
-    
-    .song-card:nth-child(1) { animation-delay: 0.1s; }
-    .song-card:nth-child(2) { animation-delay: 0.2s; }
-    .header .logo img {
-      width: 200px;
-      height: auto;
-      margin: 0 auto;
-      display: block;
-    }
-    /* Responsive Logo */
-    @media (max-width: 768px) {
-      .header .logo img {
-        width: 60%;
-        padding: 0px;
-      }
-      .header{
-        height: 35px;
-      }
-    }
 
-    @media (max-width: 700px) {
-      .container {
-        margin: 8px auto;
-        padding: 12px 8px 8px 8px;
-      }
-      h1 {
-        font-size: 1.4rem;
-        margin-bottom: 6px;
-      }
-      h2 {
-        font-size: 0.85rem !important;
-        margin-bottom: 8px !important;
-      }
-      .scoreboard {
-        font-size: 0.85rem;
-        padding: 4px 10px;
-        margin-bottom: 5px;
-      }
-      .lives {
-        font-size: 1.1rem;
-        margin-bottom: 5px;
-      }
-      .battle-row {
-        gap: 8px;
-        margin: 12px 0 6px 0;
-        flex-wrap: nowrap;
-      }
-      .song-card {
-        padding: 12px 6px 6px 6px;
-        min-width: 100px;
-        max-width: 140px;
-        flex: 1 1 100px;
-      }
-      .song-title {
-        font-size: 0.75rem;
-        margin-bottom: 3px;
-        line-height: 1.1;
-      }
-      .song-artist {
-        font-size: 0.65rem;
-        margin-bottom: 4px;
-        line-height: 1.1;
-      }
-      .streams {
-        font-size: 0.65rem;
-      }
-      .result {
-        font-size: 0.85rem;
-        margin: 6px 0 0 0;
-        min-height: 18px;
-      }
-      .next-btn {
-        margin-top: 6px;
-        padding: 5px 14px;
-        font-size: 0.85rem;
-      }
-    }
-    .container { display: none; }
-    h1, h2 { color: #234d7d; }
+    /* Enhanced Scoreboard */
     .scoreboard {
       background: #315f85;
-      color: #fff;
+      color: white;
       display: inline-block;
-      padding: 8px 20px;
+      padding: 12px 24px;
       border-radius: 25px;
-      font-size: 1.2rem;
-      margin-bottom: 8px;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
       font-weight: 600;
-      box-shadow: 0 4px 12px rgba(49, 95, 133, 0.3);
+      box-shadow: 0 8px 25px rgba(49, 95, 133, 0.3);
+      animation: fadeInUp 0.8s ease-out 0.1s both;
     }
+
+    /* Enhanced Lives Display */
     .lives {
-      font-size: 1.7rem;
-      margin-bottom: 8px;
+      font-size: 1.8rem;
+      margin-bottom: 12px;
       color: #e74c3c;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       user-select: none;
-      text-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+      text-shadow: 0 4px 8px rgba(231, 76, 60, 0.4);
+      animation: fadeInUp 0.8s ease-out 0.2s both;
     }
+
+    /* Enhanced Question */
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #234d7d;
+      margin-bottom: 40px;
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+
+    /* Enhanced Battle Row */
     .battle-row {
       display: flex;
+      flex-direction: row;
       justify-content: center;
       align-items: center;
-      gap: 32px;
-      margin: 8px 0 8px 0;
-      flex-wrap: nowrap;
+      gap: 30px;
+      margin: 20px 0;
+      width: 100%;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
     }
+
+    /* Enhanced Song Cards - Choice-based Design */
     .song-card {
-      background: #ffffff;
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      padding: 20px 16px 16px 16px;
-      min-width: 180px;
-      max-width: 260px;
-      flex: 1 1 180px;
+      background: white;
+      border: 3px solid #e0e0e0;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 500px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       color: #234d7d;
-      font-size: 1.15rem;
-      backdrop-filter: blur(10px);
+      font-size: 1.3rem;
+      text-align: center;
       overflow: hidden;
     }
-    
+
     .song-card::before {
       content: '';
       position: absolute;
@@ -246,163 +226,216 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #2ec3ff, #28a7ae);
+      background: linear-gradient(90deg, #3b7bbf, #234d7d);
       transform: scaleX(0);
       transition: transform 0.3s ease;
     }
-    
-    .song-card:hover::before {
-      transform: scaleX(1);
+
+    .song-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border-color: #3b7bbf;
     }
+
     .song-card.selected {
-      border-color: #28a7ae;
-      background: linear-gradient(135deg, #f8fffe 0%, #e7f1f9 100%);
-      box-shadow: 0 8px 24px rgba(40, 167, 174, 0.2);
-      transform: translateY(-2px);
+      border-color: #3b7bbf;
+      background: linear-gradient(135deg, rgba(59, 123, 191, 0.1) 0%, rgba(35, 77, 125, 0.1) 100%);
+      box-shadow: 0 12px 32px rgba(59, 123, 191, 0.2);
+      transform: translateY(-4px);
     }
-    
+
     .song-card.selected::before {
       transform: scaleX(1);
     }
+
     .song-card.correct {
       border-color: #27ae60;
-      background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
-      box-shadow: 0 8px 24px rgba(39, 174, 96, 0.3);
-      transform: translateY(-2px);
+      background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(46, 204, 113, 0.1) 100%);
+      box-shadow: 0 12px 32px rgba(39, 174, 96, 0.3);
+      transform: translateY(-4px);
     }
-    
+
     .song-card.correct::before {
       transform: scaleX(1);
     }
+
     .song-card.incorrect {
       border-color: #e74c3c;
-      background: linear-gradient(135deg, #fdf2f2 0%, #f8d7da 100%);
-      box-shadow: 0 8px 24px rgba(231, 76, 60, 0.2);
-      transform: translateY(-2px);
+      background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(235, 87, 87, 0.1) 100%);
+      box-shadow: 0 12px 32px rgba(231, 76, 60, 0.2);
+      transform: translateY(-4px);
     }
-    .song-card:hover {
-      transform: translateY(-4px) scale(1.02);
-      background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
-      box-shadow: 0 12px 32px rgba(46, 195, 255, 0.15);
-      border-color: #2ec3ff;
-    }
+
     .song-title {
-      font-size: 1rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: #234d7d;
-      margin-bottom: 6px;
-      line-height: 1.2;
+      margin-bottom: 12px;
+      line-height: 1.3;
     }
+
     .song-artist {
-      font-size: 0.9rem;
+      font-size: 1.2rem;
       color: #315f85;
-      margin-bottom: 8px;
-      line-height: 1.2;
+      margin-bottom: 16px;
+      line-height: 1.3;
       font-weight: 500;
     }
+
     .streams {
-      font-size: 0.98rem;
-      color: #888;
-      margin-bottom: 6px;
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 8px;
       display: none;
+      font-weight: 600;
     }
+
     .song-card.reveal .streams {
       display: block;
       font-weight: 700;
-      color: #28a7ae;
-      font-size: 1.1rem;
+      color: #3b7bbf;
+      font-size: 1.3rem;
     }
-    .result {
-      font-size: 1.2rem;
+
+    /* OR Separator */
+    .or-separator {
+      font-size: 1.5rem;
       font-weight: 700;
-      margin: 12px 0 0 0;
-      color: #2ec3ff;
-      min-height: 28px;
+      color: #234d7d;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
     }
+
+    /* Enhanced Result */
+    .result {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 30px 0 0 0;
+      color: #3b7bbf;
+      min-height: 40px;
+      text-align: center;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    /* Enhanced Next Button */
     .next-btn {
-      margin-top: 12px;
-      padding: 12px 32px;
-      background: #28a7ae;
-      color: #fff;
+      margin-top: 20px;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      color: white;
       border: none;
       border-radius: 25px;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: none;
-      box-shadow: 0 4px 12px rgba(40, 167, 174, 0.3);
+      box-shadow: 0 6px 20px rgba(59, 123, 191, 0.3);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
     }
+
+    .next-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .next-btn:hover::before {
+      left: 100%;
+    }
+
     .next-btn:hover {
-      background: #2ec3ff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(40, 167, 174, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(59, 123, 191, 0.4);
     }
+
+    /* Enhanced Game Over Modal */
     .gameover-modal {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 9999;
       display: none;
+      animation: fadeIn 0.3s ease;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .gameover-content {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 40px 32px;
+      background: white;
+      border-radius: 25px;
+      padding: 50px 40px;
       text-align: center;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.2);
-      max-width: 350px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 400px;
       width: 90vw;
       margin: 0 auto;
-      border: 2px solid #28a7ae;
+      border: 2px solid #3b7bbf;
+      animation: slideUp 0.4s ease;
     }
-    @media (max-width: 700px) {
-      .gameover-content {
-        margin: 18px;
-      }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
+
     .gameover-content h2 {
       color: #234d7d;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-    .gameover-content .score {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: #28a7ae;
       margin-bottom: 15px;
+      font-weight: 700;
+      font-size: 1.8rem;
     }
+
+    .gameover-content .score {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #3b7bbf;
+      margin-bottom: 20px;
+    }
+
     .gameover-content .coins {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: #ffcb05;
-      margin-bottom: 18px;
+      margin-bottom: 25px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
     }
+
     .gameover-content .coin-emoji {
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
       background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
       border-radius: 50%;
-      box-shadow:
-        0 1px 0 #cfa300,
-        0 2px 0 #b8860b;
+      box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3);
       display: inline-block;
-      margin-right: 4px;
+      margin-right: 6px;
       position: relative;
     }
+
     .gameover-content .coin-emoji::after {
       content: "";
       position: absolute;
-      top: 1px;
+      top: 2px;
       left: 0;
       width: 100%;
       height: 100%;
@@ -410,95 +443,29 @@
       border-radius: 50%;
       z-index: 1;
     }
+
     .gameover-content button {
-      margin-top: 18px;
-      padding: 12px 32px;
-      background: #28a7ae;
-      color: #fff;
+      margin-top: 25px;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      color: white;
       border: none;
-      border-radius: 25px;
-      font-size: 1.1rem;
+      border-radius: 30px;
+      font-size: 1.2rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 12px rgba(40, 167, 174, 0.3);
+      box-shadow: 0 8px 25px rgba(59, 123, 191, 0.3);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
     }
+
     .gameover-content button:hover {
-      background: #2ec3ff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(40, 167, 174, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(59, 123, 191, 0.4);
     }
-    @media (max-width: 600px) {
-      .battle-row { 
-        gap: 16px; 
-        margin: 6px 0 6px 0;
-      }
-      .song-card { 
-        min-width: 140px; 
-        max-width: 220px;
-        padding: 18px 8px 10px 8px;
-        font-size: 1.1rem;
-      }
-      .song-title {
-        font-size: 0.7rem;
-        margin-bottom: 2px;
-      }
-      .song-artist {
-        font-size: 0.6rem;
-        margin-bottom: 3px;
-      }
-      .streams {
-        font-size: 0.6rem;
-      }
-    }
-    
-    @media (max-width: 400px) {
-      .container {
-        margin: 5px auto;
-        padding: 10px 6px 6px 6px;
-      }
-      h1 {
-        font-size: 1.2rem;
-        margin-bottom: 4px;
-      }
-      h2 {
-        font-size: 0.75rem !important;
-        margin-bottom: 6px !important;
-      }
-      .battle-row {
-        gap: 8px;
-        margin: 4px 0 4px 0;
-      }
-      .song-card {
-        min-width: 110px;
-        max-width: 150px;
-        padding: 12px 4px 6px 4px;
-        font-size: 1rem;
-      }
-      .song-title {
-        font-size: 0.65rem;
-        margin-bottom: 2px;
-      }
-      .song-artist {
-        font-size: 0.55rem;
-        margin-bottom: 2px;
-      }
-      .streams {
-        font-size: 0.55rem;
-      }
-      .result {
-        font-size: 0.75rem;
-        margin: 4px 0 0 0;
-        min-height: 16px;
-      }
-      .next-btn {
-        margin-top: 4px;
-        padding: 4px 12px;
-        font-size: 0.75rem;
-      }
-    }
+
+    /* Enhanced Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -507,10 +474,11 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 8px 0;
+      padding: 12px 0;
       z-index: 999;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
     }
+
     .bottom-nav .nav-item {
       color: white;
       text-align: center;
@@ -519,141 +487,160 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-weight: 500;
     }
+
     .bottom-nav .nav-item i,
     .bottom-nav .nav-item img {
       display: block;
-      font-size: 20px;
-      width: 24px;
-      height: 24px;
+      font-size: 22px;
+      width: 26px;
+      height: 26px;
       object-fit: contain;
+      transition: all 0.3s ease;
     }
+
     .bottom-nav .nav-item:hover {
       color: #ffcb05;
+      background: rgba(255, 203, 5, 0.1);
+      transform: translateY(-2px);
     }
-    .bottom-nav .coin-emoji {
-      width: 18px;
-      height: 18px;
-      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
-      border-radius: 50%;
-      box-shadow:
-        0 1px 0 #cfa300,
-        0 2px 0 #b8860b;
-      display: inline-block;
-      margin-right: 4px;
-      position: relative;
-    }
-    .bottom-nav .coin-emoji::after {
-      content: "";
-      position: absolute;
-      top: 1px;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
-      border-radius: 50%;
-      z-index: 1;
-    }
-    .bottom-nav .coin-total {
+
+    .bottom-nav .nav-item.highlight {
       color: #ffcb05;
-      font-weight: bold;
-      font-size: 15px;
-      margin-left: 2px;
+      background: rgba(255, 203, 5, 0.1);
     }
-    .coin-emoji {
-      width: 18px;
-      height: 18px;
-      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
-      border-radius: 50%;
-      box-shadow:
-        0 1px 0 #cfa300,
-        0 2px 0 #b8860b;
-      display: inline-block;
-      margin-right: 4px;
-      position: relative;
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-center {
+        padding-top: 20px;
+        padding-left: 15px;
+        padding-right: 15px;
+        min-height: calc(100vh - 180px);
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .battle-row {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .or-separator {
+        min-width: auto;
+        margin: 10px 0;
+      }
+
+      .song-card {
+        padding: 25px 15px;
+        font-size: 1.1rem;
+      }
+
+      .song-title {
+        font-size: 1.2rem;
+      }
+
+      .song-artist {
+        font-size: 1rem;
+      }
+
+      .next-btn {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+      }
+
+      .gameover-content {
+        padding: 40px 30px;
+      }
     }
-    .coin-emoji::after {
-      content: "";
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .song-card {
+        padding: 25px 15px;
+        font-size: 1.1rem;
+      }
+
+      .song-title {
+        font-size: 1.2rem;
+      }
+
+      .song-artist {
+        font-size: 1rem;
+      }
+
+      .next-btn {
+        padding: 14px 35px;
+        font-size: 1.1rem;
+      }
+
+      .scoreboard {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+      }
+
+      .lives {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Floating Animation for Cards */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .song-card:nth-child(odd) {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .song-card:nth-child(even) {
+      animation: float 6s ease-in-out infinite reverse;
+    }
+
+    /* Music Icon Animation */
+    .music-icon {
       position: absolute;
-      top: 1px;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
-      border-radius: 50%;
-      z-index: 1;
+      top: 20px;
+      right: 20px;
+      color: #3b7bbf;
+      font-size: 2rem;
+      animation: pulse 2s infinite;
     }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Coin gain animation styles */
+    .hidden {
+      display: none;
+    }
+
     .coin-gain {
       color: #ffcb05;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 0.9rem;
+      margin-left: 5px;
       opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    .coin-gain.animate {
-      opacity: 1;
-    }
-    .coin-gain.hidden {
-      display: none;
-    }
-    .bottom-spacer { display: none; }
-    
-    @media (max-width: 700px) {
-      .bottom-spacer {
-        height: 50px;
-        margin-top: 15px;
-      }
-    }
-    
-    @media (max-width: 400px) {
-      .bottom-spacer {
-        height: 40px;
-        margin-top: 10px;
-      }
-    }
-    .welcome-nav {
-      position: relative;
-    }
-    .dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #1e2b38;
-      border-radius: 8px;
-      padding: 8px 0;
-      min-width: 150px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      z-index: 1000;
-      display: none;
-    }
-    .dropdown.show {
-      display: block;
-    }
-    .dropdown a {
-      display: block;
-      padding: 8px 16px;
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .dropdown a:hover {
-      background: #2c3e50;
-    }
-    .main-center {
-      padding-top: 48px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: calc(100vh - 120px);
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
     }
 
-   
-    h1 {
-      margin-top: 10px;
-      margin-bottom: 8px;
-      font-size: 2.1rem;
-      color: #234d7d;
+    .coin-gain.animate {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
@@ -664,19 +651,20 @@
         <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
       </a>
     </div>
-    <div style="position: absolute; top: 20px; right: 20px; color: #2ec3ff; font-size: 2rem;">
-      <i class="fas fa-music" style="animation: pulse 2s infinite;"></i>
+    <div class="music-icon">
+      <i class="fas fa-music"></i>
     </div>
   </header>
+
   <nav style="display: flex; align-items: center; justify-content: space-between; background: #1e2b38; min-height: 48px;">
     <div style="display: flex; align-items: center; gap: 20px;">
       <div class="welcome-nav" style="position: relative;">
-        <div id="welcomeMessage" class="welcome-msg" style="cursor:pointer; font-weight:bold; color:#ffcb05;" onclick="toggleDropdown()">Welcome</div>
+        <div id="welcomeMessage" class="welcome-msg" onclick="toggleDropdown()">Welcome</div>
         <div id="dropdownMenu" class="dropdown"></div>
       </div>
       <div id="coinWrapper" style="display: flex; align-items: center; gap: 6px;">
         <div class="coin-emoji"></div>
-        <span id="coinCount" style="font-weight: bold; color: #fff;">0</span>
+        <span id="coinCount">0</span>
         <span id="coinGain" class="coin-gain hidden">+1</span>
       </div>
     </div>
@@ -684,16 +672,18 @@
       <i class="fas fa-bars"></i>
     </div>
   </nav>
+
   <div class="main-center">
-    <h1>Banger Battle</h1>
+    <h1>🎵 Banger Battle</h1>
     <div class="scoreboard" id="scoreboard">Score: 0</div>
     <div class="lives" id="lives"></div>
-    <h2 style="font-size: 1.1rem; font-weight: 500; color: #2ec3ff; margin-bottom: 20px; text-align: center;">
-      <i class="fas fa-play-circle" style="margin-right: 8px;"></i>
+    <h2>
+      <i class="fas fa-play-circle" style="margin-right: 10px;"></i>
       Which song has more Spotify streams?
     </h2>
     <div class="battle-row">
       <div class="song-card" id="songA"></div>
+      <div class="or-separator">OR</div>
       <div class="song-card" id="songB"></div>
     </div>
     <div class="result" id="result"></div>
@@ -701,32 +691,33 @@
   </div>
   
   <div class="bottom-nav">
-    <a href="/index.html" class="nav-item">
+    <a href="/profile.html" class="nav-item">
       <i class="fas fa-user"></i>
       <span>Profile</span>
     </a>
-    <a href="/games.html" class="nav-item highlight">
-      <img src="/images/gamesicon.png" alt="Games Icon" style="width: 24px; height: 24px;">
+    <a href="/games.html" class="nav-item">
+      <img src="/images/gamesicon.png" alt="Games Icon" style="width: 26px; height: 26px;">
       <span>Games</span>
     </a>
     <a href="/memory-leaderboard.html" class="nav-item">
       <i class="fas fa-trophy"></i>
       <span>Leaderboards</span>
     </a>
-    <a href="/rewards.html" class="nav-item highlight">
-      <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 24px; height: 24px;">
+    <a href="/rewards.html" class="nav-item">
+      <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 26px; height: 26px;">
       <span>Rewards</span>
     </a>
-    
   </div>
+
   <div class="gameover-modal" id="gameoverModal">
     <div class="gameover-content">
-      <h2>Game Over</h2>
+      <h2>🎉 Game Over!</h2>
       <div class="score" id="finalScore"></div>
       <div class="coins" id="coinsAwarded"></div>
       <button onclick="window.location.reload()">Play Again</button>
     </div>
   </div>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
@@ -745,6 +736,7 @@
     const db = getFirestore(app);
     let currentUser = null;
     let userCoins = 0;
+
     onAuthStateChanged(auth, async user => {
       currentUser = user;
       if (user) {
@@ -757,13 +749,11 @@
           document.getElementById("welcomeMessage").textContent = `Welcome, ${username}`;
           document.getElementById("coinCount").textContent = userCoins;
           
-          // Populate dropdown menu for logged in user
           document.getElementById("dropdownMenu").innerHTML = `
             <a href="/profile.html">Edit Profile</a>
             <a href="#" id="logoutBtn">Log Out</a>
           `;
           
-          // Add logout functionality
           setTimeout(() => {
             const logoutBtn = document.getElementById("logoutBtn");
             if (logoutBtn) {
@@ -783,7 +773,6 @@
         document.getElementById("welcomeMessage").textContent = "Welcome, Anonymous";
         document.getElementById("coinCount").textContent = "0";
         
-        // Populate dropdown menu for guest user
         document.getElementById("dropdownMenu").innerHTML = `
           <a href="/signup.html">Create Profile</a>
           <a href="/login.html">Log In</a>
@@ -799,1303 +788,31 @@
       }
     }
 
+    // Songs array with title, artist, and Spotify streams
     const songs = [
-      { title: "Blinding Lights", artist: "The Weeknd", streams: 4907388050 },
-      { title: "Shape of You", artist: "Ed Sheeran", streams: 4432988344 },
-      { title: "Starboy", artist: "The Weeknd", streams: 3967502991 },
-      { title: "Someone You Loved", artist: "Lewis Capaldi", streams: 3956091614 },
-      { title: "As It Was", artist: "Harry Styles", streams: 3947172949 },
-      { title: "Sunflower", artist: "Post Malone", streams: 3867725975 },
-      { title: "Sweater Weather", artist: "The Neighbourhood", streams: 3865254483 },
-      { title: "One Dance", artist: "Drake", streams: 3689708149 },
-      { title: "STAY", artist: "The Kid LAROI", streams: 3589377786 },
-      { title: "Perfect", artist: "Ed Sheeran", streams: 3503206112 },
-      { title: "Believer", artist: "Imagine Dragons", streams: 3486780456 },
-      { title: "Heat Waves", artist: "Glass Animals", streams: 3442128349 },
-      { title: "lovely", artist: "Billie Eilish", streams: 3369287538 },
-      { title: "Closer", artist: "The Chainsmokers", streams: 3320057409 },
-      { title: "Say You Won't Let Go", artist: "James Arthur", streams: 3308577744 },
-      { title: "Dance Monkey", artist: "Tones And I", streams: 3282840982 },
-      { title: "Something Just Like This", artist: "The Chainsmokers", streams: 3221917252 },
-      { title: "rockstar", artist: "Post Malone", streams: 3202193163 },
-      { title: "Riptide", artist: "Vance Joy", streams: 3169105911 },
-      { title: "I Wanna Be Yours", artist: "Arctic Monkeys", streams: 3136166406 },
-      { title: "Yellow", artist: "Coldplay", streams: 3111214596 },
-      { title: "Another Love", artist: "Tom Odell", streams: 3094095726 },
-      { title: "The Night We Met", artist: "Lord Huron", streams: 3090567428 },
-      { title: "Take Me to Church", artist: "Hozier", streams: 3088840386 },
-      { title: "Señorita", artist: "Shawn Mendes", streams: 3044156193 },
-      { title: "Watermelon Sugar", artist: "Harry Styles", streams: 3042984501 },
-      { title: "Counting Stars", artist: "OneRepublic", streams: 3029992970 },
-      { title: "Photograph", artist: "Ed Sheeran", streams: 2995606717 },
-      { title: "Don't Start Now", artist: "Dua Lipa", streams: 2967397826 },
-      { title: "Cruel Summer", artist: "Taylor Swift", streams: 2958191664 },
-      { title: "Can't Hold Us", artist: "Macklemore", streams: 2941496658 },
-      { title: "Lucid Dreams", artist: "Juice WRLD", streams: 2915999849 },
-      { title: "goosebumps", artist: "Travis Scott", streams: 2868647722 },
-      { title: "Circles", artist: "Post Malone", streams: 2867220191 },
-      { title: "Die For You", artist: "The Weeknd", streams: 2845443297 },
-      { title: "Bohemian Rhapsody", artist: "Queen", streams: 2838734283 },
-      { title: "Viva La Vida", artist: "Coldplay", streams: 2832397368 },
-      { title: "Thinking out Loud", artist: "Ed Sheeran", streams: 2817231590 },
-      { title: "Love Yourself", artist: "Justin Bieber", streams: 2812345916 },
-      { title: "Shallow", artist: "Lady Gaga", streams: 2810452998 },
-      { title: "God's Plan", artist: "Drake", streams: 2806475996 },
-      { title: "Just the Way You Are", artist: "Bruno Mars", streams: 2804177872 },
-      { title: "All Of Me", artist: "John Legend", streams: 2771817121 },
-      { title: "Wake Me Up", artist: "Avicii", streams: 2768458756 },
-      { title: "Thunder", artist: "Imagine Dragons", streams: 2754848461 },
-      { title: "bad guy", artist: "Billie Eilish", streams: 2753011617 },
-      { title: "BIRDS OF A FEATHER", artist: "Billie Eilish", streams: 2751137111 },
-      { title: "Every Breath You Take", artist: "The Police", streams: 2743246235 },
-      { title: "Demons", artist: "Imagine Dragons", streams: 2720500900 },
-      { title: "Locked Out of Heaven", artist: "Bruno Mars", streams: 2707792266 },
-      { title: "Stressed Out", artist: "Twenty One Pilots", streams: 2701326849 },
-      { title: "The Hills", artist: "The Weeknd", streams: 2701237737 },
-      { title: "When I Was Your Man", artist: "Bruno Mars", streams: 2690569671 },
-      { title: "Die With A Smile", artist: "Lady Gaga", streams: 2685043827 },
-      { title: "Without Me", artist: "Eminem", streams: 2684686219 },
-      { title: "Mr. Brightside", artist: "The Killers", streams: 2682713600 },
-      { title: "That's What I Like", artist: "Bruno Mars", streams: 2681344302 },
-      { title: "HUMBLE.", artist: "Kendrick Lamar", streams: 2676517225 },
-      { title: "In the End", artist: "Linkin Park", streams: 2644169593 },
-      { title: "Do I Wanna Know?", artist: "Arctic Monkeys", streams: 2630300556 },
-      { title: "No Role Modelz", artist: "J. Cole", streams: 2622430709 },
-      { title: "Lose Yourself", artist: "Eminem", streams: 2598571095 },
-      { title: "Let Her Go", artist: "Passenger", streams: 2593665073 },
-      { title: "Flowers", artist: "Miley Cyrus", streams: 2581111667 },
-      { title: "Unforgettable", artist: "French Montana", streams: 2560915154 },
-      { title: "7 rings", artist: "Ariana Grande", streams: 2559089327 },
-      { title: "Let Me Love You", artist: "DJ Snake", streams: 2558751674 },
-      { title: "drivers license", artist: "Olivia Rodrigo", streams: 2537986519 },
-      { title: "Treat You Better", artist: "Shawn Mendes", streams: 2534434565 },
-      { title: "Kill Bill", artist: "SZA", streams: 2530259885 },
-      { title: "Iris", artist: "The Goo Goo Dolls", streams: 2488326596 },
-      { title: "One Kiss", artist: "Calvin Harris", streams: 2483333393 },
-      { title: "Sorry", artist: "Justin Bieber", streams: 2478186768 },
-      { title: "Don't Stop Believin'", artist: "Journey", streams: 2475797646 },
-      { title: "Smells Like Teen Spirit", artist: "Nirvana", streams: 2467554506 },
-      { title: "There's Nothing Holdin' Me Back", artist: "Shawn Mendes", streams: 2459047866 },
-      { title: "See You Again", artist: "Tyler, The Creator", streams: 2455845324 },
-      { title: "good 4 u", artist: "Olivia Rodrigo", streams: 2455570196 },
-      { title: "All The Stars", artist: "Kendrick Lamar", streams: 2438898635 },
-      { title: "Happier", artist: "Marshmello", streams: 2427523529 },
-      { title: "Seven", artist: "Jung Kook", streams: 2427295969 },
-      { title: "Cold Heart", artist: "Elton John", streams: 2420957875 },
-      { title: "The Scientist", artist: "Coldplay", streams: 2413798761 },
-      { title: "SAD!", artist: "XXXTENTACION", streams: 2401004648 },
-      { title: "SICKO MODE", artist: "Travis Scott", streams: 2399087974 },
-      { title: "Save Your Tears", artist: "The Weeknd", streams: 2394651928 },
-      { title: "Lean On", artist: "Major Lazer", streams: 2393299291 },
-      { title: "Jocelyn Flores", artist: "XXXTENTACION", streams: 2386590233 },
-      { title: "Wonderwall", artist: "Oasis", streams: 2386038056 },
-      { title: "Take on Me", artist: "a-ha", streams: 2381774526 },
-      { title: "Uptown Funk", artist: "Mark Ronson", streams: 2365039222 },
-      { title: "Don't Stop Me Now", artist: "Queen", streams: 2363131394 },
-      { title: "XO Tour Llif3", artist: "Lil Uzi Vert", streams: 2363075603 },
-      { title: "Espresso", artist: "Sabrina Carpenter", streams: 2359311059 },
-      { title: "Levitating", artist: "Dua Lipa", streams: 2356681719 },
-      { title: "New Rules", artist: "Dua Lipa", streams: 2350287184 },
-      { title: "Someone Like You", artist: "Adele", streams: 2334288098 },
-      { title: "Too Good At Goodbyes", artist: "Sam Smith", streams: 2329639591 },
-      { title: "Stay With Me", artist: "Sam Smith", streams: 2320559051 },
-      { title: "Havana", artist: "Camila Cabello", streams: 2310517006 },
-      { title: "Sweet Child O' Mine", artist: "Guns N' Roses", streams: 2309726448 },
-      { title: "Numb", artist: "Linkin Park", streams: 2308701141 },
-      { title: "505", artist: "Arctic Monkeys", streams: 2304288121 },
-      { title: "Memories", artist: "Maroon 5", streams: 2291643375 },
-      { title: "Without Me", artist: "Halsey", streams: 2284537148 },
-      { title: "Payphone", artist: "Maroon 5", streams: 2272756286 },
-      { title: "Beautiful Things", artist: "Benson Boone", streams: 2261528667 },
-      { title: "Till I Collapse", artist: "Eminem", streams: 2261093194 },
-      { title: "DÁKITI", artist: "Bad Bunny", streams: 2242678084 },
-      { title: "We Don't Talk Anymore", artist: "Charlie Puth", streams: 2237225700 },
-      { title: "Creep", artist: "Radiohead", streams: 2234242712 },
-      { title: "Clean Baby Sleep White Noise (Loopable)", artist: "Dream Supplier", streams: 2233121135 },
-      { title: "7 Years", artist: "Lukas Graham", streams: 2227392421 },
-      { title: "Before You Go", artist: "Lewis Capaldi", streams: 2222865736 },
-      { title: "when the party's over", artist: "Billie Eilish", streams: 2219471970 },
-      { title: "Stitches", artist: "Shawn Mendes", streams: 2218613727 },
-      { title: "Africa", artist: "TOTO", streams: 2210029738 },
-      { title: "I'm Not The Only One", artist: "Sam Smith", streams: 2209692731 },
-      { title: "Night Changes", artist: "One Direction", streams: 2207510756 },
-      { title: "Pumped Up Kicks", artist: "Foster The People", streams: 2205962077 },
-      { title: "Billie Jean", artist: "Michael Jackson", streams: 2201380913 },
-      { title: "The Real Slim Shady", artist: "Eminem", streams: 2200909776 },
-      { title: "Another One Bites The Dust", artist: "Queen", streams: 2196858818 },
-      { title: "Faded", artist: "Alan Walker", streams: 2196081204 },
-      { title: "I Took A Pill In Ibiza", artist: "Mike Posner", streams: 2193498075 },
-      { title: "Easy On Me", artist: "Adele", streams: 2185852503 },
-      { title: "The Box", artist: "Roddy Ricch", streams: 2184572698 },
-      { title: "INDUSTRY BABY", artist: "Lil Nas X", streams: 2184369329 },
-      { title: "All I Want for Christmas Is You", artist: "Mariah Carey", streams: 2178460300 },
-      { title: "Congratulations", artist: "Post Malone", streams: 2178190745 },
-      { title: "La Bachata", artist: "Manuel Turizo", streams: 2177318263 },
-      { title: "I'm Yours", artist: "Jason Mraz", streams: 2171064229 },
-      { title: "See You Again", artist: "Wiz Khalifa", streams: 2158934709 },
-      { title: "Dreams", artist: "Fleetwood Mac", streams: 2158659343 },
-      { title: "Rolling in the Deep", artist: "Adele", streams: 2154805055 },
-      { title: "Moonlight", artist: "XXXTENTACION", streams: 2148496783 },
-      { title: "Mockingbird", artist: "Eminem", streams: 2145577076 },
-      { title: "Kiss Me More", artist: "Doja Cat", streams: 2142962440 },
-      { title: "Don't Let Me Down", artist: "The Chainsmokers", streams: 2140878628 },
-      { title: "Gangsta's Paradise", artist: "Coolio", streams: 2139172096 },
-      { title: "Somebody That I Used To Know", artist: "Gotye", streams: 2136973235 },
-      { title: "The Nights", artist: "Avicii", streams: 2134761055 },
-      { title: "Call Out My Name", artist: "The Weeknd", streams: 2133231404 },
-      { title: "I'm Good (Blue)", artist: "David Guetta", streams: 2127109906 },
-      { title: "Everybody Wants To Rule The World", artist: "Tears For Fears", streams: 2127106697 },
-      { title: "Blank Space", artist: "Taylor Swift", streams: 2124938043 },
-      { title: "LA CANCIÓN", artist: "J Balvin", streams: 2120937003 },
-      { title: "Better Now", artist: "Post Malone", streams: 2117881479 },
-      { title: "Radioactive", artist: "Imagine Dragons", streams: 2117731053 },
-      { title: "We Found Love", artist: "Calvin Harris", streams: 2114435670 },
-      { title: "Shut Up and Dance", artist: "WALK THE MOON", streams: 2105571560 },
-      { title: "Danza Kuduro", artist: "Don Omar", streams: 2104899103 },
-      { title: "Hips Don't Lie", artist: "Shakira", streams: 2098350021 },
-      { title: "Sugar", artist: "Maroon 5", streams: 2097304402 },
-      { title: "Maps", artist: "Maroon 5", streams: 2090891841 },
-      { title: "Dynamite", artist: "BTS", streams: 2085502311 },
-      { title: "Attention", artist: "Charlie Puth", streams: 2084033909 },
-      { title: "Why'd You Only Call Me When You're High?", artist: "Arctic Monkeys", streams: 2082712124 },
-      { title: "Me Porto Bonito", artist: "Bad Bunny", streams: 2079130597 },
-      { title: "Roses (Imanbek Remix)", artist: "SAINt JHN", streams: 2077848345 },
-      { title: "Me Rehúso", artist: "Danny Ocean", streams: 2074341051 },
-      { title: "I Like Me Better", artist: "Lauv", streams: 2073450716 },
-      { title: "Somewhere Only We Know", artist: "Keane", streams: 2071653136 },
-      { title: "MONTERO (Call Me By Your Name)", artist: "Lil Nas X", streams: 2071230116 },
-      { title: "Heather", artist: "Conan Gray", streams: 2064968374 },
-      { title: "Mood", artist: "24kGoldn", streams: 2064237899 },
-      { title: "thank u, next", artist: "Ariana Grande", streams: 2057238679 },
-      { title: "HIGHEST IN THE ROOM", artist: "Travis Scott", streams: 2048567113 },
-      { title: "Have You Ever Seen The Rain", artist: "Creedence Clearwater Revival", streams: 2045265365 },
-      { title: "Dandelions", artist: "Ruth B.", streams: 2034549675 },
-      { title: "This Is What You Came For", artist: "Calvin Harris", streams: 2032998595 },
-      { title: "Set Fire to the Rain", artist: "Adele", streams: 2032384261 },
-      { title: "I Ain't Worried", artist: "OneRepublic", streams: 2032376999 },
-      { title: "Heathens", artist: "Twenty One Pilots", streams: 2030114340 },
-      { title: "Chandelier", artist: "Sia", streams: 2028755097 },
-      { title: "September", artist: "Earth, Wind & Fire", streams: 2026092210 },
-      { title: "The Less I Know The Better", artist: "Tame Impala", streams: 2021533640 },
-      { title: "Ride", artist: "Twenty One Pilots", streams: 2020092280 },
-      { title: "A Sky Full of Stars", artist: "Coldplay", streams: 2015012144 },
-      { title: "I Don't Care", artist: "Ed Sheeran", streams: 2012039982 },
-      { title: "Let Me Down Slowly", artist: "Alec Benjamin", streams: 2011822781 },
-      { title: "Dusk Till Dawn", artist: "ZAYN", streams: 2003692278 },
-      { title: "Youngblood", artist: "5 Seconds of Summer", streams: 1998689697 },
-      { title: "Be Alright", artist: "Dean Lewis", streams: 1994298673 },
-      { title: "I Feel It Coming", artist: "The Weeknd", streams: 1992451319 },
-      { title: "a thousand years", artist: "Christina Perri", streams: 1985058668 },
-      { title: "Cheap Thrills", artist: "Sia", streams: 1982920033 },
-      { title: "I Love You So", artist: "The Walters", streams: 1981825329 },
-      { title: "Highway to Hell", artist: "AC/DC", streams: 1977407108 },
-      { title: "traitor", artist: "Olivia Rodrigo", streams: 1974826978 },
-      { title: "Can't Feel My Face", artist: "The Weeknd", streams: 1974179273 },
-      { title: "Titanium", artist: "David Guetta", streams: 1972378875 },
-      { title: "deja vu", artist: "Olivia Rodrigo", streams: 1971465424 },
-      { title: "Ghost", artist: "Justin Bieber", streams: 1971280114 },
-      { title: "Cheerleader (Felix Jaehn Remix)", artist: "OMI", streams: 1966998245 },
-      { title: "Seven Nation Army", artist: "The White Stripes", streams: 1966391039 },
-      { title: "Fuck Love", artist: "XXXTENTACION", streams: 1964367137 },
-      { title: "Bad Habits", artist: "Ed Sheeran", streams: 1964331304 },
-      { title: "Eastside", artist: "benny blanco", streams: 1964212771 },
-      { title: "Livin' On A Prayer", artist: "Bon Jovi", streams: 1959710903 },
-      { title: "One Of The Girls", artist: "The Weeknd", streams: 1958324682 },
-      { title: "Despacito", artist: "Luis Fonsi", streams: 1954583962 },
-      { title: "All Girls Are The Same", artist: "Juice WRLD", streams: 1951227921 },
-      { title: "Summertime Sadness", artist: "Lana Del Rey", streams: 1935422624 },
-      { title: "Money Trees", artist: "Kendrick Lamar", streams: 1929332996 },
-      { title: "Beggin'", artist: "Måneskin", streams: 1928869310 },
-      { title: "Quevedo: Bzrp Music Sessions, Vol. 52", artist: "Bizarrap", streams: 1927376505 },
-      { title: "CAN'T STOP THE FEELING! (from DreamWorks Animation's \"TROLLS\")", artist: "Justin Timberlake", streams: 1924835197 },
-      { title: "Apocalypse", artist: "Cigarettes After Sex", streams: 1924140727 },
-      { title: "Earned It (Fifty Shades Of Grey)", artist: "The Weeknd", streams: 1924043850 },
-      { title: "Hotel California", artist: "Eagles", streams: 1920488192 },
-      { title: "I Don't Wanna Live Forever (Fifty Shades Darker)", artist: "ZAYN", streams: 1919964497 },
-      { title: "Under Pressure", artist: "Queen", streams: 1917439498 },
-      { title: "Party In The U.S.A.", artist: "Miley Cyrus", streams: 1917320969 },
-      { title: "Woman", artist: "Doja Cat", streams: 1916910124 },
-      { title: "everything i wanted", artist: "Billie Eilish", streams: 1903411547 },
-      { title: "Umbrella", artist: "Rihanna", streams: 1902935414 },
-      { title: "Passionfruit", artist: "Drake", streams: 1902509086 },
-      { title: "Mask Off", artist: "Future", streams: 1892973507 },
-      { title: "Back In Black", artist: "AC/DC", streams: 1892169856 },
-      { title: "Adore You", artist: "Harry Styles", streams: 1887504891 },
-      { title: "Save Your Tears (Remix)", artist: "The Weeknd", streams: 1885979910 },
-      { title: "Love The Way You Lie", artist: "Eminem", streams: 1883758444 },
-      { title: "Thunderstruck", artist: "AC/DC", streams: 1883146786 },
-      { title: "Last Christmas", artist: "Wham!", streams: 1882474195 },
-      { title: "Lose Control", artist: "Teddy Swims", streams: 1879346037 },
-      { title: "Sweet but Psycho", artist: "Ava Max", streams: 1879017546 },
-      { title: "Hey, Soul Sister", artist: "Train", streams: 1876797451 },
-      { title: "Clean Baby Sleep White Noise (Loopable)", artist: "Dream Supplier", streams: 1873931846 },
-      { title: "Timber", artist: "Pitbull", streams: 1866339295 },
-      { title: "Shivers", artist: "Ed Sheeran", streams: 1865932891 },
-      { title: "death bed (coffee for your head)", artist: "Powfu", streams: 1864986938 },
-      { title: "Feel Good Inc.", artist: "Gorillaz", streams: 1863623900 },
-      { title: "greedy", artist: "Tate McRae", streams: 1858123695 },
-      { title: "Anti-Hero", artist: "Taylor Swift", streams: 1857629826 },
-      { title: "Pink + White", artist: "Frank Ocean", streams: 1854393202 },
-      { title: "What Do You Mean?", artist: "Justin Bieber", streams: 1851607125 },
-      { title: "In Da Club", artist: "50 Cent", streams: 1843073186 },
-      { title: "Cake By The Ocean", artist: "DNCE", streams: 1842870905 },
-      { title: "Love On The Brain", artist: "Rihanna", streams: 1841732548 },
-      { title: "Daddy Issues", artist: "The Neighbourhood", streams: 1841560262 },
-      { title: "Summer", artist: "Calvin Harris", streams: 1840701927 },
-      { title: "Rude", artist: "MAGIC!", streams: 1839758571 },
-      { title: "Moves Like Jagger", artist: "Maroon 5", streams: 1836333897 },
-      { title: "Pompeii", artist: "Bastille", streams: 1835056407 },
-      { title: "Sex on Fire", artist: "Kings of Leon", streams: 1830201592 },
-      { title: "ocean eyes", artist: "Billie Eilish", streams: 1829780788 },
-      { title: "Redbone", artist: "Childish Gambino", streams: 1828505688 },
-      { title: "Sign of the Times", artist: "Harry Styles", streams: 1827840807 },
-      { title: "Fix You", artist: "Coldplay", streams: 1822909448 },
-      { title: "Wow.", artist: "Post Malone", streams: 1822790493 },
-      { title: "Everybody Dies In Their Nightmares", artist: "XXXTENTACION", streams: 1818953126 },
-      { title: "Despacito", artist: "Luis Fonsi", streams: 1811837225 },
-      { title: "Ric Flair Drip", artist: "Offset", streams: 1810042194 },
-      { title: "Enemy", artist: "Imagine Dragons", streams: 1807796183 },
-      { title: "Silence", artist: "Marshmello", streams: 1804530665 },
-      { title: "Best Part", artist: "Daniel Caesar", streams: 1803689916 },
-      { title: "I Want It That Way", artist: "Backstreet Boys", streams: 1799269563 },
-      { title: "Who", artist: "Jimin", streams: 1798127722 },
-      { title: "One Last Time", artist: "Ariana Grande", streams: 1795714410 },
-      { title: "APT.", artist: "ROSÉ", streams: 1792801489 },
-      { title: "Lover", artist: "Taylor Swift", streams: 1792589897 },
-      { title: "Halo", artist: "Beyoncé", streams: 1792268325 },
-      { title: "Unholy", artist: "Sam Smith", streams: 1791261157 },
-      { title: "Sure Thing", artist: "Miguel", streams: 1790274304 },
-      { title: "Peaches", artist: "Justin Bieber", streams: 1788204647 },
-      { title: "Cake By The Ocean", artist: "MUSIC LAB JPN", streams: 1786988123 },
-      { title: "I Gotta Feeling", artist: "Black Eyed Peas", streams: 1786572863 },
-      { title: "High Hopes", artist: "Panic! At The Disco", streams: 1784242636 },
-      { title: "Talking to the Moon", artist: "Bruno Mars", streams: 1780905290 },
-      { title: "Falling", artist: "Trevor Daniel", streams: 1776840985 },
-      { title: "Hall of Fame", artist: "The Script", streams: 1773154550 },
-      { title: "you broke me first", artist: "Tate McRae", streams: 1766359834 },
-      { title: "Ransom", artist: "Lil Tecca", streams: 1765474268 },
-      { title: "Poker Face", artist: "Lady Gaga", streams: 1760255208 },
-      { title: "Tití Me Preguntó", artist: "Bad Bunny", streams: 1759403852 },
-      { title: "Young Dumb & Broke", artist: "Khalid", streams: 1758579013 },
-      { title: "She Will Be Loved", artist: "Maroon 5", streams: 1758296835 },
-      { title: "Girls Like You", artist: "Maroon 5", streams: 1757492551 },
-      { title: "Revenge", artist: "XXXTENTACION", streams: 1755885583 },
-      { title: "I Like It", artist: "Cardi B", streams: 1747574412 },
-      { title: "Stolen Dance", artist: "Milky Chance", streams: 1745994150 },
-      { title: "I Fall Apart", artist: "Post Malone", streams: 1745359657 },
-      { title: "IDGAF", artist: "Dua Lipa", streams: 1744557422 },
-      { title: "Enter Sandman", artist: "Metallica", streams: 1744496702 },
-      { title: "Hope", artist: "XXXTENTACION", streams: 1744274266 },
-      { title: "Dark Horse", artist: "Katy Perry", streams: 1738839383 },
-      { title: "Godzilla", artist: "Eminem", streams: 1737713134 },
-      { title: "Dark Red", artist: "Steve Lacy", streams: 1736410575 },
-      { title: "Call Me Maybe", artist: "Carly Rae Jepsen", streams: 1732516655 },
-      { title: "ROCKSTAR", artist: "DaBaby", streams: 1731484487 },
-      { title: "Needed Me", artist: "Rihanna", streams: 1729878994 },
-      { title: "Hymn for the Weekend", artist: "Coldplay", streams: 1723365289 },
-      { title: "BUTTERFLY EFFECT", artist: "Travis Scott", streams: 1722734396 },
-      { title: "Chop Suey!", artist: "System Of A Down", streams: 1719878512 },
-      { title: "Cold Water", artist: "Major Lazer", streams: 1718863519 },
-      { title: "Lush Life", artist: "Zara Larsson", streams: 1717146556 },
-      { title: "Californication", artist: "Red Hot Chili Peppers", streams: 1714164706 },
-      { title: "Yeah!", artist: "USHER", streams: 1713165976 },
-      { title: "Rockabye", artist: "Clean Bandit", streams: 1711881969 },
-      { title: "Taki Taki", artist: "DJ Snake", streams: 1711116474 },
-      { title: "2002", artist: "Anne-Marie", streams: 1711027608 },
-      { title: "Hello", artist: "Adele", streams: 1706376388 },
-      { title: "Symphony", artist: "Clean Bandit", streams: 1705143434 },
-      { title: "Sweet Dreams (Are Made of This)", artist: "Eurythmics", streams: 1702993174 },
-      { title: "Diamonds", artist: "Rihanna", streams: 1701337688 },
-      { title: "Ojitos Lindos", artist: "Bad Bunny", streams: 1700339392 },
-      { title: "Fortunate Son", artist: "Creedence Clearwater Revival", streams: 1699505913 },
-      { title: "Losing My Religion", artist: "R.E.M.", streams: 1697989134 },
-      { title: "Heartless", artist: "Kanye West", streams: 1696163111 },
-      { title: "Dancing Queen", artist: "ABBA", streams: 1695994099 },
-      { title: "Young And Beautiful", artist: "Lana Del Rey", streams: 1693176674 },
-      { title: "Clean White Noise", artist: "White Noise Baby Sleep", streams: 1692522790 },
-      { title: "24K Magic", artist: "Bruno Mars", streams: 1692110842 },
-      { title: "Still D.R.E.", artist: "Dr. Dre", streams: 1687961289 },
-      { title: "Calm Down", artist: "Rema", streams: 1687892176 },
-      { title: "Gata Only", artist: "FloyyMenor", streams: 1684632502 },
-      { title: "Story of My Life", artist: "One Direction", streams: 1684578031 },
-      { title: "Drip Too Hard", artist: "Lil Baby", streams: 1683868663 },
-      { title: "Love Me Like You Do", artist: "Ellie Goulding", streams: 1682348581 },
-      { title: "Under the Bridge", artist: "Red Hot Chili Peppers", streams: 1681605676 },
-      { title: "cardigan", artist: "Taylor Swift", streams: 1680249063 },
-      { title: "Pepas", artist: "Farruko", streams: 1679576414 },
-      { title: "Give Me Everything", artist: "Pitbull", streams: 1676856886 },
-      { title: "Just Give Me a Reason", artist: "P!nk", streams: 1674880230 },
-      { title: "Unstoppable", artist: "Sia", streams: 1670959311 },
-      { title: "Come As You Are", artist: "Nirvana", streams: 1667433517 },
-      { title: "Grenade", artist: "Bruno Mars", streams: 1663138826 },
-      { title: "Shake It Off", artist: "Taylor Swift", streams: 1661139187 },
-      { title: "Ain't No Mountain High Enough", artist: "Marvin Gaye", streams: 1659712494 },
-      { title: "LOVE. FEAT. ZACARI.", artist: "Kendrick Lamar", streams: 1659643316 },
-      { title: "Animals", artist: "Maroon 5", streams: 1659080769 },
-      { title: "Into You", artist: "Ariana Grande", streams: 1652833382 },
-      { title: "Ni**as In Paris", artist: "JAY-Z", streams: 1648032706 },
-      { title: "Young, Wild & Free (feat. Bruno Mars)", artist: "Snoop Dogg", streams: 1646706947 },
-      { title: "Hey Ya!", artist: "Outkast", streams: 1644804785 },
-      { title: "The Middle", artist: "Zedd", streams: 1642630108 },
-      { title: "Mi Gente", artist: "J Balvin", streams: 1641866465 },
-      { title: "Stay", artist: "Rihanna", streams: 1641427608 },
-      { title: "Safe And Sound", artist: "Capital Cities", streams: 1641118731 },
-      { title: "Don't", artist: "Bryson Tiller", streams: 1638939293 },
-      { title: "Callaita", artist: "Bad Bunny", streams: 1637959942 },
-      { title: "Toxic", artist: "Britney Spears", streams: 1635823403 },
-      { title: "My Love Mine All Mine", artist: "Mitski", streams: 1635154303 },
-      { title: "Time of Our Lives", artist: "Pitbull", streams: 1632211816 },
-      { title: "In My Mind", artist: "Dynoro", streams: 1631898467 },
-      { title: "Side To Side", artist: "Ariana Grande", streams: 1630850049 },
-      { title: "Todo De Ti", artist: "Rauw Alejandro", streams: 1629969998 },
-      { title: "Tusa", artist: "KAROL G", streams: 1626964268 },
-      { title: "What Makes You Beautiful", artist: "One Direction", streams: 1626858991 },
-      { title: "Always Remember Us This Way", artist: "Lady Gaga", streams: 1625137289 },
-      { title: "Here Comes The Sun", artist: "The Beatles", streams: 1622995719 },
-      { title: "Waiting For Love", artist: "Avicii", streams: 1622339978 },
-      { title: "Good Luck, Babe!", artist: "Chappell Roan", streams: 1621307529 },
-      { title: "Under The Influence", artist: "Chris Brown", streams: 1621007881 },
-      { title: "Look At Me!", artist: "XXXTENTACION", streams: 1617580487 },
-      { title: "Happier Than Ever", artist: "Billie Eilish", streams: 1614275062 },
-      { title: "Stronger", artist: "Kanye West", streams: 1612481274 },
-      { title: "Let You Down", artist: "NF", streams: 1612443131 },
-      { title: "positions", artist: "Ariana Grande", streams: 1611561610 },
-      { title: "In the Name of Love", artist: "Martin Garrix", streams: 1610949370 },
-      { title: "Scars To Your Beautiful", artist: "Alessia Cara", streams: 1610666456 },
-      { title: "Psycho", artist: "Post Malone", streams: 1609464134 },
-      { title: "Old Town Road", artist: "Lil Nas X", streams: 1607581659 },
-      { title: "Snooze", artist: "SZA", streams: 1606000698 },
-      { title: "Paradise", artist: "Coldplay", streams: 1604717246 },
-      { title: "Creepin'", artist: "Metro Boomin", streams: 1603709236 },
-      { title: "Happy", artist: "Pharrell Williams", streams: 1600780808 },
-      { title: "No Me Conoce", artist: "JHAYCO", streams: 1598299764 },
-      { title: "It Ain't Me", artist: "Kygo", streams: 1594065297 },
-      { title: "Romantic Homicide", artist: "d4vd", streams: 1593308569 },
-      { title: "Crazy In Love", artist: "Beyoncé", streams: 1586687977 },
-      { title: "Classic", artist: "MKTO", streams: 1580462519 },
-      { title: "Bad Romance", artist: "Lady Gaga", streams: 1580441311 },
-      { title: "Eye of the Tiger", artist: "Survivor", streams: 1578731370 },
-      { title: "Better", artist: "Khalid", streams: 1577368980 },
-      { title: "Can't Stop", artist: "Red Hot Chili Peppers", streams: 1573920873 },
-      { title: "Bones", artist: "Imagine Dragons", streams: 1573181585 },
-      { title: "Too Sweet", artist: "Hozier", streams: 1571282899 },
-      { title: "TiK ToK", artist: "Kesha", streams: 1569541156 },
-      { title: "Chasing Cars", artist: "Snow Patrol", streams: 1567198107 },
-      { title: "Rather Be", artist: "Clean Bandit", streams: 1565597654 },
-      { title: "End of Beginning", artist: "Djo", streams: 1561773775 },
-      { title: "Stereo Hearts", artist: "Gym Class Heroes", streams: 1561576252 },
-      { title: "Promiscuous", artist: "Nelly Furtado", streams: 1560922839 },
-      { title: "Not Like Us", artist: "Kendrick Lamar", streams: 1559856639 },
-      { title: "ROXANNE", artist: "Arizona Zervas", streams: 1559499545 },
-      { title: "Where Are You Now", artist: "Lost Frequencies", streams: 1556484956 },
-      { title: "Work from Home", artist: "Fifth Harmony", streams: 1556057900 },
-      { title: "Glimpse of Us", artist: "Joji", streams: 1552163221 },
-      { title: "Work", artist: "Rihanna", streams: 1550574357 },
-      { title: "Sucker", artist: "Jonas Brothers", streams: 1550189494 },
-      { title: "Stick Season", artist: "Noah Kahan", streams: 1544805326 },
-      { title: "FRIENDS", artist: "Marshmello", streams: 1543125202 },
-      { title: "PILLOWTALK", artist: "ZAYN", streams: 1541591492 },
-      { title: "Hawái", artist: "Maluma", streams: 1540076694 },
-      { title: "Last Friday Night (T.G.I.F.)", artist: "Katy Perry", streams: 1538415213 },
-      { title: "Bring Me To Life", artist: "Evanescence", streams: 1537374739 },
-      { title: "Ride It", artist: "Regard", streams: 1532618070 },
-      { title: "Bang Bang", artist: "Jessie J", streams: 1531652685 },
-      { title: "Ho Hey", artist: "The Lumineers", streams: 1530919925 },
-      { title: "Mercy", artist: "Shawn Mendes", streams: 1530888653 },
-      { title: "Yonaguni", artist: "Bad Bunny", streams: 1530525981 },
-      { title: "We Will Rock You", artist: "Queen", streams: 1528309870 },
-      { title: "Daylight", artist: "David Kushner", streams: 1526438997 },
-      { title: "Leave The Door Open", artist: "Bruno Mars", streams: 1522131818 },
-      { title: "Dancing With A Stranger", artist: "Sam Smith", streams: 1520273572 },
-      { title: "Praise The Lord (Da Shine)", artist: "A$AP Rocky", streams: 1519272931 },
-      { title: "Feel It Still", artist: "Portugal. The Man", streams: 1515582705 },
-      { title: "Con Calma", artist: "Daddy Yankee", streams: 1512115579 },
-      { title: "Zombie", artist: "The Cranberries", streams: 1511400512 },
-      { title: "More Than You Know", artist: "Axwell / Ingrosso", streams: 1510985388 },
-      { title: "PROVENZA", artist: "KAROL G", streams: 1510274954 },
-      { title: "Sweet Home Alabama", artist: "Lynyrd Skynyrd", streams: 1510254159 },
-      { title: "Whatever It Takes", artist: "Imagine Dragons", streams: 1508787662 },
-      { title: "Location", artist: "Khalid", streams: 1508607130 },
-      { title: "Outside", artist: "Calvin Harris", streams: 1505313974 },
-      { title: "Ophelia", artist: "The Lumineers", streams: 1504185269 },
-      { title: "Efecto", artist: "Bad Bunny", streams: 1503699140 },
-      { title: "When We Were Young", artist: "Adele", streams: 1500751477 },
-      { title: "Sultans Of Swing", artist: "Dire Straits", streams: 1500430863 },
-      { title: "Falling Down", artist: "Lil Peep", streams: 1497567707 },
-      { title: "i hate u, i love u", artist: "gnash", streams: 1496030930 },
-      { title: "august", artist: "Taylor Swift", streams: 1495984404 },
-      { title: "Please Please Please", artist: "Sabrina Carpenter", streams: 1495691093 },
-      { title: "Taste", artist: "Tyga", streams: 1490890192 },
-      { title: "Castle on the Hill", artist: "Ed Sheeran", streams: 1489738782 },
-      { title: "SLOW DANCING IN THE DARK", artist: "Joji", streams: 1489692530 },
-      { title: "Beautiful People", artist: "Ed Sheeran", streams: 1488215593 },
-      { title: "Meant to Be", artist: "Bebe Rexha", streams: 1486748112 },
-      { title: "Paint It, Black", artist: "The Rolling Stones", streams: 1485303001 },
-      { title: "Me, Myself & I", artist: "G-Eazy", streams: 1480388571 },
-      { title: "Hotline Bling", artist: "Drake", streams: 1476073241 },
-      { title: "Here With Me", artist: "d4vd", streams: 1475204637 },
-      { title: "Only Girl (In The World)", artist: "Rihanna", streams: 1474348314 },
-      { title: "we can't be friends (wait for your love)", artist: "Ariana Grande", streams: 1473643531 },
-      { title: "Unwritten", artist: "Natasha Bedingfield", streams: 1473108072 },
-      { title: "I Wanna Dance with Somebody (Who Loves Me)", artist: "Whitney Houston", streams: 1472843197 },
-      { title: "Robbery", artist: "Juice WRLD", streams: 1472765642 },
-      { title: "You Shook Me All Night Long", artist: "AC/DC", streams: 1472379686 },
-      { title: "How to Save a Life", artist: "The Fray", streams: 1470100884 },
-      { title: "My Universe", artist: "Coldplay", streams: 1468725893 },
-      { title: "Wolves", artist: "Selena Gomez", streams: 1468700745 },
-      { title: "Lemonade", artist: "Internet Money", streams: 1463542960 },
-      { title: "Summer Of '69", artist: "Bryan Adams", streams: 1462821456 },
-      // --- New Songs Batch ---
-      { title: "changes", artist: "XXXTENTACION", streams: 1462271787 },
-      { title: "Galway Girl", artist: "Ed Sheeran", streams: 1461940415 },
-      { title: "In My Feelings", artist: "Drake", streams: 1460434514 },
-      { title: "Good Days", artist: "SZA", streams: 1460087003 },
-      { title: "Everlong", artist: "Foo Fighters", streams: 1459151076 },
-      { title: "Light It Up (Remix)", artist: "Major Lazer", streams: 1458650108 },
-      { title: "Freaks", artist: "Surf Curse", streams: 1457417644 },
-      { title: "Girls Just Want to Have Fun", artist: "Cyndi Lauper", streams: 1455396430 },
-      { title: "Star Shopping", artist: "Lil Peep", streams: 1455345581 },
-      { title: "Girls Just Wanna Have Fun", artist: "Cyndi Lauper", streams: 1454724682 },
-      { title: "WAP", artist: "Cardi B", streams: 1449277107 },
-      { title: "no tears left to cry", artist: "Ariana Grande", streams: 1447545237 },
-      { title: "Sparks", artist: "Coldplay", streams: 1446596787 },
-      { title: "Wet Dreamz", artist: "J. Cole", streams: 1444860026 },
-      { title: "MIA", artist: "Bad Bunny", streams: 1444637783 },
-      { title: "Thrift Shop", artist: "Macklemore & Ryan Lewis", streams: 1441220229 },
-      { title: "telepatía", artist: "Kali Uchis", streams: 1440170661 },
-      { title: "No Lie", artist: "Sean Paul", streams: 1437780862 },
-      { title: "Bad Habit", artist: "Steve Lacy", streams: 1437426820 },
-      { title: "Welcome To The Jungle", artist: "Guns N' Roses", streams: 1436561177 },
-      { title: "How You Remind Me", artist: "Nickelback", streams: 1432964842 },
-      { title: "MIDDLE CHILD", artist: "J. Cole", streams: 1432844587 },
-      { title: "Style", artist: "Taylor Swift", streams: 1431769241 },
-      { title: "Budapest", artist: "George Ezra", streams: 1429889273 },
-      { title: "Ella Baila Sola", artist: "Eslabon Armado", streams: 1428813787 },
-      { title: "APT.", artist: "ROSÉ", streams: 1427866012 },
-      { title: "Just Dance", artist: "Lady Gaga", streams: 1426003267 },
-      { title: "1-800-273-8255", artist: "Logic", streams: 1423309577 },
-      { title: "Beat It", artist: "Michael Jackson", streams: 1422097933 },
-      { title: "Natural", artist: "Imagine Dragons", streams: 1420845176 },
-      { title: "Don't Blame Me", artist: "Taylor Swift", streams: 1420623785 },
-      { title: "Happier", artist: "Ed Sheeran", streams: 1420247623 },
-      { title: "Blueberry Faygo", artist: "Lil Mosey", streams: 1420105127 },
-      { title: "happier", artist: "Olivia Rodrigo", streams: 1419161886 },
-      { title: "Space Song", artist: "Beach House", streams: 1415725943 },
-      { title: "This Love", artist: "Maroon 5", streams: 1414964165 },
-      { title: "Scared to Be Lonely", artist: "Martin Garrix", streams: 1413327757 },
-      { title: "Running Up That Hill (A Deal With God)", artist: "Kate Bush", streams: 1412620369 },
-      { title: "Falling", artist: "Harry Styles", streams: 1411973812 },
-      { title: "Flashing Lights", artist: "Kanye West", streams: 1411143957 },
-      { title: "Nothing Else Matters", artist: "Metallica", streams: 1410673790 },
-      { title: "Sugar", artist: "Robin Schulz", streams: 1408712842 },
-      { title: "How Deep Is Your Love", artist: "Calvin Harris", streams: 1405498647 },
-      { title: "Trap Queen", artist: "Fetty Wap", streams: 1401573546 },
-      { title: "Hypnotize", artist: "The Notorious B.I.G.", streams: 1397942782 },
-      { title: "Heartbreak Anniversary", artist: "GIVĒON", streams: 1395642396 },
-      { title: "Dancing On My Own", artist: "Calum Scott", streams: 1394504740 },
-      { title: "I'm Still Standing", artist: "Elton John", streams: 1394230062 },
-      { title: "Stargirl Interlude", artist: "The Weeknd", streams: 1392495110 },
-      { title: "Arcade", artist: "Duncan Laurence", streams: 1391149872 },
-      { title: "Smack That", artist: "Akon", streams: 1388940494 },
-      { title: "Paint The Town Red", artist: "Doja Cat", streams: 1388197888 },
-      { title: "Stand By Me", artist: "Ben E. King", streams: 1388107729 },
-      { title: "Lovers Rock", artist: "TV Girl", streams: 1387783626 },
-      { title: "Dream On", artist: "Aerosmith", streams: 1387708786 },
-      { title: "vampire", artist: "Olivia Rodrigo", streams: 1387553201 },
-      { title: "Nice For What", artist: "Drake", streams: 1387445260 },
-      { title: "Centuries", artist: "Fall Out Boy", streams: 1384001388 },
-      { title: "Dangerous Woman", artist: "Ariana Grande", streams: 1383447295 },
-      { title: "Way down We Go", artist: "KALEO", streams: 1383323143 },
-      { title: "golden hour", artist: "JVKE", streams: 1382505943 },
-      { title: "Starships", artist: "Nicki Minaj", streams: 1382065377 },
-      { title: "we fell in love in october", artist: "girl in red", streams: 1380902923 },
-      { title: "We Are Young", artist: "fun.", streams: 1380889327 },
-      { title: "The Chain", artist: "Fleetwood Mac", streams: 1380293936 },
-      { title: "It Was A Good Day", artist: "Ice Cube", streams: 1380059444 },
-      { title: "Roar", artist: "Katy Perry", streams: 1378968632 },
-      { title: "Get You", artist: "Daniel Caesar", streams: 1378057807 },
-      { title: "Goodbyes", artist: "Post Malone", streams: 1374535948 },
-      { title: "Lose You To Love Me", artist: "Selena Gomez", streams: 1371583529 },
-      { title: "Like Crazy", artist: "Jimin", streams: 1371343717 },
-      { title: "Last Resort", artist: "Papa Roach", streams: 1371000759 },
-      { title: "Royals", artist: "Lorde", streams: 1370143440 },
-      { title: "S&M", artist: "Rihanna", streams: 1370134346 },
-      { title: "Butter", artist: "BTS", streams: 1366346588 },
-      { title: "Shut up My Moms Calling", artist: "Hotel Ugly", streams: 1364977155 },
-      { title: "All The Small Things", artist: "blink-182", streams: 1363924846 },
-      { title: "Father Stretch My Hands Pt. 1", artist: "Kanye West", streams: 1362247943 },
-      { title: "Gold Digger", artist: "Kanye West", streams: 1361762853 },
-      { title: "What Was I Made For? [From The Motion Picture \"Barbie\"]", artist: "Billie Eilish", streams: 1359487091 },
-      { title: "You Give Love A Bad Name", artist: "Bon Jovi", streams: 1359165379 },
-      { title: "Paranoid", artist: "Black Sabbath", streams: 1358987400 },
-      { title: "Moscow Mule", artist: "Bad Bunny", streams: 1357903508 },
-      { title: "hot girl bummer", artist: "blackbear", streams: 1356436911 },
-      { title: "DNA.", artist: "Kendrick Lamar", streams: 1354981971 },
-      { title: "No Scrubs", artist: "TLC", streams: 1351947658 },
-      { title: "favorite crime", artist: "Olivia Rodrigo", streams: 1350888301 },
-      { title: "Ms. Jackson", artist: "Outkast", streams: 1350799071 },
-      { title: "Brown Eyed Girl", artist: "Van Morrison", streams: 1350276519 },
-      { title: "Astronaut In The Ocean", artist: "Masked Wolf", streams: 1347921784 },
-      { title: "Thinkin Bout You", artist: "Frank Ocean", streams: 1347869560 },
-      { title: "FE!N", artist: "Travis Scott", streams: 1347097195 },
-      { title: "If I Ain't Got You", artist: "Alicia Keys", streams: 1345541511 },
-      { title: "Back To Black", artist: "Amy Winehouse", streams: 1343580525 },
-      { title: "Softcore", artist: "The Neighbourhood", streams: 1342687731 },
-      { title: "Life Is Good", artist: "Future", streams: 1342647664 },
-      { title: "A Bar Song (Tipsy)", artist: "Shaboozey", streams: 1342292509 },
-      { title: "Break My Heart", artist: "Dua Lipa", streams: 1341999963 },
-      { title: "Es un Secreto", artist: "Plan B", streams: 1341569646 },
-      { title: "Nonsense", artist: "Sabrina Carpenter", streams: 1340194911 },
-      { title: "What Lovers Do", artist: "Maroon 5", streams: 1337790670 },
-      { title: "Body", artist: "Loud Luxury", streams: 1337765316 },
-      { title: "I'm the One", artist: "DJ Khaled", streams: 1337635772 },
-      { title: "Basket Case", artist: "Green Day", streams: 1337572981 },
-      { title: "Streets", artist: "Doja Cat", streams: 1336716397 },
-      { title: "Lost", artist: "Frank Ocean", streams: 1336152079 },
-      { title: "Look What You Made Me Do", artist: "Taylor Swift", streams: 1334534622 },
-      { title: "Paris", artist: "The Chainsmokers", streams: 1331319941 },
-      { title: "WILDFLOWER", artist: "Billie Eilish", streams: 1329920674 },
-      { title: "MIDDLE OF THE NIGHT", artist: "Elley Duhé", streams: 1329314760 },
-      { title: "Marry You", artist: "Bruno Mars", streams: 1328486148 },
-      { title: "Rocket Man (I Think It's Going To Be A Long, Long Time)", artist: "Elton John", streams: 1327509445 },
-      { title: "LUNA", artist: "Feid", streams: 1326926409 },
-      { title: "Need to Know", artist: "Doja Cat", streams: 1326652603 },
-      { title: "Stay", artist: "Zedd", streams: 1326426871 },
-      { title: "Stan", artist: "Eminem", streams: 1325925205 },
-      { title: "La Curiosidad", artist: "Jay Wheeler", streams: 1324751627 },
-      { title: "un x100to", artist: "Grupo Frontera", streams: 1324610492 },
-      { title: "MONEY", artist: "LISA", streams: 1324340385 },
-      { title: "Low", artist: "Flo Rida", streams: 1323749510 },
-      { title: "Feel So Close", artist: "Calvin Harris", streams: 1323412301 },
-      { title: "i like the way you kiss me", artist: "Artemas", streams: 1320845164 },
-      { title: "Firework", artist: "Katy Perry", streams: 1320743078 },
-      { title: "Head & Heart", artist: "Joel Corry", streams: 1318939742 },
-      { title: "Let It Go", artist: "James Bay", streams: 1316690505 },
-      { title: "Until I Found You", artist: "Stephen Sanchez", streams: 1314414129 },
-      { title: "Desesperados", artist: "Rauw Alejandro", streams: 1313988664 },
-      { title: "TQG", artist: "KAROL G", streams: 1310047333 },
-      { title: "Don't Stop The Music", artist: "Rihanna", streams: 1309829164 },
-      { title: "Bitter Sweet Symphony", artist: "The Verve", streams: 1309144512 },
-      { title: "Midnight City", artist: "M83", streams: 1308188378 },
-      { title: "Intentions", artist: "Justin Bieber", streams: 1307872779 },
-      { title: "I WANNA BE YOUR SLAVE", artist: "Måneskin", streams: 1307139421 },
-      { title: "Wannabe", artist: "Spice Girls", streams: 1305951918 },
-      { title: "The Business", artist: "Tiësto", streams: 1304741697 },
-      { title: "Issues", artist: "Julia Michaels", streams: 1303788684 },
-      { title: "Something in the Orange", artist: "Zach Bryan", streams: 1300593307 },
-      { title: "Si Antes Te Hubiera Conocido", artist: "KAROL G", streams: 1299998572 },
-      { title: "Adventure of a Lifetime", artist: "Coldplay", streams: 1299967427 },
-      { title: "If the World Was Ending", artist: "JP Saxe", streams: 1298886670 },
-      { title: "Say So", artist: "Doja Cat", streams: 1298782535 },
-      { title: "All I Want", artist: "Kodaline", streams: 1297495798 },
-      { title: "Wild Thoughts", artist: "DJ Khaled", streams: 1296629359 },
-      { title: "Going Bad", artist: "Meek Mill", streams: 1296340005 },
-      { title: "Careless Whisper", artist: "George Michael", streams: 1295566337 },
-      { title: "Don't You Worry Child", artist: "Swedish House Mafia", streams: 1295145220 },
-      { title: "Bruises", artist: "Lewis Capaldi", streams: 1294360475 },
-      { title: "Rockin' Around The Christmas Tree", artist: "Brenda Lee", streams: 1292439350 },
-      { title: "Drag Me Down", artist: "One Direction", streams: 1292083820 },
-      { title: "Stuck with U", artist: "Ariana Grande", streams: 1288514532 },
-      { title: "I Was Made For Lovin' You", artist: "KISS", streams: 1287829448 },
-      { title: "Are You With Me", artist: "Lost Frequencies", streams: 1287462902 },
-      { title: "Santa Tell Me", artist: "Ariana Grande", streams: 1286421326 },
-      { title: "Last Night", artist: "Morgan Wallen", streams: 1285922693 },
-      { title: "Big Poppa", artist: "The Notorious B.I.G.", streams: 1285825329 },
-      { title: "China", artist: "Anuel AA", streams: 1285502149 },
-      { title: "Latch", artist: "Disclosure", streams: 1285457240 },
-      { title: "This Girl", artist: "Kungs", streams: 1282909216 },
-      { title: "Dog Days Are Over", artist: "Florence + The Machine", streams: 1282679263 },
-      { title: "Should I Stay or Should I Go", artist: "The Clash", streams: 1280131787 },
-      { title: "Mirrors", artist: "Justin Timberlake", streams: 1280024013 },
-      { title: "Empire State Of Mind", artist: "JAY-Z", streams: 1279571159 },
-      { title: "Prayer in C", artist: "Lilly Wood and The Prick", streams: 1279204844 },
-      { title: "What You Know Bout Love", artist: "Pop Smoke", streams: 1275485784 },
-      { title: "The Reason", artist: "Hoobastank", streams: 1274960876 },
-      { title: "QLONA", artist: "KAROL G", streams: 1273900329 },
-      { title: "Dynamite", artist: "Taio Cruz", streams: 1273748337 },
-      { title: "I Was Never There", artist: "The Weeknd", streams: 1273413140 },
-      { title: "Toxicity", artist: "System Of A Down", streams: 1273021636 },
-      { title: "Make You Feel My Love", artist: "Adele", streams: 1272747910 },
-      { title: "Fast Car", artist: "Jonas Blue", streams: 1271628015 },
-      { title: "Paradise City", artist: "Guns N' Roses", streams: 1267691125 },
-      { title: "All Star", artist: "Smash Mouth", streams: 1267228581 },
-      { title: "20 Min", artist: "Lil Uzi Vert", streams: 1267225498 },
-      { title: "Reminder", artist: "The Weeknd", streams: 1266700901 },
-      { title: "FourFiveSeconds", artist: "Rihanna", streams: 1265732905 },
-      { title: "Te Boté", artist: "Nio Garcia", streams: 1264334347 },
-      { title: "SNAP", artist: "Rosa Linn", streams: 1264034692 },
-      { title: "Crazy", artist: "Gnarls Barkley", streams: 1263327633 },
-      { title: "La Bebe", artist: "Yng Lvcas", streams: 1261813976 },
-      { title: "Starving", artist: "Hailee Steinfeld", streams: 1258009320 },
-      { title: "Get Lucky (Radio Edit) [feat. Pharrell Williams and Nile Rodgers]", artist: "Daft Punk", streams: 1257255791 },
-      { title: "idontwannabeyouanymore", artist: "Billie Eilish", streams: 1257094557 },
-      { title: "My Way", artist: "Calvin Harris", streams: 1253524817 },
-      { title: "Feels", artist: "Calvin Harris", streams: 1250948018 },
-      { title: "Baby", artist: "Justin Bieber", streams: 1250451912 },
-      { title: "You Make My Dreams (Come True)", artist: "Daryl Hall & John Oates", streams: 1249420366 },
-      { title: "White Iverson", artist: "Post Malone", streams: 1248387414 },
-      { title: "Wait a Minute!", artist: "WILLOW", streams: 1247830304 },
-      { title: "Tennessee Whiskey", artist: "Chris Stapleton", streams: 1247359099 },
-      { title: "With Or Without You", artist: "U2", streams: 1246419240 },
-      { title: "Electric Love", artist: "BØRNS", streams: 1246386606 },
-      { title: "It's You", artist: "Ali Gatie", streams: 1244681018 },
-      { title: "Like I'm Gonna Lose You", artist: "Meghan Trainor", streams: 1243766436 },
-      { title: "Stayin' Alive", artist: "Bee Gees", streams: 1241731206 },
-      { title: "Calma", artist: "Pedro Capó", streams: 1240548136 },
-      { title: "Panda", artist: "Desiigner", streams: 1240231464 },
-      { title: "MILLION DOLLAR BABY", artist: "Tommy Richman", streams: 1240136053 },
-      { title: "Firestone", artist: "Kygo", streams: 1239893552 },
-      { title: "Bad Liar", artist: "Imagine Dragons", streams: 1239520345 },
-      { title: "Your Love", artist: "The Outfield", streams: 1238738922 },
-      { title: "These Days", artist: "Rudimental", streams: 1237172041 },
-      { title: "Feliz Cumpleaños Ferxxo", artist: "Feid", streams: 1235582276 },
-      { title: "Otherside", artist: "Red Hot Chili Peppers", streams: 1234781310 },
-      { title: "R U Mine?", artist: "Arctic Monkeys", streams: 1234611602 },
-      { title: "Yes Indeed", artist: "Lil Baby", streams: 1234275311 },
-      { title: "Without You", artist: "Avicii", streams: 1233524542 },
-      { title: "Standing Next to You", artist: "Jung Kook", streams: 1233154708 },
-      { title: "LALA", artist: "Myke Towers", streams: 1233019042 },
-      { title: "Sucker for Pain", artist: "Lil Wayne", streams: 1232714347 },
-      { title: "It Will Rain", artist: "Bruno Mars", streams: 1231295683 },
-      { title: "Bank Account", artist: "21 Savage", streams: 1229194876 },
-      { title: "Snow (Hey Oh)", artist: "Red Hot Chili Peppers", streams: 1228716921 },
-      { title: "Human", artist: "Rag'n'Bone Man", streams: 1228182454 },
-      { title: "July", artist: "Noah Cyrus", streams: 1228055133 },
-      { title: "Hey There Delilah", artist: "Plain White T's", streams: 1227503368 },
-      { title: "Let Me Love You", artist: "Mario", streams: 1227434485 },
-      { title: "Clocks", artist: "Coldplay", streams: 1226884023 },
-      { title: "Walking On A Dream", artist: "Empire Of The Sun", streams: 1226613333 },
-      { title: "Little Talks", artist: "Of Monsters and Men", streams: 1226497904 },
-      { title: "Sex, Drugs, Etc.", artist: "Beach Weather", streams: 1225373119 },
-      { title: "Snowman", artist: "Sia", streams: 1224788279 },
-      { title: "abcdefu", artist: "GAYLE", streams: 1222055085 },
-      { title: "EARFQUAKE", artist: "Tyler, The Creator", streams: 1222034705 },
-      { title: "Three Little Birds", artist: "Bob Marley & The Wailers", streams: 1221233202 },
-      { title: "Jingle Bell Rock", artist: "Bobby Helms", streams: 1220262391 },
-      { title: "Nonstop", artist: "Drake", streams: 1220242368 },
-      { title: "Cigarette Daydreams", artist: "Cage The Elephant", streams: 1219658039 },
-      { title: "Sorry Not Sorry", artist: "Demi Lovato", streams: 1219526501 },
-      { title: "Scar Tissue", artist: "Red Hot Chili Peppers", streams: 1219363086 },
-      { title: "The Monster", artist: "Eminem", streams: 1217917714 },
-      { title: "Treasure", artist: "Bruno Mars", streams: 1216970836 },
-      { title: "Replay", artist: "Iyaz", streams: 1216776949 },
-      { title: "Where Is The Love?", artist: "Black Eyed Peas", streams: 1212629239 },
-      { title: "For The Night", artist: "Pop Smoke", streams: 1211588242 },
-      { title: "Exchange", artist: "Bryson Tiller", streams: 1211145595 },
-      { title: "Infinity", artist: "Jaymes Young", streams: 1209296047 },
-      { title: "Send My Love (To Your New Lover)", artist: "Adele", streams: 1209048337 },
-      { title: "The Next Episode", artist: "Dr. Dre", streams: 1209017816 },
-      { title: "You're Gonna Go Far, Kid", artist: "The Offspring", streams: 1208440140 },
-      { title: "Beauty And A Beat", artist: "Justin Bieber", streams: 1202641257 },
-      { title: "Rap God", artist: "Eminem", streams: 1202263771 },
-      { title: "Dior", artist: "Pop Smoke", streams: 1201501784 },
-      { title: "Could You Be Loved", artist: "Bob Marley & The Wailers", streams: 1200947206 },
-      { title: "Swalla", artist: "Jason Derulo", streams: 1200264802 },
-      { title: "Uptown Girl", artist: "Billy Joel", streams: 1200210641 },
-      { title: "It Wasn't Me", artist: "Shaggy", streams: 1200178364 },
-      { title: "DESPECHÁ", artist: "ROSALÍA", streams: 1199593251 },
-      { title: "Breaking Me", artist: "Topic", streams: 1199567842 },
-      { title: "American Idiot", artist: "Green Day", streams: 1198342272 },
-      { title: "The One That Got Away", artist: "Katy Perry", streams: 1198208408 },
-      { title: "Chantaje", artist: "Shakira", streams: 1198170830 },
-      { title: "Sunroof", artist: "Nicky Youre", streams: 1195585473 },
-      { title: "I Don't Want To Miss A Thing", artist: "Aerosmith", streams: 1194257873 },
-      { title: "Memories", artist: "David Guetta", streams: 1192976286 },
-      { title: "The Color Violet", artist: "Tory Lanez", streams: 1192071881 },
-      { title: "My House", artist: "Flo Rida", streams: 1191696438 },
-      { title: "Slide", artist: "Calvin Harris", streams: 1189698667 },
-      { title: "Locked Away", artist: "R. City", streams: 1188001656 },
-      { title: "Murder on My Mind", artist: "YNW Melly", streams: 1187783170 },
-      { title: "Jimmy Cooks", artist: "Drake", streams: 1187065036 },
-      { title: "Gasolina", artist: "Daddy Yankee", streams: 1186745857 },
-      { title: "Video Games", artist: "Lana Del Rey", streams: 1186123171 },
-      { title: "The Lazy Song", artist: "Bruno Mars", streams: 1185945819 },
-      { title: "Where Are Ü Now", artist: "Jack Ü", streams: 1185898524 },
-      { title: "Hey Mor", artist: "Ozuna", streams: 1185655404 },
-      { title: "Roses", artist: "The Chainsmokers", streams: 1185611525 },
-      { title: "Savage Love (Laxed", artist: "Jawsh 685", streams: 1183632255 },
-      { title: "ZEZE", artist: "Kodak Black", streams: 1183601206 },
-      { title: "Middle", artist: "DJ Snake", streams: 1182864718 },
-      { title: "The Way I Are", artist: "Timbaland", streams: 1182649793 },
-      { title: "Best Day Of My Life", artist: "American Authors", streams: 1182508245 },
-      { title: "Go Your Own Way", artist: "Fleetwood Mac", streams: 1182334795 },
-      { title: "You Are The Reason", artist: "Calum Scott", streams: 1181962517 },
-      { title: "Not Afraid", artist: "Eminem", streams: 1179512316 },
-      { title: "3 Nights", artist: "Dominic Fike", streams: 1179439964 },
-      { title: "Angels Like You", artist: "Miley Cyrus", streams: 1178790935 },
-      { title: "Ain't No Sunshine", artist: "Bill Withers", streams: 1178465539 },
-      { title: "Superman", artist: "Eminem", streams: 1178435969 },
-      { title: "Hot N Cold", artist: "Katy Perry", streams: 1178277590 },
-      { title: "Delicate", artist: "Taylor Swift", streams: 1177647340 },
-      { title: "Bound 2", artist: "Kanye West", streams: 1177620000 },
-      { title: "i love you", artist: "Billie Eilish", streams: 1175901605 },
-      { title: "It's Beginning to Look a Lot like Christmas", artist: "Michael Bublé", streams: 1175857648 },
-      { title: "Bored", artist: "Billie Eilish", streams: 1174991994 },
-      { title: "Hey Brother", artist: "Avicii", streams: 1173256417 },
-      { title: "Sexy Bitch", artist: "David Guetta", streams: 1172844395 },
-      { title: "The Middle", artist: "Jimmy Eat World", streams: 1171836612 },
-      { title: "God is a woman", artist: "Ariana Grande", streams: 1169093989 },
-      { title: "Waves", artist: "Mr. Probz", streams: 1169061410 },
-      { title: "That's So True", artist: "Gracie Abrams", streams: 1166831430 },
-      { title: "Numb / Encore", artist: "JAY-Z", streams: 1166773245 },
-      { title: "My Girl", artist: "The Temptations", streams: 1166716112 },
-      { title: "Rain On Me", artist: "Lady Gaga", streams: 1166701419 },
-      { title: "Perfect Strangers", artist: "Jonas Blue", streams: 1166611337 },
-      { title: "No Guidance", artist: "Chris Brown", streams: 1165410670 },
-      { title: "Wake Up in the Sky", artist: "Bruno Mars", streams: 1165010502 },
-      { title: "After Hours", artist: "The Weeknd", streams: 1164187123 },
-      { title: "Everywhere", artist: "Fleetwood Mac", streams: 1163878921 },
-      { title: "Sailor Song", artist: "Gigi Perez", streams: 1161401933 },
-      { title: "Back To You", artist: "Selena Gomez", streams: 1161322130 },
-      { title: "Work Out", artist: "J. Cole", streams: 1161176712 },
-      { title: "Je te laisserai des mots", artist: "Patrick Watson", streams: 1160614913 },
-      { title: "THATS WHAT I WANT", artist: "Lil Nas X", streams: 1158584904 },
-      { title: "DJ Got Us Fallin' In Love", artist: "USHER", streams: 1158225397 },
-      { title: "Die For You", artist: "The Weeknd", streams: 1157405363 },
-      { title: "Moth To A Flame", artist: "Swedish House Mafia", streams: 1157114141 },
-      { title: "Blame", artist: "Calvin Harris", streams: 1156805849 },
-      { title: "I Had Some Help (Feat. Morgan Wallen)", artist: "Post Malone", streams: 1156734527 },
-      { title: "Let Me Go", artist: "Hailee Steinfeld", streams: 1156420963 },
-      { title: "Often", artist: "The Weeknd", streams: 1155542025 },
-      { title: "10,000 Hours", artist: "Dan + Shay", streams: 1155172898 },
-      { title: "Mo Bamba", artist: "Sheck Wes", streams: 1154718399 },
-      { title: "Hold On, We're Going Home", artist: "Drake", streams: 1152406264 },
-      { title: "House of the Rising Sun", artist: "The Animals", streams: 1151910421 },
-      { title: "No Idea", artist: "Don Toliver", streams: 1151813194 },
-      { title: "Popular", artist: "The Weeknd", streams: 1150939648 },
-      { title: "Candy Shop", artist: "50 Cent", streams: 1150535982 },
-      { title: "Want to Want Me", artist: "Jason Derulo", streams: 1149580013 },
-      { title: "Dance The Night", artist: "Dua Lipa", streams: 1148657638 },
-      { title: "The Way Life Goes", artist: "Lil Uzi Vert", streams: 1148657335 },
-      { title: "Those Eyes", artist: "New West", streams: 1148125372 },
-      { title: "Levels", artist: "Avicii", streams: 1148067116 },
-      { title: "CLASSY 101", artist: "Feid", streams: 1147059098 },
-      { title: "In The Stars", artist: "Benson Boone", streams: 1147030838 },
-      { title: "Breakeven", artist: "The Script", streams: 1146795048 },
-      { title: "Say Something", artist: "A Great Big World", streams: 1146604513 },
-      { title: "Lost in the Fire", artist: "Gesaffelstein", streams: 1146440189 },
-      { title: "Low Life", artist: "Future", streams: 1145801430 },
-      { title: "How You Like That", artist: "BLACKPINK", streams: 1145181976 },
-      { title: "Stairway to Heaven", artist: "Led Zeppelin", streams: 1144852715 },
-      { title: "The Kids Aren't Alright", artist: "The Offspring", streams: 1144598097 },
-      { title: "Hold the Line", artist: "TOTO", streams: 1142612718 },
-      { title: "Or Nah", artist: "Ty Dolla $ign", streams: 1139820615 },
-      { title: "Wake Me Up Before You Go-Go", artist: "Wham!", streams: 1139303773 },
-      { title: "Swim", artist: "Chase Atlantic", streams: 1139001888 },
-      { title: "Toosie Slide", artist: "Drake", streams: 1138262685 },
-      { title: "What's Up?", artist: "4 Non Blondes", streams: 1137749799 },
-      { title: "Complicated", artist: "Avril Lavigne", streams: 1137735600 },
-      { title: "Teenagers", artist: "My Chemical Romance", streams: 1137649485 },
-      { title: "Rewrite The Stars", artist: "Zac Efron", streams: 1137145841 },
-      { title: "We Can't Stop", artist: "Miley Cyrus", streams: 1136749119 },
-      { title: "Kryptonite", artist: "3 Doors Down", streams: 1135028969 },
-      { title: "Water", artist: "Tyla", streams: 1134487753 },
-      { title: "Atlantis", artist: "Seafret", streams: 1134461463 },
-      { title: "Solo", artist: "Clean Bandit", streams: 1133575631 },
-      { title: "Kings & Queens", artist: "Ava Max", streams: 1133019650 },
-      { title: "Dile", artist: "Don Omar", streams: 1131457402 },
-      { title: "bellyache", artist: "Billie Eilish", streams: 1131050473 },
-      { title: "I Want to Know What Love Is", artist: "Foreigner", streams: 1130458067 },
-      { title: "X", artist: "Nicky Jam", streams: 1130191631 },
-      { title: "Nothing Breaks Like a Heart", artist: "Mark Ronson", streams: 1129528894 },
-      { title: "On Top Of The World", artist: "Imagine Dragons", streams: 1129010782 },
-      { title: "Him & I", artist: "G-Eazy", streams: 1127987975 },
-      { title: "Love Me Harder", artist: "Ariana Grande", streams: 1127726289 },
-      { title: "I Remember Everything", artist: "Zach Bryan", streams: 1125884398 },
-      { title: "November Rain", artist: "Guns N' Roses", streams: 1124976290 },
-      { title: "Too Good", artist: "Drake", streams: 1124972993 },
-      { title: "double take", artist: "Dhruv", streams: 1124865565 },
-      { title: "Heartless", artist: "The Weeknd", streams: 1124508377 },
-      { title: "...Baby One More Time", artist: "Britney Spears", streams: 1124193742 },
-      { title: "Stole the Show", artist: "Kygo", streams: 1123788827 },
-      { title: "What I've Done", artist: "Linkin Park", streams: 1123381564 },
-      { title: "One More Night", artist: "Maroon 5", streams: 1122600912 },
-      { title: "Love Me", artist: "Lil Wayne", streams: 1121761706 },
-      { title: "Can't Help Falling in Love", artist: "Elvis Presley", streams: 1121260050 },
-      { title: "Rewrite The Stars", artist: "James Arthur", streams: 1120465228 },
-      { title: "Kiss Me", artist: "Sixpence None The Richer", streams: 1119402737 },
-      { title: "Ivy", artist: "Frank Ocean", streams: 1117941086 },
-      { title: "Take Me Out", artist: "Franz Ferdinand", streams: 1117179461 },
-      { title: "Elastic Heart", artist: "Sia", streams: 1117101512 },
-      { title: "Promises", artist: "Calvin Harris", streams: 1117091001 },
-      { title: "This Town", artist: "Niall Horan", streams: 1115226701 },
-      { title: "Habits (Stay High)", artist: "Tove Lo", streams: 1114443885 },
-      { title: "jealousy, jealousy", artist: "Olivia Rodrigo", streams: 1114113097 },
-      { title: "Go Flex", artist: "Post Malone", streams: 1113737319 },
-      { title: "California Dreamin'", artist: "The Mamas & The Papas", streams: 1113606066 },
-      { title: "Mine", artist: "Bazzi", streams: 1113539832 },
-      { title: "Taste", artist: "Sabrina Carpenter", streams: 1113079137 },
-      { title: "Wrecking Ball", artist: "Miley Cyrus", streams: 1112189491 },
-      { title: "Temperature", artist: "Sean Paul", streams: 1110897948 },
-      { title: "Candy Paint", artist: "Post Malone", streams: 1109362761 },
-      { title: "SexyBack", artist: "Justin Timberlake", streams: 1109221495 },
-      { title: "Crazy Little Thing Called Love", artist: "Queen", streams: 1108816448 },
-      { title: "Am I Wrong", artist: "Nico & Vinz", streams: 1108169173 },
-      { title: "MAMIII", artist: "Becky G", streams: 1107319264 },
-      { title: "Get You The Moon", artist: "Kina", streams: 1106759605 },
-      { title: "Mr. Blue Sky", artist: "Electric Light Orchestra", streams: 1106477563 },
-      { title: "Physical", artist: "Dua Lipa", streams: 1106212317 },
-      { title: "If I Can't Have You", artist: "Shawn Mendes", streams: 1102890521 },
-      { title: "Higher Love", artist: "Kygo", streams: 1102595410 },
-      { title: "I Love It", artist: "Icona Pop", streams: 1101854020 },
-      { title: "Break from Toronto", artist: "PARTYNEXTDOOR", streams: 1101664498 },
-      { title: "bury a friend", artist: "Billie Eilish", streams: 1100695445 },
-      { title: "PERRO NEGRO", artist: "Bad Bunny", streams: 1100283170 },
-      { title: "a lot", artist: "21 Savage", streams: 1099983224 },
-      { title: "WAIT FOR U", artist: "Future", streams: 1099741713 },
-      { title: "Nevermind", artist: "Dennis Lloyd", streams: 1098850340 },
-      { title: "When It Rains It Pours", artist: "Luke Combs", streams: 1098088315 },
-      { title: "I Kissed A Girl", artist: "Katy Perry", streams: 1097336324 },
-      { title: "California Gurls", artist: "Katy Perry", streams: 1097265974 },
-      { title: "Don't Look Back in Anger", artist: "Oasis", streams: 1097109625 },
-      { title: "Don't You (Forget About Me)", artist: "Simple Minds", streams: 1096453132 },
-      { title: "Friday", artist: "Riton", streams: 1096077116 },
-      { title: "Left and Right (Feat. Jung Kook of BTS)", artist: "Charlie Puth", streams: 1095856855 },
-      { title: "fukumean", artist: "Gunna", streams: 1095247561 },
-      { title: "Late Night Talking", artist: "Harry Styles", streams: 1095079440 },
-      { title: "Song 2", artist: "Blur", streams: 1094814955 },
-      { title: "La Santa", artist: "Bad Bunny", streams: 1094677559 },
-      { title: "Dancing in the Moonlight", artist: "Toploader", streams: 1094215907 },
-      { title: "LA NOCHE DE ANOCHE", artist: "Bad Bunny", streams: 1092147011 },
-      { title: "Perfect", artist: "One Direction", streams: 1091737090 },
-      { title: "Where Is My Mind?", artist: "Pixies", streams: 1091216989 },
-      { title: "Killing In The Name", artist: "Rage Against The Machine", streams: 1091077875 },
-      { title: "Levitating", artist: "Dua Lipa", streams: 1090294865 },
-      { title: "Don't Call Me Up", artist: "Mabel", streams: 1088793512 },
-      { title: "Jealous", artist: "Eyedress", streams: 1087885763 },
-      { title: "34+35", artist: "Ariana Grande", streams: 1087766185 },
-      { title: "Vete", artist: "Bad Bunny", streams: 1086898552 },
-      { title: "Shakira: Bzrp Music Sessions, Vol. 53", artist: "Bizarrap", streams: 1086877570 },
-      { title: "Runaway", artist: "AURORA", streams: 1086068536 },
-      { title: "Drops Of Jupiter", artist: "Train", streams: 1084512333 },
-      { title: "Strip That Down", artist: "Liam Payne", streams: 1082174191 },
-      { title: "It's My Life", artist: "Bon Jovi", streams: 1081878314 },
-      { title: "Pray For Me", artist: "The Weeknd", streams: 1081844417 },
-      { title: "Soltera (Remix)", artist: "Lunay", streams: 1081580536 },
-      { title: "Bye Bye Bye", artist: "*NSYNC", streams: 1081206587 },
-      { title: "Fast Car", artist: "Tracy Chapman", streams: 1080083756 },
-      { title: "Love You Like A Love Song", artist: "Selena Gomez & The Scene", streams: 1079582462 },
-      { title: "Wildest Dreams", artist: "Taylor Swift", streams: 1079456978 },
-      { title: "Old Town Road", artist: "Lil Nas X", streams: 1079317861 },
-      { title: "Bad Moon Rising", artist: "Creedence Clearwater Revival", streams: 1078867702 },
-      { title: "Not Allowed", artist: "TV Girl", streams: 1078497441 },
-      { title: "RAPSTAR", artist: "Polo G", streams: 1077255907 },
-      { title: "Tongue Tied", artist: "GROUPLOVE", streams: 1077210755 },
-      { title: "Another Brick in the Wall, Pt. 2", artist: "Pink Floyd", streams: 1077110296 },
-      { title: "Si Estuviésemos Juntos", artist: "Bad Bunny", streams: 1075431092 },
-      { title: "Borro Cassette", artist: "Maluma", streams: 1074760711 },
-      { title: "Black Beatles", artist: "Rae Sremmurd", streams: 1072596896 },
-      { title: "The A Team", artist: "Ed Sheeran", streams: 1072113412 },
-      { title: "Shotgun", artist: "George Ezra", streams: 1071537320 },
-      { title: "Wild Ones", artist: "Flo Rida", streams: 1070240534 },
-      { title: "Skyfall", artist: "Adele", streams: 1067830906 },
-      { title: "Your Song", artist: "Elton John", streams: 1067705783 },
-      { title: "You Need To Calm Down", artist: "Taylor Swift", streams: 1067156896 },
-      { title: "Use Somebody", artist: "Kings of Leon", streams: 1066131853 },
-      { title: "Time After Time", artist: "Cyndi Lauper", streams: 1065550051 },
-      { title: "Come & Go", artist: "Juice WRLD", streams: 1065457082 },
-      { title: "Space Cadet", artist: "Metro Boomin", streams: 1064559118 },
-      { title: "Piece Of Your Heart", artist: "MEDUZA", streams: 1064349533 },
-      { title: "Down Under", artist: "Men At Work", streams: 1064074780 },
-      { title: "Home", artist: "Edward Sharpe & The Magnetic Zeros", streams: 1062913632 },
-      { title: "Lo Siento BB:/", artist: "Tainy", streams: 1061861371 },
-      { title: "break up with your girlfriend, i'm bored", artist: "Ariana Grande", streams: 1061595100 },
-      { title: "Laugh Now Cry Later", artist: "Drake", streams: 1060248170 },
-      { title: "Love Me Again", artist: "V", streams: 1058497521 },
-      { title: "POWER", artist: "Kanye West", streams: 1058187159 },
-      { title: "Linger", artist: "The Cranberries", streams: 1055943252 },
-      { title: "Beautiful Crazy", artist: "Luke Combs", streams: 1054926272 },
-      { title: "Money In The Grave (Drake ft. Rick Ross)", artist: "Drake", streams: 1053591696 },
-      { title: "I Want You Back", artist: "The Jackson 5", streams: 1050381851 },
-      { title: "Break Free", artist: "Ariana Grande", streams: 1050014849 },
-      { title: "Master of Puppets (Remastered)", artist: "Metallica", streams: 1049294579 },
-      { title: "Faint", artist: "Linkin Park", streams: 1046969334 },
-      { title: "Truth Hurts", artist: "Lizzo", streams: 1045481990 },
-      { title: "What Is Love (Original 7' Mix)", artist: "Haddaway", streams: 1045220392 },
-      { title: "Piano Man", artist: "Billy Joel", streams: 1045137197 },
-      { title: "In Your Eyes", artist: "The Weeknd", streams: 1044839430 },
-      { title: "the remedy for a broken heart (why am I so in love)", artist: "XXXTENTACION", streams: 1044567184 },
-      { title: "Dilemma", artist: "Nelly", streams: 1044270622 },
-      { title: "Wishing Well", artist: "Juice WRLD", streams: 1044264912 },
-      { title: "No One", artist: "Alicia Keys", streams: 1044177302 },
-      { title: "All Too Well (10 Minute Version) (Taylor's Version) (From The Vault)", artist: "Taylor Swift", streams: 1044047803 },
-      { title: "Fluorescent Adolescent", artist: "Arctic Monkeys", streams: 1042833598 },
-      { title: "Steal My Girl", artist: "One Direction", streams: 1040055743 },
-      { title: "Martin & Gina", artist: "Polo G", streams: 1039881617 },
-      { title: "Drowning", artist: "A Boogie Wit da Hoodie", streams: 1039763399 },
-      { title: "Are You Bored Yet?", artist: "Wallows", streams: 1039482843 },
-      { title: "family ties", artist: "Baby Keem", streams: 1039445231 },
-      { title: "Sunday Best", artist: "Surfaces", streams: 1038028145 },
-      { title: "Fireflies", artist: "Owl City", streams: 1037276455 },
-      { title: "Diles", artist: "Bad Bunny", streams: 1036147519 },
-      { title: "Escapism.", artist: "RAYE", streams: 1036132116 },
-      { title: "Never Forget You", artist: "Zara Larsson", streams: 1035972973 },
-      { title: "Slow Hands", artist: "Niall Horan", streams: 1035360093 },
-      { title: "How Do You Sleep?", artist: "Sam Smith", streams: 1035237248 },
-      { title: "Se Preparó", artist: "Ozuna", streams: 1034230619 },
-      { title: "So Sick", artist: "Ne-Yo", streams: 1033370427 },
-      { title: "Adan y Eva", artist: "Paulo Londra", streams: 1032889283 },
-      { title: "You're Beautiful", artist: "James Blunt", streams: 1032657046 },
-      { title: "The Spins", artist: "Mac Miller", streams: 1032578589 },
-      { title: "RITMO (Bad Boys For Life)", artist: "Black Eyed Peas", streams: 1032346684 },
-      { title: "Jump", artist: "Van Halen", streams: 1032252519 },
-      { title: "Lean Wit Me", artist: "Juice WRLD", streams: 1031231898 },
-      { title: "Felices los 4", artist: "Maluma", streams: 1030431150 },
-      { title: "Mama", artist: "Jonas Blue", streams: 1030033596 },
-      { title: "Talk", artist: "Khalid", streams: 1029503891 },
-      { title: "Don't Wanna Know", artist: "Maroon 5", streams: 1028451467 },
-      { title: "Dancing In the Dark", artist: "Bruce Springsteen", streams: 1028054720 },
-      { title: "Bam Bam", artist: "Camila Cabello", streams: 1027987837 },
-      { title: "Super Bass", artist: "Nicki Minaj", streams: 1027738651 },
-      { title: "West Coast", artist: "Lana Del Rey", streams: 1027231097 },
-      { title: "Amanece", artist: "Anuel AA", streams: 1027146730 },
-      { title: "It's the Most Wonderful Time of the Year", artist: "Andy Williams", streams: 1025055780 },
-      { title: "Una Noche en Medellín", artist: "Cris MJ", streams: 1024948163 },
-      { title: "luther", artist: "Kendrick Lamar", streams: 1024918528 },
-      { title: "Bailando", artist: "Enrique Iglesias", streams: 1024548186 },
-      { title: "Lalala", artist: "Y2K", streams: 1024544157 },
-      { title: "Runaway (U & I)", artist: "Galantis", streams: 1024085553 },
-      { title: "Glorious", artist: "Macklemore", streams: 1022609959 },
-      { title: "Lost on You", artist: "LP", streams: 1021849703 },
-      { title: "Never Be the Same", artist: "Camila Cabello", streams: 1021780647 },
-      { title: "Look Alive", artist: "BlocBoy JB", streams: 1021549889 },
-      { title: "PRIDE.", artist: "Kendrick Lamar", streams: 1020794136 },
-      { title: "2055", artist: "Sleepy Hallow", streams: 1020661341 },
-      { title: "Love Lies", artist: "Khalid", streams: 1020014277 },
-      { title: "AMARGURA", artist: "KAROL G", streams: 1019751756 },
-      { title: "Bandit", artist: "Juice WRLD", streams: 1018585234 },
-      { title: "Somebody To Love", artist: "Queen", streams: 1018197619 },
-      { title: "Love Story (Taylor's Version)", artist: "Taylor Swift", streams: 1016125881 },
-      { title: "Somebody Told Me", artist: "The Killers", streams: 1016116156 },
-      { title: "Washing Machine Heart", artist: "Mitski", streams: 1015946227 },
-      { title: "Love In The Dark", artist: "Adele", streams: 1015584414 },
-      { title: "Échame La Culpa", artist: "Luis Fonsi", streams: 1015364629 },
-      { title: "iSpy", artist: "KYLE", streams: 1014851144 },
-      { title: "Heart Attack", artist: "Demi Lovato", streams: 1014668208 },
-      { title: "Tainted Love", artist: "Soft Cell", streams: 1013461655 },
-      { title: "Nobody Gets Me", artist: "SZA", streams: 1013197450 },
-      { title: "Never Gonna Give You Up (2022 Remaster)", artist: "Rick Astley", streams: 1012620908 },
-      { title: "Fake Love", artist: "Drake", streams: 1011392714 },
-      { title: "Lose Control", artist: "MEDUZA", streams: 1008217925 },
-      { title: "Strangers", artist: "Kenya Grace", streams: 1007846282 },
-      { title: "What You Know", artist: "Two Door Cinema Club", streams: 1007286067 },
-      { title: "Whiskey Glasses", artist: "Morgan Wallen", streams: 1006919970 },
-      { title: "Leave Before You Love Me", artist: "Marshmello", streams: 1006913988 },
-      { title: "Boulevard of Broken Dreams", artist: "Green Day", streams: 1006041086 },
-      { title: "Teenage Dream", artist: "Katy Perry", streams: 1005422523 },
-      { title: "Say My Name", artist: "Destiny's Child", streams: 1005144606 },
-      { title: "I Hate Everything About You", artist: "Three Days Grace", streams: 1004123376 },
-      { title: "I Write Sins Not Tragedies", artist: "Panic! At The Disco", streams: 1002896545 },
-      { title: "WITHOUT YOU", artist: "The Kid LAROI", streams: 1002870904 },
-      { title: "No Surprises", artist: "Radiohead", streams: 1001935681 },
-      { title: "Forever Young", artist: "Alphaville", streams: 1001471173 },
-      { title: "I See Fire", artist: "Ed Sheeran", streams: 1000611665 },
-      { title: "Oops!...I Did It Again", artist: "Britney Spears", streams: 999561867 },
-      // --- New Songs Batch ---
-      { title: "Master Of Puppets", artist: "Metallica", streams: 999222614 },
-      { title: "willow", artist: "Taylor Swift", streams: 998273095 },
-      { title: "Too Many Nights", artist: "Metro Boomin", streams: 998224458 },
-      { title: "Bleeding Love", artist: "Leona Lewis", streams: 998068538 },
-      { title: "Footloose", artist: "Kenny Loggins", streams: 998042233 },
-      { title: "Bandit", artist: "Juice WRLD", streams: 997800229 },
-      { title: "Ballin'", artist: "Mustard", streams: 996718385 },
-      { title: "Kids", artist: "MGMT", streams: 996386711 },
-      { title: "ily (i love you baby)", artist: "Surf Mesa", streams: 996161495 },
-      { title: "Jump", artist: "Van Halen", streams: 995850318 },
-      { title: "Hold On", artist: "Chord Overstreet", streams: 994980570 },
-      { title: "Golden", artist: "Harry Styles", streams: 994630821 },
-      { title: "Fight Song", artist: "Rachel Platten", streams: 994325666 },
-      { title: "Échame La Culpa", artist: "Luis Fonsi", streams: 994318531 },
-      { title: "Problem", artist: "Ariana Grande", streams: 994000495 },
-      { title: "One Step Closer", artist: "Linkin Park", streams: 993676040 },
-      { title: "Bad and Boujee", artist: "Migos", streams: 993468693 },
-      { title: "The Man Who Can't Be Moved", artist: "The Script", streams: 992749930 },
-      { title: "You're Beautiful", artist: "James Blunt", streams: 992580624 },
-      { title: "Evergreen", artist: "Richy Mitch & The Coal Miners", streams: 991955241 },
-      { title: "Otra vez", artist: "Zion & Lennox", streams: 991872865 },
-      { title: "2055", artist: "Sleepy Hallow", streams: 991397627 },
-      { title: "Columbia", artist: "Quevedo", streams: 990927155 },
-      { title: "Gimme! Gimme! Gimme! (A Man After Midnight)", artist: "ABBA", streams: 990688114 },
-      { title: "Formula", artist: "Labrinth", streams: 990630424 },
-      { title: "Boss Bitch", artist: "Doja Cat", streams: 990503297 },
-      { title: "Moonlight", artist: "Kali Uchis", streams: 990458563 },
-      { title: "Killer Queen", artist: "Queen", streams: 989587119 },
-      { title: "Everybody Talks", artist: "Neon Trees", streams: 989423803 },
-      { title: "Misery Business", artist: "Paramore", streams: 988659303 },
-      { title: "Runaway (U & I)", artist: "Galantis", streams: 988061478 },
-      { title: "Still into You", artist: "Paramore", streams: 987981862 },
-      { title: "After Dark", artist: "Mr.Kitty", streams: 987695277 },
-      { title: "Glorious", artist: "Macklemore", streams: 987360572 },
-      { title: "family ties", artist: "Baby Keem", streams: 986534852 },
-      { title: "Escapism.", artist: "RAYE", streams: 986275117 },
-      { title: "Boy's a liar Pt. 2", artist: "PinkPantheress", streams: 984833683 },
-      { title: "Fair Trade", artist: "Drake", streams: 984202632 },
-      { title: "More Than a Feeling", artist: "Boston", streams: 982335066 },
-      { title: "What Is Love", artist: "Haddaway", streams: 978962653 },
-      { title: "Magnolia", artist: "Playboi Carti", streams: 978625424 },
-      { title: "All I Want", artist: "Olivia Rodrigo", streams: 978450246 },
-      { title: "Una Noche en Medellín", artist: "Cris MJ", streams: 977963556 },
-      { title: "Steal My Girl", artist: "One Direction", streams: 977638603 },
-      { title: "Someone To You", artist: "BANNERS", streams: 977295109 },
-      { title: "Criminal", artist: "NATTI NATASHA", streams: 976475372 },
-      { title: "Versace on the Floor", artist: "Bruno Mars", streams: 976391854 },
-      { title: "Torn", artist: "Natalie Imbruglia", streams: 976303736 },
-      { title: "Amanece", artist: "Anuel AA", streams: 975765872 },
-      { title: "Tainted Love", artist: "Soft Cell", streams: 975663975 },
-      { title: "Total Eclipse of the Heart", artist: "Bonnie Tyler", streams: 975463190 },
-      { title: "Déjala Que Vuelva", artist: "Piso 21", streams: 975377711 },
-      { title: "Love Galore", artist: "SZA", streams: 974658380 },
-      { title: "3005", artist: "Childish Gambino", streams: 974482529 },
-      { title: "Day 'N' Nite (Nightmare)", artist: "Kid Cudi", streams: 974375405 },
-      { title: "I Knew You Were Trouble.", artist: "Taylor Swift", streams: 973796932 },
-      { title: "Cupid (Twin Ver.)", artist: "FIFTY FIFTY", streams: 973710128 },
-      { title: "Dancin", artist: "Aaron Smith", streams: 973120953 },
-      { title: "Strangers", artist: "Kenya Grace", streams: 972632471 },
-      { title: "Never Gonna Give You Up", artist: "Rick Astley", streams: 972547305 },
-      { title: "I Write Sins Not Tragedies", artist: "Panic! At The Disco", streams: 971768146 },
-      { title: "Clint Eastwood", artist: "Gorillaz", streams: 970936655 },
-      { title: "Leave Before You Love Me", artist: "Marshmello", streams: 970702424 },
-      { title: "you should see me in a crown", artist: "Billie Eilish", streams: 970454096 },
-      { title: "Otra vez", artist: "Zion & Lennox", streams: 969816645 },
-      { title: "Say My Name", artist: "Destiny's Child", streams: 969678939 },
-      { title: "FAKE LOVE", artist: "BTS", streams: 969639847 },
-      { title: "My Boo", artist: "USHER", streams: 968501673 },
-      { title: "K.", artist: "Cigarettes After Sex", streams: 968127671 },
-      { title: "Maneater", artist: "Nelly Furtado", streams: 967419501 },
-      { title: "snowfall", artist: "Øneheart", streams: 967278204 },
-      { title: "Bleeding Love", artist: "Leona Lewis", streams: 967224080 },
-      { title: "Propuesta Indecente", artist: "Romeo Santos", streams: 966592233 },
-      { title: "Duality", artist: "Slipknot", streams: 966508911 },
-      { title: "Dancing In the Dark", artist: "Bruce Springsteen", streams: 965597621 },
-      { title: "Never Be Like You", artist: "Flume", streams: 965526817 },
-      { title: "Don't Go Breaking My Heart", artist: "Elton John", streams: 965141052 },
-      { title: "(Sittin' On) the Dock of the Bay", artist: "Otis Redding", streams: 965125244 },
-      { title: "Breezeblocks", artist: "alt-J", streams: 964642815 },
-      { title: "Footloose", artist: "Kenny Loggins", streams: 964640575 },
-      { title: "Forgot About Dre", artist: "Dr. Dre", streams: 964564820 },
-      { title: "Sunsetz", artist: "Cigarettes After Sex", streams: 964549684 },
-      { title: "Neverita", artist: "Bad Bunny", streams: 964225785 },
-      { title: "Beautiful Girls", artist: "Sean Kingston", streams: 964023513 },
-      { title: "What You Know", artist: "Two Door Cinema Club", streams: 963745740 },
-      { title: "Better Together", artist: "Jack Johnson", streams: 963231713 },
-      { title: "You Right", artist: "Doja Cat", streams: 962985430 },
-      { title: "Blurred Lines", artist: "Robin Thicke", streams: 962847456 },
-      { title: "Friends", artist: "Chase Atlantic", streams: 962785943 },
-      { title: "Call On Me", artist: "Starley", streams: 962443403 },
-      { title: "love nwantiti (ah ah ah)", artist: "CKay", streams: 962033135 },
-      { title: "Gimme More", artist: "Britney Spears", streams: 961711529 },
-      { title: "California Love", artist: "2Pac", streams: 961474940 },
-      { title: "Hold On", artist: "Chord Overstreet", streams: 960940960 },
-      { title: "I Wonder", artist: "Kanye West", streams: 960501100 },
-      { title: "QUE ONDA", artist: "Calle 24", streams: 960470171 },
-      { title: "Body Like A Back Road", artist: "Sam Hunt", streams: 960090044 },
-      { title: "Waka Waka (This Time for Africa) [The Official 2010 FIFA World Cup (TM) Song]", artist: "Shakira", streams: 959890250 },
-      { title: "Fortnight", artist: "Taylor Swift", streams: 959829402 },
-      { title: "Safaera", artist: "Bad Bunny", streams: 959406472 },
-      { title: "Santeria", artist: "Sublime", streams: 959290049 },
-      { title: "Timeless", artist: "The Weeknd", streams: 958055195 },
-      { title: "QUE PRETENDES", artist: "J Balvin", streams: 958052410 },
-      { title: "Train Wreck", artist: "James Arthur", streams: 957731146 },
-      { title: "After Dark", artist: "Mr.Kitty", streams: 957595097 },
-      { title: "In My Blood", artist: "Shawn Mendes", streams: 957346869 },
-      { title: "Yandel 150", artist: "Yandel", streams: 957084685 },
-      { title: "El Perdón", artist: "Nicky Jam", streams: 956612763 },
-      { title: "Bodak Yellow", artist: "Cardi B", streams: 956117388 },
-      { title: "I Like You (A Happier Song)", artist: "Post Malone", streams: 956092547 },
-      { title: "Runaway", artist: "Kanye West", streams: 955208366 },
-      { title: "Normal", artist: "Feid", streams: 954569852 },
-      { title: "Maniac", artist: "Conan Gray", streams: 954043004 },
-      { title: "Island In The Sun", artist: "Weezer", streams: 953971197 },
-      { title: "Boy's a liar Pt. 2", artist: "PinkPantheress", streams: 952995225 },
-      { title: "Cry", artist: "Cigarettes After Sex", streams: 952592626 },
-      { title: "Impossible", artist: "James Arthur", streams: 951705398 },
-      { title: "I Won't Give Up", artist: "Jason Mraz", streams: 951204735 },
-      { title: "boyfriend", artist: "Ariana Grande", streams: 950771323 },
-      { title: "Everybody Talks", artist: "Neon Trees", streams: 950490291 },
-      { title: "Whistle", artist: "Flo Rida", streams: 950315908 },
-      { title: "One Call Away", artist: "Charlie Puth", streams: 950045838 },
-      { title: "Chamber Of Reflection", artist: "Mac DeMarco", streams: 949206029 },
-      { title: "The Motto", artist: "Tiësto", streams: 948981228 },
-      { title: "Electric Feel", artist: "MGMT", streams: 948266158 },
-      { title: "P.I.M.P.", artist: "50 Cent", streams: 947902114 },
-      { title: "I Miss You", artist: "blink-182", streams: 947678999 },
-      { title: "Glad You Came", artist: "The Wanted", streams: 947349941 },
-      { title: "Dancin", artist: "Aaron Smith", streams: 946237076 },
-      { title: "Moral of the Story", artist: "Ashe", streams: 945962143 },
-      { title: "More Than a Feeling", artist: "Boston", streams: 945836256 },
-      { title: "Someone To You", artist: "BANNERS", streams: 945758673 },
-      { title: "Swimming Pools (Drank)", artist: "Kendrick Lamar", streams: 945124091 },
-      { title: "Si Veo a Tu Mamá", artist: "Bad Bunny", streams: 944384412 },
-      { title: "BICHOTA", artist: "KAROL G", streams: 944236221 },
-      { title: "Pareja Del Año", artist: "Sebastian Yatra", streams: 943781542 },
-      { title: "Is This Love", artist: "Bob Marley & The Wailers", streams: 943451915 },
-      { title: "Pop Out", artist: "Polo G", streams: 943401515 },
-      { title: "Team", artist: "Lorde", streams: 942612761 },
-      { title: "Chill Bill", artist: "Rob $tone", streams: 941681192 },
-      { title: "Cool for the Summer", artist: "Demi Lovato", streams: 940219447 },
-      { title: "No Diggity", artist: "Blackstreet", streams: 938429570 },
-      { title: "Body Like A Back Road", artist: "Sam Hunt", streams: 938375495 },
-      { title: "No Money", artist: "Galantis", streams: 938030891 },
-      { title: "ME!", artist: "Taylor Swift", streams: 937699138 },
-      { title: "i'm so tired...", artist: "Lauv", streams: 937620637 },
-      { title: "love nwantiti (ah ah ah)", artist: "CKay", streams: 937451152 },
-      { title: "Breezeblocks", artist: "alt-J", streams: 936985473 },
-      { title: "Lovin On Me", artist: "Jack Harlow", streams: 936244870 },
-      { title: "Shower", artist: "Becky G", streams: 935692193 },
-      { title: "Feather", artist: "Sabrina Carpenter", streams: 935184357 },
-      { title: "Karma", artist: "Taylor Swift", streams: 934819862 },
-      { title: "Hate It Or Love It", artist: "The Game", streams: 934287589 },
-      { title: "Out of My League", artist: "Fitz and The Tantrums", streams: 933828824 },
-      { title: "Bitch Better Have My Money", artist: "Rihanna", streams: 933817342 },
-      { title: "Hey Mama", artist: "David Guetta", streams: 933815778 },
-      { title: "The Man", artist: "Taylor Swift", streams: 933537552 },
-      { title: "Heart-Shaped Box", artist: "Nirvana", streams: 933216348 },
-      { title: "Rise", artist: "Jonas Blue", streams: 933000719 },
-      { title: "Worth It", artist: "Fifth Harmony", streams: 932932521 },
-      { title: "I Hate Everything About You", artist: "Three Days Grace", streams: 932644204 },
-      { title: "Party Monster", artist: "The Weeknd", streams: 931883194 },
-      { title: "Since U Been Gone", artist: "Kelly Clarkson", streams: 931788329 },
-      { title: "About Damn Time", artist: "Lizzo", streams: 931478203 },
-      { title: "Never Be Like You", artist: "Flume", streams: 931215430 },
-      { title: "Enchanted", artist: "Taylor Swift", streams: 930821900 },
-      { title: "Sprinter", artist: "Dave", streams: 930590979 },
-      { title: "A Thousand Miles", artist: "Vanessa Carlton", streams: 929983856 },
-      { title: "All I Want", artist: "Olivia Rodrigo", streams: 929834254 },
-      { title: "Pon de Replay", artist: "Rihanna", streams: 929833158 },
-      { title: "Neverita", artist: "Bad Bunny", streams: 929717297 },
-      { title: "Lonely", artist: "Justin Bieber", streams: 929075650 },
-      { title: "How Deep Is Your Love", artist: "Bee Gees", streams: 928996487 },
-      { title: "exile", artist: "Taylor Swift", streams: 928816541 },
-      { title: "(Sittin' On) the Dock of the Bay", artist: "Otis Redding", streams: 928605931 },
-      { title: "Like I Can", artist: "Sam Smith", streams: 928490828 },
-      { title: "Still into You", artist: "Paramore", streams: 928310508 },
-      { title: "Sugar, We're Goin Down", artist: "Fall Out Boy", streams: 928061707 },
-      { title: "Evergreen", artist: "Richy Mitch & The Coal Miners", streams: 927731532 },
-      { title: "Kids", artist: "MGMT", streams: 927411579 },
-      { title: "Pretty Girl", artist: "Maggie Lindemann", streams: 927342133 },
-      { title: "Jackie Chan", artist: "Tiësto", streams: 927341064 },
-      { title: "Kill This Love", artist: "BLACKPINK", streams: 927147155 },
-      { title: "QUE VUELVAS", artist: "Grupo Frontera", streams: 927027950 },
-      { title: "Total Eclipse of the Heart", artist: "Bonnie Tyler", streams: 926682749 },
-      { title: "Million Reasons", artist: "Lady Gaga", streams: 926360975 },
-      { title: "F**kin' Problems", artist: "A$AP Rocky", streams: 925600629 },
-      { title: "3D", artist: "Jung Kook", streams: 925541481 },
-      { title: "Lovely Day", artist: "Bill Withers", streams: 925532170 },
-      { title: "Do It To It", artist: "ACRAZE", streams: 925038403 },
-      { title: "Therefore I Am", artist: "Billie Eilish", streams: 924564505 },
-      { title: "Pursuit Of Happiness (Nightmare)", artist: "Kid Cudi", streams: 924348903 },
-      { title: "Wind Of Change", artist: "Scorpions", streams: 924158587 },
-      { title: "Brooklyn Baby", artist: "Lana Del Rey", streams: 923718787 },
-      { title: "Torn", artist: "Natalie Imbruglia", streams: 923572471 },
-      { title: "LOKERA", artist: "Rauw Alejandro", streams: 923067815 },
-      { title: "Clint Eastwood", artist: "Gorillaz", streams: 922868058 },
-      { title: "First Class", artist: "Jack Harlow", streams: 921571506 },
-      { title: "Burn", artist: "Ellie Goulding", streams: 921441560 },
-      { title: "Pain", artist: "PinkPantheress", streams: 920816241 },
-      { title: "Prada", artist: "cassö", streams: 920752048 },
-      { title: "Superhero (Heroes & Villains) [with Future & Chris Brown]", artist: "Metro Boomin", streams: 920682815 },
-      { title: "Según Quién", artist: "Maluma", streams: 920626542 },
-      { title: "Vaina Loca", artist: "Ozuna", streams: 920566552 },
-      { title: "Alright", artist: "Kendrick Lamar", streams: 920457693 },
-      { title: "Don't Go Breaking My Heart", artist: "Elton John", streams: 920397692 },
-      { title: "Rich Flex", artist: "Drake", streams: 920355990 },
-      { title: "Trance", artist: "Metro Boomin", streams: 920331438 },
-      { title: "Blurred Lines", artist: "Robin Thicke", streams: 920200172 },
-      { title: "Forever Young", artist: "Alphaville", streams: 919393217 },
-      { title: "QUE ONDA", artist: "Calle 24", streams: 919266222 },
-      { title: "Play Date", artist: "Melanie Martinez", streams: 918722532 },
-      { title: "Drive By", artist: "Train", streams: 918679960 },
-      { title: "Mr. Jones", artist: "Counting Crows", streams: 918376062 },
-      { title: "Rich Girl", artist: "Daryl Hall & John Oates", streams: 917878904 },
-      { title: "Glad You Came", artist: "The Wanted", streams: 917622962 },
-      { title: "boyfriend", artist: "Ariana Grande", streams: 917491423 },
-      { title: "Beautiful Girls", artist: "Sean Kingston", streams: 916385580 },
-      { title: "Telephone", artist: "Lady Gaga", streams: 916081748 },
-      { title: "You Belong With Me (Taylor's Version)", artist: "Taylor Swift", streams: 915985376 },
-      { title: "La Diabla", artist: "Xavi", streams: 915850052 },
-      { title: "Primera Cita", artist: "Carín León", streams: 914332725 },
-      { title: "Paper Planes", artist: "M.I.A.", streams: 914010448 },
-      { title: "The Pretender", artist: "Foo Fighters", streams: 913862928 },
-      { title: "Sundress", artist: "A$AP Rocky", streams: 913480246 },
-      { title: "Cupid", artist: "FIFTY FIFTY", streams: 913472229 },
-      { title: "LA INOCENTE", artist: "Mora", streams: 913165271 },
-      { title: "Cigarettes out the Window", artist: "TV Girl", streams: 912813234 },
-      { title: "Wasted On You", artist: "Morgan Wallen", streams: 912427529 },
-      { title: "Airplanes", artist: "B.o.B", streams: 911990546 },
-      { title: "Pareja Del Año", artist: "Sebastian Yatra", streams: 911879020 },
-      { title: "Welcome to the Black Parade", artist: "My Chemical Romance", streams: 911845099 },
-      { title: "Moral of the Story", artist: "Ashe", streams: 911781459 },
-      { title: "Scream & Shout", artist: "will.i.am", streams: 911611088 },
-      { title: "Hold Me While You Wait", artist: "Lewis Capaldi", streams: 911296863 },
-      { title: "Duality", artist: "Slipknot", streams: 911021142 },
-      { title: "Break Stuff", artist: "Limp Bizkit", streams: 910813984 },
-      { title: "Somebody Else", artist: "The 1975", streams: 910286876 },
-      { title: "About Damn Time", artist: "Lizzo", streams: 909972058 },
-      { title: "Lost Boy", artist: "Ruth B.", streams: 909240677 },
-      { title: "...Ready for It?", artist: "Taylor Swift", streams: 908926543 },
-      { title: "I Miss You", artist: "blink-182", streams: 908529220 },
-      { title: "Un Día (One Day)", artist: "J Balvin", streams: 908351506 },
-      { title: "BOP", artist: "DaBaby", streams: 907745315 },
-      { title: "Skinny Love", artist: "Birdy", streams: 907125117 },
-      { title: "Good Riddance (Time of Your Life)", artist: "Green Day", streams: 906987911 },
-      { title: "Loco Contigo", artist: "DJ Snake", streams: 906975035 },
-      { title: "The Sound of Silence", artist: "Disturbed", streams: 906403383 },
-      { title: "American Boy", artist: "Estelle", streams: 905848290 },
-      { title: "Is There Someone Else?", artist: "The Weeknd", streams: 905601953 },
-      { title: "Can I Be Him", artist: "James Arthur", streams: 905513658 },
-      { title: "This Is Me", artist: "Keala Settle", streams: 905275790 },
-      { title: "Mistletoe", artist: "Justin Bieber", streams: 904369943 },
-      { title: "Santeria", artist: "Sublime", streams: 904246730 },
-      { title: "Teenage Fever", artist: "Drake", streams: 904147399 },
-      { title: "La La La", artist: "Naughty Boy", streams: 903823215 },
-      { title: "Feel This Moment", artist: "Pitbull", streams: 903683805 },
-      { title: "All About That Bass", artist: "Meghan Trainor", streams: 903357714 },
-      { title: "Armed And Dangerous", artist: "Juice WRLD", streams: 903276724 },
-      { title: "Island In The Sun", artist: "Weezer", streams: 903251836 },
-      { title: "My Kind of Woman", artist: "Mac DeMarco", streams: 902813872 },
-      { title: "CUFF IT", artist: "Beyoncé", streams: 902784879 },
-      { title: "Electric Feel", artist: "MGMT", streams: 902347302 },
-      { title: "Love Sosa", artist: "Chief Keef", streams: 902278680 },
-      { title: "Borderline", artist: "Tame Impala", streams: 902165535 },
-      { title: "Only Love Can Hurt Like This", artist: "Paloma Faith", streams: 901498884 },
-      { title: "snowfall", artist: "Øneheart", streams: 901006069 },
-      { title: "Kill This Love", artist: "MUSIC LAB JPN", streams: 900398438 },
-      { title: "Dust in the Wind", artist: "Kansas", streams: 900139795 },
-      { title: "comethru", artist: "Jeremy Zucker", streams: 900058569 },
-      { title: "Kill This Love", artist: "DJ MIX NON-STOP CHANNEL", streams: 899644060 },
-      { title: "Broccoli", artist: "DRAM", streams: 899498767 },
-      { title: "No Diggity", artist: "Blackstreet", streams: 899441784 },
-      { title: "Try", artist: "P!nk", streams: 899141902 },
-      { title: "Sofia", artist: "Clairo", streams: 899102496 },
-      { title: "Monster", artist: "Skillet", streams: 899041097 },
-      { title: "Do It To It", artist: "ACRAZE", streams: 899011508 },
-      { title: "Kill This Love", artist: "LOVE BGM JPN", streams: 898667803 },
-      { title: "Renegades", artist: "X Ambassadors", streams: 898430332 },
-      { title: "Like a Stone", artist: "Audioslave", streams: 898426845 },
-      { title: "Boys Don't Cry", artist: "The Cure", streams: 898310013 },
-      { title: "Finesse", artist: "Bruno Mars", streams: 898251939 },
-      { title: "I'm Gonna Be (500 Miles)", artist: "The Proclaimers", streams: 898212875 },
-      { title: "Austin (Boots Stop Workin')", artist: "Dasha", streams: 898200425 },
-      { title: "River", artist: "Eminem", streams: 897763486 },
-      { title: "Sky", artist: "Playboi Carti", streams: 897481163 },
-      { title: "Hate Me", artist: "Ellie Goulding", streams: 897466021 },
-      { title: "Si No Estás", artist: "iñigo quintero", streams: 897309506 },
-      { title: "Maneater", artist: "Daryl Hall & John Oates", streams: 896965454 },
-      { title: "Don't Speak", artist: "No Doubt", streams: 896926310 },
-      { title: "Roxanne", artist: "The Police", streams: 896788430 },
-      { title: "Pump It", artist: "Black Eyed Peas", streams: 896636017 },
-      { title: "679", artist: "Fetty Wap", streams: 896254989 },
-      { title: "Five More Hours", artist: "Deorro", streams: 896233694 },
-      { title: "Qué Más Pues?", artist: "J Balvin", streams: 895992620 },
-      { title: "Walking On Sunshine", artist: "Katrina & The Waves", streams: 895966808 },
-      { title: "Is This Love", artist: "Bob Marley & The Wailers", streams: 895580480 },
-      { title: "Down with the Sickness", artist: "Disturbed", streams: 894656144 },
-      { title: "Made You Look", artist: "Meghan Trainor", streams: 894637273 },
-      { title: "Die Young", artist: "Kesha", streams: 894383519 },
-      { title: "Venom", artist: "Eminem", streams: 894346428 },
-      { title: "Saturn", artist: "SZA", streams: 893976677 },
-      { title: "Sail", artist: "AWOLNATION", streams: 893948969 },
-      { title: "Let It Go", artist: "Idina Menzel", streams: 893590019 },
+      { title: "Blinding Lights", artist: "The Weeknd", streams: 3800000000 },
+      { title: "Shape of You", artist: "Ed Sheeran", streams: 3600000000 },
+      { title: "Dance Monkey", artist: "Tones and I", streams: 3200000000 },
+      { title: "Someone You Loved", artist: "Lewis Capaldi", streams: 3000000000 },
+      { title: "Sunflower", artist: "Post Malone & Swae Lee", streams: 2800000000 },
+      { title: "Bad Guy", artist: "Billie Eilish", streams: 2600000000 },
+      { title: "Señorita", artist: "Shawn Mendes & Camila Cabello", streams: 2400000000 },
+      { title: "Old Town Road", artist: "Lil Nas X", streams: 2200000000 },
+      { title: "Truth Hurts", artist: "Lizzo", streams: 2000000000 },
+      { title: "7 rings", artist: "Ariana Grande", streams: 1800000000 },
+      { title: "Shallow", artist: "Lady Gaga & Bradley Cooper", streams: 1600000000 },
+      { title: "Happier", artist: "Marshmello & Bastille", streams: 1400000000 },
+      { title: "New Rules", artist: "Dua Lipa", streams: 1200000000 },
+      { title: "God's Plan", artist: "Drake", streams: 1000000000 },
+      { title: "Perfect", artist: "Ed Sheeran", streams: 900000000 },
+      { title: "Uptown Funk", artist: "Mark Ronson ft. Bruno Mars", streams: 800000000 },
+      { title: "Thinking Out Loud", artist: "Ed Sheeran", streams: 700000000 },
+      { title: "All of Me", artist: "John Legend", streams: 600000000 },
+      { title: "Stay With Me", artist: "Sam Smith", streams: 500000000 },
+      { title: "Counting Stars", artist: "OneRepublic", streams: 400000000 },
+      { title: "Radioactive", artist: "Imagine Dragons", streams: 300000000 },
+      { title: "Royals", artist: "Lorde", streams: 200000000 },
+      { title: "Pompeii", artist: "Bastille", streams: 100000000 }
     ];
 
     let score = 0;
@@ -2282,6 +999,6 @@
       }
     });
     renderBattle();
-  </script>
-</body>
+  </script>  
+</body>  
 </html>
