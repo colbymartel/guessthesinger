@@ -314,6 +314,19 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
+    @media (max-width: 768px) {
+      .gallery-track img {
+        width: calc(100% - 20px);
+        min-width: calc(100% - 20px);
+        height: 250px;
+        margin: 0 10px;
+      }
+      
+      .gallery-dots {
+        display: none;
+      }
+    }
+
     .gallery-controls {
       display: flex;
       justify-content: center;
@@ -1558,7 +1571,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // Gallery Carousel Functionality
 let currentGallerySlide = 0;
 let galleryInterval;
-const totalGallerySlides = Math.ceil(19 / 3); // 19 images, 3 per slide
+let totalGallerySlides;
+
+function getTotalSlides() {
+  const isMobile = window.innerWidth <= 768;
+  return isMobile ? 19 : Math.ceil(19 / 3); // 1 image per slide on mobile, 3 per slide on desktop
+}
 
 function initGallery() {
   const track = document.getElementById('galleryTrack');
@@ -1566,14 +1584,28 @@ function initGallery() {
   
   if (!track || !dotsContainer) return;
   
-  // Create dots
-  for (let i = 0; i < totalGallerySlides; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'gallery-dot';
-    if (i === 0) dot.classList.add('active');
-    dot.onclick = () => goToGallerySlide(i);
-    dotsContainer.appendChild(dot);
+  // Update total slides based on screen size
+  totalGallerySlides = getTotalSlides();
+  
+  // Clear existing dots
+  dotsContainer.innerHTML = '';
+  
+  // Only create dots on desktop (not mobile)
+  const isMobile = window.innerWidth <= 768;
+  if (!isMobile) {
+    // Create dots
+    for (let i = 0; i < totalGallerySlides; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'gallery-dot';
+      if (i === 0) dot.classList.add('active');
+      dot.onclick = () => goToGallerySlide(i);
+      dotsContainer.appendChild(dot);
+    }
   }
+  
+  // Reset to first slide
+  currentGallerySlide = 0;
+  goToGallerySlide(0);
   
   // Start auto-scroll
   startGalleryAutoScroll();
@@ -1585,7 +1617,8 @@ function goToGallerySlide(slideIndex) {
   const dots = document.querySelectorAll('.gallery-dot');
   
   if (track) {
-    const slideWidth = 100 / 3; // 3 images per slide
+    const isMobile = window.innerWidth <= 768;
+    const slideWidth = isMobile ? 100 : 100 / 3; // 1 image per slide on mobile, 3 per slide on desktop
     track.style.transform = `translateX(-${slideIndex * slideWidth}%)`;
   }
   
@@ -1621,6 +1654,14 @@ function resetGalleryAutoScroll() {
 // Initialize gallery when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   initGallery();
+});
+
+// Handle window resize for responsive gallery
+window.addEventListener('resize', function() {
+  const newTotalSlides = getTotalSlides();
+  if (newTotalSlides !== totalGallerySlides) {
+    initGallery(); // Reinitialize if slide count changes
+  }
 });
 </script>
 <style>
