@@ -82,15 +82,15 @@
 
     .hero-grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-      gap: 15px;
-      width: 300%;
-      height: 300%;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(5, 1fr);
+      gap: 10px;
+      width: 400%;
+      height: 400%;
       position: absolute;
-      top: -100%;
-      left: -100%;
-      animation: scrollGallery 80s linear infinite;
+      top: -150%;
+      left: -150%;
+      animation: scrollGallery 100s linear infinite;
     }
 
     .hero-grid img {
@@ -98,14 +98,14 @@
       height: 100%;
       object-fit: cover;
       border-radius: 8px;
-      opacity: 0.3;
-      filter: brightness(0.4) contrast(1.2);
+      opacity: 0.6;
+      filter: brightness(0.7) contrast(1.1);
       transition: all 0.3s ease;
     }
 
     .hero-grid img:hover {
-      opacity: 0.5;
-      filter: brightness(0.6) contrast(1.1);
+      opacity: 0.8;
+      filter: brightness(0.8) contrast(1.05);
     }
 
     @keyframes scrollGallery {
@@ -113,7 +113,7 @@
         transform: translate(0, 0);
       }
       100% {
-        transform: translate(-66.67%, -66.67%);
+        transform: translate(-75%, -75%);
       }
     }
 
@@ -123,7 +123,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.2);
     }
 
     .hero-content {
@@ -864,7 +864,7 @@
       <div class="hero-content">
         <img src="images/SingerLogo.png" alt="Guess The Singer" class="hero-logo">
         <h1 class="hero-title">New England's #1 Campus Game Show</h1>
-        <button class="hero-cta" onclick="scrollToContact()">Learn More</button>
+        <button class="hero-cta" onclick="window.open('https://www.youtube.com/watch?v=Ayw4ghT7fJU', '_blank')">Watch Trailer</button>
       </div>
     </div>
   </section>
@@ -893,8 +893,8 @@
               <span class="feature-value">❌</span>
             </div>
             <div class="feature">
-              <span class="feature-name">Merch Giveaways</span>
-              <span class="feature-value">❌</span>
+              <span class="feature-name">Marketing Materials</span>
+              <span class="feature-value">✅</span>
             </div>
             <div class="feature">
               <span class="feature-name">Guaranteed Prize Money</span>
@@ -922,8 +922,8 @@
               <span class="feature-value">❌</span>
             </div>
             <div class="feature">
-              <span class="feature-name">Merch Giveaways</span>
-              <span class="feature-value">❌</span>
+              <span class="feature-name">Marketing Materials</span>
+              <span class="feature-value">✅</span>
             </div>
             <div class="feature">
               <span class="feature-name">Guaranteed Prize Money</span>
@@ -950,7 +950,7 @@
               <span class="feature-value">✅</span>
             </div>
             <div class="feature">
-              <span class="feature-name">Merch Giveaways</span>
+              <span class="feature-name">Marketing Materials</span>
               <span class="feature-value">✅</span>
             </div>
             <div class="feature">
@@ -1014,14 +1014,14 @@
         </a>
         <div class="host-stats">
           <div class="stat">
-            <span class="stat-number" data-target="500000">0</span>
+            <span class="stat-number" data-target="525000">0</span>
             <div class="stat-label-with-icon">
               <img src="images/youtubeicon.png" alt="YouTube" class="platform-icon">
               <span class="stat-label">YOUTUBE SUBSCRIBERS</span>
             </div>
           </div>
           <div class="stat">
-            <span class="stat-number" data-target="200000">0</span>
+            <span class="stat-number" data-target="225000">0</span>
             <div class="stat-label-with-icon">
               <img src="images/tiktokicon.png" alt="TikTok" class="platform-icon">
               <span class="stat-label">TIKTOK FOLLOWERS</span>
@@ -1530,9 +1530,9 @@ document.addEventListener('DOMContentLoaded', function() {
       'images/Gallery19.jpg'
     ];
     
-    // Create enough images to fill the larger grid (6x4 = 24 images visible at once)
+    // Create enough images to fill the larger grid (8x5 = 40 images visible at once)
     // We'll duplicate images multiple times to ensure smooth scrolling and full coverage
-    const imagesToShow = [...galleryImages, ...galleryImages, ...galleryImages.slice(0, 12)];
+    const imagesToShow = [...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages.slice(0, 20)];
     
     imagesToShow.forEach((src, index) => {
       const img = document.createElement('img');

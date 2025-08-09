@@ -63,12 +63,12 @@
 
     .dropdown {
       display: none;
-      position: absolute;
+        position: absolute;
       top: 40px;
       margin-right: 30px;
-      background-color: #1e2b38;
+        background-color: #1e2b38;
       padding: 10px;
-      border-radius: 10px;
+        border-radius: 10px;
       flex-direction: column;
       min-width: 150px;
       z-index: 10;
@@ -86,11 +86,11 @@
     }
 
     .dropdown a {
-      color: white;
-      text-decoration: none;
+        color: white;
+        text-decoration: none;
       padding: 8px 12px;
-      font-weight: bold;
-    }
+        font-weight: bold;
+      }
 
     .dropdown a:hover {
       background-color: #ffcb05;
@@ -142,7 +142,7 @@
       text-align: center;
       animation: fadeInUp 0.8s ease-out;
     }
-
+    
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -153,7 +153,7 @@
         transform: translateY(0);
       }
     }
-
+    
     /* Enhanced Scoreboard */
     .scoreboard {
       background: #315f85;
@@ -218,7 +218,7 @@
       text-align: center;
       overflow: hidden;
     }
-
+    
     .song-card::before {
       content: '';
       position: absolute;
@@ -230,7 +230,7 @@
       transform: scaleX(0);
       transition: transform 0.3s ease;
     }
-
+    
     .song-card:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
@@ -243,7 +243,7 @@
       box-shadow: 0 12px 32px rgba(59, 123, 191, 0.2);
       transform: translateY(-4px);
     }
-
+    
     .song-card.selected::before {
       transform: scaleX(1);
     }
@@ -254,7 +254,7 @@
       box-shadow: 0 12px 32px rgba(39, 174, 96, 0.3);
       transform: translateY(-4px);
     }
-
+    
     .song-card.correct::before {
       transform: scaleX(1);
     }
@@ -999,6 +999,6 @@
       }
     });
     renderBattle();
-  </script>  
-</body>  
+  </script>
+</body>
 </html>
