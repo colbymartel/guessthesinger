@@ -408,12 +408,20 @@
     
     // Check if user has already played today
     function checkIfAlreadyPlayed() {
+      // Allow unlimited games for admin user
+      if (window.currentUser && window.currentUser.email === "colbyma23@gmail.com") {
+        return false;
+      }
       const today = new Date().toDateString();
       const playedToday = localStorage.getItem(`dailyGame_${today}`);
       return playedToday === 'true';
     }
     
     function markAsPlayed() {
+      // Don't mark as played for admin user
+      if (window.currentUser && window.currentUser.email === "colbyma23@gmail.com") {
+        return;
+      }
       const today = new Date().toDateString();
       localStorage.setItem(`dailyGame_${today}`, 'true');
     }
@@ -485,11 +493,11 @@
     };
 
 
-    const kushQuestions = [
+    const megQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Male", "Visible Tattoos"]
+        correct: ["Female", "Blond Hair"]
       },
       {
         question: "Guess the Genre",
@@ -499,12 +507,12 @@
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["30-39"]
+        correct: ["Under 30"]
       },
       {
         question: "Guess the Birthplace",
         options: ["USA", "Canada", "Europe", "Australia", "Asia", "South America"],
-        correct: ["Europe"]
+        correct: ["USA"]
       },
       {
         question: "Guess the Monthly Listeners",
@@ -514,17 +522,17 @@
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Active on TikTok"]
+        correct: ["Grammy Winner", "Super Bowl Performer", "Active on TikTok"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Birth Name", "Starts A-M"]
+        correct: ["Two Words", "Birth Name", "Starts N-Z"]
       }
     ];
 
-    // Use Kush's questions (Ed Sheeran)
-    const questions = kushQuestions;
+    // Use Meg's questions (Taylor Swift)
+    const questions = megQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -535,24 +543,33 @@
     let hintsUsed = 0;
     // Track if the final singer guess has been made (to not deduct points for it)
     let finalSingerGuessMade = false;
+    
+    // Make these global for Firebase recording
+    window.totalGuesses = totalGuesses;
+    window.hintsUsed = hintsUsed;
+    window.finalSingerGuessMade = finalSingerGuessMade;
 
         function renderStartPage() {
       const container = document.getElementById('quizContainer');
-      const hostName = "Kush";
-      const hostImage = "images/kush.jpg";
+      if (!container) {
+        console.error("quizContainer not found!");
+        return;
+      }
+      const hostName = "Meg";
+      const hostImage = "images/megshea.jpg";
       const hostTitle = "";
-      const challengeDate = "August 7, 2025 - Challenge #7";
+      const challengeDate = "August 9, 2025 - Challenge #9";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 7, 2025</div>
-            <div class="challenge-number">Challenge #7</div>
+            <div class="date">August 9, 2025</div>
+            <div class="challenge-number">Challenge #9</div>
           </div>
           
           
-                     <div class="tagline">Can you Guess His Favorite Singer?</div>
+                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -565,6 +582,11 @@
           ${alreadyPlayed ? 
             '<div class="already-played-message">✅ You\'ve completed today\'s challenge! Come back tomorrow for a new one.</div>' :
             '<button class="start-btn" onclick="startQuiz()"><span>START GAME</span></button>'
+          }
+          
+          ${(window.currentUser && window.currentUser.email === "colbyma23@gmail.com") ? 
+            '<div class="admin-notice">👑 Admin Mode: Unlimited daily plays enabled</div>' : 
+            ''
           }
           
           <div class="impact-section">
@@ -595,6 +617,7 @@
 
     function renderQuestion() {
       if (!quizStarted) {
+        console.log("Rendering start page...");
         renderStartPage();
         return;
       }
@@ -649,15 +672,15 @@
       document.getElementById('progress').style.width = `${((current + 1) / (questions.length + 1)) * 100}%`;
     }
 
-    function renderFinalGuessPage() {
+        function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-             const hostName = "Kush";
-       const hostImage = "images/kush.jpg";
+               const hostName = "Meg";
+       const hostImage = "images/megshea.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
-                     <div class="question-prompt">Guess His Favorite Singer</div>
+                     <div class="question-prompt">Guess Her Favorite Singer</div>
           <img src="${hostImage}" alt="${hostName}" class="final-guess-carson" />
         </div>
         <div class="autocomplete-container">
@@ -709,6 +732,11 @@
       if (totalGuessesEl) totalGuessesEl.textContent = totalGuesses;
       if (hintsUsedEl) hintsUsedEl.textContent = hintsUsed;
       
+      // Update global variables for Firebase recording
+      window.totalGuesses = totalGuesses;
+      window.hintsUsed = hintsUsed;
+      window.finalSingerGuessMade = finalSingerGuessMade;
+      
       // Calculate score: 100 base - 5 per guess - 10 per hint
       // Don't deduct points for the final singer guess
       const guessesForScoring = finalSingerGuessMade ? totalGuesses - 1 : totalGuesses;
@@ -745,9 +773,11 @@
       // Count the final guess
       totalGuesses++;
       finalSingerGuessMade = true; // Mark that the final singer guess has been made
+      window.totalGuesses = totalGuesses;
+      window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Ed Sheeran"; 
+      const finalSingerAnswer = "Taylor Swift"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -953,6 +983,7 @@
       
       // Update counters
       hintsUsed++;
+      window.hintsUsed = hintsUsed;
       updateGuessCounter();
       console.log('Hints used updated:', hintsUsed);
       
@@ -968,6 +999,7 @@
       if (!viewedHints.includes(hintNumber)) {
         // This is the first time viewing this hint, so increment hints used
         hintsUsed++;
+        window.hintsUsed = hintsUsed;
         viewedHints.push(hintNumber);
         sessionStorage.setItem('viewedHints', JSON.stringify(viewedHints));
         updateGuessCounter();
@@ -1384,12 +1416,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Laufey
+      // Hints for Taylor Swift
       const hints = {
-        1: "💡 The singer's name starts with L.",
-        2: "💡 This artist is known for her jazz-influenced pop music and unique voice.",
-        3: "💡 This artist is a young singer-songwriter who gained popularity on social media.",
-        4: "💡 She is famous for her dreamy vocals and has been called the 'modern jazz queen'."
+        1: "💡 This artist is known for writing songs about her personal life and relationships.",
+        2: "💡 She has won multiple Grammy Awards and is one of the best-selling artists of all time.",
+        3: "💡 This artist is famous for her storytelling lyrics and has released albums named after colors.",
+        4: "💡 She performed at the Super Bowl halftime show and is known for her 'Eras' tour."
       };
       
       if (hintDisplay) {
@@ -1438,8 +1470,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                    <img src="images/kush.jpg" alt="Kush" class="celebration-carson" />
-        <img src="images/edsheeran.jpg" alt="Ed Sheeran" class="celebration-singer" />
+                    <img src="images/megshea.jpg" alt="Meg" class="celebration-carson" />
+        <img src="images/taylorswift.jpg" alt="Taylor Swift" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
@@ -1685,35 +1717,42 @@
         console.log("No user logged in, skipping Team Water tracking");
         return;
       }
-
       try {
-        // Check if user has already completed the game today
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        const completionsRef = collection(db, "dailyGameCompletions");
-        const q = query(
-          completionsRef, 
-          where("userId", "==", currentUser.uid),
-          where("timestamp", ">=", today)
-        );
-        const snapshot = await getDocs(q);
-        
-        if (!snapshot.empty) {
-          console.log("User already completed daily game today");
-          return;
+        // Check if user has already completed the game today (skip for admin)
+        if (currentUser.email !== "colbyma23@gmail.com") {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const completionsRef = collection(db, "dailyGameCompletions");
+          const q = query(
+            completionsRef,
+            where("userId", "==", currentUser.uid),
+            where("timestamp", ">=", today)
+          );
+          const snapshot = await getDocs(q);
+          if (!snapshot.empty) {
+            console.log("User already completed daily game today");
+            return;
+          }
         }
-
-        // Record the completion
-        await addDoc(collection(db, "dailyGameCompletions"), {
+        
+        // Calculate score consistently
+        const guessesForScoring = window.finalSingerGuessMade ? window.totalGuesses - 1 : window.totalGuesses;
+        const calculatedScore = Math.max(0, 100 - (guessesForScoring * 5) - (window.hintsUsed * 10));
+        
+        // Record the completion with detailed statistics
+        const docRef = await addDoc(collection(db, "dailyGameCompletions"), {
           userId: currentUser.uid,
           userEmail: currentUser.email,
           username: currentUser.displayName || currentUser.email?.split('@')[0] || "Anonymous",
           timestamp: serverTimestamp(),
+          completionDate: serverTimestamp(),
           gameType: "daily",
-          donationAmount: 0.01
+          donationAmount: 0.01,
+          totalGuesses: window.totalGuesses || totalGuesses,
+          hintsUsed: window.hintsUsed || hintsUsed,
+          score: calculatedScore, // This is now calculated consistently
+          finalSingerGuessMade: window.finalSingerGuessMade || finalSingerGuessMade
         });
-
         console.log("✅ Daily game completion recorded for Team Water");
       } catch (error) {
         console.error("Error recording daily game completion:", error);
@@ -2711,6 +2750,18 @@
       font-weight: 500;
       border: 1px solid #c3e6cb;
       text-align: center;
+    }
+    
+    .admin-notice {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-weight: 500;
+      border: 1px solid #ffeaa7;
+      text-align: center;
+      font-size: 0.9rem;
     }
 
     .description-header {

@@ -82,14 +82,14 @@
 
     .hero-grid {
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      grid-template-rows: repeat(5, 1fr);
+      grid-template-columns: repeat(16, 1fr);
+      grid-template-rows: repeat(3, 1fr);
       gap: 10px;
-      width: 400%;
-      height: 400%;
+      width: 800%;
+      height: 100%;
       position: absolute;
-      top: -150%;
-      left: -150%;
+      top: 0;
+      left: 0;
       animation: scrollGallery 100s linear infinite;
     }
 
@@ -110,10 +110,10 @@
 
     @keyframes scrollGallery {
       0% {
-        transform: translate(0, 0);
+        transform: translateX(0);
       }
       100% {
-        transform: translate(-75%, -75%);
+        transform: translateX(-50%);
       }
     }
 
@@ -1543,9 +1543,9 @@ document.addEventListener('DOMContentLoaded', function() {
       'images/Gallery19.jpg'
     ];
     
-    // Create enough images to fill the larger grid (8x5 = 40 images visible at once)
-    // We'll duplicate images multiple times to ensure smooth scrolling and full coverage
-    const imagesToShow = [...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages.slice(0, 20)];
+    // Create enough images to fill the larger grid (16x3 = 48 images visible at once)
+    // We'll duplicate images multiple times to ensure smooth horizontal scrolling and full coverage
+    const imagesToShow = [...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages];
     
     imagesToShow.forEach((src, index) => {
       const img = document.createElement('img');
