@@ -17,8 +17,8 @@
   gtag('config', 'G-T42NG5C994');
 </script>
   <!-- Preload critical images for better mobile performance -->
-      <link rel="preload" as="image" href="images/kush.jpg">
-    <link rel="preload" as="image" href="images/edsheeran.jpg">
+      <link rel="preload" as="image" href="images/andymorris.jpg">
+    <link rel="preload" as="image" href="images/brunomars.jpg">
   <link rel="preload" as="image" href="images/poppenguin.png">
   <link rel="preload" as="image" href="images/rhinorapper.png">
   <link rel="preload" as="image" href="images/horsecountry.png">
@@ -410,10 +410,12 @@
     function checkIfAlreadyPlayed() {
       // Allow unlimited games for admin user
       if (window.currentUser && window.currentUser.email === "colbyma23@gmail.com") {
+        console.log("Admin user detected, allowing unlimited plays");
         return false;
       }
       const today = new Date().toDateString();
       const playedToday = localStorage.getItem(`dailyGame_${today}`);
+      console.log("Checking if already played:", playedToday === 'true', "for user:", window.currentUser?.email);
       return playedToday === 'true';
     }
     
@@ -493,21 +495,21 @@
     };
 
 
-    const megQuestions = [
+    const andyQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Female", "Blond Hair"]
+        correct: ["Male", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Pop"]
+        correct: ["Pop", "R&B"]
       },
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["Under 30"]
+        correct: ["30-39"]
       },
       {
         question: "Guess the Birthplace",
@@ -522,22 +524,23 @@
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Super Bowl Performer", "Active on TikTok"]
+        correct: ["Grammy Winner", "Super Bowl Performer"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Birth Name", "Starts N-Z"]
+        correct: ["Two Words", "Stage Name", "Starts A-M"]
       }
     ];
 
-    // Use Meg's questions (Taylor Swift)
-    const questions = megQuestions;
+    // Use Andy's questions (Bruno Mars)
+    const questions = andyQuestions;
 
     let current = 0;
     const userAnswers = [];
     // Add a variable to track if the quiz has started
     let quizStarted = false;
+    window.quizStarted = quizStarted;
     // Track total guesses made throughout the quiz
     let totalGuesses = 0;
     let hintsUsed = 0;
@@ -555,10 +558,10 @@
         console.error("quizContainer not found!");
         return;
       }
-      const hostName = "Meg";
-      const hostImage = "images/megshea.jpg";
+      const hostName = "Andy";
+      const hostImage = "images/andymorris.jpg";
       const hostTitle = "";
-      const challengeDate = "August 9, 2025 - Challenge #9";
+      const challengeDate = "August 10, 2025 - Challenge #10";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
@@ -569,7 +572,7 @@
           </div>
           
           
-                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
+                     <div class="tagline">Can you Guess His Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -596,6 +599,9 @@
         </div>
       `;
     }
+    
+    // Make renderStartPage globally accessible
+    window.renderStartPage = renderStartPage;
 
     window.startQuiz = function() {
       // Check if user has already played today
@@ -605,6 +611,7 @@
       }
       
       quizStarted = true;
+      window.quizStarted = quizStarted;
       // Set progress to first question (not 0% anymore)
       document.getElementById('progress').style.width = `${(1 / (questions.length + 1)) * 100}%`;
       renderQuestion();
@@ -612,12 +619,12 @@
 
     window.goToStartPage = function() {
       quizStarted = false;
+      window.quizStarted = quizStarted;
       renderQuestion();
     }
 
     function renderQuestion() {
       if (!quizStarted) {
-        console.log("Rendering start page...");
         renderStartPage();
         return;
       }
@@ -675,8 +682,8 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-               const hostName = "Meg";
-       const hostImage = "images/megshea.jpg";
+               const hostName = "Andy";
+       const hostImage = "images/andymorris.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -777,7 +784,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Taylor Swift"; 
+      const finalSingerAnswer = "Bruno Mars"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -798,10 +805,10 @@
       
       // Generate hint display content for all unlocked hints
       const hints = {
-        1: "💡 He is known to play the acoustic guitar.",
-        2: "💡 He has 99 million monthly Spotify listeners.",
-        3: "💡 His name begins with 'E'.",
-        4: "💡 His breakout hit is 'The A Team' and he's known for 'Shape of You'."
+        1: "💡 This artist is known for his smooth vocals and retro-inspired sound.",
+        2: "💡 He has won multiple Grammy Awards and is famous for his energetic live performances.",
+        3: "💡 He performed at the Super Bowl halftime show in the 2010s.",
+        4: "💡 This artist is known for hits like 'Uptown Funk' and 'Just the Way You Are'."
       };
       
       // Get the currently displayed hint from session storage
@@ -1416,12 +1423,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Taylor Swift
+      // Hints for Bruno Mars
       const hints = {
-        1: "💡 This artist is known for writing songs about her personal life and relationships.",
-        2: "💡 She has won multiple Grammy Awards and is one of the best-selling artists of all time.",
-        3: "💡 This artist is famous for her storytelling lyrics and has released albums named after colors.",
-        4: "💡 She performed at the Super Bowl halftime show and is known for her 'Eras' tour."
+        1: "💡 This artist is known for his smooth vocals and retro-inspired sound.",
+        2: "💡 He has won multiple Grammy Awards and is famous for his energetic live performances.",
+        3: "💡 This artist is known for hits like 'Uptown Funk' and 'Just the Way You Are'.",
+        4: "💡 He performed at the Super Bowl halftime show and is known for his '24K Magic' album."
       };
       
       if (hintDisplay) {
@@ -1470,8 +1477,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                    <img src="images/megshea.jpg" alt="Meg" class="celebration-carson" />
-        <img src="images/taylorswift.jpg" alt="Taylor Swift" class="celebration-singer" />
+                    <img src="images/andymorris.jpg" alt="Andy" class="celebration-carson" />
+        <img src="images/brunomars.jpg" alt="Bruno Mars" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
@@ -1557,14 +1564,17 @@
       });
     }
 
-    // On load, show the start page
-    renderQuestion();
-    
-    // Reset progress bar to 0% on game load
-    document.getElementById('progress').style.width = '0%';
-    
-    // Preload images after initial render
-    setTimeout(preloadImages, 100);
+    // Initialize game when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // On load, show the start page
+      renderQuestion();
+      
+      // Reset progress bar to 0% on game load
+      document.getElementById('progress').style.width = '0%';
+      
+      // Preload images after initial render
+      setTimeout(preloadImages, 100);
+    });
 
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
@@ -1639,6 +1649,15 @@
             });
           }
         }, 0);
+        
+        // Re-render start page if we're on it to show admin notice
+        if (!window.quizStarted) {
+          const container = document.getElementById('quizContainer');
+          if (container && container.innerHTML.includes('start-page')) {
+            console.log("Re-rendering start page for admin user");
+            window.renderStartPage();
+          }
+        }
       } else {
         welcomeEl.textContent = "Welcome, Anonymous";
         dropdownMenu.innerHTML = `
