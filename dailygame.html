@@ -682,8 +682,8 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-               const hostName = "Andy";
-       const hostImage = "images/andymorris.jpg";
+                   const hostName = "Daena";
+    const hostImage = "images/daena.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -784,7 +784,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Bruno Mars"; 
+      const finalSingerAnswer = "Morgan Wallen"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -805,10 +805,10 @@
       
       // Generate hint display content for all unlocked hints
       const hints = {
-        1: "💡 This artist is known for his smooth vocals and retro-inspired sound.",
-        2: "💡 He has won multiple Grammy Awards and is famous for his energetic live performances.",
-        3: "💡 He performed at the Super Bowl halftime show in the 2010s.",
-        4: "💡 This artist is known for hits like 'Uptown Funk' and 'Just the Way You Are'."
+        1: "💡 This artist is known for his distinctive country vocals and southern charm.",
+        2: "💡 He rose to fame on The Voice.",
+        3: "💡 He was formally known for his signature mullet.",
+        4: "💡 He's known for hits like 'Whiskey Glasses' and 'Last Night'."
       };
       
       // Get the currently displayed hint from session storage
@@ -1477,7 +1477,7 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                    <img src="images/andymorris.jpg" alt="Andy" class="celebration-carson" />
+                    <img src="images/daena.jpg" alt="Daena" class="celebration-carson" />
         <img src="images/morganwallen.jpg" alt="Morgan Wallen" class="celebration-singer" />
           </div>
           <div class="water-donation">
