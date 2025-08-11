@@ -495,7 +495,7 @@
     };
 
 
-    const andyQuestions = [
+    const daenaQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
@@ -504,7 +504,7 @@
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Pop", "R&B"]
+        correct: ["Country"]
       },
       {
         question: "Guess the Age",
@@ -519,22 +519,22 @@
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["80+ Million"]
+        correct: ["20-40 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Super Bowl Performer"]
+        correct: ["TV Show Contestant"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Stage Name", "Starts A-M"]
+        correct: ["Two Words", "Birth Name", "Starts A-M"]
       }
     ];
 
-    // Use Andy's questions (Bruno Mars)
-    const questions = andyQuestions;
+    // Use Daena's questions (Morgan Wallen)
+    const questions = daenaQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -558,21 +558,21 @@
         console.error("quizContainer not found!");
         return;
       }
-      const hostName = "Andy";
-      const hostImage = "images/andymorris.jpg";
+      const hostName = "Daena";
+      const hostImage = "images/daena.jpg";
       const hostTitle = "";
-      const challengeDate = "August 10, 2025 - Challenge #10";
+      const challengeDate = "August 11, 2025 - Challenge #11";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 9, 2025</div>
-            <div class="challenge-number">Challenge #9</div>
+            <div class="date">August 11, 2025</div>
+            <div class="challenge-number">Challenge #11</div>
           </div>
           
           
-                     <div class="tagline">Can you Guess His Favorite Singer?</div>
+                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -682,8 +682,8 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-               const hostName = "Andy";
-       const hostImage = "images/andymorris.jpg";
+               const hostName = "Daena";
+       const hostImage = "images/daena.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -784,7 +784,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Bruno Mars"; 
+      const finalSingerAnswer = "Morgan Wallen"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -805,10 +805,10 @@
       
       // Generate hint display content for all unlocked hints
       const hints = {
-        1: "💡 This artist is known for his smooth vocals and retro-inspired sound.",
-        2: "💡 He has won multiple Grammy Awards and is famous for his energetic live performances.",
-        3: "💡 He performed at the Super Bowl halftime show in the 2010s.",
-        4: "💡 This artist is known for hits like 'Uptown Funk' and 'Just the Way You Are'."
+        1: "💡 He has had several chart-topping country hits.",
+        2: "💡 He rose to fame on The Voice.",
+        3: "💡 He is known for his mullet hairstyle.",
+        4: "💡 This artist is known for hits like 'Whiskey Glasses' and 'Last Night'."
       };
       
       // Get the currently displayed hint from session storage
@@ -1423,12 +1423,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Bruno Mars
+              // Hints for Morgan Wallen
       const hints = {
-        1: "💡 This artist is known for his smooth vocals and retro-inspired sound.",
-        2: "💡 He has won multiple Grammy Awards and is famous for his energetic live performances.",
-        3: "💡 This artist is known for hits like 'Uptown Funk' and 'Just the Way You Are'.",
-        4: "💡 He performed at the Super Bowl halftime show and is known for his '24K Magic' album."
+        1: "💡 This artist is known for his distinctive voice and country music style.",
+        2: "💡 He rose to fame on a reality TV singing competition show.",
+        3: "💡 He has had several chart-topping country hits and is known for his mullet hairstyle.",
+        4: "💡 This artist is known for hits like 'Whiskey Glasses' and 'Last Night'."
       };
       
       if (hintDisplay) {
@@ -1477,8 +1477,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                    <img src="images/andymorris.jpg" alt="Andy" class="celebration-carson" />
-        <img src="images/brunomars.jpg" alt="Bruno Mars" class="celebration-singer" />
+                    <img src="images/daena.jpg" alt="Daena" class="celebration-carson" />
+        <img src="images/morganwallen.jpg" alt="Morgan Wallen" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
