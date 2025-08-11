@@ -7,7 +7,7 @@
   <title>Guessing Games</title>
   <link rel="icon" href="/favicongg.ico" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -16,22 +16,32 @@
     }
 
     body {
-      font-family: 'Fredoka', sans-serif;
-      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      font-family: 'Montserrat', sans-serif;
+      background: #234d7d;
       color: #333;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    /* Enhanced Header */
+    /* Clean Navigation Bar */
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* Header with Logo */
     .header {
       background: linear-gradient(135deg, #3b7bbf, #234d7d);
       padding: 40px 20px;
       text-align: center;
       color: white;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       position: relative;
       overflow: hidden;
     }
@@ -43,122 +53,343 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
       pointer-events: none;
     }
 
-    .header .logo img {
-      width: 200px;
+    .logo {
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo img {
+      width: 300px;
       height: auto;
       margin: 0 auto;
       display: block;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-      position: relative;
-      z-index: 1;
     }
 
-    /* Enhanced Navigation */
-    nav {
-      background-color: #1e2b38;
-      padding: 15px 30px;
+    .nav-left {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      color: white;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      gap: 30px;
     }
 
-    .welcome-msg {
-      font-weight: bold;
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .nav-links a:hover {
       color: #ffcb05;
+    }
+
+    .welcome-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
       cursor: pointer;
     }
 
-    .welcome-msg:hover {
-      text-decoration: underline;
+    .welcome-msg {
+      color: #ffcb05;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+      transition: color 0.3s ease;
+    }
+
+    .welcome-section:hover .welcome-msg {
+      color: #ffd700;
+    }
+
+    .coin-emoji {
+      width: 20px;
+      height: 20px;
+      background: #ffcb05;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(255, 203, 5, 0.5);
+    }
+
+    .coin-count {
+      color: white;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .dropdown {
       display: none;
       position: absolute;
-      top: 40px;
-      margin-right: 30px;
-      background-color: #1e2b38;
-      padding: 10px;
-      border-radius: 10px;
-      flex-direction: column;
+      top: 100%;
+      left: 0;
+      background: #1e2b38;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: 1000;
       min-width: 150px;
-      z-index: 10;
+      margin-top: 5px;
     }
 
     .dropdown.show {
-      display: flex;
-      animation: slideDown 0.3s ease;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      display: block;
     }
 
     .dropdown a {
+      display: block;
+      padding: 12px 16px;
       color: white;
       text-decoration: none;
-      padding: 8px 12px;
-      font-weight: bold;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      transition: background 0.3s ease;
     }
 
     .dropdown a:hover {
-      background-color: #ffcb05;
-      color: #1e2b38;
+      background: #3b7bbf;
     }
 
-    .coin-emoji {
-      width: 28px;
-      height: 28px;
-      background: linear-gradient(135deg, #ffd700, #f1c40f);
-      border-radius: 50%;
-      box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3);
-      position: relative;
-      display: inline-block;
-      animation: coinGlow 2s ease-in-out infinite alternate;
+    .dropdown a:first-child {
+      border-radius: 8px 8px 0 0;
     }
 
-    @keyframes coinGlow {
-      from { box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3); }
-      to { box-shadow: 0 4px 16px rgba(241, 196, 15, 0.6); }
+    .dropdown a:last-child {
+      border-radius: 0 0 8px 8px;
     }
 
-    #coinDisplay {
+    .nav-right {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-left: auto;
+      gap: 20px;
     }
 
-    #coinCount {
-      font-weight: 600;
+    .search-container {
+      position: relative;
+      width: 300px;
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .search-bar:focus {
+      border-color: #3b7bbf;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(59, 123, 191, 0.1);
+    }
+
+    .search-bar::placeholder {
+      color: #999;
+    }
+
+    .login-btn {
+      background: #3b7bbf;
       color: white;
-      font-size: 1.1rem;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
     }
 
-    /* Enhanced Main Content */
+    .login-btn:hover {
+      background: #234d7d;
+    }
+
+    /* Main Content */
     .main-content {
-      flex: 1;
-      padding: 40px 20px;
       max-width: 1200px;
       margin: 0 auto;
-      width: 100%;
+      padding: 40px 20px;
+      background: #234d7d;
     }
 
-    /* Enhanced Daily Game Section */
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      margin-bottom: 60px;
+      background: #ffffff;
+      padding: 40px 20px;
+      border-radius: 20px;
+      margin: 0 -20px 60px -20px;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #1e2b38;
+      margin-bottom: 15px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: #666;
+      font-weight: 400;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Animated Featured Game Banner */
+    .featured-game {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      color: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(59, 123, 191, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    @keyframes featuredGlow {
+      0% {
+        box-shadow: 0 10px 30px rgba(59, 123, 191, 0.3);
+      }
+      100% {
+        box-shadow: 0 15px 40px rgba(59, 123, 191, 0.5);
+      }
+    }
+
+    .featured-game::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: rotate(45deg);
+      animation: shimmer 4s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+      }
+      100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+      }
+    }
+
+    .featured-game-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .featured-singer-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .featured-singer-image:hover {
+      transform: scale(1.05);
+    }
+
+    .featured-singer-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .featured-text-content {
+      text-align: left;
+      max-width: 350px;
+    }
+
+    .featured-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-family: 'Montserrat', sans-serif;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .featured-stats {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .stat-icon {
+      font-size: 0.9rem;
+      color: #ffcb05;
+    }
+
+    .play-now-btn {
+      background: #3b7bbf;
+      color: white;
+      border: 2px solid #b0e0e6;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+      animation: buttonGlow 2s ease-in-out infinite alternate;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    @keyframes buttonGlow {
+      0% {
+        box-shadow: 0 4px 15px rgba(59, 123, 191, 0.3);
+      }
+      100% {
+        box-shadow: 0 6px 20px rgba(59, 123, 191, 0.6);
+      }
+    }
+
+    .play-now-btn:hover {
+      background: #5f9ea0;
+      transform: translateY(-2px);
+      animation: none;
+    }
+
+    /* Daily Game Section */
     .daily-game-section {
       text-align: center;
       margin-bottom: 50px;
-      position: relative;
     }
 
     .daily-game-button {
@@ -174,24 +405,7 @@
       font-weight: 600;
       box-shadow: 0 8px 25px rgba(70, 130, 180, 0.3);
       transition: all 0.3s ease;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .daily-game-button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .daily-game-button:hover::before {
-      left: 100%;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .daily-game-button:hover {
@@ -209,108 +423,177 @@
       50% { transform: scale(1.1); }
     }
 
-    /* Enhanced Section Headers */
-    .section-header {
-      text-align: center;
-      margin-bottom: 50px;
-      position: relative;
+    /* Categories Section */
+    .categories-section {
+      margin-bottom: 60px;
     }
 
-    .section-header h1 {
-      font-size: 3rem;
+    .categories-title {
+      font-size: 2.5rem;
       font-weight: 700;
-      color: #1e2b38;
-      margin-bottom: 15px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 40px;
+      font-family: 'Montserrat', sans-serif;
     }
 
-    .section-header .underline {
-      width: 80px;
-      height: 5px;
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      margin: 0 auto 20px auto;
-      border-radius: 3px;
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .category-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+      border: 2px solid #b0e0e6;
+      border-radius: 20px;
+      padding: 35px 25px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
       position: relative;
+      overflow: hidden;
     }
 
-    .section-header .underline::after {
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(59, 123, 191, 0.1), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .category-card:hover::before {
+      left: 100%;
+    }
+
+    .category-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(59, 123, 191, 0.2);
+      border-color: #3b7bbf;
+    }
+
+    .category-icon {
+      width: 75px;
+      height: 75px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 25px;
+      font-size: 2rem;
+      color: white;
+      transition: all 0.3s ease;
+      position: relative;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .category-icon::after {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      border-radius: 3px;
-      animation: shimmer 2s infinite;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 18px;
     }
 
-    @keyframes shimmer {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+    .category-card:hover .category-icon {
+      transform: scale(1.1) rotate(2deg);
+      box-shadow: 0 8px 25px rgba(59, 123, 191, 0.3);
     }
 
-    .section-header p {
+    .category-card:hover .category-icon::after {
+      opacity: 1;
+    }
+
+    .category-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 12px;
+      font-family: 'Montserrat', sans-serif;
+      transition: color 0.3s ease;
+    }
+
+    .category-card:hover .category-title {
+      color: #3b7bbf;
+    }
+
+    .category-description {
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.6;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      z-index: 2;
+    }
+
+    .category-stats {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #e8e8e8;
+      position: relative;
+      z-index: 2;
+    }
+
+    .category-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
       color: #666;
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto;
       font-weight: 500;
     }
 
-    .section-divider {
-      text-align: center;
-      margin: 60px 0 30px 0;
+    .category-stat i {
+      color: #ffcb05;
+      font-size: 0.9rem;
     }
 
-    .section-divider h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #1e2b38;
-      margin-bottom: 15px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    .get-involved-indicator {
+      background: linear-gradient(135deg, #ffcb05, #ffd700);
+      color: #333;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
 
-    .section-divider .underline {
-      width: 60px;
-      height: 4px;
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      margin: 0 auto;
-      border-radius: 2px;
+    .category-card:hover .get-involved-indicator {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(255, 203, 5, 0.4);
     }
 
-    /* Enhanced Games Grid */
+    /* Games Grid */
     .games-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
       margin-bottom: 60px;
     }
 
-    @media (min-width: 768px) {
-      .games-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .games-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    /* Enhanced Game Cards */
     .game-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+      border: 2px solid #b0e0e6;
       border-radius: 20px;
       padding: 30px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      transition: all 0.4s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       text-decoration: none;
       color: inherit;
-      display: block;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
       position: relative;
       overflow: hidden;
     }
@@ -319,184 +602,169 @@
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(59, 123, 191, 0.1), transparent);
+      transition: left 0.6s ease;
     }
 
     .game-card:hover::before {
-      transform: scaleX(1);
+      left: 100%;
     }
 
     .game-card:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 15px 40px rgba(59, 123, 191, 0.2);
+      border-color: #3b7bbf;
     }
 
     .game-card-header {
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
     }
 
     .game-icon {
-      width: 60px;
-      height: 60px;
+      width: 65px;
+      height: 65px;
       border-radius: 15px;
-      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin-right: 20px;
-      font-size: 28px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
       transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .game-icon::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
     .game-card:hover .game-icon {
-      transform: scale(1.1);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transform: scale(1.1) rotate(2deg);
+      box-shadow: 0 8px 25px rgba(59, 123, 191, 0.3);
+    }
+
+    .game-card:hover .game-icon::after {
+      opacity: 1;
+    }
+
+    .game-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover .game-icon img {
+      transform: scale(1.05);
     }
 
     .game-title {
       font-size: 1.4rem;
       font-weight: 700;
-      color: #333;
-      margin-bottom: 6px;
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-family: 'Montserrat', sans-serif;
+      transition: color 0.3s ease;
+    }
+
+    .game-card:hover .game-title {
+      color: #3b7bbf;
     }
 
     .game-category {
       font-size: 0.95rem;
       color: #3b7bbf;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .game-card:hover .game-category {
+      background: linear-gradient(135deg, #3b7bbf, #5f9ea0);
+      color: white;
+      transform: scale(1.05);
     }
 
     .game-description {
-      color: #666;
+      color: #555;
+      font-size: 1rem;
       line-height: 1.6;
-      margin-bottom: 0;
-      font-size: 1rem;
-    }
-
-    /* Enhanced Search */
-    .search-container {
+      font-family: 'Montserrat', sans-serif;
       position: relative;
-      width: 320px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-direction: row;
+      z-index: 2;
     }
 
-    .search-input-container {
+    .game-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #e8e8e8;
       position: relative;
-      flex: 1;
+      z-index: 2;
     }
 
-    .search-bar {
-      padding: 12px 20px 12px 45px;
-      height: 45px;
-      border-radius: 25px;
-      border: 2px solid rgba(59, 123, 191, 0.2);
-      outline: none;
-      font-size: 1rem;
-      background: rgba(255, 255, 255, 0.9);
-      color: #333;
-      width: 100%;
-      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%233b7bbf" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
-      background-size: 16px;
-      background-repeat: no-repeat;
-      background-position: 15px center;
-      font-family: 'Fredoka', sans-serif;
-      transition: all 0.3s ease;
-    }
-
-    .search-bar:focus {
-      border-color: #3b7bbf;
-      box-shadow: 0 0 0 3px rgba(59, 123, 191, 0.1);
-      background: white;
-    }
-
-    .search-bar::placeholder {
-      color: #999;
-    }
-
-    .search-suggestions {
-      position: absolute;
-      top: 50px;
-      left: 0;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      color: #333;
-      border-radius: 15px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-      z-index: 999;
-      display: none;
-      flex-direction: column;
-      max-height: 300px;
-      overflow-y: auto;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .search-suggestion {
-      padding: 15px 20px;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-      cursor: pointer;
+    .game-stat {
       display: flex;
       align-items: center;
-      transition: all 0.3s ease;
-    }
-
-    .search-suggestion:last-child {
-      border-bottom: none;
-    }
-
-    .search-suggestion:hover {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      color: white;
-      transform: translateX(5px);
-    }
-
-    .search-suggestion-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      margin-right: 15px;
-      background: rgba(59, 123, 191, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
-      transition: all 0.3s ease;
-    }
-
-    .search-suggestion:hover .search-suggestion-icon {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .search-suggestion-content {
-      flex: 1;
-    }
-
-    .search-suggestion-title {
-      font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 3px;
-    }
-
-    .search-suggestion-category {
+      gap: 6px;
       font-size: 0.85rem;
-      opacity: 0.8;
+      color: #666;
+      font-weight: 500;
     }
 
-    /* Enhanced Bottom Navigation */
+    .game-stat i {
+      color: #ffcb05;
+      font-size: 0.9rem;
+    }
+
+    .play-indicator {
+      background: linear-gradient(135deg, #3b7bbf, #5f9ea0);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .game-card:hover .play-indicator {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(59, 123, 191, 0.4);
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -519,6 +787,7 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
+      font-family: 'Montserrat', sans-serif;
     }
 
     .bottom-nav .nav-item i,
@@ -536,325 +805,265 @@
 
     /* Responsive Design */
     @media (max-width: 768px) {
-      .main-content {
-        padding: 20px 16px;
+      .nav-links {
+        display: none;
       }
 
-      .section-header h1 {
-        font-size: 2.2rem;
+      .search-container {
+        width: 200px;
       }
 
-      .section-divider h2 {
-        font-size: 2rem;
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .featured-game {
+        padding: 30px 20px;
+      }
+
+      .featured-game-content {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .categories-grid {
+        grid-template-columns: 1fr;
       }
 
       .games-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .game-card {
-        padding: 25px;
-      }
-
-      .daily-game-button {
-        padding: 18px 25px;
-        font-size: 1.1rem;
-      }
-
-      .search-container {
-        width: 100%;
-        max-width: 300px;
-      }
-
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        padding: 15px 0;
-        border-radius: 0 0 15px 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
-
-      .nav-links .search-bar {
-        margin: 10px 20px;
-      }
-
-      .search-suggestions {
-        position: static;
-        width: calc(100% - 40px);
-        margin: 0 auto;
       }
     }
 
     @media (max-width: 480px) {
-      .section-header h1 {
-        font-size: 1.8rem;
+      .hero-title {
+        font-size: 2rem;
       }
 
-      .section-divider h2 {
-        font-size: 1.6rem;
+      .search-container {
+        width: 150px;
       }
 
-      .game-card {
-        padding: 20px;
-      }
-
-      .game-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-      }
-
-      .game-title {
-        font-size: 1.2rem;
-      }
-
-      .daily-game-button {
-        padding: 15px 20px;
-        font-size: 1rem;
+      .featured-title {
+        font-size: 1.5rem;
       }
     }
 
-    /* Loading Animation */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Floating Animation for Cards */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .game-card:nth-child(odd) {
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .game-card:nth-child(even) {
-      animation: float 6s ease-in-out infinite reverse;
-    }
-
-    /* Enhanced Mobile Navigation */
-    .hamburger {
+    /* Search Suggestions */
+    .search-suggestions {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      z-index: 999;
       display: none;
-      flex-direction: column;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .search-suggestion {
+      padding: 12px 15px;
+      border-bottom: 1px solid #f0f0f0;
       cursor: pointer;
-      margin-left: auto;
-      padding: 5px;
+      transition: background 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
     }
 
-    .bar {
-      height: 3px;
-      width: 25px;
-      background: #333;
-      margin: 3px 0;
-      transition: 0.4s;
-      border-radius: 2px;
+    .search-suggestion:hover {
+      background: #f8f9fa;
     }
 
-    @media (max-width: 768px) {
-      .hamburger {
-        display: flex;
-      }
-
-      .hamburger.active .bar:nth-child(1) {
-        transform: rotate(-45deg) translate(-5px, 6px);
-      }
-
-      .hamburger.active .bar:nth-child(2) {
-        opacity: 0;
-      }
-
-      .hamburger.active .bar:nth-child(3) {
-        transform: rotate(45deg) translate(-5px, -6px);
-      }
+    .search-suggestion:last-child {
+      border-bottom: none;
     }
   </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">
-          <a href="/index.html">
-            <img src="images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
-          </a>
-        </div>
-      </header>
-      
-      <nav>
-        <div style="display: flex; align-items: center; gap: 20px;">
-          <div class="welcome-nav" style="position: relative;">
-            <div id="welcomeMessage" class="welcome-msg">Welcome</div>
-            <div id="dropdownMenu" class="dropdown"></div>
-          </div>
-      
-          <div id="coinDisplay">
-            <div class="coin-emoji"></div>
-            <span id="coinCount">0</span>
-          </div>
-        </div>
-      
-      
-    <!-- Collapsible nav menu -->
-    <div class="nav-links" id="mobileMenu">
-       
-      <!-- Search within dropdown -->
-      <div class="search-container">
-        <div class="search-input-container">
-          <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
-          <div class="search-suggestions" id="suggestions"></div>
+  <!-- Header with Logo -->
+  <header class="header">
+    <div class="logo">
+              <img src="/images/SingerLogo.png" alt="Guess the Singer Logo">
+    </div>
+  </header>
+
+  <!-- Clean Navigation -->
+  <nav>
+    <div class="nav-left">
+      <div class="welcome-section" onclick="toggleDropdown()">
+        <span class="welcome-msg">Welcome, Anonymous</span>
+        <div class="coin-emoji"></div>
+        <span class="coin-count">123</span>
+        <div class="dropdown" id="userDropdown">
+          <a href="/profile.html">Edit Profile</a>
+          <a href="#" onclick="logout()">Log Out</a>
         </div>
       </div>
     </div>
+    <div class="nav-right">
+      <div class="search-container">
+        <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
+        <div class="search-suggestions" id="suggestions"></div>
+      </div>
+      <button class="login-btn" id="authButton" onclick="handleAuthClick()">Login</button>
+    </div>
   </nav>
-  
+
   <main class="main-content">
-    <div class="daily-game-section">
-      <a href="/dailygame.html" class="daily-game-button">
-        <i class="fas fa-calendar-day"></i>
-    Play Today's Daily Challenge!
-  </a>
-</div>
-
-    <div class="section-header">
-      <h1>🎮 New Games</h1>
-      <div class="underline"></div>
+    <!-- Animated Featured Game Banner -->
+    <div class="featured-game">
+      <div class="featured-game-content">
+        <div class="featured-singer-image">
+          <img src="/images/daena.jpg" alt="Today's Featured Singer - Daena">
+        </div>
+        <div class="featured-text-content">
+          <h2 class="featured-title">Today's Challenge</h2>
+          <div class="featured-stats">
+            <div class="stat-item">
+              <span>Can you guess Daena's favorite singer?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="/dailygame.html" class="play-now-btn">Play Now</a>
     </div>
 
-    <div class="games-grid">
-      <a href="/memory.html" class="game-card">
-        <div class="game-card-header">
-          <div class="game-icon">
-            <img src="/images/brain.jpg" alt="Match the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+    <!-- Games Grid -->
+    <div class="categories-section">
+      <h3 class="categories-title">All Games</h3>
+      <div class="games-grid">
+        <a href="/memory.html" class="game-card">
+          <div class="game-card-header">
+            <div class="game-icon">
+              <img src="/images/brain.jpg" alt="Memory Match">
+            </div>
+            <div>
+              <h3 class="game-title">Memory Match</h3>
+              <span class="game-category">Memory Games</span>
+            </div>
           </div>
-          <div>
-            <div class="game-title">Match the Singer</div>
-            <div class="game-category">Memory Game</div>
+          <p class="game-description">Test your memory by matching singer cards. Find all pairs to complete the challenge!</p>
+          <div class="game-stats">
+            <div class="game-stat">
+              <i class="fas fa-users"></i>
+              <span>2.1k players</span>
+            </div>
+            <div class="game-stat">
+              <i class="fas fa-star"></i>
+              <span>4.9/5</span>
+            </div>
+            <span class="play-indicator">Play Now</span>
           </div>
-        </div>
-        <div class="game-description">
-          Test your memory to match singers' faces with their names! Challenge yourself with this engaging memory game featuring your favorite music artists.
-        </div>
-      </a>
+        </a>
 
-      <a href="/spelling.html" class="game-card">
-        <div class="game-card-header">
-          <div class="game-icon">
-            <img src="/images/bee.jpg" alt="Spell the Singer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+        <a href="/spelling.html" class="game-card">
+          <div class="game-card-header">
+            <div class="game-icon">
+              <img src="/images/bee.jpg" alt="Spelling Bee">
+            </div>
+            <div>
+              <h3 class="game-title">Spelling Bee</h3>
+              <span class="game-category">Spelling Games</span>
+            </div>
           </div>
-          <div>
-            <div class="game-title">Spell the Singer</div>
-            <div class="game-category">Spelling Game</div>
+          <p class="game-description">Spell out singer names as letters appear. How fast can you complete each word?</p>
+          <div class="game-stats">
+            <div class="game-stat">
+              <i class="fas fa-users"></i>
+              <span>1.8k players</span>
+            </div>
+            <div class="game-stat">
+              <i class="fas fa-star"></i>
+              <span>4.7/5</span>
+            </div>
+            <span class="play-indicator">Play Now</span>
           </div>
-        </div>
-        <div class="game-description">
-          Spell singers' names as letters are revealed! Can you guess the artist before all the letters appear? Test your spelling skills and music knowledge.
-        </div>
-      </a>
+        </a>
 
-      <a href="/bangerbattle.html" class="game-card">
-        <div class="game-card-header">
-          <div class="game-icon">
-            <img src="/images/battle.jpg" alt="Banger Battle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+        <a href="/bangerbattle.html" class="game-card">
+          <div class="game-card-header">
+            <div class="game-icon">
+              <img src="/images/battle.jpg" alt="Banger Battle">
+            </div>
+            <div>
+              <h3 class="game-title">Banger Battle</h3>
+              <span class="game-category">Music Battles</span>
+            </div>
           </div>
-          <div>
-            <div class="game-title">Banger Battle</div>
-            <div class="game-category">Music Quiz</div>
+          <p class="game-description">Battle songs head-to-head and guess which one is the bigger hit!</p>
+          <div class="game-stats">
+            <div class="game-stat">
+              <i class="fas fa-users"></i>
+              <span>3.2k players</span>
+            </div>
+            <div class="game-stat">
+              <i class="fas fa-star"></i>
+              <span>4.8/5</span>
+            </div>
+            <span class="play-indicator">Play Now</span>
           </div>
-        </div>
-        <div class="game-description">
-          Guess which song has more Spotify streams! Battle it out with popular hits and discover which tracks are the biggest bangers.
-        </div>
-      </a>
+        </a>
+
+
+      </div>
     </div>
 
-    <div class="section-divider">
-      <h2>🤝 Community</h2>
-      <div class="underline"></div>
-    </div>
-
-    <div class="games-grid">
-      <a href="https://forms.gle/7TdiZswfKZBZSyAZ9" target="_blank" rel="noopener noreferrer" class="game-card">
-        <div class="game-card-header">
-          <div class="game-icon">
-            <i class="fas fa-star" style="font-size: 2rem; color: #ffcb05; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-radius: 15px;"></i>
+    <!-- Community Categories -->
+    <div class="categories-section">
+      <h3 class="categories-title">Get Involved</h3>
+      <div class="categories-grid">
+        <a href="https://forms.gle/7TdiZswfKZBZSyAZ9" target="_blank" rel="noopener noreferrer" class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-star" style="font-size: 2rem; color: #ffcb05; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-radius: 18px;"></i>
           </div>
-          <div>
-            <div class="game-title">Be Featured!</div>
-            <div class="game-category">Submit Your Info</div>
+          <h3 class="category-title">Be Featured!</h3>
+          <p class="category-description">Submit your info to be featured in daily games</p>
+        </a>
+        <a href="/video-ideas.html" class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-video" style="font-size: 1.8rem; color: #4a90e2; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 15px;"></i>
           </div>
-        </div>
-        <div class="game-description">
-          Want to be featured on a daily "Guess the Singer" game? Submit your info and favorite artist to be featured in an upcoming challenge!
-        </div>
-      </a>
-
-      <a href="/video-ideas.html" class="game-card">
-        <div class="game-card-header">
-          <div class="game-icon">
-            <i class="fas fa-video" style="font-size: 2rem; color: #4a90e2; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 15px;"></i>
+          <h3 class="category-title">Video Ideas</h3>
+          <p class="category-description">Submit creative ideas for future episodes</p>
+        </a>
+        <a href="/gameshow.html" class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-tv" style="font-size: 1.8rem; color: #ff6b35; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-radius: 15px;"></i>
           </div>
-          <div>
-            <div class="game-title">Video Ideas</div>
-            <div class="game-category">Community</div>
+          <h3 class="category-title">Game Show</h3>
+          <p class="category-description">Bring the game to your school or event</p>
+        </a>
+        <a href="https://discord.gg/mHucspfx" target="_blank" rel="noopener noreferrer" class="category-card">
+          <div class="category-icon">
+            <i class="fab fa-discord" style="font-size: 1.8rem; color: #7289da; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f2ff, #e8ecff); border-radius: 15px;"></i>
           </div>
-        </div>
-        <div class="game-description">
-          Submit your creative video ideas for future episodes! Help us create amazing content by sharing your suggestions for new games, challenges, and entertainment.
-        </div>
-      </a>
-
-      <a href="/gameshow.html" class="game-card">
-        <div class="game-card-header">
-          <div class="game-icon">
-            <i class="fas fa-tv" style="font-size: 2rem; color: #ff6b35; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-radius: 15px;"></i>
-          </div>
-          <div>
-            <div class="game-title">Game Show</div>
-            <div class="game-category">Live Event</div>
-          </div>
-        </div>
-        <div class="game-description">
-          Learn more about how to bring Guess the Singer to your school, company, or event!
-        </div>
-      </a>
+          <h3 class="category-title">Join Discord</h3>
+          <p class="category-description">Connect with other players and get updates</p>
+        </a>
+      </div>
     </div>
   </main>
 
-<footer class="bottom-nav">
-  <a href="/profile.html" class="nav-item">
-    <i class="fas fa-user"></i>
-    <span>Profile</span>
-  </a>
-  <a href="/games.html" class="nav-item">
-    <img src="/images/gamesicon.png" alt="Games Icon" style="width: 24px; height: 24px;">
-    <span>Games</span>
-  </a>
-  <a href="/memory-leaderboard.html" class="nav-item">
-    <i class="fas fa-trophy"></i>
-    <span>Leaderboards</span>
-  </a>
-  <a href="/rewards.html" class="nav-item">
-    <img src="/images/rewardicon.png" alt="Rewards Icon" style="width: 24px; height: 24px;">
-    <span>Rewards</span>
-  </a>
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <img src="/images/gamesicon.png" alt="Games Icon">
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <img src="/images/rewardicon.png" alt="Rewards Icon">
+      <span>Rewards</span>
+    </a>
   </footer>
 
   <script type="module">
@@ -874,63 +1083,114 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth();
-  
-    const welcomeEl = document.getElementById("welcomeMessage");
-    const dropdownMenu = document.getElementById("dropdownMenu");
-  
+
+    // Update welcome message and coin count
     onAuthStateChanged(auth, async (user) => {
+      const authButton = document.getElementById('authButton');
+      
       if (user) {
         let username = "User";
         let coins = 0;
-  
+
         try {
           const userRef = collection(db, "users");
           const q = query(userRef, where("uid", "==", user.uid));
           const snapshot = await getDocs(q);
-  
+
           snapshot.forEach(doc => {
             const data = doc.data();
             if (data.username) username = data.username;
             if (data.coins !== undefined) coins = data.coins;
           });
-  
-          welcomeEl.textContent = `Welcome, ${username}`;
-          const coinDisplayEl = document.getElementById("coinCount");
-          if (coinDisplayEl) coinDisplayEl.textContent = coins;
-  
-          dropdownMenu.innerHTML = `
-            <a href="/profile.html">Edit Profile</a>
-            <a href="#" id="logoutBtn">Log Out</a>
-          `;
-  
-          setTimeout(() => {
-            const logoutBtn = document.getElementById("logoutBtn");
-            if (logoutBtn) {
-              logoutBtn.addEventListener("click", async (e) => {
-                e.preventDefault();
-                try {
-                  await signOut(auth);
-                  location.reload();
-                } catch (err) {
-                  console.error("Logout failed:", err);
-                }
-              });
-            }
-          }, 0);
+
+          const welcomeEl = document.querySelector('.welcome-msg');
+          const coinCountEl = document.querySelector('.coin-count');
+          const welcomeSection = document.querySelector('.welcome-section');
+          
+          if (welcomeEl) welcomeEl.textContent = `Welcome, ${username}`;
+          if (coinCountEl) coinCountEl.textContent = coins;
+          if (welcomeSection) {
+            welcomeSection.style.cursor = 'pointer';
+            welcomeSection.onclick = toggleDropdown;
+          }
+          
+          // Update auth button for logged in user
+          if (authButton) {
+            authButton.textContent = "Log Out";
+            authButton.style.background = "#ff6b6b";
+            authButton.style.borderColor = "#ff5252";
+          }
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
-  
       } else {
-        welcomeEl.textContent = "Welcome, Anonymous";
-        dropdownMenu.innerHTML = `
-          <a href="/signup.html">Create Profile</a>
-          <a href="/login.html">Log In</a>
-        `;
-        const coinDisplayEl = document.getElementById("coinCount");
-        if (coinDisplayEl) coinDisplayEl.textContent = "0";
+        const welcomeEl = document.querySelector('.welcome-msg');
+        const coinCountEl = document.querySelector('.coin-count');
+        const welcomeSection = document.querySelector('.welcome-section');
+        
+        if (welcomeEl) welcomeEl.textContent = "Welcome, Anonymous";
+        if (coinCountEl) coinCountEl.textContent = "0";
+        if (welcomeSection) {
+          welcomeSection.style.cursor = 'pointer';
+          welcomeSection.onclick = () => window.location.href = '/login.html';
+        }
+        
+        // Update auth button for anonymous user
+        if (authButton) {
+          authButton.textContent = "Login";
+          authButton.style.background = "#ffcb05";
+          authButton.style.borderColor = "#ffd700";
+        }
       }
     });
+
+    // Dropdown functionality
+    window.toggleDropdown = function() {
+      const dropdown = document.getElementById('userDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('show');
+      }
+    };
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const welcomeSection = document.querySelector('.welcome-section');
+      const dropdown = document.getElementById('userDropdown');
+      
+      if (welcomeSection && !welcomeSection.contains(e.target)) {
+        if (dropdown) {
+          dropdown.classList.remove('show');
+        }
+      }
+    });
+
+    // Handle auth button click
+    window.handleAuthClick = async function() {
+      const authButton = document.getElementById('authButton');
+      
+      if (authButton.textContent === "Log Out") {
+        // User is logged in, log them out
+        try {
+          await signOut(auth);
+          // Don't reload, let the onAuthStateChanged handle the UI update
+        } catch (error) {
+          console.error("Error signing out:", error);
+        }
+      } else {
+        // User is not logged in, redirect to login
+        window.location.href = '/login.html';
+      }
+    };
+
+    // Logout function (for dropdown menu)
+    window.logout = async function() {
+      try {
+        await signOut(auth);
+        // Don't reload, let the onAuthStateChanged handle the UI update
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    };
 
     // Game data for search functionality
     const gamesData = [
@@ -1006,17 +1266,19 @@
         };
         
         suggestion.innerHTML = `
-          <div class="search-suggestion-icon">${game.icon}</div>
-          <div class="search-suggestion-content">
-            <div class="search-suggestion-title">${game.title}</div>
-            <div class="search-suggestion-category">${game.category}</div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.2rem;">${game.icon}</span>
+            <div>
+              <div style="font-weight: 600;">${game.title}</div>
+              <div style="font-size: 0.8rem; color: #666;">${game.category}</div>
+            </div>
           </div>
         `;
         
         suggestionsContainer.appendChild(suggestion);
       });
 
-      suggestionsContainer.style.display = 'flex';
+      suggestionsContainer.style.display = 'block';
     };
 
     // Close suggestions when clicking outside
@@ -1063,21 +1325,8 @@
         alert("Error connecting to chat. Please try again.");
       }
     };
-
-    // Welcome message dropdown functionality
-    const welcomeMessage = document.getElementById("welcomeMessage");
-
-    welcomeMessage.addEventListener("click", (e) => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle("show");
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!dropdownMenu.contains(e.target) && e.target !== welcomeMessage) {
-        dropdownMenu.classList.remove("show");
-      }
-    });
   </script>  
 </body>  
 </html>
+
+

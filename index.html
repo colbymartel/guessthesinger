@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess The Singer</title>
     <link rel="icon" href="/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <style>
       * {
@@ -25,12 +25,10 @@
       }
   
       body {
-        font-family: 'Fredoka', sans-serif;
-        background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+        font-family: 'Montserrat', sans-serif;
+        background: #234d7d;
         color: #333;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
+        line-height: 1.6;
       }
 
 /* Header */
@@ -55,90 +53,172 @@
   display: block;
 }
 
-/* Main Section */
-.main {
-  flex: 1;
+/* Main Content */
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #234d7d;
+  min-height: calc(100vh - 200px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+}
+
+/* Animated Featured Game Banner */
+.featured-game {
+  background: linear-gradient(135deg, #3b7bbf, #234d7d);
+  color: white;
+  padding: 40px;
+  border-radius: 20px;
   text-align: center;
-  padding: 30px 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(59, 123, 191, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-.main h2 {
-  font-size: 2.5rem;
-  color: #3b7bbf;
-  margin-bottom: 10px;
+.featured-game::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: rotate(45deg);
+  animation: shimmer 4s infinite;
 }
 
-.main p {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 25px;
-  max-width: 600px;
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
-/* Button Group */
+.featured-game-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.featured-singer-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.featured-singer-image:hover {
+  transform: scale(1.05);
+}
+
+.featured-singer-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-text-content {
+  text-align: left;
+  max-width: 350px;
+}
+
+.featured-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-family: 'Montserrat', sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.featured-stats {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.stat-icon {
+  font-size: 0.9rem;
+  color: #ffcb05;
+}
+
 .button-group {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  gap: 15px;
   justify-content: center;
+  margin-top: 20px;
 }
 
-.cta-button {
-  background-color: #3b7bbf;
+.play-now-btn {
+  background: #3b7bbf;
   color: white;
-  padding: 15px 35px;
+  border: 2px solid #b0e0e6;
+  padding: 15px 30px;
+  border-radius: 25px;
   font-size: 1.1rem;
   font-weight: 600;
-  border: none;
-  border-radius: 999px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+  animation: buttonGlow 2s ease-in-out infinite alternate;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.cta-button:hover {
-  background-color: #2a5c96;
-  transform: scale(1.07);
+@keyframes buttonGlow {
+  0% {
+    box-shadow: 0 4px 15px rgba(59, 123, 191, 0.3);
+  }
+  100% {
+    box-shadow: 0 6px 20px rgba(59, 123, 191, 0.6);
+  }
 }
 
-/* Features Section */
-.features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  padding: 50px 20px;
-  background: #fff;
+.play-now-btn:hover {
+  background: #5f9ea0;
+  transform: translateY(-2px);
+  animation: none;
 }
 
-.feature-item {
-  background: #f9fbfe;
-  max-width: 300px;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  text-align: center;
+.login-btn {
+  background: #ffcb05;
+  color: #333;
+  border: 2px solid #ffd700;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.feature-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-}
-
-.feature-item h3 {
-  font-size: 1.6rem;
-  color: #3b7bbf;
-  margin-bottom: 10px;
-}
-
-.feature-item p {
-  font-size: 1rem;
-  color: #666;
+.login-btn:hover {
+  background: #ffd700;
+  transform: translateY(-2px);
 }
 
 /* Footer */
@@ -148,6 +228,7 @@
   text-align: center;
   padding: 20px;
   font-size: 0.95rem;
+  margin-top: auto;
 }
 
 .footer a {
@@ -161,24 +242,30 @@
   color: #ff914d;
 }
 
-/* Button Variant */
-.btn-grey {
-  background-color: #ccc;
-  color: #333;
-}
-
-.btn-grey:hover {
-  background-color: #bbb;
-  transform: scale(1.03);
-}
-
 /* Responsive Logo */
 @media (max-width: 768px) {
   .header .logo img {
     width: 60%;
   }
-}
+  
+  .featured-game-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .featured-text-content {
+    text-align: center;
+  }
+  
+  .featured-stats {
+    justify-content: center;
+  }
 
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
     </style>
 </head>
@@ -190,18 +277,34 @@
         </div>
     </header>
     
-    <!-- Main Section -->
-    <main class="main">
-        <h2>Today's Featured Game </h2>
-        <p>Can You Guess Daena's Favorite Music Artist?</p>
-        <div class="button-group">
-            <button class="cta-button" onclick="window.location.href='login.html'">Log-In</button>
-            <button class="cta-button" onclick="window.location.href='dailygame.html'">Today's Game</button>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Animated Featured Game Banner -->
+        <div class="featured-game">
+          <div class="featured-game-content">
+            <div class="featured-singer-image">
+              <img src="/images/daena.jpg" alt="Today's Featured Singer - Daena">
+            </div>
+            <div class="featured-text-content">
+              <h2 class="featured-title">Today's Challenge</h2>
+              <div class="featured-stats">
+                <div class="stat-item">
+                  <i class="fas fa-users stat-icon"></i>
+                  <span>1,247 playing today</span>
+                </div>
+                <div class="stat-item">
+                  <i class="fas fa-star stat-icon"></i>
+                  <span>4.8/5 rating</span>
+                </div>
+              </div>
+            </div>
           </div>
-          
-        
+          <div class="button-group">
+            <a href="/dailygame.html" class="play-now-btn">Play Now</a>
+            <a href="login.html" class="login-btn">Log-In</a>
+          </div>
+        </div>
     </main>
-
 
     <!-- Footer -->
     <footer class="footer">
