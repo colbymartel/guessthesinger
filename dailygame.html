@@ -17,7 +17,7 @@
   gtag('config', 'G-T42NG5C994');
 </script>
         <!-- Preload critical images for better mobile performance -->
-      <link rel="preload" as="image" href="images/daena.jpg">
+      <link rel="preload" as="image" href="images/raw.jpg">
           <link rel="preload" as="image" href="images/morganwallen.jpg">
   <link rel="preload" as="image" href="images/poppenguin.png">
   <link rel="preload" as="image" href="images/rhinorapper.png">
@@ -499,12 +499,12 @@
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Male", "Dark Hair"]
+        correct: ["Female", "Blond Hair", "Visible Tattoos"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Country"]
+        correct: ["Pop", "R&B"]
       },
       {
         question: "Guess the Age",
@@ -524,12 +524,12 @@
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["TV Show Contestant", "Active on TikTok"]
+        correct: ["Grammy Winner", "Also an Actor", "Active on TikTok"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Stage Name", "Starts A-M"]
+        correct: ["One Word", "Stage Name", "Starts A-M"]
       }
     ];
 
@@ -558,17 +558,17 @@
         console.error("quizContainer not found!");
         return;
       }
-      const hostName = "Daena";
-      const hostImage = "images/daena.jpg";
+      const hostName = "Raw";
+      const hostImage = "images/raw.jpg";
       const hostTitle = "";
-      const challengeDate = "August 11, 2025 - Challenge #11";
+      const challengeDate = "August 12, 2025 - Challenge #12";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 11, 2025</div>
-            <div class="challenge-number">Challenge #11</div>
+            <div class="date">August 12, 2025</div>
+            <div class="challenge-number">Challenge #12</div>
           </div>
           
           
@@ -682,8 +682,8 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Daena";
-    const hostImage = "images/daena.jpg";
+                   const hostName = "Raw";
+    const hostImage = "images/raw.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -784,7 +784,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Morgan Wallen"; 
+      const finalSingerAnswer = "Halsey"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         renderCelebrationPage();
       } else {
@@ -804,12 +804,12 @@
       const availableHints = Math.floor(totalGuesses / 3);
       
       // Generate hint display content for all unlocked hints
-      const hints = {
-        1: "💡 This artist is known for his distinctive country vocals and southern charm.",
-        2: "💡 He rose to fame on The Voice.",
-        3: "💡 He was formally known for his signature mullet.",
-        4: "💡 He's known for hits like 'Whiskey Glasses' and 'Last Night'."
-      };
+                  const hints = {
+          1: "💡 This artist is known for their powerful vocals and alternative pop sound.",
+          2: "💡 Many of her songs are as a featured artist.",
+          3: "💡 Her names starts with 'H'.",
+          4: "💡 She's known for hits like 'Without Me' and 'Closer'."
+        };
       
       // Get the currently displayed hint from session storage
       const currentlyDisplayedHint = sessionStorage.getItem('currentlyDisplayedHint') || (unlockedHints.length > 0 ? unlockedHints[0] : null);
@@ -1477,8 +1477,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                    <img src="images/daena.jpg" alt="Daena" class="celebration-carson" />
-        <img src="images/morganwallen.jpg" alt="Morgan Wallen" class="celebration-singer" />
+                    <img src="images/raw.jpg" alt="Raw" class="celebration-carson" />
+        <img src="images/halsey.jpg" alt="Halsey" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
