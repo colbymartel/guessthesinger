@@ -17,7 +17,7 @@
   gtag('config', 'G-T42NG5C994');
 </script>
         <!-- Preload critical images for better mobile performance -->
-      <link rel="preload" as="image" href="images/raw.jpg">
+      <link rel="preload" as="image" href="images/halima.jpg">
           <link rel="preload" as="image" href="images/morganwallen.jpg">
   <link rel="preload" as="image" href="images/poppenguin.png">
   <link rel="preload" as="image" href="images/rhinorapper.png">
@@ -341,7 +341,7 @@
     </div>
     <div class="counter-item">
       <span class="counter-label">Score:</span>
-      <span class="counter-value" id="scoreDisplay">100</span>
+              <span class="counter-value" id="scoreDisplay">0</span>
     </div>
   </div>
 
@@ -373,26 +373,27 @@
           <ul>
             <li>Answer questions about the mystery singer</li>
             <li>Each question has multiple correct answers</li>
-            <li>Use hints to get clues (unlock after every 3 guesses)</li>
+            <li>Earn points for correct guesses to unlock hints</li>
             <li>Make your final guess at the singer's name</li>
           </ul>
         </div>
         <div class="instruction-section">
           <h3>🏆 Scoring</h3>
           <ul>
-            <li>Start with 100 points</li>
-            <li>Lose 5 points for each guess</li>
-            <li>Lose 10 points for each hint used</li>
-            <li>Final singer guess is FREE (no points deducted)</li>
+            <li>Start with 0 points</li>
+            <li>Earn 5 points for each correct guess</li>
+            <li>Need 10 points to unlock each hint</li>
+            <li>Hints unlock sequentially (Hint 1, then 2, then 3, etc.)</li>
+            <li>Bonus: 100 points for correct singer guess on 1st try (decreases by 5 per additional try)</li>
           </ul>
         </div>
         <div class="instruction-section">
           <h3>💡 Hints</h3>
           <ul>
-            <li>Hints unlock after every 3 guesses</li>
-            <li>Hints 1-3 unlock sequentially</li>
-            <li>Hints 4, 5, and 6 unlock together at 12 guesses</li>
-            <li>Use hints wisely to maximize your score!</li>
+            <li>Hints unlock with points (10 points per hint)</li>
+            <li>Hints unlock sequentially (Hint 1, then 2, then 3, etc.)</li>
+            <li>Make correct guesses to earn points and unlock hints</li>
+            <li>Use hints wisely to help with your final guess!</li>
           </ul>
         </div>
         <div class="instruction-section">
@@ -495,21 +496,21 @@
     };
 
 
-    const andyQuestions = [
+    const halimaQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Female", "Blond Hair", "Visible Tattoos"]
+        correct: ["Female", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Pop", "R&B"]
+        correct: ["Pop"]
       },
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["30-39"]
+        correct: ["Under 30"]
       },
       {
         question: "Guess the Birthplace",
@@ -519,7 +520,7 @@
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["40-80 Million"]
+        correct: ["80+ Million"]
       },
       {
         question: "Guess the Career",
@@ -529,12 +530,12 @@
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["One Word", "Stage Name", "Starts A-M"]
+        correct: ["Two Words", "Birth Name", "Starts A-M"]
       }
     ];
 
-    // Use Andy's questions (Bruno Mars)
-    const questions = andyQuestions;
+    // Use Halima's questions (Billie Eilish)
+    const questions = halimaQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -546,6 +547,8 @@
     let hintsUsed = 0;
     // Track if the final singer guess has been made (to not deduct points for it)
     let finalSingerGuessMade = false;
+    // New scoring system: start at 0 points
+    let currentScore = 0;
     
     // Make these global for Firebase recording
     window.totalGuesses = totalGuesses;
@@ -558,17 +561,17 @@
         console.error("quizContainer not found!");
         return;
       }
-      const hostName = "Raw";
-      const hostImage = "images/raw.jpg";
+          const hostName = "Halima";
+    const hostImage = "images/halima.jpg";
       const hostTitle = "";
-      const challengeDate = "August 12, 2025 - Challenge #12";
+      const challengeDate = "August 13, 2025 - Challenge #12";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 12, 2025</div>
-            <div class="challenge-number">Challenge #12</div>
+            <div class="date">August 13, 2025</div>
+            <div class="challenge-number">Challenge #13</div>
           </div>
           
           
@@ -682,8 +685,8 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Raw";
-    const hostImage = "images/raw.jpg";
+                   const hostName = "Halima";
+    const hostImage = "images/halima.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -721,6 +724,12 @@
         // Add new guess
         userAnswer.guesses.push({ option: label, isCorrect: correct.includes(label) });
         totalGuesses++; // Increment total guesses
+        
+        // Add 5 points for correct guesses
+        if (correct.includes(label)) {
+          currentScore += 5;
+        }
+        
         updateGuessCounter(); // Update the display
       }
       
@@ -743,12 +752,10 @@
       window.totalGuesses = totalGuesses;
       window.hintsUsed = hintsUsed;
       window.finalSingerGuessMade = finalSingerGuessMade;
+      window.currentScore = currentScore;
       
-      // Calculate score: 100 base - 5 per guess - 10 per hint
-      // Don't deduct points for the final singer guess
-      const guessesForScoring = finalSingerGuessMade ? totalGuesses - 1 : totalGuesses;
-      const score = Math.max(0, 100 - (guessesForScoring * 5) - (hintsUsed * 10));
-      if (scoreEl) scoreEl.textContent = score;
+      // New scoring system: display current score (starts at 0, +5 for correct guesses)
+      if (scoreEl) scoreEl.textContent = currentScore;
     }
 
     window.goNext = function() {
@@ -784,8 +791,14 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Halsey"; 
+      const finalSingerAnswer = "Billie Eilish"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
+        // Add bonus points for correct singer guess
+        // Bonus decreases by 5 points for each guess: 100 for 1st try, 95 for 2nd try, 90 for 3rd try, etc.
+        const bonusPoints = Math.max(0, 100 - ((totalGuesses - 1) * 5));
+        currentScore += bonusPoints;
+        window.currentScore = currentScore;
+        
         renderCelebrationPage();
       } else {
         message.textContent = 'Incorrect! Try again.';
@@ -800,15 +813,15 @@
       // Track which hints have been unlocked (stored in session)
       const unlockedHints = JSON.parse(sessionStorage.getItem('unlockedHints') || '[]');
       
-      // Calculate which hints should be available based on total guesses
-      const availableHints = Math.floor(totalGuesses / 3);
+      // Calculate which hints should be available based on points (10 points per hint)
+      const availableHints = Math.floor(currentScore / 10);
       
       // Generate hint display content for all unlocked hints
                   const hints = {
-          1: "💡 This artist is known for their powerful vocals and alternative pop sound.",
-          2: "💡 Many of her songs are as a featured artist.",
-          3: "💡 Her names starts with 'H'.",
-          4: "💡 She's known for hits like 'Without Me' and 'Closer'."
+          1: "💡 This artist is known for their alternative pop sound.",
+          2: "💡 Her broter co-writes many songs with her.",
+          3: "💡 Her name starts with 'B'.",
+          4: "💡 She's known for hits like 'bad guy' and 'BIRDS OF A FEATHER'."
         };
       
       // Get the currently displayed hint from session storage
@@ -828,7 +841,7 @@
       
       container.innerHTML = `
         <div class="question-prompt">Need a hint?</div>
-        <div class="hint-info">Hints unlock after every 3 guesses. You've made ${totalGuesses} guesses so far.</div>
+        <div class="hint-info">Hints unlock with points. You have ${currentScore} points. Need 10 points per hint.</div>
         
         <div class="hint-boxes">
           <div class="hint-box ${unlockedHints.includes(1) ? (currentlyDisplayedHint == 1 ? 'unlocked currently-showing' : 'unlocked') : (availableHints >= 1 ? 'available' : 'locked')}" onclick="${unlockedHints.includes(1) ? 'switchToHint(1)' : 'attemptUnlockHint(1)'}">
@@ -837,7 +850,7 @@
                 `<div class="hint-text-display">${hints[1]}</div>` : 
                 `<div class="hint-icon">${unlockedHints.includes(1) ? '🔓' : (availableHints >= 1 ? '🔓' : '🔒')}</div>
                  <div class="hint-label">Hint 1</div>
-                 <div class="hint-requirement">${unlockedHints.includes(1) ? (currentlyDisplayedHint == 1 ? 'Currently Showing' : 'Click to view') : (availableHints >= 1 ? 'Click to unlock' : 'Need 3 guesses')}</div>`
+                 <div class="hint-requirement">${unlockedHints.includes(1) ? (currentlyDisplayedHint == 1 ? 'Currently Showing' : 'Click to view') : (availableHints >= 1 ? 'Click to unlock' : 'Need 10 points')}</div>`
               }
             </div>
           </div>
@@ -847,7 +860,7 @@
                 `<div class="hint-text-display">${hints[2]}</div>` : 
                 `<div class="hint-icon">${unlockedHints.includes(2) ? '🔓' : (availableHints >= 2 && unlockedHints.includes(1) ? '🔓' : '🔒')}</div>
                  <div class="hint-label">Hint 2</div>
-                 <div class="hint-requirement">${unlockedHints.includes(2) ? (currentlyDisplayedHint == 2 ? 'Currently Showing' : 'Click to view') : (availableHints >= 2 && unlockedHints.includes(1) ? 'Click to unlock' : (unlockedHints.includes(1) ? 'Need 6 guesses' : 'Need Hint 1 first'))}</div>`
+                 <div class="hint-requirement">${unlockedHints.includes(2) ? (currentlyDisplayedHint == 2 ? 'Currently Showing' : 'Click to view') : (availableHints >= 2 && unlockedHints.includes(1) ? 'Click to unlock' : (unlockedHints.includes(1) ? 'Need 20 points' : 'Need Hint 1 first'))}</div>`
               }
             </div>
           </div>
@@ -857,7 +870,7 @@
                 `<div class="hint-text-display">${hints[3]}</div>` : 
                 `<div class="hint-icon">${unlockedHints.includes(3) ? '🔓' : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? '🔓' : '🔒')}</div>
                  <div class="hint-label">Hint 3</div>
-                 <div class="hint-requirement">${unlockedHints.includes(3) ? (currentlyDisplayedHint == 3 ? 'Currently Showing' : 'Click to view') : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Need 9 guesses' : 'Need previous hints'))}</div>`
+                 <div class="hint-requirement">${unlockedHints.includes(3) ? (currentlyDisplayedHint == 3 ? 'Currently Showing' : 'Click to view') : (availableHints >= 3 && unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) ? 'Need 30 points' : 'Need previous hints'))}</div>`
               }
             </div>
           </div>
@@ -867,7 +880,7 @@
                 `<div class="hint-text-display">${hints[4]}</div>` : 
                 `<div class="hint-icon">${unlockedHints.includes(4) ? '🔓' : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? '🔓' : '🔒')}</div>
                  <div class="hint-label">Hint 4</div>
-                 <div class="hint-requirement">${unlockedHints.includes(4) ? (currentlyDisplayedHint == 4 ? 'Currently Showing' : 'Click to view') : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Need 12 guesses' : 'Need previous hints'))}</div>`
+                 <div class="hint-requirement">${unlockedHints.includes(4) ? (currentlyDisplayedHint == 4 ? 'Currently Showing' : 'Click to view') : (availableHints >= 4 && unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Click to unlock' : (unlockedHints.includes(1) && unlockedHints.includes(2) && unlockedHints.includes(3) ? 'Need 40 points' : 'Need previous hints'))}</div>`
               }
             </div>
           </div>
@@ -894,9 +907,8 @@
       console.log('Attempting to unlock hint', hintNumber);
       
       const unlockedHints = JSON.parse(sessionStorage.getItem('unlockedHints') || '[]');
-      const availableHints = Math.floor(totalGuesses / 3);
       
-      console.log('Total guesses:', totalGuesses, 'Available hints:', availableHints, 'Unlocked hints:', unlockedHints);
+      console.log('Current score:', currentScore, 'Unlocked hints:', unlockedHints);
       
       // Check if already unlocked - do nothing since hints are already displayed
       if (unlockedHints.includes(hintNumber)) {
@@ -916,12 +928,11 @@
         }
       }
 
-      
-      // Check if hint is available based on guesses
-      const requiredGuesses = hintNumber * 3;
-      if (totalGuesses < requiredGuesses) {
-        console.log('Not enough guesses to unlock this hint');
-        showInsufficientGuessesModal(requiredGuesses, totalGuesses);
+      // Check if hint is available based on points (10 points per hint)
+      const requiredPoints = hintNumber * 10;
+      if (currentScore < requiredPoints) {
+        console.log('Not enough points to unlock this hint');
+        showInsufficientPointsModal(requiredPoints, currentScore);
         return;
       }
       
@@ -935,12 +946,12 @@
 
 
 
-    function showInsufficientGuessesModal(required, current) {
+    function showInsufficientPointsModal(required, current) {
       const modal = document.getElementById('confirmationModal');
       const message = document.getElementById('confirmationMessage');
       const confirmBtn = document.getElementById('confirmUnlockBtn');
       
-      message.textContent = `You need ${required} total guesses to unlock this hint. You currently have ${current} guesses.`;
+      message.textContent = `You need ${required} points to unlock this hint. You currently have ${current} points. Make a correct guess about the artist to earn 5 points!`;
       confirmBtn.textContent = 'OK';
       confirmBtn.onclick = closeConfirmationModal;
       
@@ -1423,12 +1434,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Bruno Mars
+      // Hints for Billie Eilish
       const hints = {
-        1: "💡 This artist is known for his smooth vocals and retro-inspired sound.",
-        2: "💡 He has won multiple Grammy Awards and is famous for his energetic live performances.",
-        3: "💡 This artist is known for hits like 'Uptown Funk' and 'Just the Way You Are'.",
-        4: "💡 He performed at the Super Bowl halftime show and is known for his '24K Magic' album."
+        1: "💡 This artist is known for her whispery vocals and dark, atmospheric sound.",
+        2: "💡 She has won multiple Grammy Awards and is famous for her unique style and green hair.",
+        3: "💡 This artist is known for hits like 'bad guy' and 'when the party's over'.",
+        4: "💡 She wrote the theme song for a James Bond movie and is known for her 'Happier Than Ever' album."
       };
       
       if (hintDisplay) {
@@ -1468,17 +1479,14 @@
 
     function renderCelebrationPage() {
       const container = document.getElementById('quizContainer');
-      // Don't deduct points for the final singer guess
-      const guessesForScoring = finalSingerGuessMade ? totalGuesses - 1 : totalGuesses;
-      const score = Math.max(0, 100 - (guessesForScoring * 5) - (hintsUsed * 10));
       container.innerHTML = `
         <div class="celebration water-themed">
           <div class="celebration-emoji">💧</div>
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                    <img src="images/raw.jpg" alt="Raw" class="celebration-carson" />
-        <img src="images/halsey.jpg" alt="Halsey" class="celebration-singer" />
+                          <img src="images/halima.jpg" alt="Halima" class="celebration-carson" />
+            <img src="images/billieeilish.jpg" alt="Billie Eilish" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
@@ -1487,9 +1495,7 @@
               <div class="donation-subtitle">Come back daily or play more games to make a bigger splash</div>
             </div>
           </div>
-          <div class="final-score-display">Final Score: ${score}/100</div>
-          <button class="share-btn" onclick="shareScore()">Share Score</button>
-          <a class="more-games-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSejB5ihw1ofYYDajVnTEFm9AGRR730s5u_KOShsX5VteYO5gA/viewform?usp=send_form">Be Featured Next!</a>
+          <button class="continue-btn" onclick="showScoreScreen()">Continue</button>
         </div>
       `;
       
@@ -1502,11 +1508,57 @@
       }
     }
 
+    function showScoreScreen() {
+      const container = document.getElementById('quizContainer');
+      // Use the new scoring system: current score (starts at 0, +5 for correct guesses)
+      const score = currentScore;
+      
+      // Calculate bonus points that were just awarded
+      const bonusPoints = Math.max(0, 100 - ((totalGuesses - 1) * 5));
+      const pointsBeforeBonus = score - bonusPoints;
+      
+      container.innerHTML = `
+        <div class="score-screen">
+          <div class="score-screen-title">Your Score</div>
+          <div class="score-breakdown">
+            <div class="score-card">
+              <div class="score-card-header">
+                <span class="score-label">Game Points</span>
+                <span class="score-value">${pointsBeforeBonus}</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill game-progress" style="width: ${Math.min((pointsBeforeBonus / 50) * 100, 100)}%"></div>
+              </div>
+              <div class="score-subtitle">Earned from correct guesses</div>
+            </div>
+            
+            <div class="score-card">
+              <div class="score-card-header">
+                <span class="score-label">Bonus Points</span>
+                <span class="score-value">+${bonusPoints}</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill bonus-progress" style="width: ${Math.min((bonusPoints / 100) * 100, 100)}%"></div>
+              </div>
+              <div class="score-subtitle">Perfect singer guess bonus</div>
+            </div>
+            
+            <div class="final-score">Final Score: ${score} points</div>
+          </div>
+          <div class="score-actions">
+            <button class="share-btn" onclick="shareScore()">Share Score</button>
+            <a class="more-games-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSejB5ihw1ofYYDajVnTEFm9AGRR730s5u_KOShsX5VteYO5gA/viewform?usp=send_form">Be Featured Next!</a>
+          </div>
+        </div>
+      `;
+    }
+
+
+
     window.shareScore = function() {
-      // Don't deduct points for the final singer guess
-      const guessesForScoring = finalSingerGuessMade ? totalGuesses - 1 : totalGuesses;
-      const score = Math.max(0, 100 - (guessesForScoring * 5) - (hintsUsed * 10));
-      const shareText = `I just completed the Guess the Singer daily game with a score of ${score}/100! (${totalGuesses} guesses, ${hintsUsed} hints used) Can you beat my score? Play now at https://guessthesinger.com`;
+      // Use the new scoring system: current score (starts at 0, +5 for correct guesses)
+      const score = currentScore;
+      const shareText = `I just completed the Guess the Singer daily game with a score of ${score} points! (${totalGuesses} guesses, ${hintsUsed} hints used) Can you beat my score? Play now at https://guessthesinger.com`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(shareText).then(() => {
           alert('Score copied to clipboard!');
@@ -2504,6 +2556,130 @@
       margin: 20px 0;
       text-shadow: 0 2px 4px rgba(21, 101, 192, 0.2);
     }
+
+    .score-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      padding: 20px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      margin: 15px 0;
+    }
+
+    .score-card {
+      background: white;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 16px;
+      min-width: 250px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .score-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .score-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    .score-value {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #1565c0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e9ecef;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.8s ease-out;
+    }
+
+    .game-progress {
+      background: linear-gradient(90deg, #2196f3, #1976d2);
+    }
+
+    .bonus-progress {
+      background: linear-gradient(90deg, #ff9800, #f57c00);
+    }
+
+    .score-subtitle {
+      font-size: 0.85rem;
+      color: #6c757d;
+      text-align: center;
+    }
+
+    .continue-btn {
+      background: linear-gradient(135deg, #2196f3, #1976d2);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .continue-btn:hover {
+      background: linear-gradient(135deg, #1976d2, #1565c0);
+      transform: translateY(-2px);
+    }
+
+    .score-screen {
+      text-align: center;
+      padding: 40px 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .score-screen-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #1565c0;
+      margin-bottom: 30px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .score-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      margin-top: 30px;
+    }
+
+    .final-score {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #1565c0;
+      margin-top: 10px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      background: white;
+      border: 2px solid #1565c0;
+    }
+
+
     
     .celebration.water-themed .share-btn {
       background: linear-gradient(135deg, #2196f3, #1976d2);
@@ -2574,6 +2750,57 @@
       .question {
         font-size: 1.3rem;
         margin-bottom: 20px;
+      }
+      
+      /* Mobile score breakdown styles */
+      .score-breakdown {
+        padding: 15px;
+        gap: 12px;
+      }
+      
+      .score-card {
+        min-width: 200px;
+        padding: 12px;
+      }
+      
+      .score-label {
+        font-size: 0.9rem;
+      }
+      
+      .score-value {
+        font-size: 1.1rem;
+      }
+      
+      .progress-bar {
+        height: 6px;
+      }
+      
+      .score-subtitle {
+        font-size: 0.8rem;
+      }
+      
+      .final-score {
+        font-size: 1.6rem;
+        padding: 8px 16px;
+      }
+      
+      .continue-btn {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+      }
+      
+      .score-screen {
+        padding: 30px 15px;
+      }
+      
+      .score-screen-title {
+        font-size: 2rem;
+        margin-bottom: 25px;
+      }
+      
+      .score-actions {
+        gap: 12px;
+        margin-top: 25px;
       }
     }
     
