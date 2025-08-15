@@ -496,16 +496,16 @@
     };
 
 
-    const dillonQuestions = [
+    const lilykQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Female", "Dark Hair"]
+        correct: ["Male", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Pop"]
+        correct: ["Rap", "R&B"]
       },
       {
         question: "Guess the Age",
@@ -525,17 +525,17 @@
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Also an Actor", "Active on TikTok"]
+        correct: ["Grammy Winner"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Birth Name", "Starts N-Z"]
+        correct: ["Stage Name", "Starts N-Z"]
       }
     ];
 
-    // Use Dillon's questions (Selena Gomez)
-    const questions = dillonQuestions;
+    // Use Lily K's questions (Tyler, The Creator)
+    const questions = lilykQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -561,21 +561,21 @@
         console.error("quizContainer not found!");
         return;
       }
-          const hostName = "Dillon";
-    const hostImage = "images/dillon.jpg";
+          const hostName = "Lily K";
+    const hostImage = "images/lilyk.jpg";
       const hostTitle = "";
-      const challengeDate = "August 14, 2025 - Challenge #14";
+      const challengeDate = "August 15, 2025 - Challenge #15";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 14, 2025</div>
-            <div class="challenge-number">Challenge #14</div>
+            <div class="date">August 15, 2025</div>
+            <div class="challenge-number">Challenge #15</div>
           </div>
           
           
-                     <div class="tagline">Can you Guess His Favorite Singer?</div>
+                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -685,12 +685,12 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Dillon";
-    const hostImage = "images/dillon.jpg";
+                   const hostName = "Lily K";
+    const hostImage = "images/lilyk.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
-                     <div class="question-prompt">Guess His Favorite Singer</div>
+                     <div class="question-prompt">Guess Her Favorite Singer</div>
           <img src="${hostImage}" alt="${hostName}" class="final-guess-carson" />
         </div>
         <div class="autocomplete-container">
@@ -791,7 +791,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Selena Gomez"; 
+      const finalSingerAnswer = "Tyler, The Creator"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         // Add bonus points for correct singer guess
         // Bonus decreases by 5 points for each guess: 100 for 1st try, 95 for 2nd try, 90 for 3rd try, etc.
@@ -818,10 +818,10 @@
       
       // Generate hint display content for all unlocked hints
                   const hints = {
-          1: "💡 They were born in Texas.",
-          2: "💡 She has won 13 Kid's Choice Awards.",
-          3: "💡 Her name starts with 'S'.",
-          4: "💡 She's known for hits like 'Come & Get It' and 'Lose You to Love Me'."
+          1: "💡 This artist is known for rap and production, with a unique creative style.",
+          2: "💡 Founder of the Camp Flog Gnaw Carnival and a leader of Odd Future.",
+          3: "💡 His name starts with 'T'.",
+          4: "💡 Known for hits like 'EARFQUAKE' and 'See You Again' and has multiple Grammys."
         };
       
       // Get the currently displayed hint from session storage
@@ -1434,12 +1434,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Selena Gomez
+      // Hints for Tyler, The Creator
       const hints = {
-        1: "💡 This artist is known for her pop music and acting career.",
-        2: "💡 She started her career as a child actress on Disney Channel.",
-        3: "💡 This artist is known for hits like 'Come & Get It' and 'Lose You to Love Me'.",
-        4: "💡 She's also known for her role in 'Wizards of Waverly Place' and her beauty brand Rare."
+        1: "💡 This artist is known for rap and production, with a unique creative style.",
+        2: "💡 Founder of the Camp Flog Gnaw Carnival and a leader of Odd Future.",
+        3: "💡 This artist is known for hits like 'EARFQUAKE' and 'See You Again'.",
+        4: "💡 He has won multiple Grammy Awards."
       };
       
       if (hintDisplay) {
@@ -1485,8 +1485,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                          <img src="images/dillon.jpg" alt="Dillon" class="celebration-carson" />
-            <img src="images/selenagomez.jpg" alt="Selena Gomez" class="celebration-singer" />
+                          <img src="images/lilyk.jpg" alt="Lily K" class="celebration-carson" />
+            <img src="images/tylerthecreator.jpg" alt="Tyler, The Creator" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
