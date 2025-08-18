@@ -496,21 +496,21 @@
     };
 
 
-    const laylaQuestions = [
+    const evanQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Female", "Dark Hair"]
+        correct: ["Male", "Dark Hair", "Visible Tattoos"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Pop"]
+        correct: ["Rap"]
       },
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["Under 30"]
+        correct: ["Passed Away"]
       },
       {
         question: "Guess the Birthplace",
@@ -520,22 +520,22 @@
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["40-80 Million"]
+        correct: ["20-40 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Also an Actor", "Active on TikTok"]
+        correct: []
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Birth Name", "Starts N-Z"]
+        correct: ["One Word", "Stage Name", "Starts N-Z"]
       }
     ];
 
-    // Use Layla's questions (Olivia Rodrigo)
-    const questions = laylaQuestions;
+    // Use Evan's questions (XXXTentacion)
+    const questions = evanQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -561,21 +561,21 @@
         console.error("quizContainer not found!");
         return;
       }
-          const hostName = "Layla";
-    const hostImage = "images/layla.jpg";
+          const hostName = "Evan";
+    const hostImage = "images/evan.jpg";
       const hostTitle = "";
-      const challengeDate = "August 17, 2025 - Challenge #17";
+      const challengeDate = "August 18, 2025 - Challenge #18";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 17, 2025</div>
-            <div class="challenge-number">Challenge #17</div>
+            <div class="date">August 18, 2025</div>
+            <div class="challenge-number">Challenge #18</div>
           </div>
           
           
-                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
+                     <div class="tagline">Can you Guess His Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -685,12 +685,12 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Layla";
-    const hostImage = "images/layla.jpg";
+                   const hostName = "Evan";
+    const hostImage = "images/evan.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
-                     <div class="question-prompt">Guess Her Favorite Singer</div>
+                     <div class="question-prompt">Guess His Favorite Singer</div>
           <img src="${hostImage}" alt="${hostName}" class="final-guess-carson" />
         </div>
         <div class="autocomplete-container">
@@ -791,7 +791,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Olivia Rodrigo"; 
+      const finalSingerAnswer = "XXXTentacion"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         // Add bonus points for correct singer guess
         // Bonus decreases by 5 points for each guess: 100 for 1st try, 95 for 2nd try, 90 for 3rd try, etc.
@@ -818,10 +818,10 @@
       
       // Generate hint display content for all unlocked hints
                   const hints = {
-          1: "💡 This artist is known for pop rock with confessional songwriting.",
-          2: "💡 She was also an actress on Disney Channel.",
-          3: "💡 Her name starts with 'O'.",
-          4: "💡 Known for albums 'SOUR' and 'GUTS'."
+          1: "💡 This artist blended emo, rap, and punk influences.",
+          2: "💡 He first gained traction on SoundCloud.",
+          3: "💡 He passed away in 2018 at 20 years old.",
+          4: "💡 Known for songs like 'SAD!' and 'Moonlight'."
         };
       
       // Get the currently displayed hint from session storage
@@ -1434,12 +1434,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Olivia Rodrigo
+      // Hints for XXXTentacion
       const hints = {
-        1: "💡 This artist is known for pop rock with confessional songwriting.",
-        2: "💡 She broke records with her debut single 'drivers license'.",
-        3: "💡 This artist is known for hits like 'good 4 u' and 'vampire'.",
-        4: "💡 She won multiple Grammys and stars in High School Musical: The Musical: The Series."
+        1: "💡 This artist blended emo, rap, and punk influences.",
+        2: "💡 He first gained traction on SoundCloud.",
+        3: "💡 This artist is known for hits like 'SAD!' and 'Jocelyn Flores'.",
+        4: "💡 He passed away in 2018."
       };
       
       if (hintDisplay) {
@@ -1485,8 +1485,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                          <img src="images/layla.jpg" alt="Layla" class="celebration-carson" />
-            <img src="images/oliviarodrigo1.jpg" alt="Olivia Rodrigo" class="celebration-singer" />
+                          <img src="images/evan.jpg" alt="Evan" class="celebration-carson" />
+            <img src="images/xxxtentacion.jpg" alt="XXXTentacion" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
