@@ -496,16 +496,16 @@
     };
 
 
-    const dionQuestions = [
+    const danielleQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Male", "Dark Hair"]
+        correct: ["Male", "Visible Tattoos"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Rap"]
+        correct: ["Rap", "Rock"]
       },
       {
         question: "Guess the Age",
@@ -520,22 +520,22 @@
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["80+ Million"]
+        correct: ["10-20 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Super Bowl Performer"]
+        correct: ["Also an Actor", "Active on TikTok"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Two Words", "Birth Name", "Starts A-M"]
+        correct: ["Stage Name", "Starts A-M"]
       }
     ];
 
-    // Use Dion's questions (Kendrick Lamar)
-    const questions = dionQuestions;
+    // Use Danielle's questions (Machine Gun Kelly)
+    const questions = danielleQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -561,21 +561,21 @@
         console.error("quizContainer not found!");
         return;
       }
-          const hostName = "Dion";
-    const hostImage = "images/dion.jpg";
+          const hostName = "Danielle";
+    const hostImage = "images/danielle.jpg";
       const hostTitle = "";
-      const challengeDate = "August 21, 2025 - Challenge #21";
+      const challengeDate = "August 22, 2025 - Challenge #22";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 21, 2025</div>
-            <div class="challenge-number">Challenge #21</div>
+            <div class="date">August 22, 2025</div>
+            <div class="challenge-number">Challenge #22</div>
           </div>
           
           
-                     <div class="tagline">Can you Guess His Favorite Singer?</div>
+                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -685,12 +685,12 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Dion";
-    const hostImage = "images/dion.jpg";
+                   const hostName = "Danielle";
+    const hostImage = "images/danielle.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
-                                           <div class="question-prompt">Guess His Favorite Singer</div>
+                                           <div class="question-prompt">Guess Her Favorite Singer</div>
           <img src="${hostImage}" alt="${hostName}" class="final-guess-carson" />
         </div>
         <div class="autocomplete-container">
@@ -791,7 +791,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Kendrick Lamar"; 
+      const finalSingerAnswer = "Machine Gun Kelly"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         // Add bonus points for correct singer guess
         // Bonus decreases by 5 points for each guess: 100 for 1st try, 95 for 2nd try, 90 for 3rd try, etc.
@@ -1434,13 +1434,13 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Kendrick Lamar
-      const hints = {
-        1: "💡 This artist is from Compton and known for conscious rap.",
-        2: "💡 He's won multiple Grammy Awards and a Pulitzer Prize.",
-        3: "💡 He performed at the Super Bowl Halftime Show in 2025.",
-        4: "💡 This artist is known for hits like 'HUMBLE.' and 'NOT LIKE US.'"
-      };
+      // Hints for Machine Gun Kelly
+                        const hints = {
+          1: "💡 This artist is known for rap and rock music.",
+          2: "💡 He's also an actor and has appeared in movies.",
+          3: "💡 This artist is known for hits like 'Bloody Valentine' and 'My Ex's Best Friend'",
+          4: "💡 He was famously engaged to actress Megan Fox."
+        };
       
       if (hintDisplay) {
         const hintText = hints[hintNumber];
@@ -1485,8 +1485,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                          <img src="images/dion.jpg" alt="Dion" class="celebration-carson" />
-            <img src="images/kendricklamar.jpg" alt="Kendrick Lamar" class="celebration-singer" />
+                          <img src="images/danielle.jpg" alt="Danielle" class="celebration-carson" />
+            <img src="images/mgk.jpg" alt="Machine Gun Kelly" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
