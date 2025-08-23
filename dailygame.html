@@ -496,21 +496,21 @@
     };
 
 
-    const danielleQuestions = [
+    const kyleeQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Male", "Visible Tattoos"]
+        correct: ["Male", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Rap", "Rock"]
+        correct: ["Pop"]
       },
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["30-39"]
+        correct: ["Under 30"]
       },
       {
         question: "Guess the Birthplace",
@@ -520,22 +520,22 @@
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["10-20 Million"]
+        correct: ["20-40 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Also an Actor", "Active on TikTok"]
+        correct: ["Active on TikTok"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["Stage Name", "Starts A-M"]
+        correct: ["Two Words", "Birth Name", "Starts A-M"]
       }
     ];
 
-    // Use Danielle's questions (Machine Gun Kelly)
-    const questions = danielleQuestions;
+    // Use Kylee's questions (Conan Gray)
+    const questions = kyleeQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -561,17 +561,17 @@
         console.error("quizContainer not found!");
         return;
       }
-          const hostName = "Danielle";
-    const hostImage = "images/danielle.jpg";
+          const hostName = "Kylee";
+    const hostImage = "images/kylee.jpg";
       const hostTitle = "";
-      const challengeDate = "August 22, 2025 - Challenge #22";
+      const challengeDate = "August 23, 2025 - Challenge #23";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 22, 2025</div>
-            <div class="challenge-number">Challenge #22</div>
+            <div class="date">August 23, 2025</div>
+            <div class="challenge-number">Challenge #23</div>
           </div>
           
           
@@ -685,8 +685,8 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Danielle";
-    const hostImage = "images/danielle.jpg";
+                   const hostName = "Kylee";
+    const hostImage = "images/kylee.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -791,7 +791,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Machine Gun Kelly"; 
+      const finalSingerAnswer = "Conan Gray"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         // Add bonus points for correct singer guess
         // Bonus decreases by 5 points for each guess: 100 for 1st try, 95 for 2nd try, 90 for 3rd try, etc.
@@ -818,10 +818,10 @@
       
       // Generate hint display content for all unlocked hints
                   const hints = {
-          1: "💡 This artist is from Compton and known for conscious rap.",
-          2: "💡 He's won multiple Grammy Awards and a Pulitzer Prize.",
-          3: "💡 His name starts with 'K'.",
-          4: "💡 Known for albums like 'To Pimp A Butterfly' and 'DAMN.'"
+          1: "💡 This artist is known for indie pop and bedroom pop style.",
+          2: "💡 He just recently released a new album this month.",
+          3: "💡 He is good friends with Olivia Rodrigo.",
+          4: "💡 Known for songs like 'Heather' and 'Maniac'"
         };
       
       // Get the currently displayed hint from session storage
@@ -1436,10 +1436,10 @@
       
       // Hints for Machine Gun Kelly
                         const hints = {
-          1: "💡 This artist is known for rap and rock music.",
-          2: "💡 He's also an actor and has appeared in movies.",
-          3: "💡 This artist is known for hits like 'Bloody Valentine' and 'My Ex's Best Friend'",
-          4: "💡 He was famously engaged to actress Megan Fox."
+          1: "💡 This artist is known for indie pop and bedroom pop style.",
+          2: "💡 He gained popularity on YouTube and social media.",
+          3: "💡 His name starts with 'C'.",
+          4: "💡 Known for songs like 'Heather' and 'Maniac'"
         };
       
       if (hintDisplay) {
@@ -1485,8 +1485,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                          <img src="images/danielle.jpg" alt="Danielle" class="celebration-carson" />
-            <img src="images/mgk.jpg" alt="Machine Gun Kelly" class="celebration-singer" />
+                          <img src="images/kylee.jpg" alt="Kylee" class="celebration-carson" />
+            <img src="images/conangray.jpg" alt="Conan Gray" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
