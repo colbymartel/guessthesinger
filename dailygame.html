@@ -496,21 +496,21 @@
     };
 
 
-    const richQuestions = [
+    const jessicaQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Male", "Dark Hair"]
+        correct: ["Female", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Rap"]
+        correct: ["Pop", "R&B"]
       },
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["30-39"]
+        correct: ["50-59"]
       },
       {
         question: "Guess the Birthplace",
@@ -520,22 +520,22 @@
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["1-10 Million"]
+        correct: ["20-40 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Also an Actor"]
+        correct: ["Grammy Winner", "Super Bowl Performer"]
       },
       {
         question: "Guess the Name",
         options: ["One Word", "Two Words", "Birth Name", "Stage Name", "Starts A-M", "Starts N-Z"],
-        correct: ["One Word", "Stage Name", "Starts A-M"]
+        correct: ["Two Words", "Birth Name", "Starts A-M"]
       }
     ];
 
-    // Use Rich's questions (Logic)
-    const questions = richQuestions;
+    // Use Jessica's questions (Mariah Carey)
+    const questions = jessicaQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -561,21 +561,21 @@
         console.error("quizContainer not found!");
         return;
       }
-          const hostName = "Rich";
-    const hostImage = "images/rich.jpg";
+          const hostName = "Jessica";
+    const hostImage = "images/jessica.jpg";
       const hostTitle = "";
-      const challengeDate = "August 25, 2025 - Challenge #25";
+      const challengeDate = "August 27, 2025 - Challenge #27";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 25, 2025</div>
-            <div class="challenge-number">Challenge #25</div>
+            <div class="date">August 27, 2025</div>
+            <div class="challenge-number">Challenge #27</div>
           </div>
           
           
-                     <div class="tagline">Can you Guess His Favorite Singer?</div>
+                     <div class="tagline">Can you Guess Her Favorite Singer?</div>
           
           <div class="host-section">
             <img src="${hostImage}" alt="${hostName}" class="start-img" />
@@ -685,12 +685,12 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Rich";
-    const hostImage = "images/rich.jpg";
+                   const hostName = "Jessica";
+    const hostImage = "images/jessica.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
-                                           <div class="question-prompt">Guess His Favorite Singer</div>
+                                           <div class="question-prompt">Guess Her Favorite Singer</div>
           <img src="${hostImage}" alt="${hostName}" class="final-guess-carson" />
         </div>
         <div class="autocomplete-container">
@@ -791,7 +791,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Logic"; 
+      const finalSingerAnswer = "Mariah Carey"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         // Add bonus points for correct singer guess
         // Bonus decreases by 5 points for each guess: 100 for 1st try, 95 for 2nd try, 90 for 3rd try, etc.
@@ -818,10 +818,10 @@
       
       // Generate hint display content for all unlocked hints
                   const hints = {
-          1: "💡 This artist is known for conscious rap and storytelling.",
-          2: "💡 He was nominated for Song of the Year in 2018 at the Grammys.",
-          3: "💡 His name starts with 'L'.",
-          4: "💡 Known for songs like '1-800-273-8255' and 'Homicide'"
+          1: "💡 This artist is known for pop and R&B with incredible vocal range.",
+          2: "💡 After the Beatles, she has the most Billboard #1 hits.",
+          3: "💡 Her name starts with 'M'.",
+          4: "💡 Known for songs like 'All I Want for Christmas Is You' and 'We Belong Together'"
         };
       
       // Get the currently displayed hint from session storage
@@ -1434,12 +1434,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Logic
+      // Hints for Mariah Carey
                         const hints = {
-          1: "💡 This artist is known for conscious rap and storytelling.",
-          2: "💡 He's won a Grammy Award for Best Rap Album.",
-          3: "💡 His name starts with 'L'.",
-          4: "💡 Known for songs like '1-800-273-8255' and 'Homicide'"
+          1: "💡 This artist is known for pop and R&B with incredible vocal range.",
+          2: "💡 She's won multiple Grammy Awards and has the most #1 hits.",
+          3: "💡 This artist is known for hits like 'All I Want for Christmas Is You' and 'We Belong Together'",
+          4: "💡 She's known as the 'Songbird Supreme' and has a 5-octave vocal range."
         };
       
       if (hintDisplay) {
@@ -1485,8 +1485,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                          <img src="images/rich.jpg" alt="Rich" class="celebration-carson" />
-            <img src="images/logic.jpg" alt="Logic" class="celebration-singer" />
+                          <img src="images/jessica.jpg" alt="Jessica" class="celebration-carson" />
+            <img src="images/mariahcarey.jpg" alt="Mariah Carey" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
