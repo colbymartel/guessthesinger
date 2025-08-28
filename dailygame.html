@@ -496,36 +496,36 @@
     };
 
 
-    const jessicaQuestions = [
+    const claireQuestions = [
       {
         question: "Guess the Appearance",
         options: ["Male", "Female", "Blond Hair", "Dark Hair", "Visible Tattoos", "Wears Glasses"],
-        correct: ["Female", "Dark Hair"]
+        correct: ["Male", "Dark Hair"]
       },
       {
         question: "Guess the Genre",
         options: ["Pop", "Rap", "Country", "R&B", "Rock", "Indie"],
-        correct: ["Pop", "R&B"]
+        correct: ["Pop", "Rock"]
       },
       {
         question: "Guess the Age",
         options: ["Under 30", "30-39", "40-49","50-59", "Over 60", "Passed Away"],
-        correct: ["50-59"]
+        correct: ["30-39"]
       },
       {
         question: "Guess the Birthplace",
         options: ["USA", "Canada", "Europe", "Australia", "Asia", "South America"],
-        correct: ["USA"]
+        correct: ["Europe"]
       },
       {
         question: "Guess the Monthly Listeners",
         options: ["Less Than 1 Million", "1-10 Million", "10-20 Million", "20-40 Million", "40-80 Million", "80+ Million"],
-        correct: ["20-40 Million"]
+        correct: ["40-80 Million"]
       },
       {
         question: "Guess the Career",
         options: ["Also an Actor", "TV Show Contestant", "Grammy Winner", "Super Bowl Performer", "Band Member", "Active on TikTok"],
-        correct: ["Grammy Winner", "Super Bowl Performer"]
+        correct: ["Also an Actor", "Grammy Winner", "Band Member", "TV Show Contestant"]
       },
       {
         question: "Guess the Name",
@@ -534,8 +534,8 @@
       }
     ];
 
-    // Use Jessica's questions (Mariah Carey)
-    const questions = jessicaQuestions;
+    // Use Claire's questions (Harry Styles)
+    const questions = claireQuestions;
 
     let current = 0;
     const userAnswers = [];
@@ -561,17 +561,17 @@
         console.error("quizContainer not found!");
         return;
       }
-          const hostName = "Jessica";
-    const hostImage = "images/jessica.jpg";
+          const hostName = "Claire";
+    const hostImage = "images/claire.jpg";
       const hostTitle = "";
-      const challengeDate = "August 27, 2025 - Challenge #27";
+      const challengeDate = "August 28, 2025 - Challenge #28";
       const alreadyPlayed = checkIfAlreadyPlayed();
       
       container.innerHTML = `
         <div class="start-page">
           <div class="date-challenge-section">
-            <div class="date">August 27, 2025</div>
-            <div class="challenge-number">Challenge #27</div>
+            <div class="date">August 28, 2025</div>
+            <div class="challenge-number">Challenge #28</div>
           </div>
           
           
@@ -685,8 +685,8 @@
         function renderFinalGuessPage() {
       const container = document.getElementById('quizContainer');
       const backBtnHtml = `<button id="finalBackBtn" class="nav-btn" onclick="finalBack()">Back</button>`;
-                   const hostName = "Jessica";
-    const hostImage = "images/jessica.jpg";
+                   const hostName = "Claire";
+    const hostImage = "images/claire.jpg";
       
       container.innerHTML = `
         <div class="final-guess-header">
@@ -791,7 +791,7 @@
       window.finalSingerGuessMade = finalSingerGuessMade;
       updateGuessCounter();
       
-      const finalSingerAnswer = "Mariah Carey"; 
+      const finalSingerAnswer = "Harry Styles"; 
       if (input.value.trim().toLowerCase() === finalSingerAnswer.toLowerCase()) {
         // Add bonus points for correct singer guess
         // Bonus decreases by 5 points for each guess: 100 for 1st try, 95 for 2nd try, 90 for 3rd try, etc.
@@ -818,10 +818,10 @@
       
       // Generate hint display content for all unlocked hints
                   const hints = {
-          1: "💡 This artist is known for pop and R&B with incredible vocal range.",
-          2: "💡 After the Beatles, she has the most Billboard #1 hits.",
-          3: "💡 Her name starts with 'M'.",
-          4: "💡 Known for songs like 'All I Want for Christmas Is You' and 'We Belong Together'"
+          1: "💡 This artist is known for pop and rock with a distinctive voice.",
+          2: "💡 He was a member of a famous boy band before going solo.",
+          3: "💡 His name starts with 'H'.",
+          4: "💡 Known for songs like 'Sign of the Times' and 'As It Was'"
         };
       
       // Get the currently displayed hint from session storage
@@ -1434,12 +1434,12 @@
       
       const hintDisplay = document.getElementById('hintDisplay');
       
-      // Hints for Mariah Carey
+      // Hints for Harry Styles
                         const hints = {
-          1: "💡 This artist is known for pop and R&B with incredible vocal range.",
-          2: "💡 She's won multiple Grammy Awards and has the most #1 hits.",
-          3: "💡 This artist is known for hits like 'All I Want for Christmas Is You' and 'We Belong Together'",
-          4: "💡 She's known as the 'Songbird Supreme' and has a 5-octave vocal range."
+          1: "💡 This artist is known for pop and rock with a distinctive voice.",
+          2: "💡 He was a member of a famous boy band before going solo.",
+          3: "💡 This artist is known for hits like 'Sign of the Times' and 'As It Was'",
+          4: "💡 He's known for his unique fashion sense and has won Grammy Awards."
         };
       
       if (hintDisplay) {
@@ -1485,8 +1485,8 @@
           <div class="celebration-title">Congratulations!</div>
           <div class="celebration-msg">You guessed the singer correctly!</div>
           <div class="celebration-images">
-                          <img src="images/jessica.jpg" alt="Jessica" class="celebration-carson" />
-            <img src="images/mariahcarey.jpg" alt="Mariah Carey" class="celebration-singer" />
+                          <img src="images/claire.jpg" alt="Claire" class="celebration-carson" />
+            <img src="images/harrystyles.jpg" alt="Harry Styles" class="celebration-singer" />
           </div>
           <div class="water-donation">
             <img src="images/TeamWater.png" alt="Team Water" class="team-water-logo" />
