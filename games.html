@@ -259,6 +259,7 @@
       box-shadow: 0 10px 30px rgba(59, 123, 191, 0.3);
       position: relative;
       overflow: hidden;
+      display: none; /* Hide Today's Challenge section */
     }
 
     @keyframes featuredGlow {
@@ -384,6 +385,37 @@
       background: #5f9ea0;
       transform: translateY(-2px);
       animation: none;
+    }
+
+    .history-btn {
+      background: #ffcb05;
+      color: #333;
+      border: 2px solid #ffd700;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      z-index: 2;
+      font-family: 'Montserrat', sans-serif;
+      margin-left: 15px;
+    }
+
+    .history-btn:hover {
+      background: #ffd700;
+      transform: translateY(-2px);
+    }
+
+    .featured-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     /* Daily Game Section */
@@ -892,67 +924,70 @@
 </head>
 <body>
   <!-- Header with Logo -->
-  <header class="header">
-    <div class="logo">
+    <header class="header">
+        <div class="logo">
               <img src="/images/SingerLogo.png" alt="Guess the Singer Logo">
-    </div>
-  </header>
-
+        </div>
+      </header>
+      
   <!-- Clean Navigation -->
-  <nav>
+      <nav>
     <div class="nav-left">
       <div class="welcome-section" onclick="toggleDropdown()">
         <span class="welcome-msg">Welcome, Anonymous</span>
-        <div class="coin-emoji"></div>
+            <div class="coin-emoji"></div>
         <span class="coin-count">123</span>
         <div class="dropdown" id="userDropdown">
           <a href="/profile.html">Edit Profile</a>
           <a href="#" onclick="logout()">Log Out</a>
+          </div>
         </div>
-      </div>
     </div>
     <div class="nav-right">
       <div class="search-container">
-        <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
-        <div class="search-suggestions" id="suggestions"></div>
-      </div>
+          <input type="text" placeholder="Search games..." class="search-bar" oninput="showSuggestions(this.value)">
+          <div class="search-suggestions" id="suggestions"></div>
+        </div>
       <button class="login-btn" id="authButton" onclick="handleAuthClick()">Login</button>
     </div>
   </nav>
-
+  
   <main class="main-content">
     <!-- Animated Featured Game Banner -->
     <div class="featured-game">
       <div class="featured-game-content">
         <div class="featured-singer-image">
-                          <img src="/images/raw.jpg" alt="Today's Featured Singer - Raw">
-        </div>
+                          <img src="/images/claire.jpg" alt="Today's Featured Singer - Claire">
+</div>
         <div class="featured-text-content">
           <h2 class="featured-title">Today's Challenge</h2>
           <div class="featured-stats">
             <div class="stat-item">
-                              <span>Can you guess Raw's favorite singer?</span>
+                              <span>Can you guess Claire's favorite singer?</span>
             </div>
           </div>
         </div>
       </div>
-      <a href="/dailygame.html" class="play-now-btn">Play Now</a>
+      <div class="featured-buttons">
+        <a href="/dailygame.html" class="play-now-btn">Play Now</a>
+        
+      </div>
     </div>
 
     <!-- Games Grid -->
     <div class="categories-section">
       <h3 class="categories-title">All Games</h3>
-      <div class="games-grid">
-        <a href="/memory.html" class="game-card">
-          <div class="game-card-header">
-            <div class="game-icon">
+    <div class="games-grid">
+      <a href="/memory.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
               <img src="/images/brain.jpg" alt="Memory Match">
-            </div>
-            <div>
+          </div>
+          <div>
               <h3 class="game-title">Memory Match</h3>
               <span class="game-category">Memory Games</span>
-            </div>
           </div>
+        </div>
           <p class="game-description">Test your memory by matching singer cards. Find all pairs to complete the challenge!</p>
           <div class="game-stats">
             <div class="game-stat">
@@ -964,19 +999,19 @@
               <span>4.9/5</span>
             </div>
             <span class="play-indicator">Play Now</span>
-          </div>
-        </a>
+        </div>
+      </a>
 
-        <a href="/spelling.html" class="game-card">
-          <div class="game-card-header">
-            <div class="game-icon">
+      <a href="/spelling.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
               <img src="/images/bee.jpg" alt="Spelling Bee">
-            </div>
-            <div>
+          </div>
+          <div>
               <h3 class="game-title">Spelling Bee</h3>
               <span class="game-category">Spelling Games</span>
-            </div>
           </div>
+        </div>
           <p class="game-description">Spell out singer names as letters appear. How fast can you complete each word?</p>
           <div class="game-stats">
             <div class="game-stat">
@@ -988,36 +1023,36 @@
               <span>4.7/5</span>
             </div>
             <span class="play-indicator">Play Now</span>
-          </div>
-        </a>
+        </div>
+      </a>
 
-        <a href="/bangerbattle.html" class="game-card">
-          <div class="game-card-header">
-            <div class="game-icon">
+      <a href="/bangerbattle.html" class="game-card">
+        <div class="game-card-header">
+          <div class="game-icon">
               <img src="/images/battle.jpg" alt="Banger Battle">
-            </div>
-            <div>
+          </div>
+          <div>
               <h3 class="game-title">Banger Battle</h3>
               <span class="game-category">Music Battles</span>
-            </div>
           </div>
+        </div>
           <p class="game-description">Battle songs head-to-head and guess which one is the bigger hit!</p>
           <div class="game-stats">
             <div class="game-stat">
               <i class="fas fa-users"></i>
               <span>3.2k players</span>
-            </div>
+        </div>
             <div class="game-stat">
               <i class="fas fa-star"></i>
               <span>4.8/5</span>
-            </div>
+    </div>
             <span class="play-indicator">Play Now</span>
-          </div>
+    </div>
         </a>
 
 
-      </div>
-    </div>
+          </div>
+          </div>
 
     <!-- Community Categories -->
     <div class="categories-section">
@@ -1026,14 +1061,14 @@
         <a href="https://forms.gle/7TdiZswfKZBZSyAZ9" target="_blank" rel="noopener noreferrer" class="category-card">
           <div class="category-icon">
             <i class="fas fa-star" style="font-size: 2rem; color: #ffcb05; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #fff3cd, #ffeaa7); border-radius: 18px;"></i>
-          </div>
+        </div>
           <h3 class="category-title">Be Featured!</h3>
           <p class="category-description">Submit your info to be featured in daily games</p>
         </a>
         <a href="/video-ideas.html" class="category-card">
           <div class="category-icon">
             <i class="fas fa-video" style="font-size: 1.8rem; color: #4a90e2; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 15px;"></i>
-          </div>
+        </div>
           <h3 class="category-title">Video Ideas</h3>
           <p class="category-description">Submit creative ideas for future episodes</p>
         </a>
@@ -1055,23 +1090,23 @@
     </div>
   </main>
 
-  <footer class="bottom-nav">
-    <a href="/profile.html" class="nav-item">
-      <i class="fas fa-user"></i>
-      <span>Profile</span>
-    </a>
-    <a href="/games.html" class="nav-item">
+<footer class="bottom-nav">
+  <a href="/profile.html" class="nav-item">
+    <i class="fas fa-user"></i>
+    <span>Profile</span>
+  </a>
+  <a href="/games.html" class="nav-item">
       <img src="/images/gamesicon.png" alt="Games Icon">
-      <span>Games</span>
-    </a>
-    <a href="/memory-leaderboard.html" class="nav-item">
-      <i class="fas fa-trophy"></i>
-      <span>Leaderboards</span>
-    </a>
-    <a href="/rewards.html" class="nav-item">
+    <span>Games</span>
+  </a>
+  <a href="/memory-leaderboard.html" class="nav-item">
+    <i class="fas fa-trophy"></i>
+    <span>Leaderboards</span>
+  </a>
+  <a href="/rewards.html" class="nav-item">
       <img src="/images/rewardicon.png" alt="Rewards Icon">
-      <span>Rewards</span>
-    </a>
+    <span>Rewards</span>
+  </a>
   </footer>
 
   <script type="module">
@@ -1091,7 +1126,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth();
-
+  
     // Update welcome message and coin count
     onAuthStateChanged(auth, async (user) => {
       const authButton = document.getElementById('authButton');
@@ -1099,18 +1134,18 @@
       if (user) {
         let username = "User";
         let coins = 0;
-
+  
         try {
           const userRef = collection(db, "users");
           const q = query(userRef, where("uid", "==", user.uid));
           const snapshot = await getDocs(q);
-
+  
           snapshot.forEach(doc => {
             const data = doc.data();
             if (data.username) username = data.username;
             if (data.coins !== undefined) coins = data.coins;
           });
-
+  
           const welcomeEl = document.querySelector('.welcome-msg');
           const coinCountEl = document.querySelector('.coin-count');
           const welcomeSection = document.querySelector('.welcome-section');

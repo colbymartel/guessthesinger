@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Favorites | Guess the Singer</title>
+  <title>User Management | Guess the Singer</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
       font-family: 'Fredoka', sans-serif;
       margin: 0;
       padding: 0;
       background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
     }
 
     header {
@@ -25,10 +27,80 @@
       font-size: 28px;
     }
 
+    .admin-controls {
+      background: white;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 700px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .export-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .export-btn:hover {
+      background: #218838;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      background: #f8f9fa;
+      padding: 10px 15px;
+      border-radius: 6px;
+      border-left: 4px solid #007bff;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6c757d;
+      font-weight: bold;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .unauthorized {
+      text-align: center;
+      padding: 50px 20px;
+      background: white;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+    }
+
+    .unauthorized i {
+      font-size: 48px;
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
+
     table {
       width: 90%;
-      max-width: 700px;
-      margin: 40px auto;
+      max-width: 1200px;
+      margin: 20px auto;
       border-collapse: collapse;
       background: white;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -39,6 +111,7 @@
     th, td {
       padding: 12px;
       text-align: left;
+      border-bottom: 1px solid #dee2e6;
     }
 
     thead {
@@ -49,25 +122,59 @@
     tbody tr:nth-child(even) {
       background-color: #f9f9f9;
     }
+
+    tbody tr:hover {
+      background-color: #e9ecef;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: #6c757d;
+    }
+
+    .loading i {
+      font-size: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .admin-controls {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .stats {
+        justify-content: center;
+      }
+      
+      table {
+        font-size: 14px;
+      }
+      
+      th, td {
+        padding: 8px;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>User Favorite Artists</h1>
+    <h1><i class="fas fa-users"></i> User Management</h1>
   </header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Favorite Artist</th>
-        <th>Coins</th>
-      </tr>
-    </thead>    
-    <tbody id="userTableBody"></tbody>
-  </table>
+  <div id="content">
+    <div class="loading">
+      <i class="fas fa-spinner"></i>
+      <p>Loading...</p>
+    </div>
+  </div>
+
   <div id="dmModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1001; justify-content:center; align-items:center;">
     <div style="background:white; padding:30px; border-radius:12px; max-width:400px; width:90%; position:relative;">
       <span id="closeDM" style="position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer;">&times;</span>
@@ -76,7 +183,6 @@
       <button id="sendDM" style="margin-top:10px; padding:10px 20px; background:#315f85; color:white; border:none; border-radius:6px; cursor:pointer;">Send</button>
     </div>
   </div>
-  
   
   <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
@@ -108,54 +214,187 @@
   const db = getFirestore(app);
   const auth = getAuth();
   let currentUser = null;
+  let allUsers = [];
+
+  // Authorized admin emails
+  const authorizedEmails = [
+    "colbyma23@gmail.com",
+    "souptimmy@greenlightgroup.co",
+    "jackmama4@gmail.com"
+  ];
 
   onAuthStateChanged(auth, user => {
     if (user) {
       currentUser = user;
+      checkAuthorization();
+    } else {
+      showUnauthorized("Please log in to access this page.");
     }
   });
 
-  const content = document.getElementById("userTableBody");
+  function checkAuthorization() {
+    if (!currentUser || !authorizedEmails.includes(currentUser.email)) {
+      showUnauthorized("You are not authorized to access this page.");
+      return;
+    }
+    loadUsersWithFavArtists();
+  }
+
+  function showUnauthorized(message) {
+    document.getElementById("content").innerHTML = `
+      <div class="unauthorized">
+        <i class="fas fa-lock"></i>
+        <h2>Access Denied</h2>
+        <p>${message}</p>
+        <a href="/login.html" style="color: #007bff; text-decoration: none;">Go to Login</a>
+      </div>
+    `;
+  }
+
+  function exportToCSV() {
+    if (allUsers.length === 0) {
+      alert("No data to export!");
+      return;
+    }
+
+    // Create CSV content
+    const headers = ["Username", "Email", "Favorite Artist", "City", "Coins", "Instagram", "Join Date"];
+    const csvContent = [
+      headers.join(","),
+      ...allUsers.map(user => [
+        `"${user.username || ''}"`,
+        `"${user.email || ''}"`,
+        `"${user.artist || ''}"`,
+        `"${user.city || ''}"`,
+        user.coins || 0,
+        `"${user.instagram || ''}"`,
+        `"${user.joinDate || ''}"`
+      ].join(","))
+    ].join("\n");
+
+    // Create and download file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `users_export_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  const content = document.getElementById("content");
   async function loadUsersWithFavArtists() {
-  content.innerHTML = "";
+    content.innerHTML = `
+      <div class="loading">
+        <i class="fas fa-spinner"></i>
+        <p>Loading users...</p>
+      </div>
+    `;
 
-  const snapshot = await getDocs(collection(db, "users"));
+    try {
+      const snapshot = await getDocs(collection(db, "users"));
 
-  // Convert snapshot to array and sort by coins (highest to lowest)
-  const users = [];
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    if (!data.email) return; // Skip if no email
+      // Convert snapshot to array and sort by coins (highest to lowest)
+      allUsers = [];
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (!data.email) return; // Skip if no email
 
-    users.push({
-      id: doc.id,
-      username: data.username || "Anonymous",
-      email: data.email,
-      artist: data.favoriteArtist || "—",
-      city: data.city || "—",
-      coins: data.coins || 0
-    });
-  });
+        allUsers.push({
+          id: doc.id,
+          username: data.username || "Anonymous",
+          email: data.email,
+          artist: data.favoriteArtist || "—",
+          city: data.city || "—",
+          coins: data.coins || 0,
+          instagram: data.instagram || "",
+          joinDate: data.joinDate ? new Date(data.joinDate.toDate()).toLocaleDateString() : "—"
+        });
+      });
 
-  // Sort by coins (highest to lowest)
-  users.sort((a, b) => b.coins - a.coins);
+      // Sort by coins (highest to lowest)
+      allUsers.sort((a, b) => b.coins - a.coins);
 
-  // Display sorted users
-  let count = 1;
-  users.forEach(user => {
-    content.innerHTML += `
-  <tr>
-    <td>${count++}</td>
-    <td><a href="#" onclick="showProfile('${user.id}')" style="color:#315f85; text-decoration:underline;">${user.username}</a></td>
-    <td>${user.email}</td>
-    <td>${user.artist}</td>
-    <td>${user.coins}</td>
-  </tr>
-`;
-  });
-}
+      // Calculate stats
+      const totalUsers = allUsers.length;
+      const totalCoins = allUsers.reduce((sum, user) => sum + user.coins, 0);
+      const avgCoins = totalUsers > 0 ? Math.round(totalCoins / totalUsers) : 0;
+      const usersWithArtists = allUsers.filter(user => user.artist !== "—").length;
 
+      // Display admin controls and stats
+      content.innerHTML = `
+        <div class="admin-controls">
+          <div class="stats">
+            <div class="stat-item">
+              <div class="stat-label">Total Users</div>
+              <div class="stat-value">${totalUsers}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Total Coins</div>
+              <div class="stat-value">${totalCoins.toLocaleString()}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Avg Coins</div>
+              <div class="stat-value">${avgCoins}</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">With Artists</div>
+              <div class="stat-value">${usersWithArtists}</div>
+            </div>
+          </div>
+          <button class="export-btn" onclick="exportToCSV()">
+            <i class="fas fa-download"></i> Export CSV
+          </button>
+        </div>
 
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Favorite Artist</th>
+              <th>City</th>
+              <th>Coins</th>
+              <th>Instagram</th>
+              <th>Join Date</th>
+            </tr>
+          </thead>    
+          <tbody id="userTableBody"></tbody>
+        </table>
+      `;
+
+      // Display sorted users
+      const tableBody = document.getElementById("userTableBody");
+      let count = 1;
+      allUsers.forEach(user => {
+        tableBody.innerHTML += `
+          <tr>
+            <td>${count++}</td>
+            <td><a href="#" onclick="showProfile('${user.id}')" style="color:#315f85; text-decoration:underline;">${user.username}</a></td>
+            <td>${user.email}</td>
+            <td>${user.artist}</td>
+            <td>${user.city}</td>
+            <td>${user.coins.toLocaleString()}</td>
+            <td>${user.instagram ? `<a href="https://instagram.com/${user.instagram}" target="_blank">@${user.instagram}</a>` : "—"}</td>
+            <td>${user.joinDate}</td>
+          </tr>
+        `;
+      });
+
+    } catch (error) {
+      console.error("Error loading users:", error);
+      content.innerHTML = `
+        <div class="unauthorized">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h2>Error</h2>
+          <p>Failed to load users. Please try again.</p>
+        </div>
+      `;
+    }
+  }
 
   window.showProfile = async function(userId) {
     const modal = document.createElement("div");
@@ -179,7 +418,7 @@
     }
 
     const email = userData.email || "—";
-    const showEnvelope = ["colbyma23@gmail.com", "souptimmy@greenlightgroup.co", "jackmama4@gmail.com"].includes(email);
+    const showEnvelope = authorizedEmails.includes(email);
     const insta = userData.instagram;
 
     modalContent.innerHTML = `
@@ -187,7 +426,8 @@
       <p><strong>Email:</strong> ${email}</p>
       <p><strong>City:</strong> ${userData.city || "—"}</p>
       <p><strong>Favorite Artist:</strong> ${userData.favoriteArtist || "—"}</p>
-      <p><strong>Coins:</strong> ${userData.coins || 0}</p>
+      <p><strong>Coins:</strong> ${(userData.coins || 0).toLocaleString()}</p>
+      <p><strong>Join Date:</strong> ${userData.joinDate ? new Date(userData.joinDate.toDate()).toLocaleDateString() : "—"}</p>
       <div style="margin-top:12px; display:flex; gap:20px; align-items:center;">
         ${insta ? `<a href="https://instagram.com/${insta}" target="_blank" title="Instagram">
           <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="24" height="24">
@@ -230,10 +470,9 @@
     document.getElementById("dmText").value = "";
   };
 
-  loadUsersWithFavArtists();
+  // Make exportToCSV globally accessible
+  window.exportToCSV = exportToCSV;
 </script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 </body>
 </html>
