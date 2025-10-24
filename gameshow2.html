@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book New England's most interactive campus game show — Guess The Singer Live." />
+  <title>Guess The Singer Live — Book the Show</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#1b1b1b;--bg-1:#254a6d;--bg-2:#4682b4;--gold:#ffcc00;--muted:#6f8295;--paper:#f8f9fa;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{font-family:'Poppins',sans-serif;color:var(--ink);background:linear-gradient(135deg,var(--bg-2),var(--bg-1));}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+    /* Navbar */
+    .nav{position:sticky;top:0;z-index:1000;background:rgba(37,74,109,.9);backdrop-filter:saturate(140%) blur(6px);}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
+    .brand{display:flex;gap:10px;align-items:center;color:#fff}
+    .brand img{height:38px;width:auto;filter:brightness(0) invert(1)}
+    .brand span{font-weight:700;letter-spacing:.3px}
+    .nav a.btn{background:linear-gradient(135deg,var(--bg-2),var(--bg-1));color:#fff;border:2px solid #fff;padding:10px 16px;border-radius:999px;font-weight:600;transition:transform .2s,box-shadow .2s}
+    .nav a.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(70,130,180,.35)}
+
+    /* Hero */
+    .hero{position:relative;min-height:86vh;display:grid;place-items:center;isolation:isolate; overflow:hidden;}
+    .hero::before,
+.hero-overlay {
+  background: rgba(0, 0, 0, 0.45); /* slightly darker behind images only */
+  z-index: 0;
+}
+
+/* ensure text sits ABOVE any dark overlays */
+.hero-wrap {
+  position: relative;
+  z-index: 2; /* higher than overlay and before element */
+  color: #fff;
+  text-shadow: 0 6px 24px rgba(0,0,0,0.35);
+  opacity: 1 !important; /* full opacity */
+}
+
+/* ensure specific text elements aren't faded */
+.kicker,
+.h1,
+.sub,
+.btn,
+.muted {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+    .h1{
+      font-size: clamp(36px, 7vw, 64px);
+      font-weight: 800;
+      line-height: 1.05;
+      color: #fff !important;
+      opacity: 1 !important;
+      text-shadow: 0 6px 24px rgba(0,0,0,.35);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    .sub{max-width:780px;font-size:clamp(16px,2.2vw,20px);opacity:1 !important;color:#fff}
+
+    .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px}
+    .btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:14px 22px;font-weight:700}
+    .btn.primary{background:linear-gradient(135deg,var(--bg-2),var(--bg-1));color:#fff;border:2px solid #fff;box-shadow:0 8px 24px rgba(70,130,180,.3)}
+    .btn.ghost{background:#fff;color:#0c2642}
+
+    /* Section shells */
+    .section{background:#fff;padding:70px 0}
+    .section.alt{background:var(--paper)}
+    .section .eyebrow{color:var(--bg-1);text-transform:uppercase;letter-spacing:.15em;font-weight:700;margin-bottom:10px}
+    .section h2{color:var(--bg-1);font-size:clamp(26px,4.5vw,40px);line-height:1.15;margin-bottom:10px}
+    .section p.lead{color:#2c3b4a;opacity:.9;max-width:800px;margin-bottom:28px}
+
+    /* Value grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .card{background:#fff;border-radius:16px;border:1px solid #e8eef5;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:22px}
+    .card h3{color:var(--bg-1);font-size:18px;margin-bottom:8px}
+    .card p{color:#334a60;font-size:15px;line-height:1.55}
+    .chip{display:inline-block;background:linear-gradient(135deg,var(--bg-2),var(--bg-1));color:#fff;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+
+    /* How it works */
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .step{background:linear-gradient(135deg,#fff,#f3f7fb);border:1px solid #e5edf6;border-radius:18px;padding:22px;position:relative}
+    .step .num{position:absolute;top:-12px;left:16px;background:linear-gradient(135deg,var(--bg-2),var(--bg-1));color:#fff;border-radius:999px;width:38px;height:38px;display:grid;place-items:center;font-weight:800}
+
+    /* Packages */
+    .packages{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .pkg{background:#fff;border:2px solid #e7edf5;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+    .pkg .head{padding:18px;text-align:center;color:#fff;font-weight:800}
+    .pkg.basic .head{background:linear-gradient(135deg,var(--bg-2),var(--bg-1))}
+    .pkg.pro .head{background:linear-gradient(135deg,var(--gold),#e6b800);color:#0f2233}
+    .pkg.plat .head{background:linear-gradient(135deg,var(--bg-1),#1e2b38)}
+    .pkg .body{padding:22px}
+    .feat{display:flex;justify-content:space-between;border-bottom:1px solid #eef3f8;padding:10px 0;font-size:14px}
+    .feat:last-child{border-bottom:none}
+    .price{margin-top:14px;font-weight:800;color:var(--bg-2)}
+    .note{font-size:12px;color:#5d6c7d;margin-top:6px}
+    .btn.book{margin-top:14px;width:100%;justify-content:center}
+
+    /* NACA strategy */
+    .pill{background:#fff;border:1px dashed #c9d7e6;border-radius:14px;padding:10px 12px;display:inline-block;margin:6px 6px 0 0;font-size:13px;color:#234}
+
+    /* Story */
+    .story{display:grid;grid-template-columns:1.2fr .8fr;gap:26px;align-items:center}
+    .story .bio{background:#fff;border-radius:16px;border:1px solid #e8eef5;padding:22px}
+    .story img{width:100%;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+
+    /* Testimonials */
+    .testi{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .quote{background:linear-gradient(135deg,#fff,#f4f7fb);border:1px solid #e8eef5;border-radius:16px;padding:18px;position:relative}
+    .quote:before{content:'\201C';position:absolute;left:12px;top:0;font-size:54px;color:var(--bg-2);opacity:.18}
+
+    /* FAQ */
+    details{background:#fff;border:1px solid #e8eef5;border-radius:12px;padding:14px}
+    summary{cursor:pointer;font-weight:700;color:#1b3851}
+    details p{margin-top:10px;color:#2e4052}
+
+    /* Contact */
+    .contact{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .field{display:flex;flex-direction:column;gap:8px}
+    .field input,.field textarea, .field select{padding:12px 14px;border:1px solid #cfe0f2;border-radius:10px;font:inherit}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Footer */
+    footer{background:var(--bg-1);color:#fff;text-align:center;padding:26px}
+
+    /* Responsive */
+    @media (max-width:960px){.grid,.steps,.packages,.story,.contact,.testi{grid-template-columns:1fr}}
+
+    /* ---- HERO MOVING GALLERY (2 ROWS) ---- */
+    .hero-background{ position:absolute; inset:0; background:transparent; }
+    .hero-grid-wrapper{ position:absolute; inset:0; overflow:hidden; }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:repeat(16,1fr);
+      grid-template-rows:repeat(2,1fr);     /* two even rows */
+      gap:10px;
+      width:600%;                           /* wide enough to scroll seamlessly */
+      height:100%;
+      position:absolute; top:0; left:0;
+      animation:scrollGallery 90s linear infinite;
+    }
+    .hero-grid img{
+      width:100%; height:100%; object-fit:cover;
+      border-radius:8px; opacity:.7;        /* images slightly dim */
+      filter:brightness(.8) contrast(1.05);
+      transition:opacity .3s ease, filter .3s ease;
+    }
+    .hero-grid img:hover{ opacity:.9; filter:brightness(.9) contrast(1.02); }
+    @keyframes scrollGallery{
+      0%{ transform:translateX(0); }
+      100%{ transform:translateX(-50%); }
+    }
+    .hero-overlay{ position:absolute; inset:0; background:rgba(0,0,0,.25); }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top"><img src="images/SingerLogo.png" alt="Guess The Singer"></a>
+      <div style="display:flex;gap:10px">
+        <a class="btn ghost" href="#reel">Watch Trailer</a>
+        <a class="btn btn primary" href="#contact">Book a Show</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <!-- Moving gallery background -->
+    <div class="hero-background">
+      <div class="hero-grid-wrapper">
+        <div class="hero-grid" id="heroGrid"></div>
+      </div>
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-wrap container">
+      <div class="kicker">Campus Entertainment • Interactive Game Show</div>
+      <h1 class="h1">New England’s Most Innovative <br/>Campus Game Show</h1>
+      <p class="sub">A fast-paced, crowd-powered music guessing show with a 7-foot prize wheel, twists &amp; turns, and big cash winners.</p>
+      <div class="cta-row">
+        <a href="https://www.youtube.com/watch?v=Ayw4ghT7fJU" target="_blank" class="btn primary">▶ Watch the Trailer</a>
+        <a href="#contact" class="btn ghost">Get Pricing &amp; Dates</a>
+      </div>
+      <div class="muted" style="margin-top:8px;color:#dbe8f6"></div>
+    </div>
+  </section>
+
+  <!-- (Removed the logo strip under the hero as requested) -->
+
+  <!-- What makes it different -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Why book this</div>
+      <h2>Different by Design. Built for Today’s Campus.</h2>
+      <p class="lead">Offices face tighter staffing and budgets since 2020. We deliver a high-energy show that feels fresh (not another lecture or open mic) while staying friendly to procurement and safety policies.</p>
+      <div class="grid" style="margin-top:16px">
+        <div class="card"><span class="chip">Signature Wheel</span><h3>7-Foot Prize Wheel</h3><p>Unlock clues, bonus prizes, or eliminations. The format keeps crowds engaged and <i>constantly participating</i>.</p></div>
+        <div class="card"><span class="chip">Student-First</span><h3>Designed for SIO Teams</h3><p>Arrival, setup, run-of-show, and tear-down handled. We include posters, captions, and emails you can copy-paste.</p></div>
+        <div class="card"><span class="chip">Flexible</span><h3>Scales to Your Budget</h3><p>Choose prize tiers that fit your policies. We avoid risky “largest cash prize” claims and align with your compliance needs.</p></div>
+        <div class="card"><span class="chip">Test &amp; Swag</span><h3>On-Campus Test Runs</h3><p>We can pre-run segments and feature <b>your college swag</b> for added school spirit.</p></div>
+        <div class="card"><span class="chip">Nothing Like It</span><h3>Not Comedy. Not Magic.</h3><p>Interactive game mechanics + music culture = a lane that’s currently <b>under-served</b> on many campuses.</p></div>
+        <div class="card"><span class="chip">Quality</span><h3>Story-Driven Recaps</h3><p>Optional recap videos to boost your office’s social presence and event pipeline.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section alt">
+    <div class="container">
+      <div class="eyebrow">Format</div>
+      <h2>How the Show Works</h2>
+      <div class="steps" style="margin-top:14px">
+        <div class="step"><div class="num">1</div><h3>Join the Game</h3><p>Students are called at random and via mini-trivia to compete at the podiums.</p></div>
+        <div class="step"><div class="num">2</div><h3>Spin the Wheel</h3><p>Clues, lifelines, eliminations, and campus-specific surprises keep the crowd active.</p></div>
+        <div class="step"><div class="num">3</div><h3>Win Big</h3><p>Winners earn guaranteed cash tiers (customizable per campus policy) and bragging rights.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages -->
+  <section class="section" id="packages">
+    <div class="container">
+      <div class="eyebrow">Event packages</div>
+      <h2>Pick a Package — or Ask for a Custom Build</h2>
+      <p class="lead">Every booking includes marketing assets, turnkey production, and direct coordination with your Student Involvement Office.</p>
+      <div class="packages" style="margin-top:14px">
+        <div class="pkg basic">
+          <div class="head">General</div>
+          <div class="body">
+            <div class="feat"><span>Show Duration</span><b>~1 hour</b></div>
+            <div class="feat"><span>Prize Wheel</span><b>Virtual</b></div>
+            <div class="feat"><span>Marketing Materials</span><b>Included</b></div>
+            <div class="feat"><span>Guaranteed Prize Pool</span><b>$500</b></div>
+            <div class="price">Campus-friendly entry tier</div>
+            <div class="note">Great for weeknight programs or test runs.</div>
+            <a href="#contact" class="btn primary btn book">Request Date</a>
+          </div>
+        </div>
+        <div class="pkg pro">
+          <div class="head">Pro <span style="font-weight:800">• Most Popular</span></div>
+          <div class="body">
+            <div class="feat"><span>Show Duration</span><b>Up to 1.5 hours</b></div>
+            <div class="feat"><span>Prize Wheel</span><b>Physical 7-ft wheel</b></div>
+            <div class="feat"><span>Marketing Materials</span><b>Included</b></div>
+            <div class="feat"><span>Guaranteed Prize Pool</span><b>$1,000</b></div>
+            <div class="price">Best energy-to-budget ratio</div>
+            <div class="note">Ideal for welcome weeks &amp; late-night series.</div>
+            <a href="#contact" class="btn primary btn book">Hold a Date</a>
+          </div>
+        </div>
+        <div class="pkg plat">
+          <div class="head">Platinum</div>
+          <div class="body">
+            <div class="feat"><span>Show Duration</span><b>Up to 2 hours</b></div>
+            <div class="feat"><span>Prize Wheel</span><b>Physical + special rounds</b></div>
+            <div class="feat"><span>Recap Video</span><b>Included</b></div>
+            <div class="feat"><span>Guaranteed Prize Pool</span><b>$2,000</b></div>
+            <div class="price">Premium campus experience</div>
+            <div class="note">For big weekends and headline slots.</div>
+            <a href="#contact" class="btn primary btn book">Ask About Availability</a>
+          </div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:10px">Note: We tailor prize language to align with your institution’s policies. We avoid “largest cash prize” framing and keep compliance simple.</p>
+    </div>
+  </section>
+
+  <!-- Reel / Video -->
+  <section class="section alt" id="reel">
+    <div class="container">
+      <div class="eyebrow">See it in action</div>
+      <h2>90-Second Trailer</h2>
+      <div style="margin-top:16px;display:grid;place-items:center">
+        <div style="position:relative;width:100%;max-width:900px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.25)">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Ayw4ghT7fJU" title="Guess The Singer — Live Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Student Involvement Offices -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Built for your office</div>
+      <h2>Turnkey for Student Involvement Teams</h2>
+      <div class="grid" style="margin-top:14px">
+        <div class="card"><h3>Post-COVID Realities</h3><p>Cuts in staffing and budgets are real. We bring a full crew, handle logistics, and keep comms crystal clear.</p></div>
+        <div class="card"><h3>Price Over Quality?</h3><p>We meet you where you are. Flexible tiers and discounts for mid-week or first-time bookings.</p></div>
+        <div class="card"><h3>Marketing Included</h3><p>Editable posters, IG captions, and email copy help you drive attendance with almost no lift.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="section alt" id="story">
+    <div class="container">
+      <div class="eyebrow">My story</div>
+      <h2>From Campus Programmer to Touring Host</h2>
+      <div class="story" style="margin-top:14px">
+        <div class="bio">
+          <p>I’m Colby — a former college programmer who saw a <b>void</b> in campus entertainment. With friends, a camera, and a Facebook page, we built a series that helped strangers connect over music. Today, that spirit fuels Guess The Singer Live.</p>
+          <p style="margin-top:10px">We keep the tone modern, authentic, and student-centric. Older hosts don’t always resonate — our show does, because students <i>drive</i> it.</p>
+          <p class="muted" style="margin-top:10px">PS: Ask Jorge — he’ll vouch for us and intro 5 campuses. Confidence matters.</p>
+        </div>
+        <img src="images/colbypfp.jpg" alt="Colby Martel">
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <div class="eyebrow">What students say</div>
+      <h2>“Twists, energy, and real prizes.”</h2>
+      <div class="testi" style="margin-top:14px">
+        <div class="quote"><p>“Very entertaining and interactive. I loved the twists!”</p></div>
+        <div class="quote"><p>“The possibility of winning prizes was amazing!”</p></div>
+        <div class="quote"><p>“The crowd work and audience participation was incredible.”</p></div>
+        <div class="quote"><p>“The podiums and tablets made it feel like a TV show.”</p></div>
+        <div class="quote"><p>“Spinning the wheel was the highlight!”</p></div>
+        <div class="quote"><p>“The rounds kept us on the edge of our seats.”</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section alt" id="faq">
+    <div class="container">
+      <div class="eyebrow">FAQ</div>
+      <h2>Good to Know</h2>
+      <div class="grid" style="margin-top:14px">
+        <details class="card"><summary>How do you handle cash prizes &amp; compliance?</summary><p>We coordinate with your policies and avoid risky superlatives (e.g., “largest cash prize”). Prize tiers are guaranteed and scalable.</p></details>
+        <details class="card"><summary>Can we do a trial before a big event?</summary><p>Yes — we offer a free pilot option this semester with a $500 prize pool, or discounted first-time shows.</p></details>
+        <details class="card"><summary>What about mental-health sensitivities?</summary><p>Our format is uplifting, team-based, and inclusive — a fun break from comparison-driven social feeds.</p></details>
+        <details class="card"><summary>Do you collaborate at showcases?</summary><p>Absolutely. Magic and comedy collabs are common at NACA; we’re open to smart pairings.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="eyebrow">Let’s talk</div>
+      <h2>Book a Date or Ask a Question</h2>
+      <p class="lead">Send a quick note and we’ll reply with availability, pricing, and a one-pager you can forward to your team.</p>
+      <form class="contact" name="booking" method="post" data-netlify="true">
+        <input type="hidden" name="form-name" value="booking" />
+        <div class="field"><label>Full Name</label><input type="text" name="name" required placeholder="Your name"/></div>
+        <div class="field"><label>School / Office</label><input type="text" name="school" required placeholder="e.g., Student Involvement"/></div>
+        <div class="field"><label>Email</label><input type="email" name="email" required placeholder="you@school.edu"/></div>
+        <div class="field"><label>Desired Date(s)</label><input type="text" name="dates" placeholder="e.g., Oct 10 or Week of Nov 3"/></div>
+        <div class="field"><label>Package Interest</label>
+          <select name="package">
+            <option value="General">General</option>
+            <option value="Pro">Pro</option>
+            <option value="Platinum">Platinum</option>
+            <option value="Custom / Not sure">Custom / Not sure</option>
+          </select>
+        </div>
+        <div class="field" style="grid-column:1/-1"><label>Anything else?</label><textarea name="message" rows="4" placeholder="Share goals, budget notes, or questions"></textarea></div>
+        <div style="grid-column:1/-1;display:flex;gap:10px;align-items:center">
+          <button type="submit" class="btn primary">Send Inquiry</button>
+          <span class="muted">Prefer email? <a href="mailto:colby@guessthesinger.com">colby@guessthesinger.com</a></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Guess The Singer • All rights reserved • <a href="#top">Back to top</a>
+  </footer>
+
+  <script>
+    // Populate the moving hero grid with gallery images
+    document.addEventListener('DOMContentLoaded', function() {
+      const heroGrid = document.getElementById('heroGrid');
+      if (!heroGrid) return;
+
+      const galleryImages = [
+        'images/Gallery1.jpg','images/Gallery2.jpg','images/Gallery3.jpg',
+        'images/Gallery4.jpg','images/Gallery5.jpg','images/Gallery6.jpg',
+        'images/Gallery7.jpg','images/Gallery8.jpg','images/Gallery9.jpg',
+        'images/Gallery10.jpg','images/Gallery11.jpg','images/Gallery12.jpg',
+        'images/Gallery13.jpg','images/Gallery14.jpg','images/Gallery15.jpg',
+        'images/Gallery16.jpg','images/Gallery17.jpg','images/Gallery18.jpg',
+        'images/Gallery19.jpg'
+      ];
+
+      // Duplicate to fill a 16 x 2 grid and enable continuous scroll
+      const imagesToShow = [
+        ...galleryImages, ...galleryImages, ...galleryImages, ...galleryImages,
+        ...galleryImages, ...galleryImages
+      ];
+
+      imagesToShow.forEach((src, i) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Guess The Singer Event ${i+1}`;
+        img.loading = 'lazy';
+        heroGrid.appendChild(img);
+      });
+
+      // Subtle parallax
+      const heroBg = document.querySelector('.hero-background');
+      if (heroBg) {
+        window.addEventListener('scroll', () => {
+          const rate = window.pageYOffset * -0.3;
+          heroBg.style.transform = `translateY(${rate}px)`;
+        });
+      }
+    });
+  </script>
+</body>
+</html>
