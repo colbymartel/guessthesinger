@@ -399,6 +399,8 @@
       color: #2f2f2f;
     }
 
+    
+
     .hint-button:hover {
       transform: translateY(-1px) scale(1.03);
       box-shadow: 0 4px 8px rgba(0,0,0,0.25);
@@ -779,24 +781,47 @@
       box-shadow: 0 6px 16px rgba(60, 179, 113, 0.4);
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
-      .game-title {
-        font-size: 1.5rem;
-      }
 
-      .hint-content {
-        padding: 25px 20px;
-      }
+/* Keep buttons side-by-side */
+.button-group {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-      .button-group {
-        flex-direction: column;
-      }
+/* Ask Question stays full-width left button */
+.cta-button {
+  flex: 1;
+  height: 50px;
+  font-size: 1rem;
+}
 
-      .hint-button {
-        width: 100%;
-      }
-    }
+/* Hints button stays circular */
+.hint-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.hint-button i {
+  font-size: 20px;
+}
+
+/* Badge stays in the corner */
+.hint-badge {
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+}
+}
+
+
 
     /* Scrollbar */
     ::-webkit-scrollbar {
@@ -852,6 +877,18 @@
   align-items: center;
   gap: 16px; /* 👈 space between name and coins */
 }
+.failure-screen {
+  display: none;
+  text-align: center;
+  padding: 30px 20px;
+  width: 100%;
+}
+
+.failure-screen.active {
+  display: block;
+  animation: slideIn 0.5s ease;
+}
+
 
   </style>
 </head>
@@ -1031,6 +1068,28 @@
     </div>
   </div>
 
+  <div class="failure-screen" id="failureScreen">
+    <div class="victory-emoji">😅</div>
+    <h2 class="victory-title">Good try!</h2>
+    <p class="victory-message">
+      You ran out of questions or gave up. The mystery singer was:
+    </p>
+  
+    <div class="singer-reveal">
+      <div class="singer-name">Juice WRLD</div>
+      <p style="color: #666;">Jarad Anthony Higgins (1998-2019)</p>
+    </div>
+  
+    <div style="margin-bottom: 25px;">
+      <p style="color: #4682b4; font-size: 1.1rem; margin-bottom: 8px;">Your Stats:</p>
+      <p style="color: #666;"><strong id="finalQuestionsFail">0</strong> questions asked</p>
+      <p style="color: #666;"><strong id="finalHintsFail">0</strong> hints revealed</p>
+    </div>
+  
+    <button class="share-button" id="shareFailButton">Share Your Score</button>
+  </div>
+  
+
   <!-- Hint Modal -->
   <div class="hint-modal" id="hintModal">
     <div class="hint-content">
@@ -1208,9 +1267,12 @@
     const hintsList        = document.getElementById('hintsList');
   
     const victoryScreen    = document.getElementById('victoryScreen');
-    const gameContent      = document.getElementById('gameContent');
-    const shareButton      = document.getElementById('shareButton');
-  
+const gameContent      = document.getElementById('gameContent');
+const shareButton      = document.getElementById('shareButton');
+
+const failureScreen    = document.getElementById('failureScreen');      
+const shareFailButton  = document.getElementById('shareFailButton');    
+
     const openGuessModal   = document.getElementById('openGuessModal');
     const guessModal       = document.getElementById('guessModal');
     const closeGuess       = document.getElementById('closeGuess');
@@ -1433,45 +1495,56 @@
       autocompleteList.innerHTML = '';
       autocompleteList.style.display = 'none';
     }
-  
-    // Submit final guess
     guessButtonEl.addEventListener('click', () => {
-      const guess = finalGuessInput.value.trim().toLowerCase();
-  
-      if (!guess) {
-        feedbackMessage.textContent = 'Please enter a singer name!';
-        feedbackMessage.className = 'feedback-message error';
-        return;
+  const guess = finalGuessInput.value.trim().toLowerCase();
+
+  if (!guess) {
+    feedbackMessage.textContent = 'Please enter a singer name!';
+    feedbackMessage.className = 'feedback-message error';
+    return;
+  }
+
+  const correctVariations = ['juice wrld', 'juicewrld', 'juice world', 'juice', 'jarad higgins'];
+  const isCorrect = correctVariations.some(v => guess.includes(v) || v.includes(guess));
+
+  if (isCorrect) {
+    // Hide modal + suggestions
+    guessModal.classList.remove('active');
+    clearSuggestions();
+
+    // Hide main game, show victory screen
+    gameContent.style.display = 'none';
+    victoryScreen.classList.add('active');
+
+    // Hide PROGRESS BAR on results page
+    if (progressWrapper) {
+      progressWrapper.style.display = 'none';
+    }
+
+    document.getElementById('finalQuestions').textContent = questionsAsked;
+    document.getElementById('finalHints').textContent = hintsRevealed;
+  } else {
+    // ❗ If they are OUT of questions, a wrong guess sends them to FAIL
+    if (questionsAsked >= maxQuestions) {
+      guessModal.classList.remove('active');
+      clearSuggestions();
+
+      gameContent.style.display = 'none';
+      failureScreen.classList.add('active');
+
+      if (progressWrapper) {
+        progressWrapper.style.display = 'none';
       }
-  
-      const correctVariations = ['juice wrld', 'juicewrld', 'juice world', 'juice', 'jarad higgins'];
-      const isCorrect = correctVariations.some(v => guess.includes(v) || v.includes(guess));
-  
-      if (isCorrect) {
-        // Hide modal + suggestions
-        guessModal.classList.remove('active');
-        clearSuggestions();
-  
-        // Hide main game, show victory screen
-        gameContent.style.display = 'none';
-        victoryScreen.classList.add('active');
-  
-        // HIDE PROGRESS BAR on results page
-        if (progressWrapper) {
-          progressWrapper.style.display = 'none';
-        }
-  
-        document.getElementById('finalQuestions').textContent = questionsAsked;
-        document.getElementById('finalHints').textContent = hintsRevealed;
-      } else {
-        feedbackMessage.textContent = 'Not quite! Try again or ask more questions.';
-        feedbackMessage.className = 'feedback-message error';
-      }
-    });
-  
-    // ==== SHARE BUTTON ====
- // ==== SHARE BUTTON ====
-// ==== SHARE BUTTON — COPY TO CLIPBOARD ONLY ====
+
+      document.getElementById('finalQuestionsFail').textContent = questionsAsked;
+      document.getElementById('finalHintsFail').textContent = hintsRevealed;
+    } else {
+      // Still have questions left → let them keep playing
+      feedbackMessage.textContent = 'Not quite! Try again or ask more questions.';
+      feedbackMessage.className = 'feedback-message error';
+    }
+  }
+});
 shareButton.addEventListener('click', () => {
   const shareText =
     `🎵 Guess the Singer - Game #1\n` +
@@ -1487,6 +1560,24 @@ shareButton.addEventListener('click', () => {
       alert("Couldn't copy automatically — try manually!");
     });
 });
+
+shareFailButton.addEventListener('click', () => {
+  const shareText =
+    `🎵 Guess the Singer - Game #1\n` +
+    `❌ I didn’t guess today’s singer...\n` +
+    `📊 Questions Used: ${questionsAsked}\n` +
+    `💡 Hints Revealed: ${hintsRevealed}\n\n` +
+    `Play here 👇\nhttps://GuessTheSinger.com`;
+
+  navigator.clipboard.writeText(shareText)
+    .then(() => {
+      alert("Score copied to clipboard! 📋\nPaste to challenge a friend 🔥");
+    })
+    .catch(() => {
+      alert("Couldn't copy automatically — try manually!");
+    });
+});
+
 
 
   

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Mystery Singer – Landing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 70px;
+    }
+
+    /* Top Navigation */
+    nav {
+      background-color: #1e2b38;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .welcome-nav {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .welcome-msg {
+      cursor: pointer;
+    }
+
+    #coinWrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      background: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 160px;
+      z-index: 10;
+    }
+
+    .dropdown.show { display: flex; }
+
+    .dropdown a {
+      color: white;
+      padding: 8px 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background: #ffcb05;
+      color: #1e2b38;
+    }
+
+    /* Header / Hero */
+    header {
+      width: 100%;
+      padding: 30px 20px 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo img {
+      max-width: 220px;
+      height: auto;
+    }
+
+    .landing-main {
+      flex: 1;
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .landing-text {
+      flex: 1 1 320px;
+    }
+
+    .tagline {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #3b7bbf;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .landing-title {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #1e2b38;
+      margin-bottom: 12px;
+    }
+
+    .landing-subtitle {
+      font-size: 1.05rem;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 26px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', Arial, sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .primary-btn {
+      background: #3b7bbf;
+      color: #fff;
+      box-shadow: 0 4px 0 #234d7d;
+      transition: all 0.2s ease;
+    }
+
+    .primary-btn:hover {
+      background: #234d7d;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #234d7d;
+    }
+
+    .primary-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #234d7d;
+    }
+
+    .secondary-btn {
+      background: #fff;
+      color: #3b7bbf;
+      border: 2px solid #3b7bbf;
+      transition: all 0.2s ease;
+    }
+
+    .secondary-btn:hover {
+      background: #e7f1f9;
+    }
+
+    .landing-note {
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    .landing-image {
+      flex: 1 1 280px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .landing-image-inner {
+      position: relative;
+      max-width: 280px;
+    }
+
+    .landing-image-inner img {
+      width: 100%;
+      border-radius: 24px;
+      box-shadow: 0 18px 35px rgba(0,0,0,0.25);
+      object-fit: cover;
+    }
+
+    .bubble-tag {
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffcb05;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1e2b38;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      white-space: nowrap;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i {
+      font-size: 20px;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    @media (max-width: 768px) {
+      .landing-title {
+        font-size: 1.7rem;
+      }
+      .landing-main {
+        padding-bottom: 90px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav>
+    <div class="welcome-nav">
+      <div id="welcomeMessage" class="welcome-msg">Welcome, Anonymous</div>
+      <div id="dropdownMenu" class="dropdown"></div>
+    </div>
+
+    <div id="coinWrapper">
+      <div class="coin-emoji"></div>
+      <span id="coinCount" style="font-weight:bold;">0</span>
+    </div>
+  </nav>
+
+  <!-- LOGO / HEADER -->
+  <header>
+    <div class="logo">
+      <!-- use your existing logo path -->
+      <img src="../images/SingerLogo.png" alt="Guess The Singer Logo" loading="lazy">
+    </div>
+  </header>
+
+  <!-- MAIN LANDING CONTENT -->
+  <main class="landing-main">
+    <section class="landing-text">
+      <div class="tagline">Daily Mystery Games</div>
+      <h1 class="landing-title">Can you guess Maria's favorite singer?</h1>
+      <p class="landing-subtitle">
+        Every day, there’s a new mystery artist. Ask up to 15 yes/no questions, unlock hints,
+        and lock in your final guess. Test your knowledge, earn coins, and challenge friends.
+      </p>
+
+      <div class="cta-row">
+        <!-- UPDATE href to your actual daily game file -->
+        <a href="/daily-mystery-singer.html" class="primary-btn">
+          <i class="fas fa-play"></i> Play Today’s Game
+        </a>
+
+        <!-- UPDATE href to your calendar/archive page -->
+        <a href="/daily-calendar.html" class="secondary-btn">
+          <i class="fas fa-calendar-alt"></i> Game Calendar
+        </a>
+      </div>
+
+      <p class="landing-note">
+        New mystery singer drops every day at midnight.
+      </p>
+    </section>
+
+    <section class="landing-image">
+      <div class="landing-image-inner">
+        <!-- Swap in a good PNG/JPG of you -->
+        <img src="../images/colby-portrait.png" alt="Colby Martel">
+        <div class="bubble-tag">Today’s favorite is a mystery…</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <!-- AUTH / LOGIN LOGIC -->
+  <!-- Re-use the same Firebase + welcome/coins script you already have
+       on the game page. Drop it down here so it fills welcomeMessage,
+       dropdownMenu, and coinCount exactly the same way. -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, collection, getDocs, query, where } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+
+    const welcomeEl = document.getElementById('welcomeMessage');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const coinDisplayEl = document.getElementById('coinCount');
+
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        let displayName = user.displayName || "Player";
+        let coinCount = 0;
+
+        const userRef = collection(db, "users");
+        const q = query(userRef, where("uid", "==", user.uid));
+        const snapshot = await getDocs(q);
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.username) displayName = data.username;
+          if (data.coins) coinCount = data.coins;
+        });
+
+        welcomeEl.textContent = `Welcome, ${displayName}`;
+        if (coinDisplayEl) coinDisplayEl.textContent = coinCount;
+
+        dropdownMenu.innerHTML = `
+          <a href="/profile.html">Edit Profile</a>
+          <a href="#" id="logoutBtn">Log Out</a>
+        `;
+
+        setTimeout(() => {
+          const logoutBtn = document.getElementById('logoutBtn');
+          if (logoutBtn) {
+            logoutBtn.addEventListener('click', async (e) => {
+              e.preventDefault();
+              try {
+                await signOut(auth);
+                window.location.reload();
+              } catch (err) {
+                console.error("Logout failed:", err);
+              }
+            });
+          }
+        }, 0);
+
+      } else {
+        welcomeEl.textContent = "Welcome, Anonymous";
+        if (coinDisplayEl) coinDisplayEl.textContent = "0";
+        dropdownMenu.innerHTML = `
+          <a href="/signup.html">Create Profile</a>
+          <a href="/login.html">Log In</a>
+        `;
+      }
+    });
+
+    // Toggle dropdown on click
+    welcomeEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dropdownMenu.contains(e.target) && e.target !== welcomeEl) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

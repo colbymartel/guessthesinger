@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Mystery Singer Calendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 70px;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 30px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto 10px;
+      display: block;
+    }
+
+    .header-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    /* Top Navigation */
+    nav.top-nav {
+      background-color: #1e2b38;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px; /* space between name and coins */
+    }
+
+    .welcome-nav {
+      position: relative;
+    }
+
+    .welcome-msg {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      background: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 160px;
+      z-index: 10;
+    }
+    .dropdown.show { display: flex; }
+
+    .dropdown a {
+      color: white;
+      padding: 8px 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dropdown a:hover {
+      background: #ffcb05;
+      color: #1e2b38;
+    }
+
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .calendar-intro {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .calendar-intro h2 {
+      font-size: 1.6rem;
+      color: #3b7bbf;
+      margin-bottom: 8px;
+    }
+
+    .calendar-intro p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .month-label {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 10px 0 18px;
+      color: #234d7d;
+      text-align: center;
+    }
+
+    /* Calendar grid */
+    .calendar-card {
+      width: 100%;
+      max-width: 650px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      padding: 20px 18px 24px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #777;
+      text-transform: uppercase;
+    }
+
+    .day-cell {
+      height: 55px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: default;
+      transition: all 0.18s ease;
+      position: relative;
+    }
+
+    .day-cell.empty {
+      background: transparent;
+      cursor: default;
+    }
+
+    .day-cell.available {
+      background: #e8f2ff;
+      color: #234d7d;
+      cursor: pointer;
+      box-shadow: 0 2px 0 #b6c7e6;
+    }
+
+    .day-cell.available:hover {
+      background: #d0e4ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 0 #b6c7e6;
+    }
+
+    .day-cell.today {
+      border: 2px solid #ffcb05;
+      box-shadow: 0 0 0 2px rgba(255,203,5,0.25);
+    }
+
+    .day-cell.locked {
+      background: #f2f2f2;
+      color: #999;
+      cursor: not-allowed;
+    }
+
+    .day-cell.locked::after {
+      content: "🔒";
+      position: absolute;
+      right: 6px;
+      bottom: 4px;
+      font-size: 0.8rem;
+    }
+
+    .calendar-legend {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+    }
+
+    .legend-dot.available {
+      background: #e8f2ff;
+      border: 1px solid #234d7d;
+    }
+
+    .legend-dot.locked {
+      background: #f2f2f2;
+      border: 1px solid #999;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    @media (max-width: 768px) {
+      .calendar-card {
+        padding: 16px 10px 20px;
+      }
+      .day-cell {
+        height: 44px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="welcome-nav">
+        <div id="welcomeMessage" class="welcome-msg">Welcome, Anonymous</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+
+      <div id="coinWrapper" style="display:flex;align-items:center;gap:6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight:bold;">0</span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+
+    <div class="month-label">December 2025 Daily Games</div>
+
+    <div class="calendar-card">
+      <div class="calendar-grid" id="calendarGrid">
+        <!-- Weekday row -->
+        <div class="weekday">Mon</div>
+        <div class="weekday">Tue</div>
+        <div class="weekday">Wed</div>
+        <div class="weekday">Thu</div>
+        <div class="weekday">Fri</div>
+        <div class="weekday">Sat</div>
+        <div class="weekday">Sun</div>
+
+        <!-- December 2025 starts on Monday, so no leading empties -->
+        <!-- Each cell gets data-day so JS can unlock + attach links -->
+        <!-- Row 1: 1–7 -->
+        <div class="day-cell" data-day="1">1</div>
+        <div class="day-cell" data-day="2">2</div>
+        <div class="day-cell" data-day="3">3</div>
+        <div class="day-cell" data-day="4">4</div>
+        <div class="day-cell" data-day="5">5</div>
+        <div class="day-cell" data-day="6">6</div>
+        <div class="day-cell" data-day="7">7</div>
+
+        <!-- Row 2: 8–14 -->
+        <div class="day-cell" data-day="8">8</div>
+        <div class="day-cell" data-day="9">9</div>
+        <div class="day-cell" data-day="10">10</div>
+        <div class="day-cell" data-day="11">11</div>
+        <div class="day-cell" data-day="12">12</div>
+        <div class="day-cell" data-day="13">13</div>
+        <div class="day-cell" data-day="14">14</div>
+
+        <!-- Row 3: 15–21 -->
+        <div class="day-cell" data-day="15">15</div>
+        <div class="day-cell" data-day="16">16</div>
+        <div class="day-cell" data-day="17">17</div>
+        <div class="day-cell" data-day="18">18</div>
+        <div class="day-cell" data-day="19">19</div>
+        <div class="day-cell" data-day="20">20</div>
+        <div class="day-cell" data-day="21">21</div>
+
+        <!-- Row 4: 22–28 -->
+        <div class="day-cell" data-day="22">22</div>
+        <div class="day-cell" data-day="23">23</div>
+        <div class="day-cell" data-day="24">24</div>
+        <div class="day-cell" data-day="25">25</div>
+        <div class="day-cell" data-day="26">26</div>
+        <div class="day-cell" data-day="27">27</div>
+        <div class="day-cell" data-day="28">28</div>
+
+        <!-- Row 5: 29–31 (+ empties) -->
+        <div class="day-cell" data-day="29">29</div>
+        <div class="day-cell" data-day="30">30</div>
+        <div class="day-cell" data-day="31">31</div>
+        <div class="day-cell empty"></div>
+        <div class="day-cell empty"></div>
+        <div class="day-cell empty"></div>
+        <div class="day-cell empty"></div>
+      </div>
+
+      <div class="calendar-legend">
+        <div class="legend-item">
+          <div class="legend-dot available"></div>
+          <span>Unlocked game</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot locked"></div>
+          <span>Coming soon</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Nav -->
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <!-- PAGE LOGIC -->
+  <script>
+    // Map which days have actual games + where they live
+    // Update these URLs to your real paths
+    const dayLinks = {
+      1: "/2025daily/day1.html",
+      2: "/2025daily/day2.html"
+      // 3: "/daily/day3.html", etc. when ready
+    };
+
+    // For live unlock logic:
+    const now = new Date();
+    const currentYear  = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0 = Jan, 11 = Dec
+    const currentDay   = now.getDate();
+
+    // If you want to test different "today" values, uncomment:
+    // const currentYear = 2025;
+    // const currentMonth = 11; // December
+    // const currentDay = 2;    // Only 1 & 2 unlocked
+
+    const isDecember2025 = (currentYear === 2025 && currentMonth === 11);
+
+    document.querySelectorAll(".day-cell[data-day]").forEach(cell => {
+      const day = parseInt(cell.dataset.day, 10);
+
+      let unlocked = false;
+
+      if (isDecember2025) {
+        // Unlock up to the real current day
+        unlocked = day <= currentDay;
+      } else if (currentYear > 2025 || (currentYear === 2025 && currentMonth > 11)) {
+        // After December 2025, unlock everything
+        unlocked = true;
+      }
+
+      if (!unlocked) {
+        cell.classList.add("locked");
+        return;
+      }
+
+      // Mark as available or today
+      cell.classList.add("available");
+      if (isDecember2025 && day === currentDay) {
+        cell.classList.add("today");
+      }
+
+      // Only attach click if we have a game link for that day
+      if (dayLinks[day]) {
+        cell.addEventListener("click", () => {
+          window.location.href = dayLinks[day];
+        });
+      } else {
+        // Unlocked but game not ready yet
+        cell.classList.add("locked");
+        cell.classList.remove("available", "today");
+      }
+    });
+  </script>
+
+  <!-- Firebase Auth + Welcome / Coins -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const db   = getFirestore(app);
+    const auth = getAuth(app);
+
+    const welcomeEl    = document.getElementById("welcomeMessage");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const coinDisplay  = document.getElementById("coinCount");
+
+    function setAnonymousUI() {
+      if (welcomeEl) welcomeEl.textContent = "Welcome, Anonymous";
+      if (coinDisplay) coinDisplay.textContent = "0";
+
+      if (dropdownMenu) {
+        dropdownMenu.innerHTML = `
+          <a href="/login.html">Log In</a>
+          <a href="/signup.html">Create Profile</a>
+        `;
+      }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!dropdownMenu || !welcomeEl || !coinDisplay) return;
+
+      dropdownMenu.innerHTML = "";
+
+      if (!user) {
+        setAnonymousUI();
+        return;
+      }
+
+      let displayName = user.displayName || "Player";
+      let coins = 0;
+
+      try {
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        const snapshot = await getDocs(q);
+
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          if (data.username) displayName = data.username;
+          if (typeof data.coins === "number") coins = data.coins;
+        });
+      } catch (err) {
+        console.error("Error fetching user doc:", err);
+      }
+
+      welcomeEl.textContent = `Welcome, ${displayName}`;
+      coinDisplay.textContent = coins.toString();
+
+      dropdownMenu.innerHTML = `
+        <a href="/profile.html">Profile</a>
+        <a href="#" id="logoutBtn">Log Out</a>
+      `;
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          try {
+            await signOut(auth);
+            setAnonymousUI();
+          } catch (err) {
+            console.error("Logout failed:", err);
+          }
+        });
+      }
+    });
+
+    if (welcomeEl && dropdownMenu) {
+      welcomeEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("show");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!dropdownMenu.contains(e.target) && e.target !== welcomeEl) {
+          dropdownMenu.classList.remove("show");
+        }
+      });
+    }
+  </script>
+</body>
+</html>
