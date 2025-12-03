@@ -888,6 +888,16 @@
       display: block;
       animation: slideIn 0.5s ease;
     }
+    .singer-photo {
+  display: block;
+  margin: 15px auto 0;
+  max-width: 220px;
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
   </style>
 </head>
 <body>
@@ -916,6 +926,7 @@
   </nav>
 
   <div id="gameLabel" class="game-label">Game #3</div>
+  
 
   <div class="main">
     <!-- Progress Bar -->
@@ -1052,8 +1063,9 @@
       <p class="victory-message">You correctly guessed the mystery singer!</p>
       <div class="singer-reveal">
         <div class="singer-name">Olivia Rodrigo</div>
-        <p style="color: #666;">Olivia Isabel Rodrigo (born 2003)</p>
+        <img src="../images/oliviarodrigo1.jpg" alt="Olivia Rodrigo" class="singer-photo">
       </div>
+       
       <div style="margin-bottom: 25px;">
         <p style="color: #4682b4; font-size: 1.1rem; margin-bottom: 8px;">Your Stats:</p>
         <p style="color: #666;"><strong id="finalQuestions">0</strong> questions asked</p>
@@ -1071,9 +1083,10 @@
     </p>
 
     <div class="singer-reveal">
-      <div class="singer-name">Olivia Rodrigo</div>
-      <p style="color: #666;">Olivia Isabel Rodrigo (born 2003)</p>
-    </div>
+        <div class="singer-name">Olivia Rodrigo</div>
+        <img src="../images/oliviarodrigo1.jpg" alt="Olivia Rodrigo" class="singer-photo">
+      </div>
+      
 
     <div style="margin-bottom: 25px;">
       <p style="color: #4682b4; font-size: 1.1rem; margin-bottom: 8px;">Your Stats:</p>
@@ -1252,6 +1265,8 @@
     const progressBar      = document.getElementById('progressBar');
     const progressText     = document.getElementById('progressText');
     const progressWrapper  = document.querySelector('.progress-wrapper');
+    const gameLabel        = document.getElementById('gameLabel'); // ⬅️ add this
+
 
     const hintButton       = document.getElementById('hintButton');
     const hintBadge        = document.getElementById('hintBadge');
@@ -1305,15 +1320,16 @@
       });
     });
 
-    // ==== ASK QUESTION BUTTON ====
+
+    
     submitButton.addEventListener('click', () => {
-      if (!selectedQuestionText || questionsAsked >= maxQuestions) return;
+  if (!selectedQuestionText || questionsAsked >= maxQuestions) return;
 
-      questionsAsked++;
-      updateProgress();
+  questionsAsked++;
+  updateProgress();
 
-      // Get the pre-coded answer text
-      const answer = questionAnswers[selectedQuestionText] || "We'll answer this one live!";
+  const key = selectedQuestionKey || selectedQuestionText;
+  const answer = questionAnswers[key] || "We'll answer this one live!";
 
       // Show the answer (no Q:/A:)
       answerDisplay.textContent = answer;
@@ -1499,36 +1515,47 @@
       const isCorrect = correctVariations.some(v => guess.includes(v) || v.includes(guess));
 
       if (isCorrect) {
-        // Hide modal + suggestions
-        guessModal.classList.remove('active');
-        clearSuggestions();
+  // Hide modal + suggestions
+  guessModal.classList.remove('active');
+  clearSuggestions();
 
-        // Hide main game, show victory screen
-        gameContent.style.display = 'none';
-        victoryScreen.classList.add('active');
+  // Hide main game, show victory screen
+  gameContent.style.display = 'none';
+  victoryScreen.classList.add('active');
 
-        // Hide PROGRESS BAR on results page
-        if (progressWrapper) {
-          progressWrapper.style.display = 'none';
-        }
+  // Hide PROGRESS BAR on results page
+  if (progressWrapper) {
+    progressWrapper.style.display = 'none';
+  }
 
-        document.getElementById('finalQuestions').textContent = questionsAsked;
-        document.getElementById('finalHints').textContent = hintsRevealed;
+  // Hide Game # label
+  if (gameLabel) {
+    gameLabel.style.display = 'none';
+  }
+
+  document.getElementById('finalQuestions').textContent = questionsAsked;
+  document.getElementById('finalHints').textContent = hintsRevealed;
+
       } else {
         // ❗ If they are OUT of questions, a wrong guess sends them to FAIL
         if (questionsAsked >= maxQuestions) {
-          guessModal.classList.remove('active');
-          clearSuggestions();
+  guessModal.classList.remove('active');
+  clearSuggestions();
 
-          gameContent.style.display = 'none';
-          failureScreen.classList.add('active');
+  gameContent.style.display = 'none';
+  failureScreen.classList.add('active');
 
-          if (progressWrapper) {
-            progressWrapper.style.display = 'none';
-          }
+  if (progressWrapper) {
+    progressWrapper.style.display = 'none';
+  }
 
-          document.getElementById('finalQuestionsFail').textContent = questionsAsked;
-          document.getElementById('finalHintsFail').textContent = hintsRevealed;
+  // Hide Game # label
+  if (gameLabel) {
+    gameLabel.style.display = 'none';
+  }
+
+  document.getElementById('finalQuestionsFail').textContent = questionsAsked;
+  document.getElementById('finalHintsFail').textContent = hintsRevealed;
         } else {
           // Still have questions left → let them keep playing
           feedbackMessage.textContent = 'Not quite! Try again or ask more questions.';
