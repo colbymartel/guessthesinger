@@ -400,7 +400,7 @@
       box-shadow: 0 15px 40px rgba(59, 123, 191, 0.4);
       position: relative;
       overflow: hidden;
-      display: none;
+      display: block !important;
       animation: featuredGlow 2s ease-in-out infinite alternate;
     }
 
@@ -752,12 +752,15 @@
   <!-- Main Content -->
   <main class="main-content">
 
-    <!-- Today's Challenge (Hidden by default) -->
-    <div class="featured-game">
-      <h2>🔥 Today's Challenge</h2>
-      <p>Match the singers with their names in today's daily challenge!</p>
-      <button class="play-btn" onclick="window.location.href='/memory.html'">Play Now</button>
-    </div>
+<!-- Today's Daily Game -->
+<div class="featured-game" style="display: block;">
+  <h2>🎤 Daily Mystery Singer</h2>
+  <p>Guess today’s artist before time runs out!</p>
+  <button class="play-btn" onclick="window.location.href='/2025daily/day4.html'">
+    Today's Game
+  </button>
+</div>
+  
 
     <!-- Game Categories -->
     <div class="categories-grid">
