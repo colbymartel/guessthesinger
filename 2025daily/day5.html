@@ -892,7 +892,8 @@
     </div>
   </nav>
 
-  <div id="gameLabel" class="game-label">Game #4</div>
+  <!-- Changed to Game #5 -->
+  <div id="gameLabel" class="game-label">Game #5</div>
 
   <div class="main">
     <!-- Progress Bar -->
@@ -1028,8 +1029,9 @@
       <h2 class="victory-title">Congratulations!</h2>
       <p class="victory-message">You correctly guessed the mystery singer!</p>
       <div class="singer-reveal">
-        <div class="singer-name">Frank Ocean</div>
-        <img src="../images/frankocean.jpg" alt="Frank Ocean" class="singer-photo">
+        <!-- Updated to Lana Del Rey -->
+        <div class="singer-name">Lana Del Rey</div>
+        <img src="../images/lanadelrey.jpg" alt="Lana Del Rey" class="singer-photo">
       </div>
 
       <div style="margin-bottom: 25px;">
@@ -1049,8 +1051,9 @@
     </p>
 
     <div class="singer-reveal">
-      <div class="singer-name">Frank Ocean</div>
-      <img src="../images/frankocean.jpg" alt="Frank Ocean" class="singer-photo">
+      <!-- Updated to Lana Del Rey -->
+      <div class="singer-name">Lana Del Rey</div>
+      <img src="../images/lanadelrey.jpg" alt="Lana Del Rey" class="singer-photo">
     </div>
 
     <div style="margin-bottom: 25px;">
@@ -1100,11 +1103,11 @@
   <script>
     // ==== GAME STATE ====
     const hints = [
-      "His breakthrough mixtape and debut album turned intimate storytelling into cult-classic R&B.",
-      "This artist helped pioneer alternative R&B in the 2010s with deeply personal, experimental songs.",
-      "His 2012 debut studio album earned major awards and critical acclaim.",
-      "His most recent album was released in 2016.",
-      "His 2016 album \"Blonde\" and songs like \"Nights\" and \"White Ferrari\" are fan favorites."
+      "She is an American singer-songwriter known for nostalgic pop.",
+      "Her breakthrough came in the early 2010s.",
+      "Similar artists include Lorde, Billie Eilish and Fiona Apple.",
+      "Her birth name is Elizabeth Grant.",
+      "Albums like \"Born to Die,\" \"Ultraviolence,\" and \"Norman F***ing Rockwell!\" are fan favorites."
     ];
 
     const maxQuestions = 15;
@@ -1116,80 +1119,81 @@
     let selectedQuestionElement = null;
     let selectedQuestionKey = null;
 
-    // Map each data-value to an answer for Frank Ocean
-    const questionAnswers = {
+    // Map each data-value to an answer for Lana Del Rey
+    const questionAnswers = 
       // General
-      "Is this a male artist?": "Yes, they are a male artist.",
-      "Is this a female artist?": "No, they are not a female artist.",
-      "Are they still alive?": "Yes, they are still alive.",
-      "Are they over 30 years old?": "Yes, they are over 30 years old.",
-      "Are they over 40 years old?": "No, they are not over 40 years old.",
-      "Are they over 50 years old?": "No, they are not over 50 years old.",
-      "Did they debut before 2000?": "No, they did not debut before 2000.",
-      "Did they debut before 2010?": "No, they did not debut before 2010.",
-      "Did they debut before 2020?": "Yes, they debuted before 2020.",
-      "Album release in last 2 years?": "No, they have not released a studio album in the last 2 years.",
-      "Are they currently on tour?": "No, they are not currently on a public tour.",
-      "Are they currently married?": "No, they are not publicly known to be married.",
-      "Were they ever divorced?": "No, they have not been publicly known to be divorced.",
-      "Do they identify as LGBTQ+?": "Yes, they have openly shared that they are part of the LGBTQ+ community.",
+      {
+  "Is this a male artist?": "No, they are not a male artist.",
+  "Is this a female artist?": "Yes, they are a female artist.",
+  "Are they still alive?": "Yes, they are still alive.",
+  "Are they over 30 years old?": "Yes, they are over 30 years old.",
+  "Are they over 40 years old?": "No, they are not over 40 years old.",
+  "Are they over 50 years old?": "No, they are not over 50 years old.",
+  "Did they debut before 2000?": "No, they did not debut before 2000.",
+  "Did they debut before 2010?": "Yes, they released music before 2010 under earlier projects.",
+  "Did they debut before 2020?": "Yes, they became widely known well before 2020.",
+  "Album release in last 2 years?": "Yes, they have released an album in the last few years.",
+  "Are they currently on tour?": "No, they are not on a major worldwide tour right now.",
+  "Are they currently married?": "No, they are not publicly known to be married.",
+  "Were they ever divorced?": "No, they have not been publicly known to be divorced.",
+  "Do they identify as LGBTQ+?": "No, they do not publicly identify as LGBTQ+, though they have a large LGBTQ+ fanbase.",
 
-      // Geographic
-      "Were they born in North America?": "Yes, they were born in North America.",
-      "Were they born in the United States?": "Yes, they were born in the United States.",
-      "Were they born in Canada?": "No, they were not born in Canada.",
-      "Were they born in Europe?": "No, they were not born in Europe.",
-      "Were they born in Asia?": "No, they were not born in Asia.",
-      "Were they born in South America?": "No, they were not born in South America.",
-      "Were they born in Australia?": "No, they were not born in Australia.",
-      "Were they born in Africa?": "No, they were not born in Africa.",
+  // Geographic
+  "Were they born in North America?": "Yes, they were born in North America.",
+  "Were they born in the United States?": "Yes, they were born in the United States.",
+  "Were they born in Canada?": "No, they were not born in Canada.",
+  "Were they born in Europe?": "No, they were not born in Europe.",
+  "Were they born in Asia?": "No, they were not born in Asia.",
+  "Were they born in South America?": "No, they were not born in South America.",
+  "Were they born in Australia?": "No, they were not born in Australia.",
+  "Were they born in Africa?": "No, they were not born in Africa.",
 
-      // Background
-      "Are they of African descent?": "Yes, they are primarily of African descent.",
-      "Are they of European descent?": "No, they are not mainly described as of European descent.",
-      "Are they of Latin American descent?": "No, they are not primarily of Latin American descent.",
-      "Are they of Asian descent?": "No, they are not primarily of Asian descent.",
-      "Are they of mixed ethnicities?": "No, they identify with one race.",
+  // Background
+  "Are they of African descent?": "No, they are not primarily of African descent.",
+  "Are they of European descent?": "Yes, they are primarily of European descent.",
+  "Are they of Latin American descent?": "No, they are not primarily of Latin American descent.",
+  "Are they of Asian descent?": "No, they are not primarily of Asian descent.",
+  "Are they of mixed ethnicities?": "Yes, they have mixed European ancestry.",
 
-      // Music Style
-      "Different languages?": "No, they mainly perform in English.",
-      "Spanish music?": "No, they are not known for Spanish-language music.",
-      "Pop music?": "Yes, some of their songs cross into pop, though not best known for this.",
-      "Rap music?": "No, they are not mainly a rap artist.",
-      "R&B music?": "Yes, they are best known for R&B and alternative R&B.",
-      "Rock music?": "Some of their songs have rock influences, but it is not their main genre.",
-      "Country music?": "No, they are not a country artist.",
-      "Jazz music?": "No, they are not a jazz artist.",
-      "Party music?": "Some songs are upbeat, but they are not mainly a party-music artist.",
-      "Sad music?": "Yes, they are especially known for emotional and introspective songs.",
+  // Music Style
+  "Different languages?": "No, they mainly perform in English.",
+  "Spanish music?": "No, they are not mainly known for Spanish-language music.",
+  "Pop music?": "Yes, they are often described as pop or alternative pop.",
+  "Rap music?": "No, they are not a rap artist.",
+  "R&B music?": "No, they are not primarily an R&B artist, though some songs are influenced by it.",
+  "Rock music?": "Yes, several of their songs and albums have strong rock influences.",
+  "Country music?": "No, they are not considered a country artist, though they have some folk and Americana influences.",
+  "Jazz music?": "No, they are not mainly a jazz artist.",
+  "Party music?": "No, they are better known for slow, cinematic songs than party anthems.",
+  "Sad music?": "Yes, they are especially known for melancholic, nostalgic music.",
 
-      // Career / Popularity
-      "Also an actor?": "No, they are not mainly known as an actor.",
-      "Disney or Nick?": "No, they were not on Disney Channel or Nickelodeon.",
-      "Singing competition?": "No, they did not come from a TV singing competition.",
-      "Won a Grammy?": "Yes, they have won Grammy Awards.",
-      "Super Bowl?": "No, they have not performed at a Super Bowl halftime show.",
-      "Coachella?": "Yes, they have performed at Coachella.",
-      "Song over one billion streams?": "Yes, they have songs with over one billion streams on Spotify.",
-      "10M TikTok followers?": "No, they do not have more than 10 million TikTok followers.",
-      "10M Instagram followers?": "No, they do not have more than 10 million Instagram followers.",
-      "20M listeners?": "Yes, they have more than 20 million monthly Spotify listeners.",
-      "50M listeners?": "No, they do not have more than 50 million monthly Spotify listeners.",
-      "Ever in a band?": "No, they are best known as a solo artist, though they were part of the Odd Future collective.",
+  // Career / Popularity
+  "Also an actor?": "No, they are not mainly known as an actor.",
+  "Disney or Nick?": "No, they did not come from Disney Channel or Nickelodeon.",
+  "Singing competition?": "No, they did not come from a TV singing competition.",
+  "Won a Grammy?": "No, they have not traditionally been known for winning Grammys, though they have received major nominations.",
+  "Super Bowl?": "No, they have not performed a Super Bowl halftime show.",
+  "Coachella?": "Yes, they have performed at Coachella.",
+  "Song over one billion streams?": "Yes, they have songs with over one billion streams on Spotify.",
+  "10M TikTok followers?": "Yes, they have a large following on TikTok, over 10 million followers.",
+  "10M Instagram followers?": "Yes, they have more than 10 million Instagram followers.",
+  "20M listeners?": "Yes, they have more than 20 million monthly Spotify listeners.",
+  "50M listeners?": "Yes, they have around or over 50 million monthly Spotify listeners.",
+  "Ever in a band?": "No, they are best known as a solo artist.",
 
-      // Name / Appearance
-      "Dark hair?": "Yes, they are most often seen with dark hair.",
-      "Blond hair?": "No, they are not mainly known for blond hair, though they have changed styles.",
-      "Over 5.5ft tall?": "Yes, they are over five and a half feet tall.",
-      "Over 6ft tall?": "Yes, they are just over six feet tall.",
-      "Tattoos?": "No, they are not widely known for visible tattoos.",
-      "Glasses?": "No, they are not commonly known for wearing glasses.",
-      "Birth name?": "No, they use a stage name rather than their birth name.",
-      "One-word name?": "No, their stage name has more than one word.",
-      "Two-word name?": "Yes, their stage name is two words.",
-      "Common first name?": "Yes, their first name is fairly common.",
-      "Name starts A–M?": "Yes, the first letter of their name comes between A and M."
-    };
+  // Name / Appearance
+  "Dark hair?": "Yes, they are most often seen with dark or brown hair.",
+  "Blond hair?": "Yes, they have been blond at times, but are not primarily known for it.",
+  "Over 5.5ft tall?": "Yes, they are over five and a half feet tall.",
+  "Over 6ft tall?": "No, they are not over six feet tall.",
+  "Tattoos?": "No, they are not widely known for prominent tattoos.",
+  "Glasses?": "No, they are not commonly known for wearing glasses.",
+  "Birth name?": "No, they perform under a stage name rather than their birth name.",
+  "One-word name?": "No, their stage name is more than one word.",
+  "Two-word name?": "No, their stage name actually has three words.",
+  "Common first name?": "No, their first name is relatively uncommon.",
+  "Name starts A–M?": "Yes, the first letter of their name is between A and M."
+};
 
     // ==== ARTISTS LIST FOR AUTOCOMPLETE ====
     const artists = [
@@ -1464,7 +1468,8 @@
         return;
       }
 
-      const correctVariations = ['frank ocean', 'frank', 'ocean'];
+      // Updated correct answer to Lana Del Rey
+      const correctVariations = ['lana del rey', 'lana', 'del rey', 'elizabeth grant'];
       const isCorrect = correctVariations.some(v => guess.includes(v) || v.includes(guess));
 
       if (isCorrect) {
@@ -1512,7 +1517,7 @@
 
     shareButton.addEventListener('click', () => {
       const shareText =
-        `🎵 Guess the Singer - Game #4\n` +
+        `🎵 Guess the Singer - Game #5\n` +
         `📊 Questions Used: ${questionsAsked}\n` +
         `💡 Hints Revealed: ${hintsRevealed}\n\n` +
         `Play here 👇\nhttps://GuessTheSinger.com`;
@@ -1528,7 +1533,7 @@
 
     shareFailButton.addEventListener('click', () => {
       const shareText =
-        `🎵 Guess the Singer - Game #4\n` +
+        `🎵 Guess the Singer - Game #5\n` +
         `❌ I didn’t guess today’s singer...\n` +
         `📊 Questions Used: ${questionsAsked}\n` +
         `💡 Hints Revealed: ${hintsRevealed}\n\n` +
