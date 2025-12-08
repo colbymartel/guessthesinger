@@ -7,7 +7,6 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-T42NG5C994');
 </script>
     <meta charset="UTF-8">
@@ -31,265 +30,275 @@
         line-height: 1.6;
       }
 
-/* Header */
-.header {
-  background: linear-gradient(135deg, #3b7bbf, #234d7d);
-  padding: 40px 20px;
-  text-align: center;
-  color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  animation: fadeDown 1s ease-out;
-}
+      /* Header */
+      .header {
+        background: linear-gradient(135deg, #3b7bbf, #234d7d);
+        padding: 40px 20px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        animation: fadeDown 1s ease-out;
+      }
 
-@keyframes fadeDown {
-  0% { opacity: 0; transform: translateY(-20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
+      @keyframes fadeDown {
+        0% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
 
-.header .logo img {
-  width: 200px;
-  height: auto;
-  margin: 0 auto;
-  display: block;
-}
+      .header .logo img {
+        width: 200px;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+      }
 
-/* Main Content */
-.main-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  background: #234d7d;
-  min-height: calc(100vh - 200px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+      /* Main Content */
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background: #234d7d;
+        min-height: calc(100vh - 200px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
 
-/* Animated Featured Game Banner */
-.featured-game {
-  background: linear-gradient(135deg, #3b7bbf, #234d7d);
-  color: white;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 30px rgba(59, 123, 191, 0.3);
-  position: relative;
-  overflow: hidden;
-}
+      /* Featured Game Banner */
+      .featured-game {
+        background: linear-gradient(135deg, #3b7bbf, #234d7d);
+        color: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(59, 123, 191, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
 
-.featured-game::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-  transform: rotate(45deg);
-  animation: shimmer 4s infinite;
-}
+      .featured-game::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shimmer 4s infinite;
+      }
 
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-  }
-}
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) translateY(-100%) rotate(45deg);
+        }
+        100% {
+          transform: translateX(100%) translateY(100%) rotate(45deg);
+        }
+      }
 
-.featured-game-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 2;
-}
+      .featured-game-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 25px;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 2;
+      }
 
-.featured-singer-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
+      .featured-text-content {
+        text-align: left;
+        max-width: 420px;
+      }
 
-.featured-singer-image:hover {
-  transform: scale(1.05);
-}
+      .featured-date {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        margin-bottom: 8px;
+      }
 
-.featured-singer-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+      .featured-subtitle {
+        font-size: 1rem;
+        margin-top: 10px;
+        margin-bottom: 6px;
+      }
 
-.featured-text-content {
-  text-align: left;
-  max-width: 350px;
-}
+      .featured-subtitle span {
+        font-weight: 600;
+      }
 
-.featured-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  font-family: 'Montserrat', sans-serif;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
+      .featured-players {
+        font-size: 0.95rem;
+        opacity: 0.95;
+      }
 
-.featured-stats {
-  display: flex;
-  gap: 15px;
-  justify-content: flex-start;
-}
+      .featured-singer-image {
+        width: 100px;
+        height: 100px;
+      border-radius: 50%;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+      }
 
-.stat-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
-  opacity: 0.9;
-}
+      .featured-singer-image:hover {
+        transform: scale(1.05);
+      }
 
-.stat-icon {
-  font-size: 0.9rem;
-  color: #ffcb05;
-}
+      .featured-singer-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
 
-.button-group {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 20px;
-}
+      .button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+      }
 
-.play-now-btn {
-  background: #3b7bbf;
-  color: white;
-  border: 2px solid #b0e0e6;
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-  position: relative;
-  z-index: 2;
-  animation: buttonGlow 2s ease-in-out infinite alternate;
-  font-family: 'Montserrat', sans-serif;
-}
+      .play-now-btn {
+        background: #3b7bbf;
+        color: white;
+        border: 2px solid #b0e0e6;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        position: relative;
+        z-index: 2;
+        animation: buttonGlow 2s ease-in-out infinite alternate;
+        font-family: 'Montserrat', sans-serif;
+      }
 
-@keyframes buttonGlow {
-  0% {
-    box-shadow: 0 4px 15px rgba(59, 123, 191, 0.3);
-  }
-  100% {
-    box-shadow: 0 6px 20px rgba(59, 123, 191, 0.6);
-  }
-}
+      @keyframes buttonGlow {
+        0% {
+          box-shadow: 0 4px 15px rgba(59, 123, 191, 0.3);
+        }
+        100% {
+          box-shadow: 0 6px 20px rgba(59, 123, 191, 0.6);
+        }
+      }
 
-.play-now-btn:hover {
-  background: #5f9ea0;
-  transform: translateY(-2px);
-  animation: none;
-}
+      .play-now-btn:hover {
+        background: #5f9ea0;
+        transform: translateY(-2px);
+        animation: none;
+      }
 
-.login-btn {
-  background: #ffcb05;
-  color: #333;
-  border: 2px solid #ffd700;
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-  font-family: 'Montserrat', sans-serif;
-}
+      .login-btn {
+        background: #ffcb05;
+        color: #333;
+        border: 2px solid #ffd700;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+      }
 
-.login-btn:hover {
-  background: #ffd700;
-  transform: translateY(-2px);
-}
+      .login-btn:hover {
+        background: #ffd700;
+        transform: translateY(-2px);
+      }
 
-.live-show-btn {
-  background: white;
-  color: #3b7bbf;
-  border: 2px solid #3b7bbf;
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-  font-family: 'Montserrat', sans-serif;
-  position: relative;
-  z-index: 2;
-}
+      .live-show-btn {
+        background: white;
+        color: #3b7bbf;
+        border: 2px solid #3b7bbf;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        font-family: 'Montserrat', sans-serif;
+        position: relative;
+        z-index: 2;
+      }
 
-.live-show-btn:hover {
-  background: #3b7bbf;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 123, 191, 0.4);
-}
+      .live-show-btn:hover {
+        background: #3b7bbf;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 123, 191, 0.4);
+      }
 
-/* Footer */
-.footer {
-  background-color: #234d7d;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  font-size: 0.95rem;
-  margin-top: auto;
-}
+      /* Make Play Today’s Game look like Play Now */
+      .play-today-link {
+        display: inline-block;
+        margin: 8px 0 4px;
+      }
 
-.footer a {
-  color: white;
-  margin: 0 8px;
-  font-size: 1.2rem;
-  transition: color 0.3s ease;
-}
+      .login-link {
+        display: inline-block;
+        margin-left: 10px;
+      }
 
-.footer a:hover {
-  color: #ff914d;
-}
+      /* Footer */
+      .footer {
+        background-color: #234d7d;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        font-size: 0.95rem;
+        margin-top: auto;
+      }
 
-/* Responsive Logo */
-@media (max-width: 768px) {
-  .header .logo img {
-    width: 60%;
-  }
-  
-  .featured-game-content {
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .featured-text-content {
-    text-align: center;
-  }
-  
-  .featured-stats {
-    justify-content: center;
-  }
+      .footer a {
+        color: white;
+        margin: 0 8px;
+        font-size: 1.2rem;
+        transition: color 0.3s ease;
+      }
 
-  .button-group {
-    flex-direction: column;
-    align-items: center;
-  }
-}
+      .footer a:hover {
+        color: #ff914d;
+      }
+
+      .stat-icon {
+        font-size: 0.9rem;
+        color: #ffcb05;
+      }
+
+      /* Responsive Logo */
+      @media (max-width: 768px) {
+        .header .logo img {
+          width: 60%;
+        }
+        
+        .featured-game-content {
+          flex-direction: column;
+          gap: 20px;
+        }
+        
+        .featured-text-content {
+          text-align: center;
+        }
+
+        .button-group {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .login-link {
+          margin-left: 0;
+          margin-top: 6px;
+        }
+      }
 
     </style>
 </head>
@@ -303,32 +312,31 @@
     
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Animated Featured Game Banner -->
+        <!-- Featured Game Banner -->
         <div class="featured-game">
           <div class="featured-game-content">
+            <!-- PFP on the left -->
             <div class="featured-singer-image">
-              <img src="/images/colbypfp.jpg" alt="Today's Featured Singer - Colby">
+              <img src="/images/glogo.png" alt="Player Profile Picture">
             </div>
+
+            <!-- Text on the right -->
             <div class="featured-text-content">
-              <h2 class="featured-title"> Welcome!</h2>
-              <div class="featured-stats">
-                <div class="stat-item">
-                  <i class="fas fa-users stat-icon"></i>
-                  <span>403 playing today</span>
-                </div>
-                <div class="stat-item">
-                  <i class="fas fa-star stat-icon"></i>
-                  <span>4.8/5 rating</span>
-                </div>
-              </div>
+
+              <!-- Play Today + Login inline -->
+              <a href="/2025daily/day8.html" class="play-today-link play-now-btn">
+                Play Today’s Game
+              </a>
+              <a href="login.html" class="login-link login-btn">
+                Log-In
+              </a>
+
+              <p class="featured-subtitle">
+                Suggested by <span>Stella</span> from <span>Toronto</span>
+              </p>
             </div>
           </div>
-          <div class="button-group">
-            <a href="/2025daily/day7.html" class="play-now-btn">Play Now</a>
-            <a href="/gameshow.html" class="live-show-btn">Live Show</a>
-            <a href="login.html" class="login-btn">Log-In</a>
-          </div>
-        </div>
+
     </main>
 
     <!-- Footer -->

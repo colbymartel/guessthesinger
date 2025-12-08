@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Viewer - Guess The Singer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding-bottom: 70px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 20px;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    h1 { margin: 0; font-size: 1.6rem; }
+    .main { max-width: 960px; margin: 20px auto; padding: 0 16px 40px; }
+
+    .info {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    th, td {
+      padding: 10px 12px;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+
+    th {
+      background: #234d7d;
+      color: #fff;
+      text-align: left;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .tag-yes { background: #27ae60; }
+    .tag-no  { background: #c0392b; }
+    .rating { font-weight: 600; color: #234d7d; }
+    .small  { font-size: 0.75rem; color: #777; }
+
+    .loader { margin-top: 20px; text-align: center; font-size: 0.9rem; }
+    .error  { color: #e74c3c; margin-top: 16px; text-align: center; }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .reload-btn {
+      border-radius: 999px;
+      border: none;
+      background-color: #4682b4;
+      box-shadow: 0px 3px 0px 0px #315f85;
+      color: #ffffff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .reload-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0px 1px 0px 0px #315f85;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i {
+      font-size: 20px;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Daily Feedback Viewer</h1>
+</header>
+
+<div class="main">
+  <div class="top-bar">
+    <p class="info">
+      Showing the latest feedback from the <code>feedbackEntries</code> collection.
+    </p>
+    <button id="reloadButton" class="reload-btn">
+      <i class="fas fa-rotate-right"></i> Reload
+    </button>
+  </div>
+
+  <div id="loader" class="loader">Checking admin access...</div>
+  <div id="error" class="error" style="display:none;"></div>
+  <div id="feedbackContainer"></div>
+</div>
+
+<footer class="bottom-nav">
+  <a href="/games.html" class="nav-item">
+    <i class="fas fa-gamepad"></i>
+    <span>Games</span>
+  </a>
+  <a href="/rewards.html" class="nav-item">
+    <i class="fas fa-gift"></i>
+    <span>Rewards</span>
+  </a>
+  <a href="/profile.html" class="nav-item">
+    <i class="fas fa-user"></i>
+    <span>Profile</span>
+  </a>
+</footer>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    query,
+    orderBy,
+    limit
+  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+    authDomain: "guessthesinger10.firebaseapp.com",
+    projectId: "guessthesinger10",
+    storageBucket: "guessthesinger10.appspot.com",
+    messagingSenderId: "97201023235",
+    appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  const feedbackContainer = document.getElementById("feedbackContainer");
+  const loader = document.getElementById("loader");
+  const errorEl = document.getElementById("error");
+  const reloadButton = document.getElementById("reloadButton");
+
+  async function loadFeedback() {
+    loader.textContent = "Loading feedback...";
+    feedbackContainer.innerHTML = "";
+    errorEl.style.display = "none";
+
+    try {
+      const q = query(
+        collection(db, "feedbackEntries"),
+        orderBy("timestamp", "desc"),
+        limit(100)
+      );
+
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        loader.textContent = "No feedback yet!";
+        return;
+      }
+
+      loader.style.display = "none";
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Fun</th>
+              <th>Difficulty</th>
+              <th>Guessed?</th>
+              <th>Feedback</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const guessed = data.guessedCorrectly ? "Yes" : "No";
+        const feedbackText = data.feedbackText || "";
+        const userLabel = data.email || data.uid || "Unknown";
+
+        let dateStr = "-";
+        if (data.timestamp?.toDate) {
+          const d = data.timestamp.toDate();
+          dateStr = d.toLocaleDateString() + " " + d.toLocaleTimeString();
+        }
+
+        html += `
+          <tr>
+            <td>
+              <div>${dateStr}</div>
+              <div class="small">${docSnap.id}</div>
+            </td>
+            <td><span class="rating">${data.funRating ?? "-"}</span></td>
+            <td><span class="rating">${data.difficultyRating ?? "-"}</span></td>
+            <td>
+              <span class="tag ${data.guessedCorrectly ? "tag-yes" : "tag-no"}">${guessed}</span>
+            </td>
+            <td>${feedbackText.replace(/\n/g, "<br>")}</td>
+            <td class="small">${userLabel}</td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table>`;
+      feedbackContainer.innerHTML = html;
+
+    } catch (err) {
+      console.error(err);
+      loader.style.display = "none";
+      errorEl.textContent = "Failed to load feedback — insufficient permissions or rules issue.";
+      errorEl.style.display = "block";
+    }
+  }
+
+  // Only allow admin email to access data
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      loader.style.display = "none";
+      errorEl.textContent = "You must be logged in as admin to view this page.";
+      errorEl.style.display = "block";
+      return;
+    }
+
+    if (user.email === "colbyma23@gmail.com") {
+      loadFeedback();
+    } else {
+      loader.style.display = "none";
+      errorEl.textContent = "Access denied — admin only.";
+      errorEl.style.display = "block";
+    }
+  });
+
+  reloadButton.addEventListener("click", () => {
+    const user = auth.currentUser;
+    if (user?.email === "colbyma23@gmail.com") {
+      loadFeedback();
+    } else {
+      errorEl.textContent = "You're not authorized to reload.";
+      errorEl.style.display = "block";
+    }
+  });
+</script>
+
+</body>
+</html>

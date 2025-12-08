@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess The Singer – Feedback</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 70px; /* for bottom nav */
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 30px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .header .logo img {
+      width: 200px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+
+    /* Top nav */
+    nav.top-nav {
+      background-color: #1e2b38;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .welcome-nav {
+      position: relative;
+    }
+
+    .welcome-msg {
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 32px;
+      left: 0;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 160px;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      display: flex;
+    }
+
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      border-radius: 6px;
+    }
+
+    .dropdown a:hover {
+      background-color: #ffcb05;
+      color: #1e2b38;
+    }
+
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow:
+        0 2px 0 #cfa300,
+        0 4px 0 #b8860b,
+        0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+    }
+
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    #coinWrapper {
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size: 0.95rem;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 700px;
+      width: 100%;
+      margin: 25px auto 0;
+      padding: 0 16px 40px;
+    }
+
+    .feedback-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      padding: 24px 20px 26px;
+      border: 1px solid #dde7f2;
+    }
+
+    .feedback-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #315f85;
+      background: #e8f2ff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .feedback-badge .coin-emoji {
+      width: 18px;
+      height: 18px;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b,
+        0 3px 0 #8c6e00;
+    }
+
+    .feedback-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #234d7d;
+      margin-bottom: 6px;
+    }
+
+    .feedback-subtitle {
+      font-size: 0.98rem;
+      color: #556677;
+      margin-bottom: 18px;
+    }
+
+    .login-note {
+      font-size: 0.9rem;
+      color: #c0392b;
+      margin-bottom: 12px;
+    }
+
+    .logged-in-line {
+      font-size: 0.9rem;
+      color: #2e7d32;
+      margin-bottom: 12px;
+    }
+
+    .logged-in-line span {
+      font-weight: 600;
+    }
+
+    .form-section {
+      margin-bottom: 18px;
+    }
+
+    .form-section label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #234d7d;
+    }
+
+    .form-help {
+      font-size: 0.82rem;
+      color: #7a8a9a;
+      margin-bottom: 8px;
+    }
+
+    .rating-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .rating-pill input {
+      display: none;
+    }
+
+    .rating-pill label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 34px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #cfd8e5;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #45566a;
+      background: #f7f9fc;
+      transition: all 0.15s ease;
+    }
+
+    .rating-pill input:checked + label {
+      background: #3b7bbf;
+      border-color: #315f85;
+      color: #fff;
+      box-shadow: 0 3px 0 #315f85;
+    }
+
+    .toggle-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .toggle-pill input {
+      display: none;
+    }
+
+    .toggle-pill label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid #cfd8e5;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #45566a;
+      background: #f7f9fc;
+      transition: all 0.15s ease;
+    }
+
+    .toggle-pill input:checked + label {
+      background: #3CB371;
+      border-color: #2e8b57;
+      color: #fff;
+      box-shadow: 0 3px 0 #2e8b57;
+    }
+
+    textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #cfd8e5;
+      min-height: 90px;
+      padding: 10px 12px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #fdfefe;
+    }
+
+    textarea:focus {
+      border-color: #3b7bbf;
+      box-shadow: 0 0 0 2px rgba(59,123,191,0.15);
+    }
+
+    .submit-row {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cta-button {
+      width: 100%;
+      height: 48px;
+      border-radius: 999px;
+      border: none;
+      background-color: #3CB371;
+      box-shadow: 0px 4px 0px #2e8b57;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', Arial, sans-serif;
+      transition: all 0.15s ease;
+    }
+
+    .cta-button:hover:not(:disabled) {
+      background: #2e8b57;
+      transform: translateY(-2px);
+      box-shadow: 0px 6px 0px #2e8b57;
+    }
+
+    .cta-button:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0px 2px 0px #2e8b57;
+    }
+
+    .cta-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status-message {
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    .status-message.success {
+      color: #2e7d32;
+    }
+
+    .status-message.error {
+      color: #c0392b;
+    }
+
+    .coin-note {
+      font-size: 0.85rem;
+      color: #556677;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .coin-note .coin-emoji {
+      width: 16px;
+      height: 16px;
+      box-shadow:
+        0 1px 0 #cfa300,
+        0 2px 0 #b8860b,
+        0 3px 0 #8c6e00;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .bottom-nav .nav-item i,
+    .bottom-nav .nav-item img {
+      display: block;
+      font-size: 20px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .bottom-nav .nav-item:hover {
+      color: #ffcb05;
+    }
+
+    @media (min-width: 640px) {
+      .feedback-card {
+        padding: 26px 26px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
+    </div>
+  </header>
+
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <div class="nav-left">
+      <div class="welcome-nav">
+        <div id="welcomeMessage" class="welcome-msg">Welcome, Anonymous</div>
+        <div id="dropdownMenu" class="dropdown"></div>
+      </div>
+
+      <div id="coinWrapper">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight:bold;">0</span>
+      </div>
+    </div>
+    <div style="font-size:0.85rem; opacity:0.85;">
+      Daily Mystery Singer Feedback
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+    <section class="feedback-card">
+      <div class="feedback-badge">
+        <div class="coin-emoji"></div>
+        <span>Earn 100 coins for your thoughts</span>
+      </div>
+
+      <h1 class="feedback-title">Guess the Singer - Feedback Form</h1>
+    
+      <div id="authInfo" class="login-note">
+        Log in or create a profile to earn 100 coins for submitting feedback.
+      </div>
+      <div id="loggedInLine" class="logged-in-line" style="display:none;">
+        Logged in as <span id="userEmailLabel">unknown</span>. Your email will be saved with this feedback automatically.
+      </div>
+
+<br>
+
+      <!-- Correct guess? -->
+      <div class="form-section">
+        <label>Did you guess the singer correctly?</label>
+        <div class="toggle-options">
+          <div class="toggle-pill">
+            <input type="radio" id="guessYes" name="guessedCorrectly" value="yes">
+            <label for="guessYes">Yes</label>
+          </div>
+          <div class="toggle-pill">
+            <input type="radio" id="guessNo" name="guessedCorrectly" value="no">
+            <label for="guessNo">No</label>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Open feedback -->
+      <div class="form-section">
+        <label>What did you like or dislike about today’s game?</label>
+        <div class="form-help">Ex: artist choice, hints, question limit, difficulty, etc.</div>
+        <textarea id="feedbackText" placeholder="Share any thoughts that would make this game better for you."></textarea>
+      </div>
+
+      <!-- NEW: How did you hear about this game? -->
+      <div class="form-section">
+        <label>How did you hear about this game?</label>
+        <div class="form-help">Ex: TikTok, a friend, campus event, YouTube, Instagram, Discord, etc.</div>
+        <textarea id="referralSource" placeholder="Tell us where you first discovered Guess The Singer."></textarea>
+      </div>
+
+      <!-- Extra question -->
+      <div class="form-section">
+        <label>Any artists you’d love to see as future mystery singers?</label>
+        <textarea id="artistIdeas" placeholder="Drop artist names, genres, or themes you’d be hyped to play."></textarea>
+      </div>
+    <!-- NEW: Email updates opt-in -->
+    <div class="form-section">
+      <label>Do you want to receive emails about future updates and opportunities?</label>
+      <div class="form-help">We’ll only email you about Guess The Singer / GuessingGames.com.</div>
+      <div class="toggle-options">
+        <div class="toggle-pill">
+          <input type="radio" id="emailYes" name="emailUpdates" value="yes">
+          <label for="emailYes">Yes, keep me posted</label>
+        </div>
+        <div class="toggle-pill">
+          <input type="radio" id="emailNo" name="emailUpdates" value="no">
+          <label for="emailNo">No, not right now</label>
+        </div>
+      </div>
+    </div>
+      <div class="submit-row">
+        <button id="submitFeedback" class="cta-button">
+          Submit Feedback &amp; Claim 100 Coins
+        </button>
+        <div id="statusMessage" class="status-message"></div>
+        <div class="coin-note">
+          <div class="coin-emoji"></div>
+          <span>Coins will be added to your account instantly if you’re logged in.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Nav -->
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <!-- Firebase + Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      query,
+      where,
+      getDocs,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+    const auth = getAuth(app);
+
+    // DOM elements
+    const welcomeEl      = document.getElementById("welcomeMessage");
+    const dropdownMenu   = document.getElementById("dropdownMenu");
+    const coinDisplay    = document.getElementById("coinCount");
+    const authInfo       = document.getElementById("authInfo");
+    const loggedInLine   = document.getElementById("loggedInLine");
+    const userEmailLabel = document.getElementById("userEmailLabel");
+    const submitBtn      = document.getElementById("submitFeedback");
+    const statusMessage  = document.getElementById("statusMessage");
+
+    let currentUserUid = null;
+    let currentUserEmail = null;
+    let currentUserCoins = 0;
+    let userDocRef = null;
+   
+  // Global handler: any click on a login link gets a redirect param
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href="/login.html"], a[href="login.html"]');
+  if (!link) return;
+
+  e.preventDefault();
+
+  const currentUrl = window.location.pathname + window.location.search;
+  const baseHref = link.getAttribute('href').split('?')[0]; // strip any existing query
+  const target = `${baseHref}?redirect=${encodeURIComponent(currentUrl)}`;
+
+  window.location.href = target;
+});
+
+
+    function setAnonymousUI() {
+      if (welcomeEl) welcomeEl.textContent = "Welcome, Anonymous";
+      if (coinDisplay) coinDisplay.textContent = "0";
+      if (dropdownMenu) {
+        dropdownMenu.innerHTML = `
+          <a href="/login.html">Log In</a>
+          <a href="/signup.html">Create Profile</a>
+        `;
+      }
+      if (authInfo) {
+        authInfo.style.display = "block";
+      }
+      if (loggedInLine) {
+        loggedInLine.style.display = "none";
+      }
+      currentUserUid = null;
+      currentUserEmail = null;
+      currentUserCoins = 0;
+      userDocRef = null;
+    }
+
+    // Auth state listener
+    onAuthStateChanged(auth, async (user) => {
+      if (!dropdownMenu || !welcomeEl || !coinDisplay) return;
+
+      dropdownMenu.innerHTML = "";
+
+      if (!user) {
+        setAnonymousUI();
+        return;
+      }
+
+      currentUserUid = user.uid;
+      currentUserEmail = user.email || null;
+
+      let displayName = user.displayName || "Player";
+      let coins = 0;
+
+      try {
+        const q = query(collection(db, "users"), where("uid", "==", user.uid));
+        const snapshot = await getDocs(q);
+
+        if (!snapshot.empty) {
+          const docSnap = snapshot.docs[0];
+          userDocRef = docSnap.ref;
+          const data = docSnap.data();
+          if (data.username) displayName = data.username;
+          if (typeof data.coins === "number") coins = data.coins;
+          // fallback email from user doc if needed
+          if (!currentUserEmail && data.email) {
+            currentUserEmail = data.email;
+          }
+        } else {
+          userDocRef = null;
+        }
+      } catch (err) {
+        console.error("Error fetching user doc:", err);
+      }
+
+      currentUserCoins = coins;
+
+      welcomeEl.textContent = `Welcome, ${displayName}`;
+      coinDisplay.textContent = coins.toString();
+
+      dropdownMenu.innerHTML = `
+        <a href="/profile.html">Profile</a>
+        <a href="#" id="logoutBtn">Log Out</a>
+      `;
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          try {
+            await signOut(auth);
+            setAnonymousUI();
+          } catch (err) {
+            console.error("Logout failed:", err);
+          }
+        });
+      }
+
+      if (authInfo) {
+        authInfo.style.display = "none";
+      }
+      if (loggedInLine) {
+        loggedInLine.style.display = "block";
+      }
+      if (userEmailLabel) {
+        userEmailLabel.textContent = currentUserEmail || "no email on file";
+      }
+    });
+
+    // Dropdown toggle
+    if (welcomeEl && dropdownMenu) {
+      welcomeEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("show");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!dropdownMenu.contains(e.target) && e.target !== welcomeEl) {
+          dropdownMenu.classList.remove("show");
+        }
+      });
+    }
+
+    // Helper: get selected radio value
+    function getRadioValue(name) {
+      const selected = document.querySelector(`input[name="${name}"]:checked`);
+      return selected ? selected.value : null;
+    }
+
+    // Submit feedback
+    submitBtn.addEventListener("click", async () => {
+      statusMessage.textContent = "";
+      statusMessage.className = "status-message";
+
+      // Gather values
+      const guessedCorrectlyVal = getRadioValue("guessedCorrectly");
+      const emailUpdatesVal    = getRadioValue("emailUpdates");
+
+      const feedbackText   = document.getElementById("feedbackText").value.trim();
+      const artistIdeas    = document.getElementById("artistIdeas").value.trim();
+      const referralSource = document.getElementById("referralSource").value.trim();
+
+      if (!guessedCorrectlyVal) {
+        statusMessage.textContent = "Please answer the rating questions before submitting.";
+        statusMessage.classList.add("error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      const guessedCorrectly = guessedCorrectlyVal === "yes";
+      let wantsEmailUpdates  = null;
+      if (emailUpdatesVal === "yes") wantsEmailUpdates = true;
+      if (emailUpdatesVal === "no")  wantsEmailUpdates = false;
+
+      try {
+        // Create feedback document including email + uid + new fields
+        await addDoc(collection(db, "feedbackEntries"), {
+          uid: currentUserUid || null,
+          email: currentUserEmail || null,
+          funRating: Number(funRating),
+          difficultyRating: Number(difficultyRating),
+          guessedCorrectly,
+          wantsEmailUpdates,
+          feedbackText: feedbackText || null,
+          artistIdeas: artistIdeas || null,
+          referralSource: referralSource || null,
+          timestamp: serverTimestamp()
+        });
+
+        // Award coins if logged in and we have a user doc
+        if (currentUserUid && userDocRef) {
+          const newCoins = currentUserCoins + 100;
+          await updateDoc(userDocRef, { coins: newCoins });
+          currentUserCoins = newCoins;
+          coinDisplay.textContent = newCoins.toString();
+          statusMessage.textContent = "Thanks for the feedback! 100 coins have been added to your account. 🎉";
+        } else {
+          statusMessage.textContent = "Thanks for the feedback! Log in next time to earn coins too. 🙌";
+        }
+
+        statusMessage.classList.add("success");
+
+        // Reset form
+        document.querySelectorAll('input[name="funRating"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="difficultyRating"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="guessedCorrectly"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="emailUpdates"]').forEach(el => el.checked = false);
+        document.getElementById("feedbackText").value = "";
+        document.getElementById("artistIdeas").value = "";
+        document.getElementById("referralSource").value = "";
+
+      } catch (err) {
+        console.error("Error submitting feedback:", err);
+        statusMessage.textContent = "Something went wrong submitting your feedback. Please try again in a moment.";
+        statusMessage.classList.add("error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Feedback & Claim 100 Coins";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -10,8 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./signup.css" />
   <style>
-
-html, body {
+    html, body {
       margin: 0;
       padding: 0;
       font-family: 'Fredoka', sans-serif;
@@ -20,6 +19,7 @@ html, body {
       flex-direction: column;
       min-height: 100vh;
     }
+
     nav {
       background-color: #1e2b38;
       padding: 15px 30px;
@@ -28,57 +28,65 @@ html, body {
       align-items: center;
       color: white;
     }
+
     .nav-links a {
       color: white;
       margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
     }
+
     .nav-links a:hover {
       color: #ffcb05;
     }
-  .modal {
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-content {
-    background-color: white;
-    padding: 20px 30px;
-    border-radius: 10px;
-    max-width: 400px;
-    text-align: center;
-  }
-  .modal-content input {
-    width: 100%;
-    padding: 10px;
-    margin: 15px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  .modal-content .btn {
-    width: 100%;
-  }
-  .close {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-  }
-  .hidden {
-    display: none;
-  }
-</style>  
+
+    .modal {
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .modal-content .btn {
+      width: 100%;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>  
 </head>
 <body>
   <!-- Header -->
@@ -88,24 +96,23 @@ html, body {
         <img src="images/SingerLogo.png" alt="Guess the Character Logo" loading="lazy">
       </a>
     </div>
-    
   </header>
+
   <nav>
     <div class="nav-links">
       <a href="/index.html">Home</a>
       <a href="/about.html">About</a>
     </div>
   </nav>
+
   <!-- Main Section with Login Form -->
   <main class="main">
     <div class="auth-container">
       <h2>Log In</h2>
       <form id="loginForm">
         <div class="input-group">
-          <label for="identifier">Email</label>
-          <input type="text" id="identifier" name="identifier" placeholder="Enter email" required />
-
-          
+          <label for="identifier">Email or Username</label>
+          <input type="text" id="identifier" name="identifier" placeholder="Enter email or username" required />
         </div>
 
         <div class="input-group" style="position: relative;">
@@ -113,7 +120,6 @@ html, body {
           <input type="password" id="password" name="password" placeholder="Enter password" required />
           <i class="fas fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 38px; cursor: pointer;"></i>
         </div>
-        
 
         <div class="input-group">
           <label>
@@ -125,186 +131,210 @@ html, body {
         <button type="submit" class="btn">Log In</button>
 
         <p class="redirect">
-          Don’t have an account? <a href="signup.html">Sign-Up</a>
+          Don’t have an account? <a href="signup.html" id="signupLink">Sign-Up</a>
         </p>
         <p class="redirect">
           Forgot password? <a href="#" id="forgotPasswordLink">Reset</a>
         </p>
-        
       </form>
     </div>
   </main>
-  <!-- Forgot Password Modal -->
-<div id="forgotModal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>Reset Password</h2>
-    <p>Enter your email or username and we’ll send you a reset link.</p>
-    <input type="text" id="forgotInput" placeholder="Enter email or username" />
-    <button id="sendResetBtn" class="btn">Send Reset Link</button>
-  </div>
-</div>
 
+  <!-- Forgot Password Modal -->
+  <div id="forgotModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Reset Password</h2>
+      <p>Enter your email or username and we’ll send you a reset link.</p>
+      <input type="text" id="forgotInput" placeholder="Enter email or username" />
+      <button id="sendResetBtn" class="btn">Send Reset Link</button>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="footer">
-      &copy; 2025 Colby Martel | 
-      <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-      <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-      <a href="https://discord.gg/egQzdDSM" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
+    &copy; 2025 Colby Martel | 
+    <a href="https://www.instagram.com/colbymartel19/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.youtube.com/ColbyMartel" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@ColbyMartel" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    <a href="https://discord.gg/egQzdDSM" target="_blank" title="Join Discord"><i class="fab fa-discord"></i></a>
   </footer>
 
   <!-- Firebase Auth Script -->
-  <!-- Firebase Auth Script -->
-<script type="module">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      setPersistence,
+      browserLocalPersistence,
+      browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-  import {
-  getAuth,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence
-} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      get
+    } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
 
-  import {
-    getDatabase,
-    ref,
-    get
-  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
-    authDomain: "guessthesinger10.firebaseapp.com",
-    databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
-    projectId: "guessthesinger10",
-    storageBucket: "guessthesinger10.appspot.com",
-    messagingSenderId: "97201023235",
-    appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
   
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
+    const app   = initializeApp(firebaseConfig);
+    const auth  = getAuth(app);
+    const db    = getDatabase(app);
 
-  // Elements
-  const forgotLink = document.getElementById('forgotPasswordLink');
-  const forgotModal = document.getElementById('forgotModal');
-  const closeModal = forgotModal.querySelector('.close');
-  const sendResetBtn = document.getElementById('sendResetBtn');
-  const forgotInput = document.getElementById('forgotInput');
-// Login form submission
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const identifier = document.getElementById('identifier').value.trim();
-  const password = document.getElementById('password').value;
-  const keepLoggedIn = document.getElementById('keepLoggedIn').checked;
-  let emailToUse = identifier;
+    // --- Redirect handling (from ?redirect=...)
+    const urlParams   = new URLSearchParams(window.location.search);
+    const redirectTo  = urlParams.get('redirect');
 
-  if (!identifier.includes('@')) {
-    const snapshot = await get(ref(db, 'signupForm'));
-    let found = false;
-    snapshot.forEach(child => {
-      const data = child.val();
-      if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
-        emailToUse = data.newEmail;
-        found = true;
+    function getSafeRedirect() {
+      if (!redirectTo) return null;
+      const decoded = decodeURIComponent(redirectTo);
+      // Only allow same-site relative paths like "/feedback.html"
+      if (decoded.startsWith('/') && !decoded.startsWith('//')) {
+        return decoded;
+      }
+      return null;
+    }
+
+    // Elements
+    const forgotLink   = document.getElementById('forgotPasswordLink');
+    const forgotModal  = document.getElementById('forgotModal');
+    const closeModal   = forgotModal.querySelector('.close');
+    const sendResetBtn = document.getElementById('sendResetBtn');
+    const forgotInput  = document.getElementById('forgotInput');
+    const signupLink   = document.getElementById('signupLink');
+
+    // If there's a redirect param, pass it through to signup.html as well
+    if (signupLink && redirectTo) {
+      const baseHref = signupLink.getAttribute('href').split('?')[0];
+      signupLink.href = `${baseHref}?redirect=${encodeURIComponent(redirectTo)}`;
+    }
+
+    // Login form submission
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const identifier   = document.getElementById('identifier').value.trim();
+      const password     = document.getElementById('password').value;
+      const keepLoggedIn = document.getElementById('keepLoggedIn').checked;
+      let emailToUse     = identifier;
+
+      // If they typed a username instead of an email, look it up
+      if (!identifier.includes('@')) {
+        const snapshot = await get(ref(db, 'signupForm'));
+        let found = false;
+        snapshot.forEach(child => {
+          const data = child.val();
+          if (data.newUsername?.toLowerCase() === identifier.toLowerCase()) {
+            emailToUse = data.newEmail;
+            found = true;
+          }
+        });
+
+        if (!found) {
+          alert("Username not found. Please use your registered email.");
+          return;
+        }
+      }
+
+      try {
+        await setPersistence(auth, keepLoggedIn ? browserLocalPersistence : browserSessionPersistence);
+        const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+        const user = userCredential.user;
+
+        const userRef  = ref(db, 'signupForm/' + user.uid);
+        const snapshot = await get(userRef);
+        const userData = snapshot.exists() ? snapshot.val() : null;
+
+        const safeRedirect = getSafeRedirect();
+
+        if (!userData || !userData.newUsername) {
+          // No profile yet – send to profile setup
+          window.location.href = "profile.html";
+        } else if (safeRedirect) {
+          // Send them back to where they originally came from (e.g. feedback page)
+          window.location.href = safeRedirect;
+        } else {
+          // Default fallback: daily game (adjust if you want)
+          window.location.href = "/2025daily/day8.html";
+        }
+      } catch (error) {
+        alert("Login failed: " + error.message);
       }
     });
 
-    if (!found) {
-      alert("Username not found. Please use your registered email.");
-      return;
-    }
-  }
+    // Forgot password modal open
+    forgotLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      forgotModal.classList.remove('hidden');
+    });
 
-  try {
-    await setPersistence(auth, keepLoggedIn ? browserLocalPersistence : browserSessionPersistence);
-    const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
-    const user = userCredential.user;
-
-    const userRef = ref(db, 'signupForm/' + user.uid);
-    const snapshot = await get(userRef);
-    const userData = snapshot.exists() ? snapshot.val() : null;
-
-    // Check for redirect parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectTo = urlParams.get('redirect');
-    
-    if (!userData || !userData.newUsername) {
-      window.location.href = "profile.html";
-    } else if (redirectTo) {
-      // Redirect to the page they came from
-      window.location.href = decodeURIComponent(redirectTo);
-    } else {
-      // Default fallback
-      window.location.href = "/2025daily/day7.html";
-    }
-  } catch (error) {
-    alert("Login failed: " + error.message);
-  }
-});
-
-
-  closeModal.addEventListener('click', () => {
-    forgotModal.classList.add('hidden');
-  });
-
-  window.addEventListener('click', (e) => {
-    if (e.target === forgotModal) {
+    // Close modal
+    closeModal.addEventListener('click', () => {
       forgotModal.classList.add('hidden');
-    }
-  });
+    });
 
-  // Handle password reset logic
-  sendResetBtn.addEventListener('click', async () => {
-  const input = forgotInput.value.trim();
-
-  if (!input) {
-    alert("Please enter your email or username.");
-    return;
-  }
-
-  let emailToUse = input;
-
-  if (!input.includes('@')) {
-    const snapshot = await get(ref(db, 'signupForm'));
-    let found = false;
-    snapshot.forEach(child => {
-      const data = child.val();
-      if (data.newUsername?.toLowerCase() === input.toLowerCase()) {
-        emailToUse = data.newEmail;
-        found = true;
+    window.addEventListener('click', (e) => {
+      if (e.target === forgotModal) {
+        forgotModal.classList.add('hidden');
       }
     });
 
-    if (!found) {
-      alert("Username not found. Try again or use your email.");
-      return;
-    }
-  }
+    // Handle password reset logic
+    sendResetBtn.addEventListener('click', async () => {
+      const input = forgotInput.value.trim();
 
-  try {
-    await sendPasswordResetEmail(auth, emailToUse);
-    alert("Reset link sent to " + emailToUse);
-    forgotModal.classList.add('hidden');
-  } catch (error) {
-    alert("Error: " + error.message);
-  }
-});
-// Toggle password visibility
-document.getElementById('togglePassword').addEventListener('click', () => {
-  const passwordInput = document.getElementById('password');
-  const toggleIcon = document.getElementById('togglePassword');
-  const isHidden = passwordInput.type === "password";
-  passwordInput.type = isHidden ? "text" : "password";
-  toggleIcon.classList.toggle("fa-eye");
-  toggleIcon.classList.toggle("fa-eye-slash");
-});
+      if (!input) {
+        alert("Please enter your email or username.");
+        return;
+      }
 
-</script>
+      let emailToUse = input;
 
+      if (!input.includes('@')) {
+        const snapshot = await get(ref(db, 'signupForm'));
+        let found = false;
+        snapshot.forEach(child => {
+          const data = child.val();
+          if (data.newUsername?.toLowerCase() === input.toLowerCase()) {
+            emailToUse = data.newEmail;
+            found = true;
+          }
+        });
+
+        if (!found) {
+          alert("Username not found. Try again or use your email.");
+          return;
+        }
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, emailToUse);
+        alert("Reset link sent to " + emailToUse);
+        forgotModal.classList.add('hidden');
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    });
+
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', () => {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon    = document.getElementById('togglePassword');
+      const isHidden      = passwordInput.type === "password";
+      passwordInput.type  = isHidden ? "text" : "password";
+      toggleIcon.classList.toggle("fa-eye");
+      toggleIcon.classList.toggle("fa-eye-slash");
+    });
+  </script>
 </body>
 </html>
