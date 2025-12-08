@@ -433,9 +433,7 @@
         <span id="coinCount" style="font-weight:bold;">0</span>
       </div>
     </div>
-    <div style="font-size:0.85rem; opacity:0.85;">
-      Daily Mystery Singer Feedback
-    </div>
+   
   </nav>
 
   <!-- Main -->
@@ -716,78 +714,86 @@ document.addEventListener('click', (e) => {
     }
 
     // Submit feedback
-    submitBtn.addEventListener("click", async () => {
-      statusMessage.textContent = "";
-      statusMessage.className = "status-message";
+  // Submit feedback
+submitBtn.addEventListener("click", async () => {
+  statusMessage.textContent = "";
+  statusMessage.className = "status-message";
 
-      // Gather values
-      const guessedCorrectlyVal = getRadioValue("guessedCorrectly");
-      const emailUpdatesVal    = getRadioValue("emailUpdates");
+  // Gather values
+  const guessedCorrectlyVal  = getRadioValue("guessedCorrectly");
+  const emailUpdatesVal      = getRadioValue("emailUpdates");
 
-      const feedbackText   = document.getElementById("feedbackText").value.trim();
-      const artistIdeas    = document.getElementById("artistIdeas").value.trim();
-      const referralSource = document.getElementById("referralSource").value.trim();
+  // These are OPTIONAL – if no inputs exist with these names, they'll just be null
+  const funRatingVal         = getRadioValue("funRating");
+  const difficultyRatingVal  = getRadioValue("difficultyRating");
 
-      if (!guessedCorrectlyVal) {
-        statusMessage.textContent = "Please answer the rating questions before submitting.";
-        statusMessage.classList.add("error");
-        return;
-      }
+  const feedbackText   = document.getElementById("feedbackText").value.trim();
+  const artistIdeas    = document.getElementById("artistIdeas").value.trim();
+  const referralSource = document.getElementById("referralSource").value.trim();
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Submitting...";
+  if (!guessedCorrectlyVal) {
+    statusMessage.textContent = "Please answer whether you guessed correctly before submitting.";
+    statusMessage.classList.add("error");
+    return;
+  }
 
-      const guessedCorrectly = guessedCorrectlyVal === "yes";
-      let wantsEmailUpdates  = null;
-      if (emailUpdatesVal === "yes") wantsEmailUpdates = true;
-      if (emailUpdatesVal === "no")  wantsEmailUpdates = false;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
 
-      try {
-        // Create feedback document including email + uid + new fields
-        await addDoc(collection(db, "feedbackEntries"), {
-          uid: currentUserUid || null,
-          email: currentUserEmail || null,
-          funRating: Number(funRating),
-          difficultyRating: Number(difficultyRating),
-          guessedCorrectly,
-          wantsEmailUpdates,
-          feedbackText: feedbackText || null,
-          artistIdeas: artistIdeas || null,
-          referralSource: referralSource || null,
-          timestamp: serverTimestamp()
-        });
+  const guessedCorrectly = guessedCorrectlyVal === "yes";
+  let wantsEmailUpdates  = null;
+  if (emailUpdatesVal === "yes") wantsEmailUpdates = true;
+  if (emailUpdatesVal === "no")  wantsEmailUpdates = false;
 
-        // Award coins if logged in and we have a user doc
-        if (currentUserUid && userDocRef) {
-          const newCoins = currentUserCoins + 100;
-          await updateDoc(userDocRef, { coins: newCoins });
-          currentUserCoins = newCoins;
-          coinDisplay.textContent = newCoins.toString();
-          statusMessage.textContent = "Thanks for the feedback! 100 coins have been added to your account. 🎉";
-        } else {
-          statusMessage.textContent = "Thanks for the feedback! Log in next time to earn coins too. 🙌";
-        }
-
-        statusMessage.classList.add("success");
-
-        // Reset form
-        document.querySelectorAll('input[name="funRating"]').forEach(el => el.checked = false);
-        document.querySelectorAll('input[name="difficultyRating"]').forEach(el => el.checked = false);
-        document.querySelectorAll('input[name="guessedCorrectly"]').forEach(el => el.checked = false);
-        document.querySelectorAll('input[name="emailUpdates"]').forEach(el => el.checked = false);
-        document.getElementById("feedbackText").value = "";
-        document.getElementById("artistIdeas").value = "";
-        document.getElementById("referralSource").value = "";
-
-      } catch (err) {
-        console.error("Error submitting feedback:", err);
-        statusMessage.textContent = "Something went wrong submitting your feedback. Please try again in a moment.";
-        statusMessage.classList.add("error");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit Feedback & Claim 100 Coins";
-      }
+  try {
+    // Create feedback document including email + uid + new fields
+    await addDoc(collection(db, "feedbackEntries"), {
+      uid: currentUserUid || null,
+      email: currentUserEmail || null,
+      // safely handle missing rating inputs
+      funRating: funRatingVal ? Number(funRatingVal) : null,
+      difficultyRating: difficultyRatingVal ? Number(difficultyRatingVal) : null,
+      guessedCorrectly,
+      wantsEmailUpdates,
+      feedbackText: feedbackText || null,
+      artistIdeas: artistIdeas || null,
+      referralSource: referralSource || null,
+      timestamp: serverTimestamp()
     });
+
+    // Award coins if logged in and we have a user doc
+    if (currentUserUid && userDocRef) {
+      const newCoins = currentUserCoins + 100;
+      await updateDoc(userDocRef, { coins: newCoins });
+      currentUserCoins = newCoins;
+      coinDisplay.textContent = newCoins.toString();
+      statusMessage.textContent = "Thanks for the feedback! 100 coins have been added to your account. 🎉";
+    } else {
+      statusMessage.textContent = "Thanks for the feedback! Log in next time to earn coins too. 🙌";
+    }
+
+    statusMessage.classList.add("success");
+
+    // Reset form
+    document.querySelectorAll('input[name="funRating"]').forEach(el => el.checked = false);
+    document.querySelectorAll('input[name="difficultyRating"]').forEach(el => el.checked = false);
+    document.querySelectorAll('input[name="guessedCorrectly"]').forEach(el => el.checked = false);
+    document.querySelectorAll('input[name="emailUpdates"]').forEach(el => el.checked = false);
+    document.getElementById("feedbackText").value = "";
+    document.getElementById("artistIdeas").value = "";
+    document.getElementById("referralSource").value = "";
+
+  } catch (err) {
+    console.error("Error submitting feedback:", err);
+    statusMessage.textContent = "Something went wrong submitting your feedback. Please try again in a moment.";
+    statusMessage.classList.add("error");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Feedback & Claim 100 Coins";
+  }
+});
+
+
   </script>
 </body>
 </html>
