@@ -25,7 +25,7 @@
     }
 
     h1 { margin: 0; font-size: 1.6rem; }
-    .main { max-width: 960px; margin: 20px auto; padding: 0 16px 40px; }
+    .main { max-width: 1200px; margin: 20px auto; padding: 0 16px 40px; }
 
     .info {
       font-size: 0.9rem;
@@ -71,7 +71,8 @@
 
     .tag-yes { background: #27ae60; }
     .tag-no  { background: #c0392b; }
-    .rating { font-weight: 600; color: #234d7d; }
+    .tag-maybe { background: #7f8c8d; }
+
     .small  { font-size: 0.75rem; color: #777; }
 
     .loader { margin-top: 20px; text-align: center; font-size: 0.9rem; }
@@ -101,10 +102,22 @@
       gap: 6px;
     }
 
-    .reload-btn:active {
-      transform: translateY(1px);
-      box-shadow: 0px 1px 0px 0px #315f85;
+    .delete-btn {
+      border-radius: 999px;
+      border: none;
+      background-color: #e74c3c;
+      box-shadow: 0px 2px 0px 0px #c0392b;
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
+
+    .delete-btn i { font-size: 0.8rem; }
 
     .bottom-nav {
       position: fixed;
@@ -130,28 +143,16 @@
       gap: 2px;
     }
 
-    .bottom-nav .nav-item i {
-      font-size: 20px;
-    }
-
-    .bottom-nav .nav-item:hover {
-      color: #ffcb05;
-    }
+    .bottom-nav .nav-item:hover { color: #ffcb05; }
   </style>
 </head>
 <body>
-<header>
-  <h1>Daily Feedback Viewer</h1>
-</header>
+<header><h1>Daily Feedback Viewer</h1></header>
 
 <div class="main">
   <div class="top-bar">
-    <p class="info">
-      Showing the latest feedback from the <code>feedbackEntries</code> collection.
-    </p>
-    <button id="reloadButton" class="reload-btn">
-      <i class="fas fa-rotate-right"></i> Reload
-    </button>
+    <p class="info">Showing the latest feedback from <code>feedbackEntries</code>.</p>
+    <button id="reloadButton" class="reload-btn"><i class="fas fa-rotate-right"></i> Reload</button>
   </div>
 
   <div id="loader" class="loader">Checking admin access...</div>
@@ -160,18 +161,9 @@
 </div>
 
 <footer class="bottom-nav">
-  <a href="/games.html" class="nav-item">
-    <i class="fas fa-gamepad"></i>
-    <span>Games</span>
-  </a>
-  <a href="/rewards.html" class="nav-item">
-    <i class="fas fa-gift"></i>
-    <span>Rewards</span>
-  </a>
-  <a href="/profile.html" class="nav-item">
-    <i class="fas fa-user"></i>
-    <span>Profile</span>
-  </a>
+  <a href="/games.html" class="nav-item"><i class="fas fa-gamepad"></i><span>Games</span></a>
+  <a href="/rewards.html" class="nav-item"><i class="fas fa-gift"></i><span>Rewards</span></a>
+  <a href="/profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
 </footer>
 
 <script type="module">
@@ -182,134 +174,129 @@
     getDocs,
     query,
     orderBy,
-    limit
+    limit,
+    doc,
+    deleteDoc
   } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
   import {
     getAuth,
     onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-  const firebaseConfig = {
+  const app = initializeApp({
     apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
     authDomain: "guessthesinger10.firebaseapp.com",
     projectId: "guessthesinger10",
-    storageBucket: "guessthesinger10.appspot.com",
-    messagingSenderId: "97201023235",
-    appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
-  };
+  });
 
-  const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  const feedbackContainer = document.getElementById("feedbackContainer");
-  const loader = document.getElementById("loader");
-  const errorEl = document.getElementById("error");
-  const reloadButton = document.getElementById("reloadButton");
+  function formatMultiline(text) {
+    return (text || "").replace(/\n/g, "<br>");
+  }
 
-  async function loadFeedback() {
-    loader.textContent = "Loading feedback...";
-    feedbackContainer.innerHTML = "";
-    errorEl.style.display = "none";
+  function attachDeleteHandlers() {
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.dataset.id;
+        if (!id) return;
+        if (!confirm("Delete this feedback permanently?")) return;
+        await deleteDoc(doc(db, "feedbackEntries", id));
+        loadFeedback();
+      });
+    });
+  }
 
-    try {
-      const q = query(
-        collection(db, "feedbackEntries"),
-        orderBy("timestamp", "desc"),
-        limit(100)
-      );
+  function renderTable(snapshot) {
+    let html = `
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Guessed?</th>
+            <th>Like / Dislike</th>
+            <th>Heard From</th>
+            <th>Future Artists</th>
+            <th>Email Updates</th>
+            <th>User</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
 
-      const snapshot = await getDocs(q);
+    snapshot.forEach(docSnap => {
+      const d = docSnap.data();
 
-      if (snapshot.empty) {
-        loader.textContent = "No feedback yet!";
-        return;
+      let dateStr = "-";
+      if (d.timestamp?.toDate) {
+        const t = d.timestamp.toDate();
+        dateStr = t.toLocaleDateString() + " " + t.toLocaleTimeString();
       }
 
-      loader.style.display = "none";
+      // Tags
+      const guessed = d.guessedCorrectly === true ? "Yes" :
+                      d.guessedCorrectly === false ? "No" : "-";
+      const guessedClass = d.guessedCorrectly === true ? "tag-yes" :
+                           d.guessedCorrectly === false ? "tag-no" : "tag-maybe";
 
-      let html = `
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Fun</th>
-              <th>Difficulty</th>
-              <th>Guessed?</th>
-              <th>Feedback</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
+      let updates = "-";
+      let updatesClass = "tag-maybe";
+      if (d.wantsEmailUpdates === true) { updates="Yes"; updatesClass="tag-yes"; }
+      if (d.wantsEmailUpdates === false) { updates="No"; updatesClass="tag-no"; }
+
+      html += `
+        <tr>
+          <td><div>${dateStr}</div><div class="small">${docSnap.id}</div></td>
+          <td><span class="tag ${guessedClass}">${guessed}</span></td>
+          <td>${formatMultiline(d.feedbackText || "")}</td>
+          <td>${formatMultiline(d.referralSource || "")}</td>
+          <td>${formatMultiline(d.artistIdeas || "")}</td>
+          <td><span class="tag ${updatesClass}">${updates}</span></td>
+          <td class="small">${d.email || d.uid || "Unknown"}</td>
+          <td><button class="delete-btn" data-id="${docSnap.id}"><i class="fas fa-trash-alt"></i></button></td>
+        </tr>
       `;
+    });
 
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const guessed = data.guessedCorrectly ? "Yes" : "No";
-        const feedbackText = data.feedbackText || "";
-        const userLabel = data.email || data.uid || "Unknown";
+    html += `</tbody></table>`;
+    document.getElementById("feedbackContainer").innerHTML = html;
+    attachDeleteHandlers();
+  }
 
-        let dateStr = "-";
-        if (data.timestamp?.toDate) {
-          const d = data.timestamp.toDate();
-          dateStr = d.toLocaleDateString() + " " + d.toLocaleTimeString();
-        }
+  async function loadFeedback() {
+    const loader = document.getElementById("loader");
+    loader.textContent = "Loading feedback...";
+    loader.style.display = "block";
+    document.getElementById("feedbackContainer").innerHTML = "";
 
-        html += `
-          <tr>
-            <td>
-              <div>${dateStr}</div>
-              <div class="small">${docSnap.id}</div>
-            </td>
-            <td><span class="rating">${data.funRating ?? "-"}</span></td>
-            <td><span class="rating">${data.difficultyRating ?? "-"}</span></td>
-            <td>
-              <span class="tag ${data.guessedCorrectly ? "tag-yes" : "tag-no"}">${guessed}</span>
-            </td>
-            <td>${feedbackText.replace(/\n/g, "<br>")}</td>
-            <td class="small">${userLabel}</td>
-          </tr>
-        `;
-      });
-
-      html += `</tbody></table>`;
-      feedbackContainer.innerHTML = html;
-
+    try {
+      const snapshot = await getDocs(
+        query(collection(db, "feedbackEntries"), orderBy("timestamp","desc"), limit(300))
+      );
+      loader.style.display = "none";
+      if (!snapshot.empty) renderTable(snapshot);
+      else loader.textContent = "No feedback yet!";
     } catch (err) {
       console.error(err);
       loader.style.display = "none";
-      errorEl.textContent = "Failed to load feedback — insufficient permissions or rules issue.";
-      errorEl.style.display = "block";
+      document.getElementById("error").style.display="block";
     }
   }
 
-  // Only allow admin email to access data
+  // Admin-only access
   onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      loader.style.display = "none";
-      errorEl.textContent = "You must be logged in as admin to view this page.";
-      errorEl.style.display = "block";
-      return;
-    }
-
-    if (user.email === "colbyma23@gmail.com") {
-      loadFeedback();
-    } else {
-      loader.style.display = "none";
-      errorEl.textContent = "Access denied — admin only.";
-      errorEl.style.display = "block";
-    }
-  });
-
-  reloadButton.addEventListener("click", () => {
-    const user = auth.currentUser;
     if (user?.email === "colbyma23@gmail.com") {
       loadFeedback();
     } else {
-      errorEl.textContent = "You're not authorized to reload.";
-      errorEl.style.display = "block";
+      document.getElementById("loader").style.display="none";
+      document.getElementById("error").textContent="Admin only.";
+      document.getElementById("error").style.display="block";
     }
   });
+
+  document.getElementById("reloadButton").addEventListener("click", loadFeedback);
 </script>
 
 </body>

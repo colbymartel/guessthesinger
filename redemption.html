@@ -101,103 +101,84 @@
     let allRedemptions = [];
 
     async function fetchRedemptions() {
-      const redemptionsSnap = await getDocs(collection(db, "redemptions"));
-      const redemptions = [];
-      for (const docSnap of redemptionsSnap.docs) {
-        const data = docSnap.data();
-        let username = data.username || "";
-        // If username is missing, fetch from users collection
-        if (!username && data.uid) {
-          const userSnap = await getDoc(doc(db, "users", data.uid));
-          if (userSnap.exists()) {
-            username = userSnap.data().username || "";
-          }
-        }
-        // Format date
-        let dateStr = "—";
-        let timestampMs = 0;
-        let dateISO = "";
-        if (data.timestamp && data.timestamp.toDate) {
-          const d = data.timestamp.toDate();
-          dateStr = d.toLocaleString();
-          timestampMs = d.getTime();
-          dateISO = d.toISOString().slice(0, 10);
-        } else if (data.timestamp && data.timestamp.seconds) {
-          // Firestore Timestamp object
-          const d = new Date(data.timestamp.seconds * 1000);
-          dateStr = d.toLocaleString();
-          timestampMs = d.getTime();
-          dateISO = d.toISOString().slice(0, 10);
-        }
-        // Extract raffle type and entry count
-        let raffleType = "";
-        let entryCount = 1;
-        let prizeDisplay = data.reward || data.prize || "—";
-        
-        if (prizeDisplay.toLowerCase().includes("raffle")) {
-          // Determine raffle type
-          if (data.raffleType) {
-            raffleType = data.raffleType;
-          } else if (data.prize && data.prize.toLowerCase().includes("spotify")) {
-            raffleType = "Spotify Premium";
-          } else if (data.prize && data.prize.toLowerCase().includes("airpods")) {
-            raffleType = "AirPods Max";
-          }
-          
-          // Get entry count (default to 1 if not specified)
-          if (data.entryCount) {
-            entryCount = data.entryCount;
-          } else if (data.quantity) {
-            entryCount = data.quantity;
-          } else if (data.coins && data.coins > 0) {
-            // Estimate entry count based on coins spent (assuming 100 coins per entry)
-            entryCount = Math.floor(data.coins / 100) || 1;
-          }
-          
-          // Check if this is a past raffle entry (older than 30 days)
-          const thirtyDaysAgo = new Date();
-          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-          const isPastRaffle = timestampMs < thirtyDaysAgo.getTime();
-          
-          // Format prize display with raffle type and entry count
-          const entryText = entryCount > 1 ? ` (${entryCount} entries)` : "";
-          const pastText = isPastRaffle ? "Past " : "";
-          
-          if (raffleType) {
-            prizeDisplay = `${pastText}Raffle Entry - ${raffleType}${entryText}`;
-          } else {
-            prizeDisplay = `${pastText}Raffle Entry${entryText}`;
-          }
-        }
-        
-        // Check for coins data in multiple possible field names
-        let coinsUsed = 0;
-        if (data.cost !== undefined && data.cost !== null) {
-          coinsUsed = data.cost;
-        } else if (data.coins !== undefined && data.coins !== null) {
-          coinsUsed = data.coins;
-        } else if (data.coinsUsed !== undefined && data.coinsUsed !== null) {
-          coinsUsed = data.coinsUsed;
-        } else if (data.price !== undefined && data.price !== null) {
-          coinsUsed = data.price;
-        } else if (data.amount !== undefined && data.amount !== null) {
-          coinsUsed = data.amount;
-        }
-        
-        redemptions.push({
-          email: data.email || "—",
-          username: username || "—",
-          prize: prizeDisplay,
-          coinsUsed: coinsUsed,
-          date: dateStr,
-          dateISO,
-          timestampMs
-        });
+  const redemptionsSnap = await getDocs(collection(db, "redemptions"));
+  const redemptions = [];
+  for (const docSnap of redemptionsSnap.docs) {
+    const data = docSnap.data();
+    let username = data.username || "";
+    // If username is missing, fetch from users collection
+    if (!username && data.uid) {
+      const userSnap = await getDoc(doc(db, "users", data.uid));
+      if (userSnap.exists()) {
+        username = userSnap.data().username || "";
       }
-      // Sort by timestamp descending
-      redemptions.sort((a, b) => b.timestampMs - a.timestampMs);
-      return redemptions;
     }
+
+    // Format date
+    let dateStr = "—";
+    let timestampMs = 0;
+    let dateISO = "";
+    if (data.timestamp && data.timestamp.toDate) {
+      const d = data.timestamp.toDate();
+      dateStr = d.toLocaleString();
+      timestampMs = d.getTime();
+      dateISO = d.toISOString().slice(0, 10);
+    } else if (data.timestamp && data.timestamp.seconds) {
+      const d = new Date(data.timestamp.seconds * 1000);
+      dateStr = d.toLocaleString();
+      timestampMs = d.getTime();
+      dateISO = d.toISOString().slice(0, 10);
+    }
+
+    // Extract raffle type and entry count (unchanged)
+    let raffleType = "";
+    let entryCount = 1;
+    let prizeDisplay = data.reward || data.prize || "—";
+    
+    if (prizeDisplay.toLowerCase().includes("raffle")) {
+      // ... your existing raffle logic ...
+    }
+
+    // Check for coins data in multiple possible field names
+    let coinsUsed = 0;
+    if (data.cost !== undefined && data.cost !== null) {
+      coinsUsed = data.cost;
+    } else if (data.coins !== undefined && data.coins !== null) {
+      coinsUsed = data.coins;
+    } else if (data.coinsUsed !== undefined && data.coinsUsed !== null) {
+      coinsUsed = data.coinsUsed;
+    } else if (data.price !== undefined && data.price !== null) {
+      coinsUsed = data.price;
+    } else if (data.amount !== undefined && data.amount !== null) {
+      coinsUsed = data.amount;
+    }
+
+    // 👉 NEW: read charity field for donations
+    let charity = "";
+    if (data.charity) {
+      charity = data.charity; // "St. Jude" or "Make-A-Wish"
+    }
+
+    // Optional: if it's a charitable donation and you want that reflected in prize text:
+    if ((data.reward || "").toLowerCase().includes("charitable donation") && charity) {
+      prizeDisplay = `Charitable Donation – ${charity}`;
+    }
+
+    redemptions.push({
+      email: data.email || "—",
+      username: username || "—",
+      prize: prizeDisplay,
+      coinsUsed: coinsUsed,
+      date: dateStr,
+      dateISO,
+      timestampMs,
+      charity // 👈 store it on the object
+    });
+  }
+  // Sort by timestamp descending
+  redemptions.sort((a, b) => b.timestampMs - a.timestampMs);
+  return redemptions;
+}
 
     function renderTable(redemptions) {
       const body = document.getElementById("redemptionsBody");

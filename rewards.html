@@ -171,6 +171,7 @@
       background: #fdfdfd;
       box-shadow: 0 2px 6px rgba(0,0,0,0.08);
       transition: transform 0.2s ease;
+      position: relative;
     }
 
     .shop-style:hover {
@@ -345,9 +346,10 @@
       opacity: 0.7;
     }
 
-    /* Dropdowns */
+    /* Dropdowns (Spotify, Sticker, AirPods) */
     #stickerSelect,
-    #raffleSelect {
+    #raffleSelect,
+    #airpodsSelect {
       width: 100%;
       box-sizing: border-box;
       margin: 10px 0 10px 0;
@@ -507,12 +509,12 @@
       </div>
     </div>
 
-    <!-- AirPods Max Raffle (kept as-is structurally) -->
+    <!-- AirPods Max Raffle (fixed select) -->
     <div class="reward-card shop-style" data-title="AirPods Max" data-cost="500">
       <img src="images/AIRPODSMAX.jpg" alt="AirPods Entry" class="reward-image-top">
       <div class="reward-title center-text">AirPods Max</div>
       <div class="reward-desc center-text">Entry into raffle to win AirPods Max!</div>
-      <select style="margin: 10px auto 10px auto; display: block; padding: 8px 12px; border-radius: 10px; font-size: 16px;">
+      <select id="airpodsSelect">
         <option value="1">1 Entry (500 coins)</option>
         <option value="5">5 Entries (2000 coins)</option>
         <option value="10">10 Entries (3500 coins)</option>
