@@ -433,7 +433,6 @@
         <span id="coinCount" style="font-weight:bold;">0</span>
       </div>
     </div>
-   
   </nav>
 
   <!-- Main -->
@@ -453,7 +452,7 @@
         Logged in as <span id="userEmailLabel">unknown</span>. Your email will be saved with this feedback automatically.
       </div>
 
-<br>
+      <br>
 
       <!-- Correct guess? -->
       <div class="form-section">
@@ -470,7 +469,6 @@
         </div>
       </div>
 
-
       <!-- Open feedback -->
       <div class="form-section">
         <label>What did you like or dislike about today’s game?</label>
@@ -478,7 +476,7 @@
         <textarea id="feedbackText" placeholder="Share any thoughts that would make this game better for you."></textarea>
       </div>
 
-      <!-- NEW: How did you hear about this game? -->
+      <!-- How did you hear about this game? -->
       <div class="form-section">
         <label>How did you hear about this game?</label>
         <div class="form-help">Ex: TikTok, a friend, campus event, YouTube, Instagram, Discord, etc.</div>
@@ -490,21 +488,23 @@
         <label>Any artists you’d love to see as future mystery singers?</label>
         <textarea id="artistIdeas" placeholder="Drop artist names, genres, or themes you’d be hyped to play."></textarea>
       </div>
-    <!-- NEW: Email updates opt-in -->
-    <div class="form-section">
-      <label>Do you want to receive emails about future updates and opportunities?</label>
-      <div class="form-help">We’ll only email you about Guess The Singer / GuessingGames.com.</div>
-      <div class="toggle-options">
-        <div class="toggle-pill">
-          <input type="radio" id="emailYes" name="emailUpdates" value="yes">
-          <label for="emailYes">Yes, keep me posted</label>
-        </div>
-        <div class="toggle-pill">
-          <input type="radio" id="emailNo" name="emailUpdates" value="no">
-          <label for="emailNo">No, not right now</label>
+
+      <!-- Email updates opt-in -->
+      <div class="form-section">
+        <label>Do you want to receive emails about future updates and opportunities?</label>
+        <div class="form-help">We’ll only email you about Guess The Singer / GuessingGames.com.</div>
+        <div class="toggle-options">
+          <div class="toggle-pill">
+            <input type="radio" id="emailYes" name="emailUpdates" value="yes">
+            <label for="emailYes">Yes, keep me posted</label>
+          </div>
+          <div class="toggle-pill">
+            <input type="radio" id="emailNo" name="emailUpdates" value="no">
+            <label for="emailNo">No, not right now</label>
+          </div>
         </div>
       </div>
-    </div>
+
       <div class="submit-row">
         <button id="submitFeedback" class="cta-button">
           Submit Feedback &amp; Claim 100 Coins
@@ -584,21 +584,21 @@
     let currentUserEmail = null;
     let currentUserCoins = 0;
     let userDocRef = null;
-   
-  // Global handler: any click on a login link gets a redirect param
-document.addEventListener('click', (e) => {
-  const link = e.target.closest('a[href="/login.html"], a[href="login.html"]');
-  if (!link) return;
+    let lastFeedbackDate = null; // YYYY-MM-DD string of last feedback
 
-  e.preventDefault();
+    // Global handler: any click on a login link gets a redirect param
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href="/login.html"], a[href="login.html"]');
+      if (!link) return;
 
-  const currentUrl = window.location.pathname + window.location.search;
-  const baseHref = link.getAttribute('href').split('?')[0]; // strip any existing query
-  const target = `${baseHref}?redirect=${encodeURIComponent(currentUrl)}`;
+      e.preventDefault();
 
-  window.location.href = target;
-});
+      const currentUrl = window.location.pathname + window.location.search;
+      const baseHref = link.getAttribute('href').split('?')[0]; // strip any existing query
+      const target = `${baseHref}?redirect=${encodeURIComponent(currentUrl)}`;
 
+      window.location.href = target;
+    });
 
     function setAnonymousUI() {
       if (welcomeEl) welcomeEl.textContent = "Welcome, Anonymous";
@@ -619,6 +619,7 @@ document.addEventListener('click', (e) => {
       currentUserEmail = null;
       currentUserCoins = 0;
       userDocRef = null;
+      lastFeedbackDate = null;
     }
 
     // Auth state listener
@@ -648,12 +649,16 @@ document.addEventListener('click', (e) => {
           const data = docSnap.data();
           if (data.username) displayName = data.username;
           if (typeof data.coins === "number") coins = data.coins;
+          if (data.feedbackLastDate) {
+            lastFeedbackDate = data.feedbackLastDate;
+          }
           // fallback email from user doc if needed
           if (!currentUserEmail && data.email) {
             currentUserEmail = data.email;
           }
         } else {
           userDocRef = null;
+          lastFeedbackDate = null;
         }
       } catch (err) {
         console.error("Error fetching user doc:", err);
@@ -713,87 +718,98 @@ document.addEventListener('click', (e) => {
       return selected ? selected.value : null;
     }
 
-    // Submit feedback
-  // Submit feedback
-submitBtn.addEventListener("click", async () => {
-  statusMessage.textContent = "";
-  statusMessage.className = "status-message";
+    // Submit feedback (limit: 1 per logged-in user per day)
+    submitBtn.addEventListener("click", async () => {
+      statusMessage.textContent = "";
+      statusMessage.className = "status-message";
 
-  // Gather values
-  const guessedCorrectlyVal  = getRadioValue("guessedCorrectly");
-  const emailUpdatesVal      = getRadioValue("emailUpdates");
+      // If logged in, enforce 1 feedback per day
+      const todayStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
-  // These are OPTIONAL – if no inputs exist with these names, they'll just be null
-  const funRatingVal         = getRadioValue("funRating");
-  const difficultyRatingVal  = getRadioValue("difficultyRating");
+      if (currentUserUid && lastFeedbackDate === todayStr) {
+        statusMessage.textContent = "You’ve already submitted feedback today. Come back tomorrow for more coins! 😊";
+        statusMessage.classList.add("error");
+        return;
+      }
 
-  const feedbackText   = document.getElementById("feedbackText").value.trim();
-  const artistIdeas    = document.getElementById("artistIdeas").value.trim();
-  const referralSource = document.getElementById("referralSource").value.trim();
+      // Gather values
+      const guessedCorrectlyVal  = getRadioValue("guessedCorrectly");
+      const emailUpdatesVal      = getRadioValue("emailUpdates");
 
-  if (!guessedCorrectlyVal) {
-    statusMessage.textContent = "Please answer whether you guessed correctly before submitting.";
-    statusMessage.classList.add("error");
-    return;
-  }
+      // OPTIONAL – if no inputs exist with these names, they'll just be null
+      const funRatingVal         = getRadioValue("funRating");
+      const difficultyRatingVal  = getRadioValue("difficultyRating");
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Submitting...";
+      const feedbackText   = document.getElementById("feedbackText").value.trim();
+      const artistIdeas    = document.getElementById("artistIdeas").value.trim();
+      const referralSource = document.getElementById("referralSource").value.trim();
 
-  const guessedCorrectly = guessedCorrectlyVal === "yes";
-  let wantsEmailUpdates  = null;
-  if (emailUpdatesVal === "yes") wantsEmailUpdates = true;
-  if (emailUpdatesVal === "no")  wantsEmailUpdates = false;
+      if (!guessedCorrectlyVal) {
+        statusMessage.textContent = "Please answer whether you guessed correctly before submitting.";
+        statusMessage.classList.add("error");
+        return;
+      }
 
-  try {
-    // Create feedback document including email + uid + new fields
-    await addDoc(collection(db, "feedbackEntries"), {
-      uid: currentUserUid || null,
-      email: currentUserEmail || null,
-      // safely handle missing rating inputs
-      funRating: funRatingVal ? Number(funRatingVal) : null,
-      difficultyRating: difficultyRatingVal ? Number(difficultyRatingVal) : null,
-      guessedCorrectly,
-      wantsEmailUpdates,
-      feedbackText: feedbackText || null,
-      artistIdeas: artistIdeas || null,
-      referralSource: referralSource || null,
-      timestamp: serverTimestamp()
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      const guessedCorrectly = guessedCorrectlyVal === "yes";
+      let wantsEmailUpdates  = null;
+      if (emailUpdatesVal === "yes") wantsEmailUpdates = true;
+      if (emailUpdatesVal === "no")  wantsEmailUpdates = false;
+
+      try {
+        // Create feedback document including email + uid + new fields
+        await addDoc(collection(db, "feedbackEntries"), {
+          uid: currentUserUid || null,
+          email: currentUserEmail || null,
+          // safely handle missing rating inputs
+          funRating: funRatingVal ? Number(funRatingVal) : null,
+          difficultyRating: difficultyRatingVal ? Number(difficultyRatingVal) : null,
+          guessedCorrectly,
+          wantsEmailUpdates,
+          feedbackText: feedbackText || null,
+          artistIdeas: artistIdeas || null,
+          referralSource: referralSource || null,
+          timestamp: serverTimestamp()
+        });
+
+        // Award coins + update lastFeedbackDate if logged in and we have a user doc
+        if (currentUserUid && userDocRef) {
+          const newCoins = currentUserCoins + 100;
+          await updateDoc(userDocRef, {
+            coins: newCoins,
+            feedbackLastDate: todayStr
+          });
+          currentUserCoins = newCoins;
+          lastFeedbackDate = todayStr;
+
+          coinDisplay.textContent = newCoins.toString();
+          statusMessage.textContent = "Thanks for the feedback! 100 coins have been added to your account. 🎉";
+        } else {
+          statusMessage.textContent = "Thanks for the feedback! Log in next time to earn coins too. 🙌";
+        }
+
+        statusMessage.classList.add("success");
+
+        // Reset form
+        document.querySelectorAll('input[name="funRating"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="difficultyRating"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="guessedCorrectly"]').forEach(el => el.checked = false);
+        document.querySelectorAll('input[name="emailUpdates"]').forEach(el => el.checked = false);
+        document.getElementById("feedbackText").value = "";
+        document.getElementById("artistIdeas").value = "";
+        document.getElementById("referralSource").value = "";
+
+      } catch (err) {
+        console.error("Error submitting feedback:", err);
+        statusMessage.textContent = "Something went wrong submitting your feedback. Please try again in a moment.";
+        statusMessage.classList.add("error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Feedback & Claim 100 Coins";
+      }
     });
-
-    // Award coins if logged in and we have a user doc
-    if (currentUserUid && userDocRef) {
-      const newCoins = currentUserCoins + 100;
-      await updateDoc(userDocRef, { coins: newCoins });
-      currentUserCoins = newCoins;
-      coinDisplay.textContent = newCoins.toString();
-      statusMessage.textContent = "Thanks for the feedback! 100 coins have been added to your account. 🎉";
-    } else {
-      statusMessage.textContent = "Thanks for the feedback! Log in next time to earn coins too. 🙌";
-    }
-
-    statusMessage.classList.add("success");
-
-    // Reset form
-    document.querySelectorAll('input[name="funRating"]').forEach(el => el.checked = false);
-    document.querySelectorAll('input[name="difficultyRating"]').forEach(el => el.checked = false);
-    document.querySelectorAll('input[name="guessedCorrectly"]').forEach(el => el.checked = false);
-    document.querySelectorAll('input[name="emailUpdates"]').forEach(el => el.checked = false);
-    document.getElementById("feedbackText").value = "";
-    document.getElementById("artistIdeas").value = "";
-    document.getElementById("referralSource").value = "";
-
-  } catch (err) {
-    console.error("Error submitting feedback:", err);
-    statusMessage.textContent = "Something went wrong submitting your feedback. Please try again in a moment.";
-    statusMessage.classList.add("error");
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Feedback & Claim 100 Coins";
-  }
-});
-
-
   </script>
 </body>
 </html>
