@@ -992,8 +992,8 @@
     <div></div>
   </nav>
 
-  <!-- Game #10 -->
-  <div id="gameLabel" class="game-label">Game #10</div>
+  <!-- Game #12 -->
+  <div id="gameLabel" class="game-label">Game #12</div>
 
   <div class="main">
     <!-- Progress Bar -->
@@ -1136,8 +1136,8 @@
       <p class="victory-message">You correctly guessed the mystery singer!</p>
 
       <div class="singer-reveal">
-        <div class="singer-name">Sombr</div>
-        <img src="../images/sombr.jpg" alt="Sombr" class="singer-photo">
+        <div class="singer-name">Kodak Black</div>
+        <img src="../images/kodakblack.jpg" alt="Kodak Black" class="singer-photo">
       </div>
 
       <div style="margin-bottom: 25px;">
@@ -1166,8 +1166,8 @@
       </p>
 
       <div class="singer-reveal">
-        <div class="singer-name">Sombr</div>
-        <img src="../images/sombr.jpg" alt="Sombr" class="singer-photo">
+        <div class="singer-name">Kodak Black</div>
+        <img src="../images/kodakblack.jpg" alt="Kodak Black" class="singer-photo">
       </div>
 
       <div style="margin-bottom: 25px;">
@@ -1224,13 +1224,14 @@
   </div>
 
   <script>
-    // ==== GAME STATE (DAY 10 - SOMBR) ====
+    // ==== GAME STATE (DAY 12 - KODAK BLACK) ====
     const hints = [
-      "They are an emerging artist from New York City.",
-      "Their stage name is a word that resembles the mood of their songs.",
-      "MrBeast posted a TikTok confirming his height is 6'7''.",
-      "He is nominated for Best New Artist at the 68th Grammys.",
-      "His song 'back to friends' has over 1 billion Spotify streams."    ];
+      "They are an American rapper from Pompano Beach, Florida.",
+      "They are of Haitian descent and often reference this background in their story and music.",
+      "One of his most popular songs is a collaboration with A Boogie Wit Da Hoodie.",
+      "They have had legal troubles, including a federal prison sentence that was later commuted by a U.S. president.",
+      "Their stage name has a color in it."
+    ];
 
     const maxQuestions = 15;
     let questionsAsked = 0;
@@ -1241,7 +1242,7 @@
     let selectedQuestionElement = null;
     let selectedQuestionKey = null;
 
-    // Map each data-value to an answer for Sombr
+    // Map each data-value to an answer for Kodak Black
     const questionAnswers = {
       // General
       "Is this a male artist?": "Yes, they are a male artist.",
@@ -1251,13 +1252,13 @@
       "Are they over 40 years old?": "No, they are not over 40 years old.",
       "Are they over 50 years old?": "No, they are not over 50 years old.",
       "Did they debut before 2000?": "No, they did not debut before 2000.",
-      "Did they debut before 2010?": "No, they did not debut before 2010.",
-      "Did they debut before 2020?": "No, they started gaining attention after 2020.",
-      "Album release in last 2 years?": "Yes, they have released a project within the last couple of years.",
-      "Are they currently on tour?": "Yes, they have been performing shows recently.",
-      "Are they currently married?": "No, they are not publicly known to be married.",
-      "Were they ever divorced?": "No, they have never been publicly known to be divorced.",
-      "Do they identify as LGBTQ+?": "No, they are not mainly known for identifying as LGBTQ+.",
+      "Did they debut before 2010?": "No, they did not release widely known music before 2010.",
+      "Did they debut before 2020?": "Yes, they became widely known before 2020.",
+      "Album release in last 2 years?": "Yes, they have released an album in the last two years.",
+      "Are they currently on tour?": "No, they are not on a major world tour right now.",
+      "Are they currently married?": "No, they are not publicly known to be currently married.",
+      "Were they ever divorced?": "No, they have not been publicly known to be divorced.",
+      "Do they identify as LGBTQ+?": "No, they are not widely known for identifying as LGBTQ+.",
 
       // Geographic
       "Were they born in North America?": "Yes, they were born in North America.",
@@ -1270,50 +1271,50 @@
       "Were they born in Africa?": "No, they were not born in Africa.",
 
       // Background
-      "Are they of African descent?": "No, they are not known for being of African descent.",
-      "Are they of European descent?": "Yes, they are known for being of European descent.",
-      "Are they of Latin American descent?": "No, they are of Latin American descent.",
+      "Are they of African descent?": "Yes, they are of African descent.",
+      "Are they of European descent?": "No, they are not widely known to have European ancestry.",
+      "Are they of Latin American descent?": "No, they are not of Latin American descent.",
       "Are they of Asian descent?": "No, they are not of Asian descent.",
-      "Are they of mixed ethnicities?": "No, they are not widely described as being of mixed ethnicities.",
+      "Are they of mixed ethnicities?": "No, they are not known to be of mixed ethnicities.",
 
       // Music Style
-      "Different languages?": "No, their songs are performed in English.",
-      "Spanish music?": "No, they are not known for Spanish-language music.",
-      "Pop music?": "Yes, they have a strong pop influence in their songs.",
-      "Rap music?": "Yes, they incorporate rap elements into their tracks.",
+      "Different languages?": "No, they are not known for releasing songs in multiple languages.",
+      "Spanish music?": "No, they are not known for performing Spanish music.",
+      "Pop music?": "No, they are not primarily a pop artist.",
+      "Rap music?": "Yes, they are best known as a rap/trap artist.",
       "R&B music?": "No, they are not mainly an R&B artist.",
-      "Rock music?": "No, they are not primarily a rock artist.",
+      "Rock music?": "No, they are not a rock artist.",
       "Country music?": "No, they are not a country artist.",
       "Jazz music?": "No, they are not a jazz artist.",
-      "Party music?": "No, they are not known for producing party music.",
-      "Sad music?": "No, they are better known for energetic tracks than sad ones.",
+      "Party music?": "Yes, many of their songs work well as hyped or party tracks.",
+      "Sad music?": "Yes, they also have more emotional and introspective songs.",
 
       // Career / Popularity
       "Also an actor?": "No, they are not mainly known as an actor.",
-      "Disney or Nick?": "No, they did not rise to fame through Disney Channel or Nickelodeon.",
-      "Singing competition?": "No, they did not become famous from a TV singing competition.",
-      "Won a Grammy?": "No, they have not won a Grammy.",
-      "Super Bowl?": "No, they have never performed the Super Bowl halftime show.",
-      "Coachella?": "No, they have not performed at Coachella yet.",
-      "Song over one billion streams?": "Yes, they do have a song that has passed 1 Billion Spotify streams yet.",
-      "10M TikTok followers?": "No, they do not have more than 10M TikTok followers.",
-      "10M Instagram followers?": "No, they do not have more than 10M Instagram followers.",
-      "20M listeners?": "Yes, their monthly Spotify listeners are over 20M.",
-      "50M listeners?": "Yes, they do have more than 50M monthly Spotify listeners.",
-      "Ever in a band?": "No, they are best known as a solo artist.",
+      "Disney or Nick?": "No, they did not become famous through Disney Channel or Nickelodeon.",
+      "Singing competition?": "No, they did not come from a TV singing competition.",
+      "Won a Grammy?": "No, they have not won a Grammy Award.",
+      "Super Bowl?": "No, they have not performed the Super Bowl halftime show.",
+      "Coachella?": "No, they have not headlined Coachella.",
+      "Song over one billion streams?": "Yes, they are on at least one song that has surpassed one billion Spotify streams.",
+      "10M TikTok followers?": "No, their TikTok following is large but not over 10 million.",
+      "10M Instagram followers?": "Yes, they have more than 10 million Instagram followers.",
+      "20M listeners?": "Yes, they have more than 20 million monthly Spotify listeners.",
+      "50M listeners?": "No, their monthly Spotify listeners are below 50 million.",
+      "Ever in a band?": "No, they are primarily known as a solo artist rather than as part of a band.",
 
       // Name / Appearance
-      "Dark hair?": "Yes, they are generally seen with dark hair.",
+      "Dark hair?": "Yes, they are best known for having dark hair.",
       "Blond hair?": "No, they are not mainly known for having blond hair.",
-      "Over 5.5ft tall?": "Yes, they are over 5 1/2 feet tall.",
-      "Over 6ft tall?": "Yes, they are over 6 feet tall.",
-      "Tattoos?": "No, they do not have visible tattoos.",
+      "Over 5.5ft tall?": "No, they are around five and a half feet tall.",
+      "Over 6ft tall?": "No, they are not over 6 feet tall.",
+      "Tattoos?": "Yes, they have many visible tattoos.",
       "Glasses?": "No, they are not commonly known for wearing glasses.",
-      "Birth name?": "No, their stage name is different from their birth name.",
-      "One-word name?": "Yes, they go by a one-word stage name.",
-      "Two-word name?": "No, their stage name is not two words.",
-      "Common first name?": "No, their name is not a very common first name.",
-      "Name starts A–M?": "No, their name starts with a letter after M."
+      "Birth name?": "No, they perform under a stage name rather than their birth name.",
+      "One-word name?": "No, their main stage name is not a single word.",
+      "Two-word name?": "Yes, their main stage name uses two words.",
+      "Common first name?": "No, their stage first name is unusual rather than common.",
+      "Name starts A–M?": "Yes, their stage name starts with a letter between A and M."
     };
 
     // ==== ARTISTS LIST FOR AUTOCOMPLETE ====
@@ -1344,7 +1345,7 @@
       "Madonna", "A.R. Rahman", "JENNIE", "Kali Uchis", "Tiësto", "Anitta", "50 Cent", "Remi Wolf", "George Michael",
       "Bebe Rexha", "Ava Max", "Ne-Yo", "J. Cole", "Tyla", "Megan Thee Stallion",
       "Cris Mj", "A$AP Rocky", "James Arthur", "Ty Dolla $ign", "Alec Benjamin", "Swae Lee",
-      "Sombr"
+      "Kodak Black"
     ];
 
     // ==== DOM ELEMENTS ====
@@ -1618,9 +1619,12 @@
         return;
       }
 
-      // Correct answer: Sombr
+      // Correct answer: Kodak Black
       const correctVariations = [
-        'sombr'
+        'kodak black',
+        'bill kahan kapri',
+        'dieuson octave',
+        'kodak'
       ];
       const isCorrect = correctVariations.some(v => guess === v || guess.includes(v));
 
@@ -1675,7 +1679,7 @@
 
       navigator.clipboard.writeText(shareText)
         .then(() => {
-          alert("Score copied to clipboard! 📋\nPaste to share with a friend 🔥");
+          alert("Score copied to clipboard! 📋\\nPaste to share with a friend 🔥");
         })
         .catch(() => {
           alert("Couldn't copy automatically — try manually!");
@@ -1689,7 +1693,7 @@
 
       navigator.clipboard.writeText(shareText)
         .then(() => {
-          alert("Score copied to clipboard! 📋\nPaste to challenge a friend 🔥");
+          alert("Score copied to clipboard! 📋\\nPaste to challenge a friend 🔥");
         })
         .catch(() => {
           alert("Couldn't copy automatically — try manually!");
