@@ -616,21 +616,23 @@
       <div class="section">
         <h2>1. Mystery Singer</h2>
         <p>Who do you want your friends to guess?</p>
-
-        <label class="field-label" for="artistName">Singer name</label>
         <input type="text" id="artistName" placeholder="Ex: Taylor Swift, Bad Bunny, Drake">
-
-        <div style="margin-top:10px;">
-          <label class="field-label" for="acceptedAnswers">Alternate accepted answers (optional)</label>
-          <div class="field-help">Separated by commas. Ex: “T-Swift, Taylor A. Swift”.</div>
-          <input type="text" id="acceptedAnswers" placeholder="Nicknames, shortened versions, etc.">
+<br><br>
+        <label class="field-label" for="artistImageFile">Singer photo (optional)</label>
+        <div class="field-help">Pick a photo from your camera roll (or take one). If you skip, we’ll auto-use <code>../images/&lt;artist&gt;.jpg</code> when available.</div>
+        
+        <input
+          type="file"
+          id="artistImageFile"
+          accept="image/*"
+          capture="environment"
+        />
+        
+        <div id="imagePreviewWrap" style="margin-top:10px; display:none;">
+          <div class="field-help" style="margin-bottom:6px;">Preview:</div>
+          <img id="imagePreview" alt="Singer preview" style="max-width:180px;width:100%;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.12);object-fit:cover;">
         </div>
-
-        <div style="margin-top:10px;">
-          <label class="field-label" for="artistImageUrl">Singer image URL (optional)</label>
-          <div class="field-help">Use a direct image link (JPG/PNG). If empty, we’ll use a default image.</div>
-          <input type="url" id="artistImageUrl" placeholder="https://example.com/your-singer.jpg">
-        </div>
+        
       </div>
 
       <!-- HINTS -->
@@ -640,15 +642,15 @@
         <div class="hints-grid">
           <div class="hint-box-input">
             <label class="field-label" for="hint1">Hint 1</label>
-            <textarea id="hint1" placeholder="Ex: This artist helped pioneer emo rap."></textarea>
+            <textarea id="hint1" placeholder="Ex: This artist is from New York."></textarea>
           </div>
           <div class="hint-box-input">
             <label class="field-label" for="hint2">Hint 2</label>
-            <textarea id="hint2" placeholder="Ex: They were born in Pennsylvania in 1996."></textarea>
+            <textarea id="hint2" placeholder="Ex: They were recently engaged to a NFL player."></textarea>
           </div>
           <div class="hint-box-input">
             <label class="field-label" for="hint3">Hint 3</label>
-            <textarea id="hint3" placeholder="Ex: Known for heavily tattooed look."></textarea>
+            <textarea id="hint3" placeholder="Ex: We saw this artist in concert."></textarea>
           </div>
           <div class="hint-box-input">
             <label class="field-label" for="hint4">Hint 4 (optional)</label>
@@ -678,8 +680,7 @@
           </label>
         </div>
         <p class="ai-note">
-          ✅ Fix: AI answers are auto-rewritten to be <strong>gender-neutral</strong> and never include the artist’s name.
-          They’ll always start with <strong>Yes</strong> or <strong>No</strong> (ex: “Yes, they are over 30 years old.”).
+          ✅ AI can make mistakes. Check over answers before creating the link.
         </p>
 
         <button id="aiFillButton" class="ai-button" disabled>
@@ -751,6 +752,12 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
@@ -765,13 +772,27 @@
     const db  = getFirestore(app);
     const auth = getAuth(app);
 
+    const storage = getStorage(app);
+
     const welcomeEl    = document.getElementById("welcomeMessage");
     const dropdownMenu = document.getElementById("dropdownMenu");
     const coinDisplay  = document.getElementById("coinCount");
 
     const artistNameInput      = document.getElementById("artistName");
-    const acceptedAnswersInput = document.getElementById("acceptedAnswers");
-    const artistImageInput     = document.getElementById("artistImageUrl");
+const artistImageFileInput = document.getElementById("artistImageFile");
+const imagePreviewWrap = document.getElementById("imagePreviewWrap");
+const imagePreview = document.getElementById("imagePreview");
+
+artistImageFileInput.addEventListener("change", () => {
+  const file = artistImageFileInput.files?.[0];
+  if (!file) {
+    imagePreviewWrap.style.display = "none";
+    return;
+  }
+  const url = URL.createObjectURL(file);
+  imagePreview.src = url;
+  imagePreviewWrap.style.display = "block";
+});
 
     const hintInputs = [
       document.getElementById("hint1"),
@@ -867,6 +888,32 @@
       { key: "Common first name?", label: "Do they have a common first name?",           group: "Name & Appearance" },
       { key: "Name starts A–M?",   label: "Does their name start with a letter A–M?",    group: "Name & Appearance" }
     ];
+
+    function slugifyArtist(name) {
+  return (name || "")
+    .trim()
+    .toLowerCase()
+    .replace(/['’]/g, "")       // remove apostrophes
+    .replace(/[^a-z0-9]+/g, "-")// non-alnum -> dash
+    .replace(/^-+|-+$/g, "");   // trim dashes
+}
+
+function defaultArtistImagePath(artistName) {
+  const slug = slugifyArtist(artistName);
+  if (!slug) return "../images/default-singer.jpg";
+  return `../images/${slug}.jpg`;
+}
+
+async function uploadArtistImageAndGetUrl(file, artistName, creatorUid) {
+  const slug = slugifyArtist(artistName) || "unknown";
+  const safeUid = creatorUid || "anon";
+  const fileExt = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const filePath = `customChallengeImages/${safeUid}/${Date.now()}_${slug}.${fileExt}`;
+
+  const imageRef = ref(storage, filePath);
+  await uploadBytes(imageRef, file, { contentType: file.type || "image/jpeg" });
+  return await getDownloadURL(imageRef);
+}
 
     // map key -> label for clean sentence building
     const KEY_TO_LABEL = Object.fromEntries(QUESTION_BANK.map(q => [q.key, q.label]));
@@ -1125,7 +1172,6 @@
           else if (info.isYes === false && noRadio) noRadio.checked = true;
           else if (skipRadio) skipRadio.checked = true;
 
-          // 🔥 Fix: overwrite textarea with safe, gender-neutral, no-name sentence
           if (info.isYes === true || info.isYes === false) {
             row.querySelector('textarea').value = buildNeutralAnswer(KEY_TO_LABEL[key], info.isYes);
           } else {
@@ -1154,14 +1200,24 @@
         return;
       }
 
-      const acceptedRaw = acceptedAnswersInput.value.trim();
-      const acceptedAnswers = acceptedRaw
-        ? acceptedRaw.split(",").map(s => s.trim()).filter(Boolean)
-        : [];
+      let imageUrl = null;
 
-      if (!acceptedAnswers.includes(artistName)) acceptedAnswers.unshift(artistName);
+// 1) If user picked a file, upload it & use that URL
+const file = artistImageFileInput.files?.[0];
+if (file) {
+  try {
+    imageUrl = await uploadArtistImageAndGetUrl(file, artistName, currentUserUid);
+  } catch (e) {
+    console.error("Image upload failed:", e);
+    statusMessage.textContent = "Image upload failed. Try again or skip the photo.";
+    statusMessage.classList.add("error");
+    createButton.disabled = false;
+    createButton.textContent = "Create Challenge & Get Link";
+    return;
+  }
+}
 
-      const imageUrl = artistImageInput.value.trim() || null;
+// 2) If no upload, store null (customgame will compute ../images/<artist>.jpg)
 
       const hints = hintInputs.map(el => el.value.trim()).filter(Boolean);
       if (!hints.length) {
@@ -1178,7 +1234,6 @@
       try {
         const docRef = await addDoc(collection(db, "customChallenges"), {
           artistName,
-          acceptedAnswers,
           imageUrl,
           hints,
           questionAnswers,

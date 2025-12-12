@@ -1252,6 +1252,37 @@
         }
       });
     }
+    function slugifyArtist(name) {
+  return (name || "")
+    .trim()
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function defaultArtistImagePath(artistName) {
+  const slug = slugifyArtist(artistName);
+  if (!slug) return "../images/default-singer.jpg";
+  return `../images/${slug}.jpg`;
+}
+
+// Attempts artist image first, falls back to default-singer
+function setSingerPhotosWithFallback(artistName, explicitUrlOrNull) {
+  const fallback = "../images/default-singer.jpg";
+  const candidate = explicitUrlOrNull || defaultArtistImagePath(artistName);
+
+  singerPhotoEls.forEach(img => {
+    img.alt = artistName;
+
+    img.onerror = () => {
+      img.onerror = null;
+      img.src = fallback;
+    };
+
+    img.src = candidate;
+  });
+}
 
     // --- Game DOM ---
     const params          = new URLSearchParams(window.location.search);
@@ -1382,12 +1413,9 @@
         if (gameLabel) gameLabel.textContent = "Custom Challenge";
 
         singerNameEls.forEach(el => el.textContent = artistName);
-        if (imageUrl) {
-          singerPhotoEls.forEach(img => {
-            img.src = imageUrl;
-            img.alt = artistName;
-          });
-        }
+
+// Always set photos (either uploaded URL OR ../images/<artist>.jpg), with fallback
+setSingerPhotosWithFallback(artistName, imageUrl);
 
         updateProgress();
         updateHintBadge();
