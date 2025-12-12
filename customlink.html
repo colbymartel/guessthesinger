@@ -249,15 +249,7 @@
       box-shadow:0 0 0 2px rgba(59,123,191,0.15);
     }
 
-    .inline-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:center;
-    }
-
-    .inline-row > div { flex:1; }
-
+    /* Toggle group (answer mode) */
     .pill-toggle-group {
       display:flex;
       flex-wrap:wrap;
@@ -277,6 +269,7 @@
       background:#f7f9fc;
       color:#45566a;
       transition:all 0.15s ease;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.08);
     }
 
     .pill-toggle-group input { display:none; }
@@ -285,7 +278,8 @@
       background:#3b7bbf;
       color:#fff;
       border-color:#315f85;
-      box-shadow:0 3px 0 #315f85;
+      box-shadow: inset 0 2px 0 rgba(0,0,0,0.2);
+      transform: translateY(1px);
     }
 
     .pill-toggle-group span {
@@ -364,25 +358,58 @@
     }
 
     .question-options label {
-      font-size:0.8rem;
+      cursor:pointer;
       display:inline-flex;
       align-items:center;
-      gap:4px;
-      padding:4px 8px;
       border-radius:999px;
-      border:1px solid #cfd8e5;
-      cursor:pointer;
-      background:#f7f9fc;
-      color:#45566a;
     }
 
     .question-options input { display:none; }
+    .answer-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: center;
 
-    .question-options input:checked + span {
-      background:#3CB371;
-      border-color:#2e8b57;
-      color:#fff;
-    }
+  background: #e8f2ff;           /* light blue neutral */
+  border: 2px solid #c7dcf5;
+  color: #234d7d;
+
+  box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+  transition: all 0.15s ease;
+}
+/* YES selected */
+.question-options input[value="yes"]:checked + .answer-pill {
+  background: #4caf50;
+  border-color: #3e8e41;
+  color: #ffffff;
+  box-shadow: inset 0 3px 0 rgba(0,0,0,0.25);
+  transform: translateY(1px);
+}
+
+/* NO selected */
+.question-options input[value="no"]:checked + .answer-pill {
+  background: #e74c3c;
+  border-color: #c0392b;
+  color: #ffffff;
+  box-shadow: inset 0 3px 0 rgba(0,0,0,0.25);
+  transform: translateY(1px);
+}
+
+/* SKIP selected */
+.question-options input[value="skip"]:checked + .answer-pill {
+  background: #f1c40f;
+  border-color: #d4ac0d;
+  color: #4a3d00;
+  box-shadow: inset 0 3px 0 rgba(0,0,0,0.25);
+  transform: translateY(1px);
+}
+
 
     .question-custom {
       font-size:0.75rem;
@@ -529,11 +556,15 @@
 
     ::-webkit-scrollbar       { width: 7px; }
     ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb {
-      background: #b0c4de;
-      border-radius: 4px;
-    }
+    ::-webkit-scrollbar-thumb { background: #b0c4de; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background:#7b91b0; }
+
+    .question-options label:hover .answer-pill {
+  filter: brightness(0.97);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.18);
+}
+
   </style>
 </head>
 <body>
@@ -587,29 +618,25 @@
         <p>Who do you want your friends to guess?</p>
 
         <label class="field-label" for="artistName">Singer name</label>
-        <div class="field-help">This is the name your friend must guess. You can add alternate spellings next.</div>
-        <input type="text" id="artistName" placeholder="Ex: Lil Peep, Taylor Swift, Bad Bunny">
+        <input type="text" id="artistName" placeholder="Ex: Taylor Swift, Bad Bunny, Drake">
 
-        <div class="section" style="margin-top:10px;">
-          <label class="field-label" for="acceptedAnswers">Accepted answers (optional)</label>
-          <div class="field-help">
-            Comma-separated list of names we'll treat as correct (ex: "Lil Peep, Gustav Elijah Åhr").
-            If you leave this blank, we’ll just use the main name.
-          </div>
-          <input type="text" id="acceptedAnswers" placeholder="Optional: extra accepted names">
+        <div style="margin-top:10px;">
+          <label class="field-label" for="acceptedAnswers">Alternate accepted answers (optional)</label>
+          <div class="field-help">Separated by commas. Ex: “T-Swift, Taylor A. Swift”.</div>
+          <input type="text" id="acceptedAnswers" placeholder="Nicknames, shortened versions, etc.">
         </div>
 
-        <div class="section" style="margin-top:10px;">
-          <label class="field-label" for="artistImageUrl">Singer image URL</label>
-          <div class="field-help">Paste a link to an image you have rights to use (ex: from your own site or a hosted image).</div>
-          <input type="url" id="artistImageUrl" placeholder="https://example.com/my-singer-image.jpg">
+        <div style="margin-top:10px;">
+          <label class="field-label" for="artistImageUrl">Singer image URL (optional)</label>
+          <div class="field-help">Use a direct image link (JPG/PNG). If empty, we’ll use a default image.</div>
+          <input type="url" id="artistImageUrl" placeholder="https://example.com/your-singer.jpg">
         </div>
       </div>
 
       <!-- HINTS -->
       <div class="section">
         <h2>2. Hints</h2>
-        <p>These show up in the hint modal, just like Day 9.</p>
+        <p>These show up in the hint modal.</p>
         <div class="hints-grid">
           <div class="hint-box-input">
             <label class="field-label" for="hint1">Hint 1</label>
@@ -651,8 +678,8 @@
           </label>
         </div>
         <p class="ai-note">
-          AI mode will try to fill in “Yes / No” and short explanations based on the singer’s public info.
-          You can still edit anything after.
+          ✅ Fix: AI answers are auto-rewritten to be <strong>gender-neutral</strong> and never include the artist’s name.
+          They’ll always start with <strong>Yes</strong> or <strong>No</strong> (ex: “Yes, they are over 30 years old.”).
         </p>
 
         <button id="aiFillButton" class="ai-button" disabled>
@@ -670,15 +697,13 @@
           when your friend asks it.
         </p>
 
-        <div class="questions-wrapper" id="questionsContainer">
-          <!-- JS will inject grouped questions here -->
-        </div>
+        <div class="questions-wrapper" id="questionsContainer"></div>
       </div>
 
       <!-- SUBMIT -->
       <div class="section">
         <h2>5. Create your link</h2>
-        <p>We’ll save this challenge and give you a URL that opens a Day-9 style game with your singer.</p>
+        <p>We’ll save this challenge and give you a URL that opens a Day-style game with your singer.</p>
 
         <div class="submit-row">
           <button id="createChallengeButton" class="primary-btn">
@@ -724,17 +749,8 @@
   <!-- LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
@@ -776,9 +792,8 @@
     const copyLinkButton       = document.getElementById("copyLinkButton");
 
     let currentUserUid = null;
-    let currentCoins   = 0;
 
-    // ---- Question bank (keys must match your Day-9 game keys) ----
+    // ---- Question bank ----
     const QUESTION_BANK = [
       // General
       { key: "Is this a male artist?",           label: "Is this a male artist?",           group: "General" },
@@ -826,18 +841,18 @@
       { key: "Sad music?",           label: "Do they perform sad music?",                    group: "Music Style" },
 
       // Career / Popularity
-      { key: "Also an actor?",           label: "Are they also an actor?",                               group: "Career & Popularity" },
-      { key: "Disney or Nick?",         label: "Were they ever on Disney Channel or Nickelodeon?",      group: "Career & Popularity" },
+      { key: "Also an actor?",           label: "Are they also an actor?",                                group: "Career & Popularity" },
+      { key: "Disney or Nick?",         label: "Were they ever on Disney Channel or Nickelodeon?",       group: "Career & Popularity" },
       { key: "Singing competition?",    label: "Have they ever competed in a TV singing competition?",   group: "Career & Popularity" },
       { key: "Won a Grammy?",           label: "Have they ever won a Grammy?",                           group: "Career & Popularity" },
       { key: "Super Bowl?",             label: "Have they ever performed at a Super Bowl halftime show?",group: "Career & Popularity" },
-      { key: "Coachella?",              label: "Have they ever performed at Coachella?",                 group: "Career & Popularity" },
+      { key: "Coachella?",              label: "Have they ever performed at Coachella?",                group: "Career & Popularity" },
       { key: "Song over one billion streams?", label: "Do they have song(s) with over 1 Billion Spotify streams?", group: "Career & Popularity" },
-      { key: "10M TikTok followers?",   label: "Do they have more than 10M TikTok followers?",           group: "Career & Popularity" },
-      { key: "10M Instagram followers?",label: "Do they have more than 10M Instagram followers?",        group: "Career & Popularity" },
-      { key: "20M listeners?",          label: "Do they have more than 20M monthly Spotify listeners?",  group: "Career & Popularity" },
-      { key: "50M listeners?",          label: "Do they have more than 50M monthly Spotify listeners?",  group: "Career & Popularity" },
-      { key: "Ever in a band?",         label: "Are/were they ever in a band?",                          group: "Career & Popularity" },
+      { key: "10M TikTok followers?",   label: "Do they have more than 10M TikTok followers?",          group: "Career & Popularity" },
+      { key: "10M Instagram followers?",label: "Do they have more than 10M Instagram followers?",       group: "Career & Popularity" },
+      { key: "20M listeners?",          label: "Do they have more than 20M monthly Spotify listeners?", group: "Career & Popularity" },
+      { key: "50M listeners?",          label: "Do they have more than 50M monthly Spotify listeners?", group: "Career & Popularity" },
+      { key: "Ever in a band?",         label: "Are/were they ever in a band?",                         group: "Career & Popularity" },
 
       // Name & Appearance
       { key: "Dark hair?",         label: "Do they have black or brown hair?",           group: "Name & Appearance" },
@@ -853,74 +868,130 @@
       { key: "Name starts A–M?",   label: "Does their name start with a letter A–M?",    group: "Name & Appearance" }
     ];
 
+    // map key -> label for clean sentence building
+    const KEY_TO_LABEL = Object.fromEntries(QUESTION_BANK.map(q => [q.key, q.label]));
+
+    // --- Gender-neutral, no-name, always "Yes/No, they ..." sentence builder ---
+    function buildNeutralAnswer(label, isYes) {
+      if (isYes === null || isYes === undefined) return "";
+
+      const q = (label || "").trim();
+
+      // Normalize: strip trailing "?"
+      const core = q.endsWith("?") ? q.slice(0, -1) : q;
+
+      // Helper: ensures ending punctuation.
+      const end = (s) => (/[.!]$/.test(s.trim()) ? s.trim() : (s.trim() + "."));
+
+      // Patterns (most of your bank is covered here)
+      if (/^Is this a /i.test(core)) {
+        const rest = core.replace(/^Is this a /i, "a ");
+        return isYes ? end(`Yes, they are ${rest}`) : end(`No, they are not ${rest}`);
+      }
+
+      if (/^Are they /i.test(core)) {
+        const rest = core.replace(/^Are they /i, "");
+        // rest might already include "over 30 years old" etc.
+        return isYes ? end(`Yes, they are ${rest}`) : end(`No, they are not ${rest}`);
+      }
+
+      if (/^Were they /i.test(core)) {
+        const rest = core.replace(/^Were they /i, "");
+        return isYes ? end(`Yes, they were ${rest}`) : end(`No, they were not ${rest}`);
+      }
+
+      if (/^Do they /i.test(core)) {
+        const rest = core.replace(/^Do they /i, "");
+        return isYes ? end(`Yes, they do ${rest}`) : end(`No, they do not ${rest}`);
+      }
+
+      if (/^Does their /i.test(core)) {
+        const rest = core.replace(/^Does their /i, "their ");
+        return isYes ? end(`Yes, ${rest}`) : end(`No, ${rest.replace(/^their /i, "their ")} not`);
+      }
+
+      if (/^Did they /i.test(core)) {
+        const rest = core.replace(/^Did they /i, "");
+        return isYes ? end(`Yes, they did ${rest}`) : end(`No, they did not ${rest}`);
+      }
+
+      if (/^Have they /i.test(core)) {
+        const rest = core.replace(/^Have they /i, "");
+        return isYes ? end(`Yes, they have ${rest}`) : end(`No, they have not ${rest}`);
+      }
+
+      // fallback (safe and neutral)
+      return isYes ? end("Yes, they do.") : end("No, they do not.");
+    }
+
     // Render question UI
     function renderQuestions() {
-  const groups = {};
-  QUESTION_BANK.forEach(q => {
-    if (!groups[q.group]) groups[q.group] = [];
-    groups[q.group].push(q);
-  });
-
-  questionsContainer.innerHTML = "";
-  let questionIndex = 0; // unique counter for radio name attributes
-
-  Object.keys(groups).forEach(groupName => {
-    const title = document.createElement("div");
-    title.className = "question-group-title";
-    title.textContent = groupName + " Questions";
-    questionsContainer.appendChild(title);
-
-    groups[groupName].forEach(q => {
-      const row = document.createElement("div");
-      row.className = "question-row";
-      row.dataset.key = q.key;
-
-      const text = document.createElement("div");
-      text.className = "question-text";
-      text.textContent = q.label;
-      row.appendChild(text);
-
-      const opts = document.createElement("div");
-      opts.className = "question-options";
-
-      ["yes", "no", "skip"].forEach(val => {
-        const optLabel = document.createElement("label");
-        const input = document.createElement("input");
-        input.type = "radio";
-        // ✅ no more btoa – just a simple, unique group name
-        input.name = "q_" + questionIndex;
-        input.value = val;
-
-        const span = document.createElement("span");
-        span.textContent = val === "yes" ? "Yes" : (val === "no" ? "No" : "Skip");
-
-        optLabel.appendChild(input);
-        optLabel.appendChild(span);
-        opts.appendChild(optLabel);
+      const groups = {};
+      QUESTION_BANK.forEach(q => {
+        if (!groups[q.group]) groups[q.group] = [];
+        groups[q.group].push(q);
       });
 
-      row.appendChild(opts);
+      questionsContainer.innerHTML = "";
+      let questionIndex = 0;
 
-      const customLabel = document.createElement("div");
-      customLabel.className = "question-custom";
-      customLabel.textContent = "Optional custom answer (otherwise we use a simple Yes/No sentence):";
-      row.appendChild(customLabel);
+      Object.keys(groups).forEach(groupName => {
+        const title = document.createElement("div");
+        title.className = "question-group-title";
+        title.textContent = groupName + " Questions";
+        questionsContainer.appendChild(title);
 
-      const ta = document.createElement("textarea");
-      ta.placeholder = "Ex: Yes, they’re a male artist who first blew up on TikTok.";
-      ta.dataset.key = q.key;
-      row.appendChild(ta);
+        groups[groupName].forEach(q => {
+          const row = document.createElement("div");
+          row.className = "question-row";
+          row.dataset.key = q.key;
 
-      questionsContainer.appendChild(row);
+          const text = document.createElement("div");
+          text.className = "question-text";
+          text.textContent = q.label;
+          row.appendChild(text);
 
-      questionIndex++; // increment after each question row
-    });
-  });
-}
+          const opts = document.createElement("div");
+          opts.className = "question-options";
+
+          ["yes", "no", "skip"].forEach(val => {
+            const optLabel = document.createElement("label");
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = "q_" + questionIndex;
+            input.value = val;
+
+            const span = document.createElement("span");
+            span.textContent = val === "yes" ? "Yes" : (val === "no" ? "No" : "Skip");
+            span.className = "answer-pill answer-" + (val === "yes" ? "yes" : val === "no" ? "no" : "skip");
+
+            optLabel.appendChild(input);
+            optLabel.appendChild(span);
+            opts.appendChild(optLabel);
+          });
+
+          row.appendChild(opts);
+
+          const customLabel = document.createElement("div");
+          customLabel.className = "question-custom";
+          customLabel.textContent = "Optional custom answer (otherwise we auto-generate: “Yes/No, they …”):";
+          row.appendChild(customLabel);
+
+          const ta = document.createElement("textarea");
+          ta.placeholder = "Ex: Yes, they are over 30 years old.";
+          ta.dataset.key = q.key;
+          row.appendChild(ta);
+
+          questionsContainer.appendChild(row);
+
+          questionIndex++;
+        });
+      });
+    }
 
     renderQuestions();
 
-    // --- Auth handling (for coins / name, you can extend like your other pages) ---
+    // --- Auth handling ---
     function setAnonymousUI() {
       if (welcomeEl) welcomeEl.textContent = "Welcome, Anonymous";
       if (coinDisplay) coinDisplay.textContent = "0";
@@ -931,7 +1002,6 @@
         `;
       }
       currentUserUid = null;
-      currentCoins = 0;
     }
 
     onAuthStateChanged(auth, async (user) => {
@@ -941,7 +1011,6 @@
         return;
       }
 
-      // You can optionally fetch coins/username from Firestore like on other pages.
       currentUserUid = user.uid;
       welcomeEl.textContent = `Welcome, ${user.displayName || "Player"}`;
 
@@ -985,6 +1054,7 @@
     function collectQuestionAnswers() {
       const rows = questionsContainer.querySelectorAll(".question-row");
       const answers = {};
+
       rows.forEach(row => {
         const key = row.dataset.key;
         const selected = row.querySelector('input[type="radio"]:checked');
@@ -996,67 +1066,74 @@
           else if (selected.value === "no") isYes = false;
         }
 
-        let base = "";
+        // Default: auto-generate gender-neutral sentence that starts with Yes/No
+        let answerText = "";
         if (custom) {
-          base = custom;
-        } else if (isYes === true) {
-          base = "Yes.";
-        } else if (isYes === false) {
-          base = "No.";
+          answerText = custom; // user override
+        } else if (isYes === true || isYes === false) {
+          answerText = buildNeutralAnswer(KEY_TO_LABEL[key], isYes);
         } else {
-          base = "";
+          answerText = ""; // skip or unanswered
         }
 
-        answers[key] = {
-          isYes,
-          answerText: base
-        };
+        answers[key] = { isYes, answerText };
       });
+
       return answers;
     }
 
-    // --- AI fill (stub – you implement the backend) ---
+    // --- AI fill: still calls your endpoint, but we DO NOT use its wording.
+    // We only use info.isYes and we generate safe, gender-neutral text that never includes the artist name.
     aiFillButton.addEventListener("click", async () => {
       const artistName = artistNameInput.value.trim();
       if (!artistName) {
         aiStatus.textContent = "Add a singer name first so AI knows who to use.";
         return;
       }
+
       aiStatus.textContent = "Asking AI for suggestions...";
       aiFillButton.disabled = true;
 
       try {
-        // EXPECTED backend response:
-        // { answers: { [questionKey]: { isYes: true/false/null, answerText: "..." } } }
-        const res = await fetch("/api/generate-answers", {
+        const res = await fetch("https://generateanswers-csb4zmthiq-uc.a.run.app", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ artistName, questionKeys: QUESTION_BANK.map(q => q.key) })
         });
 
-        if (!res.ok) throw new Error("AI endpoint error");
-        const data = await res.json();
+        const rawText = await res.text();
+        if (!res.ok) {
+          console.error("AI endpoint failed:", res.status, rawText);
+          aiStatus.textContent = `AI failed (${res.status}). Check console for details.`;
+          throw new Error(rawText);
+        }
+
+        const data = JSON.parse(rawText);
         if (!data || !data.answers) throw new Error("No answers returned");
 
-        // apply into the form
         const rows = questionsContainer.querySelectorAll(".question-row");
         rows.forEach(row => {
           const key = row.dataset.key;
           const info = data.answers[key];
           if (!info) return;
+
           const yesRadio  = row.querySelector('input[value="yes"]');
           const noRadio   = row.querySelector('input[value="no"]');
           const skipRadio = row.querySelector('input[value="skip"]');
+
           if (info.isYes === true && yesRadio) yesRadio.checked = true;
           else if (info.isYes === false && noRadio) noRadio.checked = true;
           else if (skipRadio) skipRadio.checked = true;
 
-          if (info.answerText) {
-            row.querySelector('textarea').value = info.answerText;
+          // 🔥 Fix: overwrite textarea with safe, gender-neutral, no-name sentence
+          if (info.isYes === true || info.isYes === false) {
+            row.querySelector('textarea').value = buildNeutralAnswer(KEY_TO_LABEL[key], info.isYes);
+          } else {
+            row.querySelector('textarea').value = "";
           }
         });
 
-        aiStatus.textContent = "AI suggestions applied. Feel free to tweak anything.";
+        aiStatus.textContent = "AI suggestions applied (gender-neutral + no artist name).";
       } catch (err) {
         console.error(err);
         aiStatus.textContent = "AI failed – you can still fill answers manually.";
@@ -1081,16 +1158,12 @@
       const acceptedAnswers = acceptedRaw
         ? acceptedRaw.split(",").map(s => s.trim()).filter(Boolean)
         : [];
-      if (!acceptedAnswers.includes(artistName)) {
-        acceptedAnswers.unshift(artistName);
-      }
+
+      if (!acceptedAnswers.includes(artistName)) acceptedAnswers.unshift(artistName);
 
       const imageUrl = artistImageInput.value.trim() || null;
 
-      const hints = hintInputs
-        .map(el => el.value.trim())
-        .filter(Boolean);
-
+      const hints = hintInputs.map(el => el.value.trim()).filter(Boolean);
       if (!hints.length) {
         statusMessage.textContent = "Please add at least one hint.";
         statusMessage.classList.add("error");
