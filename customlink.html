@@ -1179,7 +1179,7 @@ async function uploadArtistImageAndGetUrl(file, artistName, creatorUid) {
           }
         });
 
-        aiStatus.textContent = "AI suggestions applied (gender-neutral + no artist name).";
+        aiStatus.textContent = "AI suggestions applied.";
       } catch (err) {
         console.error(err);
         aiStatus.textContent = "AI failed – you can still fill answers manually.";
