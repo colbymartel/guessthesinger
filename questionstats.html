@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Question Usage Stats</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Poppins, Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      color: #1e2b38;
+      padding: 24px 16px 60px;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    .card {
+      background: #fff;
+      border: 2px solid #4682b4;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    h1 { margin: 0 0 6px; font-size: 1.5rem; color: #234d7d; }
+    .sub { margin: 0 0 14px; color: #516274; font-size: 0.95rem; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .pill {
+      background: #f0f8ff;
+      border-left: 4px solid #4682b4;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #35556f;
+      font-size: 0.9rem;
+    }
+    button {
+      background: #4682b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 0 #315f85;
+    }
+    button:active { transform: translateY(2px); box-shadow: 0 2px 0 #315f85; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #eef2f6;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th {
+      background: #1e2b38;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.3px;
+    }
+    tr:hover td { background: #f6fbff; }
+    .rank { width: 64px; font-weight: 700; color: #234d7d; }
+    .count { width: 110px; font-weight: 700; }
+    .muted { color: #718096; font-size: 0.85rem; }
+    .loading { padding: 16px; color: #516274; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Question Usage</h1>
+      <p class="sub">Ranks the most-used questions across all games.</p>
+
+      <div class="topbar">
+        <div class="pill" id="lastRefresh">Last refresh: —</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button id="refreshBtn">Refresh</button>
+        </div>
+      </div>
+
+      <div id="status" class="loading">Loading…</div>
+
+      <div style="overflow:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th class="rank">Rank</th>
+              <th>Question</th>
+              <th class="count">Uses</th>
+              <th>Last Used</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import {
+      getFirestore, collection, getDocs, query, orderBy,
+      doc, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const rowsEl = document.getElementById("rows");
+    const statusEl = document.getElementById("status");
+    const lastRefreshEl = document.getElementById("lastRefresh");
+    const refreshBtn = document.getElementById("refreshBtn");
+
+    function formatTS(ts) {
+      if (!ts || !ts.toDate) return "—";
+      const d = ts.toDate();
+      return d.toLocaleString();
+    }
+
+    async function loadStats() {
+      statusEl.textContent = "Loading…";
+      rowsEl.innerHTML = "";
+
+      try {
+        const q = query(collection(db, "questionUsage"), orderBy("totalCount", "desc"));
+        const snap = await getDocs(q);
+
+        let i = 0;
+        snap.forEach(docSnap => {
+          i++;
+          const data = docSnap.data();
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="rank">#${i}</td>
+            <td>
+              <div style="font-weight:700;">${data.questionKey || docSnap.id}</div>
+              <div class="muted">Last game: ${data.lastGameNumber ?? "—"}</div>
+            </td>
+            <td class="count">${data.totalCount ?? 0}</td>
+            <td>${formatTS(data.lastUsedAt)}</td>
+          `;
+          rowsEl.appendChild(tr);
+        });
+
+        statusEl.textContent = i ? "" : "No data yet — play a game and ask a question!";
+        lastRefreshEl.textContent = `Last refresh: ${new Date().toLocaleString()}`;
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Error loading stats (check Firestore rules / console).";
+      }
+    }
+
+    refreshBtn.addEventListener("click", loadStats);
+
+    // ✅ Refresh whenever someone wins (meta/latestWin updated by game page)
+    const latestWinRef = doc(db, "meta", "latestWin");
+    onSnapshot(latestWinRef, () => {
+      loadStats();
+    });
+
+    // Initial load
+    loadStats();
+  </script>
+</body>
+</html>
