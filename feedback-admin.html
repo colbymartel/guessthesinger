@@ -2,42 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Feedback Viewer - Guess The Singer</title>
+  <title>Feedback Viewer – Guess The Singer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
   <style>
     body {
       font-family: 'Poppins', Arial, sans-serif;
       background: #f4f7fb;
       margin: 0;
-      padding-bottom: 70px;
+      padding-bottom: 80px;
     }
 
     header {
       background: linear-gradient(135deg, #3b7bbf, #234d7d);
       padding: 20px;
-      color: #fff;
+      color: white;
       text-align: center;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     h1 { margin: 0; font-size: 1.6rem; }
-    .main { max-width: 1200px; margin: 20px auto; padding: 0 16px 40px; }
 
-    .info {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 12px;
+    .main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    select {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #d7e2ef;
+      font-weight: 600;
+      font-family: inherit;
+    }
+
+    .reload-btn {
+      border-radius: 999px;
+      border: none;
+      background-color: #4682b4;
+      box-shadow: 0px 3px 0px #315f85;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: #fff;
-      border-radius: 12px;
+      background: white;
+      border-radius: 14px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
@@ -51,252 +89,239 @@
 
     th {
       background: #234d7d;
-      color: #fff;
-      text-align: left;
+      color: white;
       position: sticky;
       top: 0;
-      z-index: 1;
+      z-index: 2;
     }
 
-    tr:last-child td { border-bottom: none; }
+    .th-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .copy-btn {
+      border-radius: 999px;
+      border: none;
+      background: #1e2b38;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     .tag {
       display: inline-block;
-      padding: 2px 8px;
+      padding: 3px 9px;
       border-radius: 999px;
       font-size: 0.75rem;
-      font-weight: 500;
-      color: #fff;
+      font-weight: 600;
+      color: white;
     }
 
     .tag-yes { background: #27ae60; }
-    .tag-no  { background: #c0392b; }
+    .tag-no { background: #c0392b; }
     .tag-maybe { background: #7f8c8d; }
 
-    .small  { font-size: 0.75rem; color: #777; }
-
-    .loader { margin-top: 20px; text-align: center; font-size: 0.9rem; }
-    .error  { color: #e74c3c; margin-top: 16px; text-align: center; }
-
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .reload-btn {
-      border-radius: 999px;
-      border: none;
-      background-color: #4682b4;
-      box-shadow: 0px 3px 0px 0px #315f85;
-      color: #ffffff;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 8px 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .small {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 4px;
     }
 
     .delete-btn {
       border-radius: 999px;
       border: none;
-      background-color: #e74c3c;
-      box-shadow: 0px 2px 0px 0px #c0392b;
-      color: #ffffff;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
+      background: #e74c3c;
+      color: white;
       padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
     }
 
-    .delete-btn i { font-size: 0.8rem; }
+    .loader, .error {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: 500;
+    }
 
-    .bottom-nav {
+    .error { color: #e74c3c; }
+
+    footer {
       position: fixed;
       bottom: 0;
       width: 100%;
       background: #1e2b38;
       display: flex;
       justify-content: space-around;
-      align-items: center;
-      padding: 8px 0;
-      z-index: 999;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      padding: 10px 0;
+      color: white;
     }
 
-    .bottom-nav .nav-item {
+    footer a {
       color: white;
-      text-align: center;
       text-decoration: none;
       font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
+      text-align: center;
     }
 
-    .bottom-nav .nav-item:hover { color: #ffcb05; }
+    footer a:hover { color: #ffcb05; }
   </style>
 </head>
+
 <body>
-<header><h1>Daily Feedback Viewer</h1></header>
+
+<header>
+  <h1>Daily Feedback Viewer</h1>
+</header>
 
 <div class="main">
+
   <div class="top-bar">
-    <p class="info">Showing the latest feedback from <code>feedbackEntries</code>.</p>
-    <button id="reloadButton" class="reload-btn"><i class="fas fa-rotate-right"></i> Reload</button>
+    <div class="controls">
+      <strong>Email Updates:</strong>
+      <select id="emailFilter">
+        <option value="all">All</option>
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+      <span id="resultCount" class="small"></span>
+    </div>
+
+    <button id="reloadButton" class="reload-btn">
+      <i class="fas fa-rotate-right"></i> Reload
+    </button>
   </div>
 
-  <div id="loader" class="loader">Checking admin access...</div>
+  <div id="loader" class="loader">Checking admin access…</div>
   <div id="error" class="error" style="display:none;"></div>
   <div id="feedbackContainer"></div>
+
 </div>
 
-<footer class="bottom-nav">
-  <a href="/games.html" class="nav-item"><i class="fas fa-gamepad"></i><span>Games</span></a>
-  <a href="/rewards.html" class="nav-item"><i class="fas fa-gift"></i><span>Rewards</span></a>
-  <a href="/profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
+<footer>
+  <a href="/games.html"><i class="fas fa-gamepad"></i><br>Games</a>
+  <a href="/rewards.html"><i class="fas fa-gift"></i><br>Rewards</a>
+  <a href="/profile.html"><i class="fas fa-user"></i><br>Profile</a>
 </footer>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import {
-    getFirestore,
-    collection,
-    getDocs,
-    query,
-    orderBy,
-    limit,
-    doc,
-    deleteDoc
+    getFirestore, collection, getDocs, query,
+    orderBy, limit, deleteDoc, doc
   } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-  import {
-    getAuth,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
   const app = initializeApp({
     apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
     authDomain: "guessthesinger10.firebaseapp.com",
-    projectId: "guessthesinger10",
+    projectId: "guessthesinger10"
   });
 
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  function formatMultiline(text) {
-    return (text || "").replace(/\n/g, "<br>");
-  }
+  let lastSnapshot = null;
 
-  function attachDeleteHandlers() {
-    document.querySelectorAll(".delete-btn").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        const id = btn.dataset.id;
-        if (!id) return;
-        if (!confirm("Delete this feedback permanently?")) return;
-        await deleteDoc(doc(db, "feedbackEntries", id));
-        loadFeedback();
-      });
-    });
-  }
+  function formatMultiline(t=""){ return t.replace(/\n/g,"<br>"); }
 
-  function renderTable(snapshot) {
-    let html = `
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Guessed?</th>
-            <th>Like / Dislike</th>
-            <th>Heard From</th>
-            <th>Future Artists</th>
-            <th>Email Updates</th>
-            <th>User</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
+  window.copyColumn = function(key){
+    const cells = [...document.querySelectorAll(`td[data-key="${key}"]`)];
+    const values = cells.map(c => c.dataset.raw).filter(Boolean);
+    navigator.clipboard.writeText(values.join("\n"));
+  };
 
-    snapshot.forEach(docSnap => {
-      const d = docSnap.data();
-
-      let dateStr = "-";
-      if (d.timestamp?.toDate) {
-        const t = d.timestamp.toDate();
-        dateStr = t.toLocaleDateString() + " " + t.toLocaleTimeString();
-      }
-
-      // Tags
-      const guessed = d.guessedCorrectly === true ? "Yes" :
-                      d.guessedCorrectly === false ? "No" : "-";
-      const guessedClass = d.guessedCorrectly === true ? "tag-yes" :
-                           d.guessedCorrectly === false ? "tag-no" : "tag-maybe";
-
-      let updates = "-";
-      let updatesClass = "tag-maybe";
-      if (d.wantsEmailUpdates === true) { updates="Yes"; updatesClass="tag-yes"; }
-      if (d.wantsEmailUpdates === false) { updates="No"; updatesClass="tag-no"; }
-
-      html += `
-        <tr>
-          <td><div>${dateStr}</div><div class="small">${docSnap.id}</div></td>
-          <td><span class="tag ${guessedClass}">${guessed}</span></td>
-          <td>${formatMultiline(d.feedbackText || "")}</td>
-          <td>${formatMultiline(d.referralSource || "")}</td>
-          <td>${formatMultiline(d.artistIdeas || "")}</td>
-          <td><span class="tag ${updatesClass}">${updates}</span></td>
-          <td class="small">${d.email || d.uid || "Unknown"}</td>
-          <td><button class="delete-btn" data-id="${docSnap.id}"><i class="fas fa-trash-alt"></i></button></td>
-        </tr>
-      `;
-    });
-
-    html += `</tbody></table>`;
-    document.getElementById("feedbackContainer").innerHTML = html;
-    attachDeleteHandlers();
-  }
-
-  async function loadFeedback() {
-    const loader = document.getElementById("loader");
-    loader.textContent = "Loading feedback...";
-    loader.style.display = "block";
+  async function loadFeedback(){
+    document.getElementById("loader").textContent = "Loading feedback...";
     document.getElementById("feedbackContainer").innerHTML = "";
 
-    try {
-      const snapshot = await getDocs(
-        query(collection(db, "feedbackEntries"), orderBy("timestamp","desc"), limit(300))
-      );
-      loader.style.display = "none";
-      if (!snapshot.empty) renderTable(snapshot);
-      else loader.textContent = "No feedback yet!";
-    } catch (err) {
-      console.error(err);
-      loader.style.display = "none";
-      document.getElementById("error").style.display="block";
-    }
+    const snap = await getDocs(
+      query(collection(db,"feedbackEntries"), orderBy("timestamp","desc"), limit(300))
+    );
+    lastSnapshot = snap;
+    renderTable();
   }
 
-  // Admin-only access
-  onAuthStateChanged(auth, (user) => {
-    if (user?.email === "colbyma23@gmail.com") {
+  function renderTable(){
+    const filter = document.getElementById("emailFilter").value;
+
+    let docs = lastSnapshot.docs.filter(d=>{
+      const v = d.data().wantsEmailUpdates;
+      if(filter==="yes") return v===true;
+      if(filter==="no") return v===false;
+      return true;
+    });
+
+    document.getElementById("resultCount").textContent = `${docs.length} results`;
+
+    let html = `
+    <table>
+      <thead>
+        <tr>
+          <th><div class="th-wrap">Date <button class="copy-btn" onclick="copyColumn('date')">Copy</button></div></th>
+          <th><div class="th-wrap">Guessed <button class="copy-btn" onclick="copyColumn('guessed')">Copy</button></div></th>
+          <th><div class="th-wrap">Feedback <button class="copy-btn" onclick="copyColumn('feedback')">Copy</button></div></th>
+          <th><div class="th-wrap">Referral <button class="copy-btn" onclick="copyColumn('referral')">Copy</button></div></th>
+          <th><div class="th-wrap">Artists <button class="copy-btn" onclick="copyColumn('artists')">Copy</button></div></th>
+          <th><div class="th-wrap">Email Opt-In <button class="copy-btn" onclick="copyColumn('emailOpt')">Copy</button></div></th>
+          <th><div class="th-wrap">User Email <button class="copy-btn" onclick="copyColumn('userEmail')">Copy</button></div></th>
+          <th>Delete</th>
+        </tr>
+      </thead><tbody>
+    `;
+
+    docs.forEach(ds=>{
+      const d = ds.data();
+      const date = d.timestamp?.toDate?.().toLocaleString() || "-";
+      const guessed = d.guessedCorrectly===true?"Yes":d.guessedCorrectly===false?"No":"-";
+      const guessedClass = guessed==="Yes"?"tag-yes":guessed==="No"?"tag-no":"tag-maybe";
+      const opt = d.wantsEmailUpdates===true?"Yes":d.wantsEmailUpdates===false?"No":"-";
+      const optClass = opt==="Yes"?"tag-yes":opt==="No"?"tag-no":"tag-maybe";
+      const userEmail = d.email || d.uid || "Unknown";
+
+      html += `
+      <tr>
+        <td data-key="date" data-raw="${date}">${date}</td>
+        <td data-key="guessed" data-raw="${guessed}"><span class="tag ${guessedClass}">${guessed}</span></td>
+        <td data-key="feedback" data-raw="${d.feedbackText||""}">${formatMultiline(d.feedbackText||"")}</td>
+        <td data-key="referral" data-raw="${d.referralSource||""}">${formatMultiline(d.referralSource||"")}</td>
+        <td data-key="artists" data-raw="${d.artistIdeas||""}">${formatMultiline(d.artistIdeas||"")}</td>
+        <td data-key="emailOpt" data-raw="${opt}"><span class="tag ${optClass}">${opt}</span></td>
+        <td data-key="userEmail" data-raw="${userEmail}" class="small">${userEmail}</td>
+        <td><button class="delete-btn" onclick="deleteEntry('${ds.id}')"><i class="fas fa-trash"></i></button></td>
+      </tr>`;
+    });
+
+    html += "</tbody></table>";
+    document.getElementById("loader").style.display="none";
+    document.getElementById("feedbackContainer").innerHTML = html;
+  }
+
+  window.deleteEntry = async function(id){
+    if(confirm("Delete permanently?")){
+      await deleteDoc(doc(db,"feedbackEntries",id));
       loadFeedback();
-    } else {
+    }
+  };
+
+  onAuthStateChanged(auth,user=>{
+    if(user?.email==="colbyma23@gmail.com") loadFeedback();
+    else{
       document.getElementById("loader").style.display="none";
-      document.getElementById("error").textContent="Admin only.";
       document.getElementById("error").style.display="block";
+      document.getElementById("error").textContent="Admin only.";
     }
   });
 
-  document.getElementById("reloadButton").addEventListener("click", loadFeedback);
+  document.getElementById("reloadButton").onclick = loadFeedback;
+  document.getElementById("emailFilter").onchange = renderTable;
 </script>
 
 </body>
