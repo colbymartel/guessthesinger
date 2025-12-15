@@ -114,7 +114,7 @@
       getFirestore, collection, getDocs, query, orderBy,
       doc, onSnapshot
     } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-
+  
     const firebaseConfig = {
       apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
       authDomain: "guessthesinger10.firebaseapp.com",
@@ -123,38 +123,152 @@
       messagingSenderId: "97201023235",
       appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
-
+  
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
+  
     const rowsEl = document.getElementById("rows");
     const statusEl = document.getElementById("status");
     const lastRefreshEl = document.getElementById("lastRefresh");
     const refreshBtn = document.getElementById("refreshBtn");
-
+  
+    // ✅ Must match your game keys EXACTLY (these are the keys you log)
+    const QUESTION_BANK = [
+      // General
+      "Is this a male artist?",
+      "Is this a female artist?",
+      "Are they still alive?",
+      "Are they over 30 years old?",
+      "Are they over 40 years old?",
+      "Are they over 50 years old?",
+      "Did they debut before 2000?",
+      "Did they debut before 2010?",
+      "Did they debut before 2020?",
+      "Album release in last 2 years?",
+      "Are they currently on tour?",
+      "Are they currently married?",
+      "Were they ever divorced?",
+      "Do they identify as LGBTQ+?",
+  
+      // Geographic
+      "Were they born in North America?",
+      "Were they born in the United States?",
+      "Were they born in Canada?",
+      "Were they born in Europe?",
+      "Were they born in Asia?",
+      "Were they born in South America?",
+      "Were they born in Australia?",
+      "Were they born in Africa?",
+  
+      // Background
+      "Are they of African descent?",
+      "Are they of European descent?",
+      "Are they of Latin American descent?",
+      "Are they of Asian descent?",
+      "Are they of mixed ethnicities?",
+  
+      // Music Style
+      "Different languages?",
+      "Spanish music?",
+      "Pop music?",
+      "Rap music?",
+      "R&B music?",
+      "Rock music?",
+      "Country music?",
+      "Jazz music?",
+      "Party music?",
+      "Sad music?",
+  
+      // Career / Popularity
+      "Also an actor?",
+      "Disney or Nick?",
+      "Singing competition?",
+      "Won a Grammy?",
+      "Super Bowl?",
+      "Coachella?",
+      "Song over one billion streams?",
+      "10M TikTok followers?",
+      "10M Instagram followers?",
+      "20M listeners?",
+      "50M listeners?",
+      "Ever in a band?",
+  
+      // Name & Appearance
+      "Dark hair?",
+      "Blond hair?",
+      "Over 5.5ft tall?",
+      "Over 6ft tall?",
+      "Tattoos?",
+      "Glasses?",
+      "Birth name?",
+      "One-word name?",
+      "Two-word name?",
+      "Common first name?",
+      "Name starts A–M?"
+    ];
+  
+    function sanitizeId(str) {
+      return (str || "")
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/[^a-z0-9_]/g, "")
+        .slice(0, 120);
+    }
+  
     function formatTS(ts) {
       if (!ts || !ts.toDate) return "—";
-      const d = ts.toDate();
-      return d.toLocaleString();
+      return ts.toDate().toLocaleString();
     }
-
+  
     async function loadStats() {
       statusEl.textContent = "Loading…";
       rowsEl.innerHTML = "";
-
+  
       try {
-        const q = query(collection(db, "questionUsage"), orderBy("totalCount", "desc"));
-        const snap = await getDocs(q);
-
-        let i = 0;
+        // 1) Pull existing usage docs (highest first)
+        const qRef = query(collection(db, "questionUsage"), orderBy("totalCount", "desc"));
+        const snap = await getDocs(qRef);
+  
+        // 2) Build map: questionKey -> data
+        const usageByKey = new Map();
+  
         snap.forEach(docSnap => {
-          i++;
           const data = docSnap.data();
+          const key = (data.questionKey || "").trim();
+          if (!key) return;
+          usageByKey.set(key, {
+            questionKey: key,
+            totalCount: data.totalCount ?? 0,
+            lastUsedAt: data.lastUsedAt ?? null,
+            lastGameNumber: data.lastGameNumber ?? null
+          });
+        });
+  
+        // 3) Merge: ensure every question exists in final list
+        const merged = QUESTION_BANK.map(k => {
+          const existing = usageByKey.get(k);
+          return existing || {
+            questionKey: k,
+            totalCount: 0,
+            lastUsedAt: null,
+            lastGameNumber: null
+          };
+        });
+  
+        // 4) Sort: uses desc, then alpha
+        merged.sort((a, b) => {
+          const diff = (b.totalCount ?? 0) - (a.totalCount ?? 0);
+          if (diff !== 0) return diff;
+          return (a.questionKey || "").localeCompare(b.questionKey || "");
+        });
+  
+        // 5) Render
+        merged.forEach((data, idx) => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td class="rank">#${i}</td>
+            <td class="rank">#${idx + 1}</td>
             <td>
-              <div style="font-weight:700;">${data.questionKey || docSnap.id}</div>
+              <div style="font-weight:700;">${data.questionKey}</div>
               <div class="muted">Last game: ${data.lastGameNumber ?? "—"}</div>
             </td>
             <td class="count">${data.totalCount ?? 0}</td>
@@ -162,25 +276,24 @@
           `;
           rowsEl.appendChild(tr);
         });
-
-        statusEl.textContent = i ? "" : "No data yet — play a game and ask a question!";
+  
+        statusEl.textContent = merged.length ? "" : "No questions found.";
         lastRefreshEl.textContent = `Last refresh: ${new Date().toLocaleString()}`;
       } catch (err) {
         console.error(err);
         statusEl.textContent = "Error loading stats (check Firestore rules / console).";
       }
     }
-
+  
     refreshBtn.addEventListener("click", loadStats);
-
+  
     // ✅ Refresh whenever someone wins (meta/latestWin updated by game page)
     const latestWinRef = doc(db, "meta", "latestWin");
-    onSnapshot(latestWinRef, () => {
-      loadStats();
-    });
-
+    onSnapshot(latestWinRef, () => loadStats());
+  
     // Initial load
     loadStats();
   </script>
+  
 </body>
 </html>
