@@ -641,6 +641,7 @@
               <div class="dropdown-item" data-value="Are they currently on tour?">Are they currently on tour?</div>
               <div class="dropdown-item" data-value="Are they currently married?">Are they currently married?</div>
               <div class="dropdown-item" data-value="Were they ever divorced?">Were they ever divorced?</div>
+              <div class="dropdown-item" data-value="Do they have kids?">Do they have any kids?</div>
               <div class="dropdown-item" data-value="Do they identify as LGBTQ+?">Do they identify as LGBTQ+?</div>
             </details>
 
@@ -709,6 +710,7 @@
               <div class="dropdown-item" data-value="Birth name?">Do they go by their birth name?</div>
               <div class="dropdown-item" data-value="One-word name?">Do they go by one word?</div>
               <div class="dropdown-item" data-value="Two-word name?">Do they go by two words?</div>
+              <div class="dropdown-item" data-value="6 letter name?">Does their first name have more than 6 or 7 letters?</div>
               <div class="dropdown-item" data-value="Name starts A–M?">Does their name start with a letter A–M?</div>
             </details>
           </div>
@@ -856,6 +858,7 @@
       "Are they currently on tour?": "Yes, they have toured recently.",
       "Are they currently married?": "No, they are not married.",
       "Were they ever divorced?": "No, they are not publicly known to be divorced.",
+      "Do they have kids?": "No, they do not have any kids of their own yet.",
       "Do they identify as LGBTQ+?": "No, they are not publicly known for identifying as LGBTQ+.",
 
       "Were they born in North America?": "Yes, they were born in North America.",
@@ -904,6 +907,7 @@
       "Birth name?": "Yes, they go by their real name.",
       "One-word name?": "No, they do not go by one word.",
       "Two-word name?": "Yes, their stage name is two words.",
+      "6 letter name?": "No, their first name has less than 6 or 7 letters.",
       "Name starts A–M?": "No, their stage name starts with a letter after M."
     };
 
@@ -988,7 +992,7 @@
       // ✅ log usage to Firestore (best-effort)
       try { await window.__logQuestionUsage(key, GAME_NUMBER); } catch(e) {}
 
-      const answer = questionAnswers[key] || "We'll answer this one live!";
+      const answer = questionAnswers[key] || "Unknown!";
       answerDisplay.textContent = answer;
 
       answerDisplay.className = "answer-display";
