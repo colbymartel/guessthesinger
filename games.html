@@ -2,443 +2,1083 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="description" content="Guess The Singer: Test your music knowledge with daily challenges." />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Mystery Singer — Day 17</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  <title>Guess The Singer</title>
+  <link rel="icon" href="/favicon.ico" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #1a3a52 0%, #234d7d 50%, #2d5f8e 100%);
+      background-attachment: fixed;
       color: #333;
-      padding-bottom: 70px;
-    }
-
-    header {
-      background: linear-gradient(135deg, #3b7bbf, #234d7d);
-      padding: 35px 20px;
-      text-align: center;
-      color: white;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    header img {
-      width: 190px;
-      display: block;
-      margin: 0 auto;
-    }
-
-    nav {
-      background: #1e2b38;
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: white;
-    }
-
-    .welcome-msg { font-weight: 600; cursor: pointer; }
-    .dropdown {
-      display: none;
-      position: absolute;
-      top: 40px;
-      background: #1e2b38;
-      border-radius: 10px;
-      padding: 8px;
-      min-width: 150px;
-      z-index: 10;
-    }
-    .dropdown.show { display: block; }
-    .dropdown a {
-      color: white;
-      text-decoration: none;
-      padding: 8px 12px;
-      display: block;
-      font-weight: 600;
-    }
-    .dropdown a:hover {
-      background: #ffcb05;
-      color: #1e2b38;
-      border-radius: 6px;
-    }
-
-    .coin-emoji {
-      width: 22px;
-      height: 22px;
-      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
-      border-radius: 50%;
-      box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b;
-      display: inline-block;
-    }
-
-    .main {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 24px 18px;
-      width: 100%;
-    }
-
-    .game-label {
-      text-align: center;
-      color: #3b7bbf;
-      font-size: 1.1rem;
-      margin-top: 24px;
-    }
-
-    .progress-wrapper { margin-bottom: 20px; }
-    .progress-text { margin-bottom: 6px; color: #4682b4; }
-    .progress-container {
-      background: #ddd;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 28px;
-    }
-    .progress-bar {
-      background: #4682b4;
-      height: 100%;
-      width: 100%;
-      transition: width 0.3s ease;
-    }
-
-    .question-box {
-      background: #fff;
-      border: 2px solid #4682b4;
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-
-    .custom-dropdown {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 12px;
-      cursor: pointer;
+      line-height: 1.6;
+      min-height: 100vh;
       position: relative;
-      margin-bottom: 14px;
+      overflow-x: hidden;
     }
 
-    .dropdown-header {
+    /* Animated background particles */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(59, 123, 191, 0.05) 0%, transparent 50%);
+      animation: floatBackground 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatBackground {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
+    }
+
+    /* Enhanced Navigation Bar */
+    nav {
+      background: rgba(30, 43, 56, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1.05rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid rgba(59, 123, 191, 0.3);
     }
 
-    .dropdown-content {
-      display: none;
+    /* Enhanced Header with Logo */
+    .header {
+      background: linear-gradient(135deg, #3b7bbf 0%, #234d7d 100%);
+      padding: 50px 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
       position: absolute;
+      top: 0;
       left: 0;
       right: 0;
-      top: 100%;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-      max-height: 300px;
-      overflow-y: auto;
-      z-index: 20;
-      margin-top: 6px;
-    }
-
-    .custom-dropdown.active .dropdown-content { display: block; }
-
-    .dropdown-item {
-      padding: 10px 14px;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    .dropdown-item:hover { background: #e6f7ff; }
-    .dropdown-item.asked {
-      opacity: 0.55;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      animation: headerPulse 8s ease-in-out infinite;
       pointer-events: none;
     }
 
-    .button-group {
-      display: flex;
-      gap: 10px;
+    @keyframes headerPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
     }
 
-    .cta-button {
-      flex: 1;
-      height: 46px;
-      border-radius: 12px;
-      background: #4682b4;
-      color: white;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .cta-button:disabled { opacity: 0.5; }
-
-    .hint-button {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: #f7c94a;
-      border: none;
-      cursor: pointer;
+    .logo {
       position: relative;
+      z-index: 2;
+      animation: logoFloat 3s ease-in-out infinite;
     }
 
-    .hint-badge {
-      position: absolute;
-      top: -4px;
-      right: -4px;
-      background: red;
-      color: white;
-      font-size: 0.7rem;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
-    .answer-display {
-      background: #f9f9f9;
-      border: 2px solid #ddd;
-      border-radius: 10px;
-      padding: 14px;
-      text-align: center;
-      min-height: 60px;
-      margin-bottom: 16px;
-    }
-    .yes-answer {
-      background: #e8f5e9;
-      border-color: #3CB371;
-      color: #2e7d32;
-    }
-    .no-answer {
-      background: #ffebee;
-      border-color: #e57373;
-      color: #c62828;
+    .logo img {
+      width: 320px;
+      height: auto;
+      margin: 0 auto;
+      display: block;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+      transition: transform 0.3s ease;
     }
 
-    .final-actions {
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-left {
       display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .final-btn {
-      padding: 10px 24px;
-      border-radius: 999px;
-      background: #4682b4;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .giveup { background: #d9534f; }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
       align-items: center;
-      justify-content: center;
+      gap: 35px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 35px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #ffcb05;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: #ffcb05;
+      transform: translateY(-2px);
+    }
+
+    .welcome-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 25px;
+      background: rgba(59, 123, 191, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .welcome-section:hover {
+      background: rgba(59, 123, 191, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 203, 5, 0.3);
+    }
+
+    .welcome-msg {
+      color: #ffcb05;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+      transition: color 0.3s ease;
+    }
+
+    .welcome-section:hover .welcome-msg {
+      color: #ffd700;
+    }
+
+    .coin-emoji {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #ffcb05, #ffd700);
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 15px rgba(255, 203, 5, 0.6);
+      animation: coinRotate 3s linear infinite;
+    }
+
+    @keyframes coinRotate {
+      0% { transform: rotateY(0deg); }
+      100% { transform: rotateY(360deg); }
+    }
+
+    .coin-count {
+      color: white;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: rgba(30, 43, 56, 0.98);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
       z-index: 1000;
-    }
-    .modal.active { display: flex; }
-
-    .modal-content {
-      background: white;
-      border-radius: 14px;
-      padding: 24px;
-      width: 90%;
-      max-width: 480px;
+      min-width: 160px;
+      margin-top: 10px;
+      border: 1px solid rgba(59, 123, 191, 0.3);
+      animation: dropdownSlide 0.3s ease;
     }
 
-    .singer-photo {
-      width: 160px;
-      border-radius: 10px;
-      margin: 10px auto;
+    @keyframes dropdownSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .dropdown.show {
       display: block;
     }
 
-    footer {
+    .dropdown a {
+      display: block;
+      padding: 14px 18px;
+      color: white;
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .dropdown a:hover {
+      background: linear-gradient(90deg, #3b7bbf, #4a8ed0);
+      transform: translateX(5px);
+    }
+
+    .dropdown a:first-child {
+      border-radius: 12px 12px 0 0;
+    }
+
+    .dropdown a:last-child {
+      border-radius: 0 0 12px 12px;
+    }
+
+.nav-right{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+
+.search-container{
+  margin-left: auto;      
+  width: 320px;           
+}
+
+
+    .search-bar {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid transparent;
+      border-radius: 25px;
+      outline: none;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.95);
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+    }
+
+    .search-bar:focus {
+      border-color: #ffcb05;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255, 203, 5, 0.2);
+      transform: scale(1.02);
+    }
+
+    .search-bar::placeholder {
+      color: #999;
+      font-weight: 400;
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #3b7bbf, #2d5f8e);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      box-shadow: 0 4px 15px rgba(59, 123, 191, 0.4);
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(135deg, #2d5f8e, #234d7d);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 123, 191, 0.6);
+    }
+
+    /* Enhanced Main Content */
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 50px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Enhanced Hero Section */
+    .hero-section {
+      text-align: center;
+      margin-bottom: 70px;
+      background: rgba(255, 255, 255, 0.98);
+      padding: 60px 30px;
+      border-radius: 30px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(59, 123, 191, 0.05), transparent);
+      animation: heroShimmer 6s linear infinite;
+    }
+
+    @keyframes heroShimmer {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e2b38, #3b7bbf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      animation: titlePulse 4s ease-in-out infinite;
+    }
+
+    @keyframes titlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.4rem;
+      color: #666;
+      font-weight: 500;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Enhanced Featured Game Banner */
+    .featured-game {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      color: white;
+      padding: 50px;
+      border-radius: 25px;
+      text-align: center;
+      margin-bottom: 40px;
+      box-shadow: 0 15px 40px rgba(59, 123, 191, 0.4);
+      position: relative;
+      overflow: hidden;
+      display: block !important;
+      animation: featuredGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes featuredGlow {
+      0% {
+        box-shadow: 0 15px 40px rgba(59, 123, 191, 0.4);
+      }
+      100% {
+        box-shadow: 0 20px 50px rgba(59, 123, 191, 0.6);
+      }
+    }
+
+    .featured-game::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: rotate(45deg);
+      animation: shimmer 5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+      }
+      100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+      }
+    }
+
+    .featured-game h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .featured-game p {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .play-btn {
+      background: #ffcb05;
+      color: #1e2b38;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 8px 20px rgba(255, 203, 5, 0.4);
+    }
+
+    .play-btn:hover {
+      background: #ffd700;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(255, 203, 5, 0.6);
+    }
+
+    /* Enhanced Category Grid */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .category-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 25px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(59, 123, 191, 0.1), rgba(35, 77, 125, 0.1));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .category-card:hover::before {
+      opacity: 1;
+    }
+
+    .category-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+
+    .category-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      display: inline-block;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    }
+
+    .category-card:hover .category-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .category-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1e2b38;
+      margin-bottom: 12px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .category-description {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* Suggestions dropdown enhancements */
+    #suggestions {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-height: 400px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+      border: 2px solid rgba(59, 123, 191, 0.2);
+    }
+
+    .search-suggestion {
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .search-suggestion:hover {
+      background: linear-gradient(90deg, rgba(59, 123, 191, 0.1), rgba(255, 203, 5, 0.1));
+      transform: translateX(5px);
+    }
+
+    .search-suggestion:last-child {
+      border-bottom: none;
+    }
+
+    /* Enhanced Bottom Navigation */
+    .bottom-nav {
+      background: rgba(30, 43, 56, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 15px 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
       position: fixed;
       bottom: 0;
       width: 100%;
-      background: #1e2b38;
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+      z-index: 100;
+      border-top: 2px solid rgba(59, 123, 191, 0.3);
     }
 
-    footer a {
-      color: white;
-      text-align: center;
-      font-size: 12px;
+    :root{
+  --bottom-nav-h: 72px; /* footer height */
+}
+
+.main-content{
+  padding-bottom: calc(var(--bottom-nav-h) + 24px + env(safe-area-inset-bottom));
+}
+
+.bottom-nav{
+  height: var(--bottom-nav-h);
+  padding-bottom: max(15px, env(safe-area-inset-bottom));
+}
+
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-decoration: none;
+      color: white;
+      transition: all 0.3s ease;
+      padding: 8px 15px;
+      border-radius: 15px;
     }
+
+    .nav-item:hover {
+      background: rgba(59, 123, 191, 0.3);
+      transform: translateY(-5px);
+    }
+
+    .nav-item i {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover i {
+      transform: scale(1.2);
+      color: #ffcb05;
+    }
+
+    .nav-item img {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 5px;
+      transition: all 0.3s ease;
+      filter: brightness(0) invert(1);
+    }
+
+    .nav-item:hover img {
+      transform: scale(1.2);
+      filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(30deg);
+    }
+
+    .nav-item span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .categories-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .nav-links {
+        gap: 20px;
+      }
+
+      .search-container {
+        width: 200px;
+      }
+
+      .logo img {
+        width: 250px;
+      }
+
+      .category-card {
+        padding: 30px 20px;
+      }
+    }
+
+    /* Loading Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);  
+      }
+    }
+
+    .category-card {
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .category-card:nth-child(1) { animation-delay: 0.1s; }
+    .category-card:nth-child(2) { animation-delay: 0.2s; }
+    .category-card:nth-child(3) { animation-delay: 0.3s; }
+    .category-card:nth-child(4) { animation-delay: 0.4s; }
+    .category-card:nth-child(5) { animation-delay: 0.5s; }
   </style>
 </head>
-
 <body>
 
-<header>
-  <img src="../images/SingerLogo.png" alt="Guess the Singer">
-</header>
-
-<nav>
-  <div>
-    <span id="welcomeMessage" class="welcome-msg">Welcome, Anonymous</span>
-    <div id="dropdownMenu" class="dropdown"></div>
-  </div>
-  <div style="display:flex;gap:6px;align-items:center;">
-    <div class="coin-emoji"></div>
-    <span id="coinCount">0</span>
-  </div>
-</nav>
-
-<div class="game-label">Game #17</div>
-
-<div class="main">
-
-  <div class="progress-wrapper">
-    <div class="progress-text" id="progressText">Questions Remaining: 15 of 15</div>
-    <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-  </div>
-
-  <div class="question-box">
-
-    <div class="custom-dropdown" id="customDropdown">
-      <div class="dropdown-header" id="dropdownHeader">
-        Select a question <i class="fas fa-chevron-down"></i>
-      </div>
-      <div class="dropdown-content" id="dropdownContent">
-        <div class="dropdown-item">Is this a male artist?</div>
-        <div class="dropdown-item">Are they over 30 years old?</div>
-        <div class="dropdown-item">Did they debut before 2010?</div>
-        <div class="dropdown-item">Do they perform R&B music?</div>
-        <div class="dropdown-item">Have they won a Grammy?</div>
-        <div class="dropdown-item">Were they ever in a band?</div>
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <img src="/images/logo.png" alt="Guess The Singer Logo" />
       </div>
     </div>
+  <!-- Navigation Bar -->
+  <nav>
+   
 
-    <div class="button-group">
-      <button class="cta-button" id="submitButton" disabled>Ask Question</button>
-      <button class="hint-button" id="hintButton">
-        <i class="fas fa-lightbulb"></i>
-        <span class="hint-badge" id="hintBadge">0</span>
-      </button>
+    <div class="nav-right">
+      <div class="welcome-section">
+        <span class="welcome-msg">Welcome, Anonymous</span>
+        <span class="coin-emoji"></span>
+        <span class="coin-count">0</span>
+        <div class="dropdown" id="userDropdown">
+          <a href="/profile.html">Profile</a>
+          <a href="/inbox.html">Inbox</a>
+          <a href="#" onclick="logout()">Logout</a>
+        </div>
+      </div>
+
+    
+
+      <div class="search-container">
+        <input 
+          type="text" 
+          class="search-bar" 
+          placeholder="Search games..." 
+          oninput="showSuggestions(this.value)"
+        />
+        <div id="suggestions"></div>
+      </div>
+
+      
+
+      <button class="login-btn" id="authButton" onclick="handleAuthClick()">Login</button>
     </div>
+  </nav>
 
-  </div>
+  <!-- Main Content -->
+  <main class="main-content">
 
-  <div class="answer-display" id="answerDisplay">Your answer will appear here</div>
-
-  <div class="final-actions">
-    <button class="final-btn" id="openGuess">Guess Singer</button>
-    <button class="final-btn giveup" id="giveUpBtn">Give Up</button>
-  </div>
-
+<!-- Today's Daily Game -->
+<div class="featured-game" style="display: block;">
+  <h2>🎤 Daily Mystery Singer</h2>
+  <p>Guess today’s artist before time runs out!</p>
+  <button class="play-btn" onclick="window.location.href='/2025daily/day18.html'">
+    Today's Game
+  </button>
 </div>
+  
 
-<!-- Guess Modal -->
-<div class="modal" id="guessModal">
-  <div class="modal-content">
-    <h3>Final Guess</h3>
-    <input id="guessInput" placeholder="Type the singer's name…" style="width:100%;padding:10px;margin:10px 0;">
-    <button class="cta-button" id="submitGuess">Submit Guess</button>
-    <p id="guessFeedback"></p>
-  </div>
-</div>
+    <!-- Game Categories -->
+    <div class="categories-grid">
+      <a href="/memory.html" class="category-card">
+        <div class="category-icon">🧠</div>
+        <h3 class="category-title">Match the Singer</h3>
+        <p class="category-description">Test your memory to match singers' faces with their names!</p>
+      </a>
 
-<!-- Result Modal -->
-<div class="modal" id="resultModal">
-  <div class="modal-content">
-    <h2>🎤 Frank Ocean</h2>
-    <img src="../images/frankocean.jpg" class="singer-photo">
-    <p>Thanks for playing!</p>
-  </div>
-</div>
+      <a href="/spelling.html" class="category-card">
+        <div class="category-icon">🐝</div>
+        <h3 class="category-title">Spell the Singer</h3>
+        <p class="category-description">Spell singers' names as letters are revealed!</p>
+      </a>
 
-<footer>
-  <a href="/profile.html"><i class="fas fa-user"></i><br>Profile</a>
-  <a href="/games.html"><i class="fas fa-gamepad"></i><br>Games</a>
-  <a href="/rewards.html"><i class="fas fa-gift"></i><br>Rewards</a>
-</footer>
+      <a href="/bangerbattle.html" class="category-card">
+        <div class="category-icon">🔥</div>
+        <h3 class="category-title">Banger Battle</h3>
+        <p class="category-description">Guess which song has more Spotify streams!</p>
+      </a>
 
-<script>
-  const maxQuestions = 15;
-  let questionsAsked = 0;
+      <a href="https://forms.gle/7TdiZswfKZBZSyAZ9" target="_blank" class="category-card">
+        <div class="category-icon">⭐</div>
+        <h3 class="category-title">Be Featured!</h3>
+        <p class="category-description">Submit your info to be featured in daily games!</p>
+      </a>
 
-  const answers = {
-    "Is this a male artist?": "Yes, they are a male artist.",
-    "Are they over 30 years old?": "Yes, they are over 30 years old.",
-    "Did they debut before 2010?": "Yes, they released music before 2010.",
-    "Do they perform R&B music?": "Yes, they are strongly associated with R&B.",
-    "Have they won a Grammy?": "Yes, they have won Grammy Awards.",
-    "Were they ever in a band?": "Yes, they were part of Odd Future."
-  };
+      <a href="/video-ideas.html" class="category-card">
+        <div class="category-icon">💡</div>
+        <h3 class="category-title">Video Ideas</h3>
+        <p class="category-description">Submit creative ideas for future episodes.</p>
+      </a>      
 
-  const dropdown = document.getElementById("customDropdown");
-  const header = document.getElementById("dropdownHeader");
-  const content = document.getElementById("dropdownContent");
-  const submitBtn = document.getElementById("submitButton");
-  const answerBox = document.getElementById("answerDisplay");
-  const progressBar = document.getElementById("progressBar");
-  const progressText = document.getElementById("progressText");
+      <a href="https://discord.gg/ksfpQ25U" target="_blank" class="category-card">
+        <div class="category-icon">🎮</div>
+        <h3 class="category-title">Join Discord</h3>
+        <p class="category-description">Connect with other players and get updates</p>
+      </a>
+    </div>
+  </main>
 
-  let selected = null;
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <img src="/images/gamesicon.png" alt="Games Icon">
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <img src="/images/rewardicon.png" alt="Rewards Icon">
+      <span>Rewards</span>
+    </a>
+  </footer>
 
-  dropdown.onclick = e => {
-    if (e.target.classList.contains("dropdown-header")) {
-      dropdown.classList.toggle("active");
-    }
-  };
-
-  content.querySelectorAll(".dropdown-item").forEach(item => {
-    item.onclick = () => {
-      selected = item.textContent;
-      header.innerHTML = selected + " <i class='fas fa-chevron-down'></i>";
-      submitBtn.disabled = false;
-      dropdown.classList.remove("active");
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+    import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+  
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136"
     };
-  });
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+  
+    // Update welcome message and coin count
+    onAuthStateChanged(auth, async (user) => {
+      const authButton = document.getElementById('authButton');
+      
+      if (user) {
+        let username = "User";
+        let coins = 0;
+  
+        try {
+          const userRef = collection(db, "users");
+          const q = query(userRef, where("uid", "==", user.uid));
+          const snapshot = await getDocs(q);
+  
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.username) username = data.username;
+            if (data.coins !== undefined) coins = data.coins;
+          });
+  
+          const welcomeEl = document.querySelector('.welcome-msg');
+          const coinCountEl = document.querySelector('.coin-count');
+          const welcomeSection = document.querySelector('.welcome-section');
+          
+          if (welcomeEl) welcomeEl.textContent = `Welcome, ${username}`;
+          if (coinCountEl) coinCountEl.textContent = coins;
+          if (welcomeSection) {
+            welcomeSection.style.cursor = 'pointer';
+            welcomeSection.onclick = toggleDropdown;
+          }
+          
+          // Update auth button for logged in user
+          if (authButton) {
+            authButton.textContent = "Log Out";
+            authButton.style.background = "linear-gradient(135deg, #ff6b6b, #ff5252)";
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        const welcomeEl = document.querySelector('.welcome-msg');
+        const coinCountEl = document.querySelector('.coin-count');
+        const welcomeSection = document.querySelector('.welcome-section');
+        
+        if (welcomeEl) welcomeEl.textContent = "Welcome, Anonymous";
+        if (coinCountEl) coinCountEl.textContent = "0";
+        if (welcomeSection) {
+          welcomeSection.style.cursor = 'pointer';
+          welcomeSection.onclick = () => window.location.href = '/login.html';
+        }
+        
+        // Update auth button for anonymous user
+        if (authButton) {
+          authButton.textContent = "Login";
+          authButton.style.background = "linear-gradient(135deg, #3b7bbf, #2d5f8e)";
+        }
+      }
+    });
 
-  submitBtn.onclick = () => {
-    questionsAsked++;
-    const ans = answers[selected];
-    answerBox.textContent = ans;
-    answerBox.className = ans.startsWith("Yes") ? "answer-display yes-answer" : "answer-display no-answer";
-    progressBar.style.width = ((maxQuestions - questionsAsked) / maxQuestions) * 100 + "%";
-    progressText.textContent = `Questions Remaining: ${maxQuestions - questionsAsked} of ${maxQuestions}`;
-    submitBtn.disabled = true;
-  };
+    // Dropdown functionality
+    window.toggleDropdown = function() {
+      const dropdown = document.getElementById('userDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('show');
+      }
+    };
 
-  document.getElementById("openGuess").onclick = () => {
-    document.getElementById("guessModal").classList.add("active");
-  };
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const welcomeSection = document.querySelector('.welcome-section');
+      const dropdown = document.getElementById('userDropdown');
+      
+      if (welcomeSection && !welcomeSection.contains(e.target)) {
+        if (dropdown) {
+          dropdown.classList.remove('show');
+        }
+      }
+    });
 
-  document.getElementById("submitGuess").onclick = () => {
-    const val = document.getElementById("guessInput").value.toLowerCase().replace(/\s+/g,"");
-    if (val.includes("frankocean") || val === "frank") {
-      document.getElementById("guessModal").classList.remove("active");
-      document.getElementById("resultModal").classList.add("active");
-    } else {
-      document.getElementById("guessFeedback").textContent = "Not quite — try again!";
-    }
-  };
+    // Handle auth button click
+    window.handleAuthClick = async function() {
+      const authButton = document.getElementById('authButton');
+      
+      if (authButton.textContent === "Log Out") {
+        // User is logged in, log them out
+        try {
+          await signOut(auth);
+          // Don't reload, let the onAuthStateChanged handle the UI update
+        } catch (error) {
+          console.error("Error signing out:", error);
+        }
+      } else {
+        // User is not logged in, redirect to login
+        window.location.href = '/login.html';
+      }
+    };
 
-  document.getElementById("giveUpBtn").onclick = () => {
-    document.getElementById("resultModal").classList.add("active");
-  };
-</script>
+    // Logout function (for dropdown menu)
+    window.logout = async function() {
+      try {
+        await signOut(auth);
+        // Don't reload, let the onAuthStateChanged handle the UI update
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    };
 
-</body>
+    // Game data for search functionality
+    const gamesData = [
+      {
+        title: "Match the Singer",
+        category: "Memory Game",
+        url: "/memory.html",
+        icon: "🧠",
+        description: "Test your memory to match singers' faces with their names!"
+      },
+      {
+        title: "Spell the Singer",
+        category: "Spelling Game",
+        url: "/spelling.html",
+        icon: "🐝",
+        description: "Spell singers' names as letters are revealed!"
+      },
+      {
+        title: "Banger Battle",
+        category: "Music Quiz",
+        url: "/bangerbattle.html",
+        icon: "🔥",
+        description: "Guess which song has more Spotify streams!"
+      },
+      {
+        title: "Be Featured!",
+        category: "Submit Your Info",
+        url: "https://forms.gle/7TdiZswfKZBZSyAZ9",
+        icon: "⭐",
+        description: "Submit your info to be featured in daily games!"
+      },
+      {
+  title: "Video Ideas",
+  category: "Submit Ideas",
+  url: "/ideas.html", // update to your form URL if different
+  icon: "💡",
+  description: "Submit creative ideas for future episodes."
+}
+
+    ];
+
+    // Search functionality
+    window.showSuggestions = function(query) {
+      const suggestionsContainer = document.getElementById('suggestions');
+      
+      if (!query || query.trim() === '') {
+        suggestionsContainer.style.display = 'none';
+        return;
+      }
+
+      const searchTerm = query.toLowerCase().trim();
+      const matches = gamesData.filter(game => 
+        game.title.toLowerCase().includes(searchTerm) ||
+        game.category.toLowerCase().includes(searchTerm) ||
+        game.description.toLowerCase().includes(searchTerm)
+      ).slice(0, 3); // Limit to 3 results
+
+      if (matches.length === 0) {
+        suggestionsContainer.style.display = 'none';
+        return;
+      }
+
+      suggestionsContainer.innerHTML = '';
+      matches.forEach(game => {
+        const suggestion = document.createElement('div');
+        suggestion.className = 'search-suggestion';
+        suggestion.onclick = () => {
+          if (game.title === "Challenge Colby") {
+            challengeColby();
+          } else {
+            window.location.href = game.url;
+          }
+          suggestionsContainer.style.display = 'none';
+        };
+        
+        suggestion.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.2rem;">${game.icon}</span>
+            <div>
+              <div style="font-weight: 600;">${game.title}</div>
+              <div style="font-size: 0.8rem; color: #666;">${game.category}</div>
+            </div>
+          </div>
+        `;
+        
+        suggestionsContainer.appendChild(suggestion);
+      });
+
+      suggestionsContainer.style.display = 'block';
+    };
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      const suggestions = document.getElementById('suggestions');
+      const searchBar = document.querySelector('.search-bar');
+      
+      if (!suggestions.contains(e.target) && !searchBar.contains(e.target)) {
+        suggestions.style.display = 'none';
+      }
+    });
+
+    // Function to challenge Colby - opens chat with colbyma23@gmail.com
+    window.challengeColby = async function() {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("You must be logged in to challenge Colby!");
+        return;
+      }
+
+      try {
+        // Find Colby's user ID by searching for the admin email
+        const usersRef = collection(db, "users");
+        const usersSnapshot = await getDocs(usersRef);
+        let colbyUserId = null;
+        
+        usersSnapshot.forEach(docSnap => {
+          const userData = docSnap.data();
+          if (userData.email === 'colbyma23@gmail.com') {
+            colbyUserId = docSnap.id;
+          }
+        });
+
+        if (!colbyUserId) {
+          alert("Colby's profile not found. Please try again later.");
+          return;
+        }
+
+        // Redirect to inbox.html with a parameter to open Colby's chat
+        window.location.href = `/inbox.html?openChat=${colbyUserId}`;
+        
+      } catch (error) {
+        console.error("Error finding Colby's profile:", error);
+        alert("Error connecting to chat. Please try again.");
+      }
+    };
+  </script>  
+</body>  
 </html>
