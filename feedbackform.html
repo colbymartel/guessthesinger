@@ -735,7 +735,7 @@
 
       } catch (err) {
         console.error("Error submitting feedback:", err);
-        statusMessage.textContent = "Something went wrong submitting your feedback. Please try again in a moment.";
+        statusMessage.textContent = "Something went wrong submitting your feedback. Make sure you are logged in.";
         statusMessage.classList.add("error");
       } finally {
         submitBtn.disabled = false;
