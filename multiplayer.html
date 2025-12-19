@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Head-to-Head Mystery Singer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body{
+      font-family:'Poppins',Arial,sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
+      color:#333;
+      display:flex;
+      flex-direction:column;
+      padding-bottom: 70px;
+    }
+
+    header{
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 26px 18px;
+      text-align:center;
+      color:#fff;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    header h1{
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    header p{
+      margin-top: 6px;
+      opacity: .92;
+      font-size: .95rem;
+      font-weight: 500;
+    }
+
+    nav{
+      background-color:#1e2b38;
+      padding: 12px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      color:#fff;
+      width:100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+    .nav-left{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-weight: 700;
+      font-size: .9rem;
+      white-space: nowrap;
+    }
+    .badge i{ color:#ffcb05; }
+    .room-code{
+      font-weight:800;
+      letter-spacing: .6px;
+      color:#ffcb05;
+    }
+
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding: 22px 16px;
+      max-width: 760px;
+      width:100%;
+      margin: 0 auto;
+      padding-bottom: calc(90px + env(safe-area-inset-bottom));
+    }
+
+    .card{
+      width:100%;
+      background:#fff;
+      border: 2px solid #4682b4;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 14px;
+    }
+
+    .top-grid{
+      width:100%;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 680px){
+      .top-grid{ grid-template-columns: 1fr; }
+    }
+
+    .scorebox{
+      border-radius: 14px;
+      background: #f7fbff;
+      border: 1px solid #d6e7f6;
+      padding: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .score-left{
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .score-title{
+      font-size: .92rem;
+      color:#315f85;
+      font-weight: 700;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .score-name{
+      font-weight: 800;
+      font-size: 1.05rem;
+      color:#1e2b38;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width: 340px;
+    }
+    .score-num{
+      font-size: 1.45rem;
+      font-weight: 900;
+      color:#3b7bbf;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .score-pill{
+      font-size: .85rem;
+      font-weight: 800;
+      color:#1e2b38;
+      background:#ffcb05;
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+
+    .timer-wrap{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .timer-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .timer{
+      font-size: 1.35rem;
+      font-weight: 900;
+      color:#1e2b38;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .timer i{ color:#3b7bbf; }
+    .progress-container{
+      width:100%;
+      height: 16px;
+      background:#e6eef6;
+      border-radius: 999px;
+      overflow:hidden;
+      border: 1px solid #d4e2f0;
+    }
+    .progress-bar{
+      height:100%;
+      width:100%;
+      background:#4682b4;
+      transition: width .2s ease;
+    }
+
+    .controls{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items:center;
+      margin-top: 10px;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      font-family:'Poppins',Arial,sans-serif;
+      font-weight: 700;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(2px); }
+    .btn-primary{
+      background:#4682b4;
+      color:#fff;
+      box-shadow: 0px 4px 0px 0px #315f85;
+    }
+    .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0px 6px 0px 0px #315f85; }
+    .btn-secondary{
+      background:#ffcb05;
+      color:#1e2b38;
+      box-shadow: 0px 4px 0px 0px #d2a634;
+    }
+    .btn-ghost{
+      background:#eef5ff;
+      color:#315f85;
+      border: 1px solid #d6e7f6;
+    }
+    .btn-danger{
+      background:#d9534f;
+      color:#fff;
+      box-shadow: 0px 4px 0px 0px #b0413d;
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none !important;
+      box-shadow:none !important;
+    }
+
+    .game-area{ width:100%; }
+
+    .round-head{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .round-title{
+      font-size: 1.05rem;
+      font-weight: 900;
+      color:#1e2b38;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .round-title i{ color:#3b7bbf; }
+    .subtle{
+      font-size: .92rem;
+      color:#5e6b78;
+      font-weight: 600;
+    }
+
+    .hint-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 560px){
+      .hint-grid{ grid-template-columns: 1fr; }
+    }
+
+    .hint{
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid #ddd;
+      background:#f9f9f9;
+      min-height: 64px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      line-height: 1.3;
+      font-weight: 600;
+      color:#333;
+    }
+    .hint .icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      background:#e6f7ff;
+      color:#315f85;
+      border: 1px solid #d2e9ff;
+    }
+    .hint.locked{
+      opacity:.65;
+      background:#f2f2f2;
+      border-color:#e4e4e4;
+      color:#666;
+    }
+    .hint.locked .icon{
+      background:#f0f0f0;
+      border-color:#e2e2e2;
+      color:#888;
+    }
+
+    .guess-row{
+      margin-top: 12px;
+      display:flex;
+      gap: 10px;
+      width:100%;
+      flex-wrap: wrap;
+    }
+    .guess-input{
+      flex: 1;
+      min-width: 220px;
+      height: 48px;
+      border-radius: 12px;
+      border: 2px solid #ddd;
+      padding: 0 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .guess-input:focus{
+      border-color:#4682b4;
+      box-shadow: 0 6px 18px rgba(59,123,191,0.18);
+    }
+
+    .autocomplete { position: relative; flex: 1; min-width: 220px; }
+    .suggest-box{
+      position:absolute;
+      left:0; right:0;
+      top: 52px;
+      background:#fff;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 12px;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+      overflow:hidden;
+      max-height: 240px;
+      overflow-y:auto;
+      display:none;
+      z-index: 20;
+    }
+    .suggest-item{
+      padding: 10px 12px;
+      cursor:pointer;
+      font-weight: 700;
+      color:#234d7d;
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+    }
+    .suggest-item:hover, .suggest-item.active{ background:#f3f7fb; }
+    .suggest-muted{ font-weight: 600; opacity: .65; font-size: .88rem; }
+
+    .feedback{
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      display:none;
+      text-align:center;
+    }
+    .feedback.good{ display:block; background:#e8f5e9; border:2px solid #3CB371; color:#2e7d32; }
+    .feedback.bad{ display:block; background:#ffebee; border:2px solid #f44336; color:#c62828; }
+
+    .overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.58);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 1000;
+    }
+    .overlay.active{ display:flex; }
+    .modal{
+      width: min(560px, 96vw);
+      background:#fff;
+      border-radius: 18px;
+      padding: 18px;
+      border: 2px solid rgba(255,255,255,0.85);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      text-align:center;
+    }
+    .modal h2{
+      font-size: 1.45rem;
+      font-weight: 900;
+      color:#1e2b38;
+      margin-bottom: 6px;
+    }
+    .modal p{
+      color:#5e6b78;
+      font-weight: 600;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .modal .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:center;
+    }
+    .modal input{
+      width: min(360px, 92vw);
+      height: 46px;
+      border-radius: 12px;
+      border: 2px solid #ddd;
+      padding: 0 12px;
+      font-size: 1rem;
+      outline: none;
+    }
+    .modal input:focus{
+      border-color:#4682b4;
+      box-shadow: 0 6px 18px rgba(59,123,191,0.18);
+    }
+
+    .bottom-nav{
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    .bottom-nav .nav-item{
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      opacity: .95;
+    }
+    .bottom-nav .nav-item i{ font-size: 20px; }
+    .bottom-nav .nav-item:hover{ color:#ffcb05; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🎤 Head-to-Head Mystery Singer</h1>
+    <p>Race your friend: guess as many singers as possible in <b>5 minutes</b>. Hints unlock every <b>5 seconds</b>.</p>
+  </header>
+
+  <nav>
+    <div class="nav-left">
+      <div class="badge"><i class="fa-solid fa-link"></i> Room: <span id="roomCode" class="room-code">—</span></div>
+      <div class="badge"><i class="fa-solid fa-user"></i> You: <span id="youName">Loading…</span></div>
+    </div>
+    <div class="nav-right" style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-secondary" id="copyLinkBtn"><i class="fa-solid fa-copy"></i> Copy Link</button>
+      <button class="btn btn-primary" id="startBtn" disabled><i class="fa-solid fa-play"></i> Start</button>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="card">
+      <div class="top-grid">
+        <div class="scorebox">
+          <div class="score-left">
+            <div class="score-title"><i class="fa-solid fa-bolt"></i> Your score</div>
+            <div class="score-name" id="youName2">Loading…</div>
+          </div>
+          <div class="score-num"><span id="youScore">0</span> <span class="score-pill">YOU</span></div>
+        </div>
+
+        <div class="scorebox">
+          <div class="score-left">
+            <div class="score-title"><i class="fa-solid fa-flag-checkered"></i> Friend score</div>
+            <div class="score-name" id="oppName">Waiting for friend…</div>
+          </div>
+          <div class="score-num"><span id="oppScore">0</span> <span class="score-pill">RACE</span></div>
+        </div>
+      </div>
+
+      <div class="timer-wrap">
+        <div class="timer-row">
+          <div class="timer"><i class="fa-solid fa-stopwatch"></i> <span id="timeLeft">05:00</span></div>
+          <div class="subtle" id="statusText">Loading…</div>
+        </div>
+        <div class="progress-container"><div class="progress-bar" id="timeBar"></div></div>
+
+        <div class="controls">
+          <button class="btn btn-ghost" id="changeNameBtn"><i class="fa-solid fa-pen"></i> Change name</button>
+          <button class="btn btn-danger" id="leaveBtn"><i class="fa-solid fa-right-from-bracket"></i> Leave room</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card game-area">
+      <div class="round-head">
+        <div class="round-title"><i class="fa-solid fa-lightbulb"></i> Current Singer <span class="subtle" id="roundInfo">—</span></div>
+        <div class="subtle">Hints unlock: 0s • 5s • 10s • 15s</div>
+      </div>
+
+      <div class="hint-grid">
+        <div class="hint" id="hint1"><div class="icon"><i class="fa-solid fa-unlock"></i></div><div class="txt">—</div></div>
+        <div class="hint locked" id="hint2"><div class="icon"><i class="fa-solid fa-lock"></i></div><div class="txt">Locked</div></div>
+        <div class="hint locked" id="hint3"><div class="icon"><i class="fa-solid fa-lock"></i></div><div class="txt">Locked</div></div>
+        <div class="hint locked" id="hint4"><div class="icon"><i class="fa-solid fa-lock"></i></div><div class="txt">Locked</div></div>
+      </div>
+
+      <div class="guess-row">
+        <div class="autocomplete">
+          <input id="guessInput" class="guess-input" type="text" placeholder="Type singer name… (Enter to submit)" autocomplete="off" spellcheck="false" />
+          <div id="suggestBox" class="suggest-box"></div>
+        </div>
+        <button class="btn btn-primary" id="submitGuessBtn" disabled><i class="fa-solid fa-paper-plane"></i> Submit</button>
+        <button class="btn btn-ghost" id="skipBtn" disabled title="Skip this singer (no points)"><i class="fa-solid fa-forward"></i> Skip</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+
+  <div class="overlay" id="nameOverlay">
+    <div class="modal">
+      <h2>Pick a display name</h2>
+      <p>This name will show up for your friend in the race.</p>
+      <div class="row">
+        <input id="nameInput" type="text" placeholder="e.g., Colby" maxlength="24" />
+      </div>
+      <div class="row" style="margin-top:12px;">
+        <button class="btn btn-primary" id="saveNameBtn"><i class="fa-solid fa-check"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="endOverlay">
+    <div class="modal">
+      <h2 id="endTitle">Time’s up!</h2>
+      <p id="endMsg">—</p>
+      <div class="row">
+        <button class="btn btn-primary" id="playAgainBtn"><i class="fa-solid fa-rotate-right"></i> Play again</button>
+        <button class="btn btn-ghost" id="closeEndBtn"><i class="fa-solid fa-xmark"></i> Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
+    <a href="/games.html" class="nav-item"><i class="fas fa-gamepad"></i><span>Games</span></a>
+    <a href="/memory-leaderboard.html" class="nav-item"><i class="fas fa-trophy"></i><span>Leaderboards</span></a>
+    <a href="/rewards.html" class="nav-item"><i class="fas fa-gift"></i><span>Rewards</span></a>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+    import {
+      getDatabase, ref, get, set, update, onValue, onDisconnect, remove, runTransaction
+    } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD36qSJ8YAPc3A4FL9jlBGlpiWwj530SPQ",
+      authDomain: "guessthesinger10.firebaseapp.com",
+      projectId: "guessthesinger10",
+      storageBucket: "guessthesinger10.appspot.com",
+      messagingSenderId: "97201023235",
+      appId: "1:97201023235:web:ab111d9acb43ef7d4be136",
+      databaseURL: "https://guessthesinger10-default-rtdb.firebaseio.com"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
+    const auth = getAuth(app);
+
+    const SINGERS = [
+      { name: "Drake", hints: ["This is a male artist from Canada.","He helped popularize “Toronto” as a major rap/R&B city.","He had a breakout role on TV before dominating music.","His album titles include “Take Care” and “Views”."] },
+      { name: "Taylor Swift", hints: ["This is a female artist from the United States.","She transitioned from country to pop and beyond.","Her fans trade friendship bracelets at shows.","She rerecorded albums as “Taylor’s Version”."] },
+      { name: "The Weeknd", hints: ["This is a male artist from Canada.","He has a dark, cinematic R&B-pop sound.","A famous era included a red suit + bandaged face aesthetic.","He released the hits “Blinding Lights” and “Starboy”."] },
+      { name: "Beyoncé", hints: ["This is a female artist from the United States.","She rose to fame in a legendary girl group.","Her album “Lemonade” was a cultural moment.","Fans call her “Queen Bey”."] },
+      { name: "Eminem", hints: ["This is a male artist from the United States.","He became massively famous in the late 1990s / early 2000s.","His stage name is a play on his initials.","He starred in the movie “8 Mile”."] },
+      { name: "Ariana Grande", hints: ["This is a female artist from the United States.","She started as an actor before becoming a pop star.","Known for powerhouse vocals and high ponytail looks.","Hits include “7 rings” and “thank u, next”."] },
+      { name: "Bad Bunny", hints: ["This is a male artist from Puerto Rico.","He’s one of the biggest global Spanish-language artists ever.","He blends reggaeton, trap, and pop.","Known for albums like “Un Verano Sin Ti”."] },
+      { name: "Ed Sheeran", hints: ["This is a male artist from the United Kingdom.","He’s known for acoustic pop and looping live performances.","Many album titles are math symbols.","Hits include “Shape of You”."] },
+      { name: "Rihanna", hints: ["This is a female artist from Barbados.","She has hits across pop, R&B, and dancehall.","She launched a major beauty brand.","Songs include “Umbrella” and “Diamonds”."] },
+      { name: "Kendrick Lamar", hints: ["This is a male artist from the United States.","He’s known for lyrical storytelling and concept albums.","An album title includes “good kid, m.A.A.d city”.","He performed “HUMBLE.” and “Alright”."] }
+    ];
+
+    const GAME_DURATION_MS = 5 * 60 * 1000;
+    const HINT_STEP_MS = 5000;
+    const HINT_COUNT = 4;
+
+    const $ = (id) => document.getElementById(id);
+
+    function canon(str){
+      return (str || "")
+        .toLowerCase()
+        .replace(/[\.\,\!\?\-’'"]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    function randomId(len=7){
+      const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+      let out = "";
+      for (let i=0;i<len;i++) out += chars[Math.floor(Math.random()*chars.length)];
+      return out;
+    }
+    function fmtTime(ms){
+      const s = Math.max(0, Math.floor(ms/1000));
+      const m = Math.floor(s/60);
+      const r = s % 60;
+      return String(m).padStart(2,"0")+":"+String(r).padStart(2,"0");
+    }
+
+    function redirectToLogin(){
+      const redirect = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `/login.html?redirect=${redirect}`;
+    }
+    function waitForAuth(){
+      return new Promise((resolve) => {
+        const unsub = onAuthStateChanged(auth, (user) => { unsub(); resolve(user || null); });
+      });
+    }
+    async function requireLoggedInUser(){
+      const user = auth.currentUser || await waitForAuth();
+      if (!user) { redirectToLogin(); return null; }
+      return user;
+    }
+
+    async function fetchProfileName(uid, fallback){
+      try{
+        const snap = await get(ref(db, `signupForm/${uid}`));
+        if (snap.exists()) {
+          const data = snap.val() || {};
+          return (data.newUsername || data.username || "").trim() || fallback;
+        }
+      } catch {}
+      return fallback;
+    }
+
+    function showFatal(msg){
+      $("statusText").textContent = msg;
+      $("startBtn").disabled = true;
+      $("submitGuessBtn").disabled = true;
+      $("skipBtn").disabled = true;
+      const fb = $("feedback");
+      fb.className = "feedback bad";
+      fb.style.display = "block";
+      fb.textContent = msg;
+    }
+
+    // URL + Room
+    const url = new URL(window.location.href);
+    let roomId = url.searchParams.get("room");
+    let shareUrl = ""; // used by Copy Link button
+
+    let playerName = localStorage.getItem("h2h_playerName") || "Loading…";
+
+    // Server time offset
+    let serverOffset = 0;
+    onValue(ref(db, ".info/serverTimeOffset"), (snap) => {
+      serverOffset = snap.val() || 0;
+    });
+    const serverNow = () => Date.now() + serverOffset;
+
+    // DOM
+    const roomCodeEl = $("roomCode");
+    const youNameEl = $("youName");
+    const youName2El = $("youName2");
+    const oppNameEl = $("oppName");
+    const youScoreEl = $("youScore");
+    const oppScoreEl = $("oppScore");
+
+    const startBtn = $("startBtn");
+    const copyLinkBtn = $("copyLinkBtn");
+    const statusText = $("statusText");
+
+    const timeLeftEl = $("timeLeft");
+    const timeBar = $("timeBar");
+
+    const roundInfo = $("roundInfo");
+    const hintEls = [$("hint1"), $("hint2"), $("hint3"), $("hint4")];
+    const feedbackEl = $("feedback");
+
+    const guessInput = $("guessInput");
+    const submitGuessBtn = $("submitGuessBtn");
+    const skipBtn = $("skipBtn");
+
+    const nameOverlay = $("nameOverlay");
+    const nameInput = $("nameInput");
+    const saveNameBtn = $("saveNameBtn");
+    const changeNameBtn = $("changeNameBtn");
+    const leaveBtn = $("leaveBtn");
+
+    const endOverlay = $("endOverlay");
+    const endTitle = $("endTitle");
+    const endMsg = $("endMsg");
+    const playAgainBtn = $("playAgainBtn");
+    const closeEndBtn = $("closeEndBtn");
+
+    // Autocomplete
+    const suggestBox = $("suggestBox");
+    let currentSuggestions = [];
+    let activeSuggestionIndex = -1;
+    const ARTIST_NAMES = Array.from(new Set(SINGERS.map(s => s.name)));
+
+    // State
+    let uid = null;
+    let stateRef = null;
+    let playersRef = null;
+    let myRef = null;
+
+    let roomState = null;
+    let myState = null;
+    let oppState = null;
+
+    let isHost = false;
+    let tickTimer = null;
+    let endedShown = false;
+    let heartbeatTimer = null;
+
+    async function ensureRoom(){
+      const user = await requireLoggedInUser();
+      if (!user) return;
+
+      uid = user.uid;
+
+      const fallback = (user.email ? user.email.split("@")[0] : "Player");
+      const profileName = await fetchProfileName(uid, fallback);
+
+      if (!localStorage.getItem("h2h_playerName") || localStorage.getItem("h2h_playerName") === "Anonymous") {
+        playerName = profileName;
+        localStorage.setItem("h2h_playerName", playerName);
+      } else {
+        playerName = localStorage.getItem("h2h_playerName");
+      }
+
+      youNameEl.textContent = playerName;
+      youName2El.textContent = playerName;
+
+      if (!roomId) {
+        roomId = randomId(7);
+        url.searchParams.set("room", roomId);
+        window.history.replaceState({}, "", url.toString());
+      }
+
+      roomCodeEl.textContent = roomId;
+
+      // link used by Copy Link button (no UI box)
+      shareUrl = `${window.location.origin}${window.location.pathname}?room=${roomId}`;
+
+      stateRef = ref(db, `h2hRooms/${roomId}/state`);
+      playersRef = ref(db, `h2hRooms/${roomId}/players`);
+      myRef = ref(db, `h2hRooms/${roomId}/players/${uid}`);
+
+      await joinAsPlayer();
+
+      const stSnap = await get(stateRef);
+      if (!stSnap.exists()) {
+        const now = serverNow();
+        try{
+          await set(stateRef, {
+            createdAt: now,
+            status: "waiting",
+            hostUid: uid,
+            startAt: null,
+            endAt: null,
+            durationMs: GAME_DURATION_MS
+          });
+        } catch {}
+      }
+
+      onValue(stateRef, (s) => {
+        roomState = s.val() || { status: "waiting" };
+        renderRoom();
+      });
+
+      onValue(playersRef, (s) => {
+        const players = s.val() || {};
+        myState = players[uid] || null;
+        const ids = Object.keys(players);
+        const oppUid = ids.find(x => x !== uid) || null;
+        oppState = oppUid ? players[oppUid] : null;
+        renderRoom();
+      });
+
+      statusText.textContent = "Create a room, share the link, then start when ready.";
+      // make sure it's immediately typeable
+      guessInput.disabled = false;
+    }
+
+    async function joinAsPlayer(){
+      const now = serverNow();
+      await update(myRef, {
+        uid,
+        name: playerName,
+        score: 0,
+        singerIdx: 0,
+        singerStartAt: now,
+        lastActive: now,
+        lastSeenStartAt: null
+      });
+
+      onDisconnect(myRef).remove();
+
+      if (heartbeatTimer) clearInterval(heartbeatTimer);
+      heartbeatTimer = setInterval(() => {
+        update(myRef, { lastActive: serverNow() });
+      }, 8000);
+    }
+
+    async function startGame(){
+      if (!roomState || !isHost) return;
+
+      const playersSnap = await get(playersRef);
+      const players = playersSnap.val() || {};
+      if (Object.keys(players).length < 2) return;
+
+      const now = serverNow();
+      const endAt = now + GAME_DURATION_MS;
+
+      await update(stateRef, {
+        status: "playing",
+        startAt: now,
+        endAt,
+        durationMs: GAME_DURATION_MS
+      });
+
+      await update(myRef, {
+        score: 0,
+        singerIdx: 0,
+        singerStartAt: now,
+        lastSeenStartAt: now,
+        lastActive: now
+      });
+
+      endedShown = false;
+      clearFeedback();
+      guessInput.focus();
+    }
+
+    async function endGameIfNeeded(){
+      if (!roomState || roomState.status !== "playing" || !roomState.endAt) return;
+      if (serverNow() >= roomState.endAt) {
+        if (isHost) await update(stateRef, { status: "ended" });
+      }
+    }
+
+    async function submitGuess(){
+      if (!roomState || roomState.status !== "playing") {
+        showBad("Press Start to begin the round first.");
+        return;
+      }
+      if (!myState) return;
+
+      const idx = myState.singerIdx ?? 0;
+      const singer = SINGERS[idx % SINGERS.length];
+      const guess = canon(guessInput.value);
+      if (!guess) { showBad("Type a singer name first."); return; }
+
+      if (guess === canon(singer.name)) {
+        showGood("✅ Correct! Next singer…");
+        guessInput.value = "";
+        hideSuggestions();
+
+        const now = serverNow();
+        await runTransaction(myRef, (cur) => {
+          if (!cur) return cur;
+          cur.score = (cur.score || 0) + 1;
+          cur.singerIdx = (cur.singerIdx || 0) + 1;
+          cur.singerStartAt = now;
+          cur.lastCorrect = singer.name;
+          cur.lastActive = now;
+          return cur;
+        });
+      } else {
+        showBad("❌ Not quite — keep trying (more hints unlock soon).");
+      }
+    }
+
+    async function skipSinger(){
+      if (!roomState || roomState.status !== "playing") {
+        showBad("Press Start to begin the round first.");
+        return;
+      }
+      if (!myState) return;
+
+      const now = serverNow();
+      await runTransaction(myRef, (cur) => {
+        if (!cur) return cur;
+        cur.singerIdx = (cur.singerIdx || 0) + 1;
+        cur.singerStartAt = now;
+        cur.lastActive = now;
+        return cur;
+      });
+
+      showBad("⏭️ Skipped. No points. Next singer!");
+      guessInput.value = "";
+      hideSuggestions();
+    }
+
+    function renderRoom(){
+      youNameEl.textContent = playerName;
+      youName2El.textContent = playerName;
+
+      isHost = !!roomState && roomState.hostUid === uid;
+
+      youScoreEl.textContent = String(myState?.score || 0);
+      if (oppState) {
+        oppNameEl.textContent = oppState.name || "Friend";
+        oppScoreEl.textContent = String(oppState.score || 0);
+      } else {
+        oppNameEl.textContent = "Waiting for friend…";
+        oppScoreEl.textContent = "0";
+      }
+
+      const st = roomState?.status || "waiting";
+      const canStart = isHost && !!oppState && st !== "playing";
+      startBtn.disabled = !canStart;
+
+      if (st === "waiting") {
+        statusText.textContent = isHost
+          ? (oppState ? "Friend joined — press Start!" : "Share the link, then wait for your friend.")
+          : "Waiting for host to start…";
+      } else if (st === "playing") {
+        statusText.textContent = "GO! Guess fast — the timer is running.";
+      } else {
+        statusText.textContent = "Round ended.";
+      }
+
+      // Self-reset when a new game starts
+      if (roomState?.status === "playing" && myState && roomState.startAt) {
+        const needReset =
+          (typeof myState.lastSeenStartAt !== "number") ||
+          (myState.lastSeenStartAt !== roomState.startAt);
+
+        if (needReset) {
+          update(myRef, {
+            score: 0,
+            singerIdx: 0,
+            singerStartAt: roomState.startAt,
+            lastSeenStartAt: roomState.startAt,
+            lastActive: serverNow()
+          });
+        }
+      }
+
+      if (!tickTimer) tickTimer = setInterval(tick, 200);
+
+      if (roomState?.status === "ended" && !endedShown) {
+        endedShown = true;
+        showEndModal();
+      }
+    }
+
+    function tick(){
+      if (!roomState) return;
+
+      if (roomState.status === "playing" && roomState.endAt) {
+        const remaining = roomState.endAt - serverNow();
+        timeLeftEl.textContent = fmtTime(remaining);
+        const pct = Math.max(0, Math.min(1, remaining / GAME_DURATION_MS));
+        timeBar.style.width = (pct * 100).toFixed(2) + "%";
+        endGameIfNeeded();
+      } else if (roomState.status === "waiting") {
+        timeLeftEl.textContent = "05:00";
+        timeBar.style.width = "100%";
+      } else {
+        timeLeftEl.textContent = "00:00";
+        timeBar.style.width = "0%";
+      }
+
+      // ✅ key fix: input always typeable (never disable)
+      guessInput.disabled = false;
+
+      const playing = roomState.status === "playing";
+      submitGuessBtn.disabled = !playing;
+      skipBtn.disabled = !playing;
+      if (!playing) hideSuggestions();
+
+      if (!myState) return;
+
+      const idx = myState.singerIdx ?? 0;
+      const singer = SINGERS[idx % SINGERS.length];
+      const startAt = myState.singerStartAt ?? serverNow();
+      const elapsed = Math.max(0, serverNow() - startAt);
+      const unlocked = Math.min(HINT_COUNT, Math.floor(elapsed / HINT_STEP_MS) + 1);
+
+      roundInfo.textContent = `#${idx + 1}`;
+
+      for (let i=0;i<HINT_COUNT;i++){
+        const box = hintEls[i];
+        const icon = box.querySelector(".icon");
+        const txt = box.querySelector(".txt");
+
+        if (i < unlocked) {
+          box.classList.remove("locked");
+          icon.innerHTML = '<i class="fa-solid fa-unlock"></i>';
+          txt.textContent = singer.hints[i] || "—";
+        } else {
+          box.classList.add("locked");
+          icon.innerHTML = '<i class="fa-solid fa-lock"></i>';
+          const unlockIn = Math.max(0, Math.ceil(((i * HINT_STEP_MS) - elapsed) / 1000));
+          txt.textContent = `Locked — unlocks in ${unlockIn}s`;
+        }
+      }
+    }
+
+    function showEndModal(){
+      const myScore = myState?.score || 0;
+      const oppScore = oppState?.score || 0;
+
+      let title = "Time’s up!";
+      let msg = `You scored ${myScore}.`;
+
+      if (oppState) {
+        if (myScore > oppScore) title = "🏆 You win!";
+        else if (myScore < oppScore) title = "😅 You lost!";
+        else title = "🤝 Tie game!";
+        msg = `Final score: You ${myScore} — ${oppState.name || "Friend"} ${oppScore}`;
+      } else {
+        msg = `You scored ${myScore}. Invite a friend for head-to-head racing.`;
+      }
+
+      endTitle.textContent = title;
+      endMsg.textContent = msg;
+      endOverlay.classList.add("active");
+
+      playAgainBtn.disabled = !isHost;
+      playAgainBtn.style.opacity = isHost ? "1" : ".55";
+      playAgainBtn.title = isHost ? "" : "Only the host can restart.";
+    }
+
+    function clearFeedback(){
+      feedbackEl.className = "feedback";
+      feedbackEl.style.display = "none";
+      feedbackEl.textContent = "";
+    }
+    function showGood(msg){
+      feedbackEl.className = "feedback good";
+      feedbackEl.textContent = msg;
+      feedbackEl.style.display = "block";
+      setTimeout(() => { if (feedbackEl.classList.contains("good")) clearFeedback(); }, 900);
+    }
+    function showBad(msg){
+      feedbackEl.className = "feedback bad";
+      feedbackEl.textContent = msg;
+      feedbackEl.style.display = "block";
+      setTimeout(() => { if (feedbackEl.classList.contains("bad")) clearFeedback(); }, 1200);
+    }
+
+    function showSuggestions(list){
+      currentSuggestions = list;
+      activeSuggestionIndex = -1;
+      if (!list.length){ hideSuggestions(); return; }
+      suggestBox.innerHTML = list.map((name, i) => `
+        <div class="suggest-item" data-index="${i}">
+          <span>${name}</span>
+          <span class="suggest-muted">${i===0 ? "Enter to submit" : "Click"}</span>
+        </div>
+      `).join("");
+      suggestBox.style.display = "block";
+    }
+    function hideSuggestions(){
+      suggestBox.style.display = "none";
+      suggestBox.innerHTML = "";
+      currentSuggestions = [];
+      activeSuggestionIndex = -1;
+    }
+    function setActiveSuggestion(i){
+      const items = [...suggestBox.querySelectorAll(".suggest-item")];
+      items.forEach(x => x.classList.remove("active"));
+      if (i >= 0 && i < items.length){
+        items[i].classList.add("active");
+        activeSuggestionIndex = i;
+      } else activeSuggestionIndex = -1;
+    }
+    function acceptSuggestion(index=0){
+      if (!currentSuggestions.length) return false;
+      const chosen = currentSuggestions[Math.max(0, Math.min(index, currentSuggestions.length-1))];
+      guessInput.value = chosen;
+      hideSuggestions();
+      return true;
+    }
+
+    guessInput.addEventListener("input", () => {
+      // allow typing always; only show suggestions while playing
+      if (!roomState || roomState.status !== "playing") { hideSuggestions(); return; }
+      const q = canon(guessInput.value);
+      if (q.length < 1) { hideSuggestions(); return; }
+      const matches = ARTIST_NAMES.filter(n => canon(n).startsWith(q)).slice(0, 8);
+      showSuggestions(matches);
+    });
+
+    guessInput.addEventListener("keydown", (e) => {
+      const boxOpen = suggestBox.style.display === "block";
+
+      if (boxOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")){
+        e.preventDefault();
+        const max = currentSuggestions.length - 1;
+        if (e.key === "ArrowDown"){
+          const next = (activeSuggestionIndex < max) ? activeSuggestionIndex + 1 : 0;
+          setActiveSuggestion(next);
+        } else {
+          const prev = (activeSuggestionIndex > 0) ? activeSuggestionIndex - 1 : max;
+          setActiveSuggestion(prev);
+        }
+        return;
+      }
+
+      if (e.key === "Enter"){
+        e.preventDefault();
+        if (boxOpen && activeSuggestionIndex >= 0) acceptSuggestion(activeSuggestionIndex);
+        submitGuess();
+        return;
+      }
+
+      if (e.key === "Tab" && boxOpen){
+        e.preventDefault();
+        acceptSuggestion(activeSuggestionIndex >= 0 ? activeSuggestionIndex : 0);
+        return;
+      }
+
+      if (e.key === "Escape") hideSuggestions();
+    });
+
+    suggestBox.addEventListener("mousedown", (e) => {
+      const item = e.target.closest(".suggest-item");
+      if (!item) return;
+      const idx = Number(item.getAttribute("data-index"));
+      acceptSuggestion(idx);
+      submitGuess();
+    });
+
+    guessInput.addEventListener("blur", () => setTimeout(hideSuggestions, 120));
+
+    // UI
+    copyLinkBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(shareUrl || window.location.href);
+        showGood("📋 Link copied! Send it to your friend.");
+      } catch {
+        showBad("Couldn’t copy automatically — copy the URL manually.");
+      }
+    });
+
+    startBtn.addEventListener("click", startGame);
+    $("submitGuessBtn").addEventListener("click", submitGuess);
+    $("skipBtn").addEventListener("click", skipSinger);
+
+    $("changeNameBtn").addEventListener("click", () => {
+      nameInput.value = playerName ? playerName : "";
+      nameOverlay.classList.add("active");
+      setTimeout(() => nameInput.focus(), 50);
+    });
+
+    saveNameBtn.addEventListener("click", async () => {
+      const val = (nameInput.value || "").trim().slice(0,24);
+      if (!val) { showBad("Pick a name first."); return; }
+      playerName = val;
+      localStorage.setItem("h2h_playerName", playerName);
+      youNameEl.textContent = playerName;
+      youName2El.textContent = playerName;
+      if (myRef) await update(myRef, { name: playerName });
+      nameOverlay.classList.remove("active");
+      showGood("✅ Name updated.");
+    });
+
+    nameOverlay.addEventListener("click", (e) => {
+      if (e.target === nameOverlay) nameOverlay.classList.remove("active");
+    });
+
+    leaveBtn.addEventListener("click", async () => {
+      try{ if (myRef) await remove(myRef); } catch {}
+      const clean = new URL(window.location.href);
+      clean.searchParams.delete("room");
+      window.location.href = clean.toString();
+    });
+
+    closeEndBtn.addEventListener("click", () => endOverlay.classList.remove("active"));
+    endOverlay.addEventListener("click", (e) => { if (e.target === endOverlay) endOverlay.classList.remove("active"); });
+
+    playAgainBtn.addEventListener("click", async () => {
+      if (!isHost) return;
+      endOverlay.classList.remove("active");
+      await startGame();
+    });
+
+    // Boot
+    try{
+      await ensureRoom();
+      // make it feel responsive
+      setTimeout(() => guessInput.focus(), 150);
+    } catch (e){
+      console.error(e);
+      showFatal("Something went wrong loading multiplayer. Check console.");
+    }
+  </script>
+</body>
+</html>
