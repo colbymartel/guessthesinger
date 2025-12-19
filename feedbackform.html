@@ -7,11 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Poppins', Arial, sans-serif;
@@ -20,10 +16,9 @@
       color: #333;
       display: flex;
       flex-direction: column;
-      padding-bottom: 70px; /* for bottom nav */
+      padding-bottom: 70px;
     }
 
-    /* Header */
     header {
       background: linear-gradient(135deg, #3b7bbf, #234d7d);
       padding: 30px 20px;
@@ -39,7 +34,6 @@
       display: block;
     }
 
-    /* Top nav */
     nav.top-nav {
       background-color: #1e2b38;
       padding: 12px 16px;
@@ -57,9 +51,7 @@
       gap: 16px;
     }
 
-    .welcome-nav {
-      position: relative;
-    }
+    .welcome-nav { position: relative; }
 
     .welcome-msg {
       cursor: pointer;
@@ -80,9 +72,7 @@
       z-index: 10;
     }
 
-    .dropdown.show {
-      display: flex;
-    }
+    .dropdown.show { display: flex; }
 
     .dropdown a {
       color: white;
@@ -103,10 +93,7 @@
       height: 24px;
       background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
       border-radius: 50%;
-      box-shadow:
-        0 2px 0 #cfa300,
-        0 4px 0 #b8860b,
-        0 6px 0 #8c6e00;
+      box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
       position: relative;
       display: inline-block;
     }
@@ -124,13 +111,12 @@
     }
 
     #coinWrapper {
-      display:flex;
-      align-items:center;
-      gap:6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: 0.95rem;
     }
 
-    /* Main content */
     .main {
       flex: 1;
       max-width: 700px;
@@ -163,10 +149,7 @@
     .feedback-badge .coin-emoji {
       width: 18px;
       height: 18px;
-      box-shadow:
-        0 1px 0 #cfa300,
-        0 2px 0 #b8860b,
-        0 3px 0 #8c6e00;
+      box-shadow: 0 1px 0 #cfa300, 0 2px 0 #b8860b, 0 3px 0 #8c6e00;
     }
 
     .feedback-title {
@@ -174,12 +157,6 @@
       font-weight: 700;
       color: #234d7d;
       margin-bottom: 6px;
-    }
-
-    .feedback-subtitle {
-      font-size: 0.98rem;
-      color: #556677;
-      margin-bottom: 18px;
     }
 
     .login-note {
@@ -194,13 +171,9 @@
       margin-bottom: 12px;
     }
 
-    .logged-in-line span {
-      font-weight: 600;
-    }
+    .logged-in-line span { font-weight: 600; }
 
-    .form-section {
-      margin-bottom: 18px;
-    }
+    .form-section { margin-bottom: 18px; }
 
     .form-section label {
       display: block;
@@ -216,48 +189,13 @@
       margin-bottom: 8px;
     }
 
-    .rating-options {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 4px;
-    }
-
-    .rating-pill input {
-      display: none;
-    }
-
-    .rating-pill label {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 34px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid #cfd8e5;
-      font-size: 0.9rem;
-      cursor: pointer;
-      color: #45566a;
-      background: #f7f9fc;
-      transition: all 0.15s ease;
-    }
-
-    .rating-pill input:checked + label {
-      background: #3b7bbf;
-      border-color: #315f85;
-      color: #fff;
-      box-shadow: 0 3px 0 #315f85;
-    }
-
     .toggle-options {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
 
-    .toggle-pill input {
-      display: none;
-    }
+    .toggle-pill input { display: none; }
 
     .toggle-pill label {
       display: inline-flex;
@@ -299,6 +237,23 @@
       box-shadow: 0 0 0 2px rgba(59,123,191,0.15);
     }
 
+    .text-input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #cfd8e5;
+      padding: 10px 12px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #fdfefe;
+    }
+
+    .text-input:focus {
+      border-color: #3b7bbf;
+      box-shadow: 0 0 0 2px rgba(59,123,191,0.15);
+    }
+
     .submit-row {
       margin-top: 18px;
       display: flex;
@@ -332,23 +287,11 @@
       box-shadow: 0px 2px 0px #2e8b57;
     }
 
-    .cta-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    .cta-button:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .status-message {
-      font-size: 0.9rem;
-      margin-top: 4px;
-    }
-
-    .status-message.success {
-      color: #2e7d32;
-    }
-
-    .status-message.error {
-      color: #c0392b;
-    }
+    .status-message { font-size: 0.9rem; margin-top: 4px; }
+    .status-message.success { color: #2e7d32; }
+    .status-message.error { color: #c0392b; }
 
     .coin-note {
       font-size: 0.85rem;
@@ -361,13 +304,9 @@
     .coin-note .coin-emoji {
       width: 16px;
       height: 16px;
-      box-shadow:
-        0 1px 0 #cfa300,
-        0 2px 0 #b8860b,
-        0 3px 0 #8c6e00;
+      box-shadow: 0 1px 0 #cfa300, 0 2px 0 #b8860b, 0 3px 0 #8c6e00;
     }
 
-    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -401,26 +340,20 @@
       object-fit: contain;
     }
 
-    .bottom-nav .nav-item:hover {
-      color: #ffcb05;
-    }
+    .bottom-nav .nav-item:hover { color: #ffcb05; }
 
     @media (min-width: 640px) {
-      .feedback-card {
-        padding: 26px 26px 28px;
-      }
+      .feedback-card { padding: 26px 26px 28px; }
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="logo">
       <img src="../images/SingerLogo.png" alt="Guess the Singer Logo" loading="lazy">
     </div>
   </header>
 
-  <!-- Top Nav -->
   <nav class="top-nav">
     <div class="nav-left">
       <div class="welcome-nav">
@@ -435,7 +368,6 @@
     </div>
   </nav>
 
-  <!-- Main -->
   <main class="main">
     <section class="feedback-card">
       <div class="feedback-badge">
@@ -444,7 +376,7 @@
       </div>
 
       <h1 class="feedback-title">Guess the Singer - Feedback Form</h1>
-    
+
       <div id="authInfo" class="login-note">
         Log in or create a profile to earn 100 coins for submitting feedback.
       </div>
@@ -454,7 +386,6 @@
 
       <br>
 
-      <!-- Correct guess? -->
       <div class="form-section">
         <label>Did you guess the singer correctly?</label>
         <div class="toggle-options">
@@ -469,27 +400,23 @@
         </div>
       </div>
 
-        <!-- How did you hear about this game? -->
-        <div class="form-section">
-          <label>How did you hear about this website?</label>
-          <div class="form-help">Ex: TikTok, a friend, campus event, YouTube, Instagram, Discord, etc.</div>
-          <textarea id="referralSource" placeholder="Tell us where you first discovered Guess The Singer."></textarea>
-        </div>
+      <div class="form-section">
+        <label>How did you hear about this website?</label>
+        <div class="form-help">Ex: TikTok, a friend, campus event, YouTube, Instagram, Discord, etc.</div>
+        <textarea id="referralSource" placeholder="Tell us where you first discovered Guess The Singer."></textarea>
+      </div>
 
-      <!-- Open feedback -->
       <div class="form-section">
         <label>What feedback do you have about today's game?</label>
         <div class="form-help">Ex: questions, game design, hints etc.</div>
         <textarea id="feedbackText" placeholder="Share any thoughts that would make this game better for you."></textarea>
       </div>
 
-      <!-- Extra question -->
       <div class="form-section">
         <label>Any question options you think I should add?</label>
         <textarea id="artistIdeas" placeholder="Drop any questions that may help you guess the singer."></textarea>
       </div>
 
-      <!-- Email updates opt-in -->
       <div class="form-section">
         <label>Do you want to receive emails about future updates and opportunities?</label>
         <div class="form-help">We’ll only email you about Guess The Singer / GuessingGames.com.</div>
@@ -505,6 +432,12 @@
         </div>
       </div>
 
+      <div class="form-section" id="firstNameSection" style="display:none;">
+        <label>If yes, what is your first name?</label>
+        <div class="form-help">So I know what to call you in update emails.</div>
+        <input id="firstName" class="text-input" type="text" placeholder="First name" maxlength="40" />
+      </div>
+
       <div class="submit-row">
         <button id="submitFeedback" class="cta-button">
           Submit Feedback &amp; Claim 100 Coins
@@ -518,7 +451,6 @@
     </section>
   </main>
 
-  <!-- Bottom Nav -->
   <footer class="bottom-nav">
     <a href="/profile.html" class="nav-item">
       <i class="fas fa-user"></i>
@@ -538,7 +470,6 @@
     </a>
   </footer>
 
-  <!-- Firebase + Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import {
@@ -570,7 +501,6 @@
     const db  = getFirestore(app);
     const auth = getAuth(app);
 
-    // DOM elements
     const welcomeEl      = document.getElementById("welcomeMessage");
     const dropdownMenu   = document.getElementById("dropdownMenu");
     const coinDisplay    = document.getElementById("coinCount");
@@ -580,23 +510,25 @@
     const submitBtn      = document.getElementById("submitFeedback");
     const statusMessage  = document.getElementById("statusMessage");
 
+    const emailYesEl       = document.getElementById("emailYes");
+    const emailNoEl        = document.getElementById("emailNo");
+    const firstNameSection = document.getElementById("firstNameSection");
+    const firstNameInput   = document.getElementById("firstName");
+
     let currentUserUid = null;
     let currentUserEmail = null;
     let currentUserCoins = 0;
     let userDocRef = null;
-    let lastFeedbackDate = null; // YYYY-MM-DD string of last feedback
+    let lastFeedbackDate = null;
 
-    // Global handler: any click on a login link gets a redirect param
     document.addEventListener('click', (e) => {
       const link = e.target.closest('a[href="/login.html"], a[href="login.html"]');
       if (!link) return;
 
       e.preventDefault();
-
       const currentUrl = window.location.pathname + window.location.search;
-      const baseHref = link.getAttribute('href').split('?')[0]; // strip any existing query
-      const target = `${baseHref}?redirect=${encodeURIComponent(currentUrl)}`;
-
+      const baseHref = link.getAttribute('href').split('?')[0];
+      const target = baseHref + "?redirect=" + encodeURIComponent(currentUrl);
       window.location.href = target;
     });
 
@@ -609,12 +541,8 @@
           <a href="/signup.html">Create Profile</a>
         `;
       }
-      if (authInfo) {
-        authInfo.style.display = "block";
-      }
-      if (loggedInLine) {
-        loggedInLine.style.display = "none";
-      }
+      if (authInfo) authInfo.style.display = "block";
+      if (loggedInLine) loggedInLine.style.display = "none";
       currentUserUid = null;
       currentUserEmail = null;
       currentUserCoins = 0;
@@ -622,7 +550,6 @@
       lastFeedbackDate = null;
     }
 
-    // Auth state listener
     onAuthStateChanged(auth, async (user) => {
       if (!dropdownMenu || !welcomeEl || !coinDisplay) return;
 
@@ -647,15 +574,11 @@
           const docSnap = snapshot.docs[0];
           userDocRef = docSnap.ref;
           const data = docSnap.data();
+
           if (data.username) displayName = data.username;
           if (typeof data.coins === "number") coins = data.coins;
-          if (data.feedbackLastDate) {
-            lastFeedbackDate = data.feedbackLastDate;
-          }
-          // fallback email from user doc if needed
-          if (!currentUserEmail && data.email) {
-            currentUserEmail = data.email;
-          }
+          if (data.feedbackLastDate) lastFeedbackDate = data.feedbackLastDate;
+          if (!currentUserEmail && data.email) currentUserEmail = data.email;
         } else {
           userDocRef = null;
           lastFeedbackDate = null;
@@ -666,7 +589,7 @@
 
       currentUserCoins = coins;
 
-      welcomeEl.textContent = `Welcome, ${displayName}`;
+      welcomeEl.textContent = "Welcome, " + displayName;
       coinDisplay.textContent = coins.toString();
 
       dropdownMenu.innerHTML = `
@@ -687,18 +610,11 @@
         });
       }
 
-      if (authInfo) {
-        authInfo.style.display = "none";
-      }
-      if (loggedInLine) {
-        loggedInLine.style.display = "block";
-      }
-      if (userEmailLabel) {
-        userEmailLabel.textContent = currentUserEmail || "no email on file";
-      }
+      if (authInfo) authInfo.style.display = "none";
+      if (loggedInLine) loggedInLine.style.display = "block";
+      if (userEmailLabel) userEmailLabel.textContent = currentUserEmail || "no email on file";
     });
 
-    // Dropdown toggle
     if (welcomeEl && dropdownMenu) {
       welcomeEl.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -712,19 +628,30 @@
       });
     }
 
-    // Helper: get selected radio value
     function getRadioValue(name) {
-      const selected = document.querySelector(`input[name="${name}"]:checked`);
+      const selector = 'input[name="' + name + '"]:checked';
+      const selected = document.querySelector(selector);
       return selected ? selected.value : null;
     }
 
-    // Submit feedback (limit: 1 per logged-in user per day)
+    function updateFirstNameVisibility() {
+      const emailUpdatesVal = getRadioValue("emailUpdates");
+      const show = emailUpdatesVal === "yes";
+      if (firstNameSection) firstNameSection.style.display = show ? "block" : "none";
+      if (!show && firstNameInput) firstNameInput.value = "";
+    }
+
+    [emailYesEl, emailNoEl].forEach(el => {
+      if (!el) return;
+      el.addEventListener("change", updateFirstNameVisibility);
+    });
+    updateFirstNameVisibility();
+
     submitBtn.addEventListener("click", async () => {
       statusMessage.textContent = "";
       statusMessage.className = "status-message";
 
-      // If logged in, enforce 1 feedback per day
-      const todayStr = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+      const todayStr = new Date().toISOString().slice(0, 10);
 
       if (currentUserUid && lastFeedbackDate === todayStr) {
         statusMessage.textContent = "You’ve already submitted feedback today. Come back tomorrow for more coins! 😊";
@@ -732,20 +659,24 @@
         return;
       }
 
-      // Gather values
-      const guessedCorrectlyVal  = getRadioValue("guessedCorrectly");
-      const emailUpdatesVal      = getRadioValue("emailUpdates");
-
-      // OPTIONAL – if no inputs exist with these names, they'll just be null
-      const funRatingVal         = getRadioValue("funRating");
-      const difficultyRatingVal  = getRadioValue("difficultyRating");
+      const guessedCorrectlyVal = getRadioValue("guessedCorrectly");
+      const emailUpdatesVal     = getRadioValue("emailUpdates");
+      const funRatingVal        = getRadioValue("funRating");
+      const difficultyRatingVal = getRadioValue("difficultyRating");
 
       const feedbackText   = document.getElementById("feedbackText").value.trim();
       const artistIdeas    = document.getElementById("artistIdeas").value.trim();
       const referralSource = document.getElementById("referralSource").value.trim();
+      const firstName      = firstNameInput ? firstNameInput.value.trim() : "";
 
       if (!guessedCorrectlyVal) {
         statusMessage.textContent = "Please answer whether you guessed correctly before submitting.";
+        statusMessage.classList.add("error");
+        return;
+      }
+
+      if (emailUpdatesVal === "yes" && !firstName) {
+        statusMessage.textContent = "If you want email updates, please add your first name. 🙂";
         statusMessage.classList.add("error");
         return;
       }
@@ -754,18 +685,19 @@
       submitBtn.textContent = "Submitting...";
 
       const guessedCorrectly = guessedCorrectlyVal === "yes";
-      let wantsEmailUpdates  = null;
+      let wantsEmailUpdates = null;
       if (emailUpdatesVal === "yes") wantsEmailUpdates = true;
       if (emailUpdatesVal === "no")  wantsEmailUpdates = false;
 
       try {
-        // Create feedback document including email + uid + new fields
         await addDoc(collection(db, "feedbackEntries"), {
           uid: currentUserUid || null,
           email: currentUserEmail || null,
-          // safely handle missing rating inputs
+          firstName: firstName || null,
+
           funRating: funRatingVal ? Number(funRatingVal) : null,
           difficultyRating: difficultyRatingVal ? Number(difficultyRatingVal) : null,
+
           guessedCorrectly,
           wantsEmailUpdates,
           feedbackText: feedbackText || null,
@@ -774,17 +706,14 @@
           timestamp: serverTimestamp()
         });
 
-        // Award coins + update lastFeedbackDate if logged in and we have a user doc
         if (currentUserUid && userDocRef) {
           const newCoins = currentUserCoins + 100;
-          await updateDoc(userDocRef, {
-            coins: newCoins,
-            feedbackLastDate: todayStr
-          });
+          await updateDoc(userDocRef, { coins: newCoins, feedbackLastDate: todayStr });
+
           currentUserCoins = newCoins;
           lastFeedbackDate = todayStr;
-
           coinDisplay.textContent = newCoins.toString();
+
           statusMessage.textContent = "Thanks for the feedback! 100 coins have been added to your account. 🎉";
         } else {
           statusMessage.textContent = "Thanks for the feedback! Log in next time to earn coins too. 🙌";
@@ -792,14 +721,17 @@
 
         statusMessage.classList.add("success");
 
-        // Reset form
         document.querySelectorAll('input[name="funRating"]').forEach(el => el.checked = false);
         document.querySelectorAll('input[name="difficultyRating"]').forEach(el => el.checked = false);
         document.querySelectorAll('input[name="guessedCorrectly"]').forEach(el => el.checked = false);
         document.querySelectorAll('input[name="emailUpdates"]').forEach(el => el.checked = false);
+
         document.getElementById("feedbackText").value = "";
         document.getElementById("artistIdeas").value = "";
         document.getElementById("referralSource").value = "";
+
+        if (firstNameInput) firstNameInput.value = "";
+        updateFirstNameVisibility();
 
       } catch (err) {
         console.error("Error submitting feedback:", err);
