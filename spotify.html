@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guess the Password, WIN a Gift!</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(to bottom, #ffffff, #e7f1f9);
+      min-height: 100vh;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 70px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #3b7bbf, #234d7d);
+      padding: 32px 16px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .header .logo img {
+      width: min(200px, 70vw);
+      height: auto;
+      margin: 0 auto;
+      display: block;
+    }
+
+    nav {
+      background-color: #1e2b38;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      width: 100%;
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 14px; }
+
+    .welcome-nav { position: relative; }
+    .welcome-msg { cursor: pointer; font-weight: bold; user-select: none; }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background-color: #1e2b38;
+      padding: 10px;
+      border-radius: 10px;
+      flex-direction: column;
+      min-width: 160px;
+      z-index: 20;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .dropdown.show { display: flex; }
+    .dropdown a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 12px;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+    .dropdown a:hover { background-color: #ffcb05; color: #1e2b38; }
+
+    .coin-emoji {
+      width: 22px; height: 22px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #f1c40f);
+      border-radius: 50%;
+      box-shadow: 0 2px 0 #cfa300, 0 4px 0 #b8860b, 0 6px 0 #8c6e00;
+      position: relative;
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+    .coin-emoji::after {
+      content: "";
+      position: absolute;
+      top: 2px; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at 30% 30%, #ffe066, transparent);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #1e2b38;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0;
+      z-index: 999;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    }
+    .bottom-nav .nav-item {
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .bottom-nav .nav-item i { font-size: 20px; width: 24px; height: 24px; }
+    .bottom-nav .nav-item:hover { color: #ffcb05; }
+
+    .game-label {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #3b7bbf;
+      margin-top: 26px;
+      padding: 0 14px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 18px 14px;
+      max-width: 820px;
+      width: 100%;
+      margin: 0 auto;
+      padding-bottom: calc(92px + env(safe-area-inset-bottom));
+    }
+
+    .card {
+      width: 100%;
+      background: #fff;
+      border: 2px solid #4682b4;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #4682b4;
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    /* Desktop: single row */
+    .code-grid {
+      display: grid;
+      grid-template-columns: repeat(11, minmax(44px, 1fr));
+      gap: 10px;
+      justify-items: center;
+      margin: 10px 0 14px;
+    }
+
+    /* Mobile: two rows (6 + 5) */
+    @media (max-width: 560px) {
+      .code-grid { grid-template-columns: repeat(6, minmax(40px, 1fr)); }
+      .code-grid .char-box:nth-child(n+7) { grid-row: 2; }
+      .code-grid .char-box:nth-child(7) { grid-column: 1; }
+      .code-grid .char-box:nth-child(8) { grid-column: 2; }
+      .code-grid .char-box:nth-child(9) { grid-column: 3; }
+      .code-grid .char-box:nth-child(10){ grid-column: 4; }
+      .code-grid .char-box:nth-child(11){ grid-column: 5; }
+    }
+
+    .char-box {
+      width: 48px;
+      height: 56px;
+      border-radius: 14px;
+      border: 2px solid #cfcfcf;
+      background: #fff;
+      text-align: center;
+      font-size: 16px;              /* prevents iOS zoom */
+      font-weight: 900;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      font-family: 'Poppins', Arial, sans-serif;
+      text-transform: uppercase;
+      caret-color: #4682b4;
+    }
+
+    .char-box:focus {
+      border-color: #4682b4;
+      box-shadow: 0 0 0 3px rgba(70,130,180,0.18);
+    }
+
+    @media (max-width: 360px) {
+      .char-box { width: 42px; height: 54px; }
+    }
+
+    /* Result colors (only after submit) */
+    .correct {
+      border-color: #3CB371 !important;
+      box-shadow: 0 0 0 3px rgba(60,179,113,0.18) !important;
+    }
+    .present-wrong-spot {
+      border-color: #f7c94a !important;
+      box-shadow: 0 0 0 3px rgba(247,201,74,0.20) !important;
+    }
+    .wrong {
+      border-color: #d9534f !important;
+      box-shadow: 0 0 0 3px rgba(217,83,79,0.18) !important;
+    }
+
+    .cta-button {
+      width: 100%;
+      height: 52px;
+      border-radius: 12px;
+      background-color: #4682b4;
+      box-shadow: 0px 4px 0px 0px #315f85;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Poppins', Arial, sans-serif;
+      touch-action: manipulation;
+    }
+    .cta-button:hover {
+      background: #315f85;
+      transform: translateY(-2px);
+      box-shadow: 0px 6px 0px 0px #315f85;
+    }
+    .cta-button:active {
+      transform: translateY(2px);
+      box-shadow: 0px 2px 0px 0px #315f85;
+    }
+
+    .result-text {
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+      background: #f0f8ff;
+      border-left: 4px solid #4682b4;
+      color: #1e2b38;
+      display: none;
+      line-height: 1.35;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+      color: #444;
+      font-size: 0.9rem;
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-dot {
+      width: 12px; height: 12px;
+      border-radius: 999px;
+      border: 2px solid #ccc;
+      background: #fff;
+      flex: 0 0 auto;
+    }
+    .legend-dot.green { border-color: #3CB371; }
+    .legend-dot.yellow { border-color: #f7c94a; }
+    .legend-dot.red { border-color: #d9534f; }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="../images/SingerLogo.png" alt="GuessingGames Logo" loading="lazy">
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-left">
+      <div class="welcome-nav">
+        <div id="welcomeMessage" class="welcome-msg">Welcome, Anonymous</div>
+        <div id="dropdownMenu" class="dropdown">
+          <a href="/login.html">Log In</a>
+          <a href="/signup.html">Create Profile</a>
+        </div>
+      </div>
+
+      <div id="coinWrapper" style="display:flex;align-items:center;gap:6px;">
+        <div class="coin-emoji"></div>
+        <span id="coinCount" style="font-weight:bold;">0</span>
+      </div>
+    </div>
+    <div></div>
+  </nav>
+
+
+  <div class="main">
+    <div class="card">
+      <div class="title">Guess the Password, WIN a Gift!🎁</div>
+      <div class="subtitle">Type letters/numbers below.</div>
+
+      <div class="code-grid" id="codeGrid" aria-label="Code input boxes"></div>
+
+      <button class="cta-button" id="submitBtn">Check Code</button>
+
+      <div class="result-text" id="resultText" aria-live="polite"></div>
+
+      <div class="legend" aria-label="Color legend">
+        <div class="legend-item"><span class="legend-dot green"></span>Correct spot</div>
+        <div class="legend-item"><span class="legend-dot yellow"></span>In code, wrong spot</div>
+        <div class="legend-item"><span class="legend-dot red"></span>Not in code</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bottom-nav">
+    <a href="/profile.html" class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+    <a href="/games.html" class="nav-item">
+      <i class="fas fa-gamepad"></i>
+      <span>Games</span>
+    </a>
+    <a href="/memory-leaderboard.html" class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboards</span>
+    </a>
+    <a href="/rewards.html" class="nav-item">
+      <i class="fas fa-gift"></i>
+      <span>Rewards</span>
+    </a>
+  </footer>
+
+  <script>
+    // ✅ correct code (change anytime)
+    const CORRECT_CODE = "BHNAPRK4YZ7";
+    const CODE_LEN = 11;
+
+    // If you want true case-sensitivity: set false AND remove text-transform: uppercase from CSS
+    const CASE_INSENSITIVE = true;
+
+    // Dropdown toggle
+    const welcomeEl = document.getElementById("welcomeMessage");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    if (welcomeEl && dropdownMenu) {
+      welcomeEl.addEventListener("click", (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle("show");
+      });
+      document.addEventListener("click", (e) => {
+        if (!dropdownMenu.contains(e.target) && e.target !== welcomeEl) {
+          dropdownMenu.classList.remove("show");
+        }
+      });
+    }
+
+    const grid = document.getElementById("codeGrid");
+    const submitBtn = document.getElementById("submitBtn");
+    const resultText = document.getElementById("resultText");
+
+    const inputs = [];
+    let hasSubmittedOnce = false;
+
+    function normalizeChar(ch) {
+      const c = (ch || "").replace(/\s/g, "");
+      if (!c) return "";
+      const one = c[c.length - 1];
+      return CASE_INSENSITIVE ? one.toUpperCase() : one;
+    }
+
+    function targetStr() {
+      const t = (CASE_INSENSITIVE ? CORRECT_CODE.toUpperCase() : CORRECT_CODE);
+      return t.slice(0, CODE_LEN);
+    }
+
+    function clearColors() {
+      inputs.forEach(inp => inp.classList.remove("correct", "present-wrong-spot", "wrong"));
+    }
+
+    function getEnteredArray() {
+      return inputs.map(inp => normalizeChar(inp.value));
+    }
+
+    // Wordle-style presence check (handles duplicates correctly)
+    function computeStatuses(entered, target) {
+      const status = Array(CODE_LEN).fill("wrong");
+      const counts = {};
+
+      for (let i = 0; i < CODE_LEN; i++) {
+        const t = target[i];
+        counts[t] = (counts[t] || 0) + 1;
+      }
+
+      // exact matches
+      for (let i = 0; i < CODE_LEN; i++) {
+        if (entered[i] && entered[i] === target[i]) {
+          status[i] = "correct";
+          counts[entered[i]] -= 1;
+        }
+      }
+
+      // present elsewhere
+      for (let i = 0; i < CODE_LEN; i++) {
+        if (status[i] === "correct") continue;
+        const c = entered[i];
+        if (!c) continue;
+        if (counts[c] > 0) {
+          status[i] = "present";
+          counts[c] -= 1;
+        } else {
+          status[i] = "wrong";
+        }
+      }
+
+      return status;
+    }
+
+    function applyCheck() {
+      const target = targetStr();
+      const entered = getEnteredArray();
+
+      clearColors();
+
+      const statuses = computeStatuses(entered, target);
+
+      let correctSpots = 0;
+      let filledCount = 0;
+
+      for (let i = 0; i < CODE_LEN; i++) {
+        const c = entered[i];
+        if (c) filledCount++;
+        if (!c) continue; // leave empty neutral
+
+        if (statuses[i] === "correct") {
+          inputs[i].classList.add("correct");
+          correctSpots++;
+        } else if (statuses[i] === "present") {
+          inputs[i].classList.add("present-wrong-spot");
+        } else {
+          inputs[i].classList.add("wrong");
+        }
+      }
+
+      const enteredStr = entered.join("");
+      const isPerfect = filledCount === CODE_LEN && enteredStr === target;
+
+      resultText.style.display = "block";
+
+      if (isPerfect) {
+        // ✅ FINAL SUCCESS MESSAGE
+        resultText.textContent =
+          "Congrats! Go to spotify.com/redeem and enter this PIN to claim 1-Year of Spotify Premium!🥳🥳";
+        return;
+      }
+
+      if (filledCount < CODE_LEN) {
+        resultText.textContent = `✅ ${correctSpots} of ${CODE_LEN} characters are in the correct spot (you still have empty boxes).`;
+      } else {
+        resultText.textContent = `✅ ${correctSpots} of ${CODE_LEN} characters are in the correct spot.`;
+      }
+    }
+
+    // Create inputs
+    for (let i = 0; i < CODE_LEN; i++) {
+      const inp = document.createElement("input");
+      inp.type = "text";
+      inp.inputMode = "text"; // letters + numbers
+      inp.autocomplete = "off";
+      inp.autocapitalize = "characters";
+      inp.spellcheck = false;
+      inp.maxLength = 1;
+      inp.className = "char-box";
+      inp.setAttribute("aria-label", `Character ${i + 1} of ${CODE_LEN}`);
+
+      // typing -> normalize + advance
+      inp.addEventListener("input", () => {
+        inp.value = normalizeChar(inp.value);
+
+        // move to next after typing a character
+        if (inp.value && i < CODE_LEN - 1) inputs[i + 1].focus();
+
+        // per rule: only show colors after submit
+        if (!hasSubmittedOnce) clearColors();
+
+        resultText.style.display = "none";
+        resultText.textContent = "";
+      });
+
+      // backspace behavior (mobile-friendly)
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace") {
+          if (inp.value) return; // let it delete current char
+          if (i > 0) {
+            e.preventDefault();
+            inputs[i - 1].focus();
+            inputs[i - 1].value = "";
+          }
+          if (!hasSubmittedOnce) clearColors();
+        }
+
+        if (e.key === "ArrowLeft" && i > 0) inputs[i - 1].focus();
+        if (e.key === "ArrowRight" && i < CODE_LEN - 1) inputs[i + 1].focus();
+        if (e.key === "Enter") {
+          e.preventDefault();
+          submitBtn.click();
+        }
+      });
+
+      // paste fills across boxes starting at current
+      inp.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData("text") || "";
+        const cleaned = text.replace(/\s/g, "");
+        if (!cleaned) return;
+
+        let idx = i;
+        for (let k = 0; k < cleaned.length && idx < CODE_LEN; k++, idx++) {
+          inputs[idx].value = normalizeChar(cleaned[k]);
+        }
+
+        const focusIndex = Math.min(idx, CODE_LEN - 1);
+        inputs[focusIndex].focus();
+
+        if (!hasSubmittedOnce) clearColors();
+        resultText.style.display = "none";
+        resultText.textContent = "";
+      });
+
+      inputs.push(inp);
+      grid.appendChild(inp);
+    }
+
+    submitBtn.addEventListener("click", () => {
+      hasSubmittedOnce = true;
+      applyCheck();
+    });
+  </script>
+</body>
+</html>
