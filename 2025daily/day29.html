@@ -733,8 +733,8 @@
     <div></div>
   </nav>
 
-  <!-- Game #27 -->
-  <div id="gameLabel" class="game-label">Game #27</div>
+  <!-- Game #29 -->
+  <div id="gameLabel" class="game-label">Game #29</div>
 
   <div class="main">
     <div class="progress-wrapper">
@@ -865,8 +865,8 @@
       <p class="victory-message">You correctly guessed the mystery singer!</p>
 
       <div class="singer-reveal">
-        <div class="singer-name">SZA</div>
-        <img src="../images/sza.jpg" alt="SZA" class="singer-photo">
+        <div class="singer-name">NBA YoungBoy</div>
+        <img src="../images/nbayoungboy.jpg" alt="NBA YoungBoy" class="singer-photo">
       </div>
 
       <div style="margin-bottom: 25px;">
@@ -891,8 +891,8 @@
       <p class="victory-message">You ran out of questions or gave up. The mystery singer was:</p>
 
       <div class="singer-reveal">
-        <div class="singer-name">SZA</div>
-        <img src="../images/sza.jpg" alt="SZA" class="singer-photo">
+        <div class="singer-name">NBA YoungBoy</div>
+        <img src="../images/nbayoungboy.jpg" alt="NBA YoungBoy" class="singer-photo">
       </div>
 
       <div style="margin-bottom: 25px;">
@@ -948,16 +948,16 @@
   </div>
 
   <script>
-    // ==== GAME STATE (DAY 27 - SZA) ====
-    const GAME_NUMBER = 27;
+    // ==== GAME STATE (DAY 29 - NBA YOUNGBOY) ====
+    const GAME_NUMBER = 29;
 
-    // ✅ SZA hints (increasingly specific)
+    // ✅ NBA YoungBoy hints (increasingly specific)
     const hints = [
-      "They’re known for soulful vocals.",
-      "They were born in the same year as Taylor Swift.",
-      "Their most popular song is in collaboration with a famous rapper.",
-      "Their most popular solo song is called 'Kill Bill",
-      "Their stage name is three letters and includes a 'Z'."
+      "They’re a major figure in modern hip-hop with a huge fanbase.",
+      "They’re from Louisiana.",
+      "They have been in and out of prison.",
+     "Their most popular song is in collaboration with JuiceWRLD",
+      "Their stage name starts with the same initials as a sports league."
     ];
 
     const maxQuestions = 15;
@@ -969,22 +969,22 @@
     let selectedQuestionElement = null;
     let selectedQuestionKey = null;
 
-    // Answers for SZA (best-effort, public info)
+    // Answers for NBA YoungBoy (best-effort, public info)
     const questionAnswers = {
-      "Is this a male artist?": "No, they are not a male artist.",
-      "Is this a female artist?": "Yes, they are a female artist.",
+      "Is this a male artist?": "Yes, they are a male artist.",
+      "Is this a female artist?": "No, they are not a female artist.",
       "Are they still alive?": "Yes, they are still alive.",
-      "Are they over 30 years old?": "Yes, they are over 30 years old.",
+      "Are they over 30 years old?": "No, they are not over 30 years old.",
       "Are they over 40 years old?": "No, they are not over 40 years old.",
       "Are they over 50 years old?": "No, they are not over 50 years old.",
       "Did they debut before 2000?": "No, they did not debut before 2000.",
       "Did they debut before 2010?": "No, they did not debut before 2010.",
       "Did they debut before 2020?": "Yes, they released music before 2020.",
-      "Album release in last 2 years?": "No, they have not released an album within the last two years.",
-      "Are they currently on tour?": "No, they are not currently on tour.",
+      "Album release in last 2 years?": "Yes, they are known for releasing a lot of music in recent years.",
+      "Are they currently on tour?": "No, they are not publicly known for being currently on tour.",
       "Are they currently married?": "No, they are not publicly known for being married.",
       "Were they ever divorced?": "No, they are not publicly known for being divorced.",
-      "Do they have kids?": "No, they are not publicly known for having children.",
+      "Do they have kids?": "Yes, they are publicly known for having children.",
       "Do they identify as LGBTQ+?": "No, they are not publicly known for identifying as LGBTQ+.",
 
       "Were they born in North America?": "Yes, they were born in North America.",
@@ -996,53 +996,53 @@
       "Were they born in Australia?": "No, they were not born in Australia.",
       "Were they born in Africa?": "No, they were not born in Africa.",
 
-      "Are they of African descent?": "Yes, they are of African descent.",
-      "Are they of European descent?": "No, they are not publicly known for being of European descent.",
-      "Are they of Latin American descent?": "No, they are not publicly known for being of Latin American descent.",
-      "Are they of Asian descent?": "No, they are not publicly known for being of Asian descent.",
+      "Are they of African descent?": "Yes, they are known for being of African descent.",
+      "Are they of European descent?": "No, they are not known for being of European descent.",
+      "Are they of Latin American descent?": "No, they are not known for being of Latin American descent.",
+      "Are they of Asian descent?": "No, they are not known for being of Asian descent.",
       "Are they of mixed ethnicities?": "No, they are not publicly known for being of mixed ethnicities.",
 
       "Different languages?": "No, they are mainly known for English-language songs.",
       "Spanish music?": "No, they are not mainly known for performing Spanish music.",
-      "Pop music?": "Yes, they have pop / pop-adjacent songs.",
-      "Rap music?": "No, they are not mainly known as a rap artist.",
-      "R&B music?": "Yes, they perform R&B music.",
+      "Pop music?": "No, they are not mainly known as a pop artist.",
+      "Rap music?": "Yes, they perform rap music.",
+      "R&B music?": "Yes, they are known for having some R&B influences.",
       "Rock music?": "No, they are not mainly known as a rock artist.",
       "Country music?": "No, they are not mainly known as a country artist.",
       "Jazz music?": "No, they are not mainly known as a jazz artist.",
-      "Party music?": "Yes, they have upbeat / fun songs.",
-      "Sad music?": "Yes, they are known for emotional / introspective songs.",
+      "Party music?": "Yes, but they’re more known for intense/emotional music.",
+      "Sad music?": "Yes, they’re known for emotional / introspective songs.",
 
       "Also an actor?": "No, they are not primarily known as an actor.",
       "Disney or Nick?": "No, they were not known from Disney Channel or Nickelodeon.",
       "Singing competition?": "No, they are not known for a TV singing competition.",
-      "Won a Grammy?": "Yes, they have won a Grammy.",
-      "Super Bowl?": "Yes, they have performed at a Super Bowl halftime show.",
-      "Song over one billion streams?": "Yes, they do have songs with over 1 Billion Spotify streams.",
-      "20M listeners?": "Yes, they have more than 20M monthly Spotify listeners.",
-      "50M listeners?": "Yes, they are known for having more than 50M monthly Spotify listeners.",
+      "Won a Grammy?": "No, they are not known for winning a Grammy.",
+      "Super Bowl?": "No, they are not known for performing at a Super Bowl halftime show.",
+      "Song over one billion streams?": "No, they are not publicly known for having a single song with over 1 Billion Spotify streams.",
+      "20M listeners?": "Yes, they often have more than 20M monthly Spotify listeners.",
+      "50M listeners?": "No, they are not typically over 50M monthly Spotify listeners.",
       "Ever in a band?": "No, they are not known for being in a band.",
 
       "Dark hair?": "Yes, they are often seen with dark hair.",
       "Blond hair?": "No, they are not mainly known for blond hair.",
-      "Over 5.5ft tall?": "No, they are not publicly known for being over 5 1/2 feet tall.",
+      "Over 5.5ft tall?": "Yes, they are known for being over 5 1/2 feet tall.",
       "Over 6ft tall?": "No, they are not known for being over 6 feet tall.",
-      "Tattoos?": "No, they aren't known for visible tattoos.",
+      "Tattoos?": "Yes, they are known for visible tattoos.",
       "Glasses?": "No, they are not commonly known for wearing glasses.",
-      "Birth name?": "No, they are not mainly known by their birth name.",
-      "One-word name?": "Yes, they are commonly known by one word.",
+      "Birth name?": "No, they are not known for going by their birth name.",
+      "One-word name?": "No, they are not mainly known by one word.",
       "Two-word name?": "No, they are not mainly known by two words.",
-      "6 letter name?": "No, their name is less than 6 or 7 letters.",
-      "Name starts A–M?": "No, their name starts after M."
+      "6 letter name?": "Yes, sometimes their first name is more than 6 or 7 letters.",
+      "Name starts A–M?": "No, their name starts with a letter after A–M."
     };
 
-    // Autocomplete list (ONLY SZA will be accepted)
+    // Autocomplete list (ONLY NBA YoungBoy will be accepted)
     const artists = [
       "Taylor Swift","Ariana Grande","Drake","Beyoncé","Ed Sheeran","Billie Eilish","Harry Styles","Bruno Mars",
       "Rihanna","The Weeknd","Post Malone","Lady Gaga","Katy Perry","Olivia Rodrigo","Noah Kahan","Hozier",
       "Frank Ocean","Adele","Lana Del Rey","Kendrick Lamar","Eminem","SZA","Bad Bunny",
       "Justin Bieber","Mac Miller","Diana Ross","The Supremes","Frank Sinatra",
-      "Forrest Frank","Surfaces"
+      "Forrest Frank","Surfaces","Dua Lipa","NBA YoungBoy","YoungBoy Never Broke Again"
     ];
 
     // DOM
@@ -1308,18 +1308,23 @@
         return;
       }
 
-      // ✅ ONLY accept "SZA" (case-insensitive) + "Solána Rowe" alias
+      // ✅ Accept NBA YoungBoy aliases (case-insensitive)
       const normalizedGuess = guess
         .replace(/\./g, "")
         .replace(/\s+/g, " ")
         .trim();
 
-      const isCorrect =
-        normalizedGuess === "sza" ||
-        normalizedGuess === "solana rowe" ||
-        normalizedGuess === "solána rowe";
+      const finalCorrect = new Set([
+        "nba youngboy",
+        "youngboy never broke again",
+        "youngboy",
+        "nba young boy",
+        "youngboy nba"
+      ]);
 
-      if (isCorrect) {
+      const isCorrectFinal = finalCorrect.has(normalizedGuess);
+
+      if (isCorrectFinal) {
         showWin();
       } else {
         if (questionsAsked >= maxQuestions) {
